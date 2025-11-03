@@ -10,26 +10,19 @@
     --primary:#7c5cff; --primary-2:#9f87ff;
     --ok:#22c55e; --ok-2:#16a34a;
     --stroke:#202744; --barbg:#1a2342; --btn:#121a35; --danger:#2a1220;
-    /* Colar Código (azul claro) */
-    --code1:#38bdf8; --code2:#0ea5e9;
-    /* Colar SMS (verde) */
-    --sms1:#34d399; --sms2:#10b981;
-    /* Ghost buttons */
-    --ghost:#0c1330;
+    --code1:#38bdf8; --code2:#0ea5e9;   /* Colar Código (azul claro) */
+    --sms1:#34d399; --sms2:#10b981;     /* Colar SMS (verde) */
   }
   *{box-sizing:border-box}
   html,body{height:100%}
   body{ margin:0; padding:12px; background:#0b1020; color:var(--ink);
         font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial }
-  .wrap{max-width:760px;margin:0 auto}
+  .wrap{max-width:720px;margin:0 auto}
   .card{ background:linear-gradient(180deg,#0f152b 0%,#0d1327 100%);
          border:1px solid var(--stroke); border-radius:14px; padding:12px;
          box-shadow:0 16px 48px rgba(0,0,0,.35) }
-  header.page{display:flex; flex-direction:column; gap:8px; margin-bottom:8px}
-  h1{margin:0; font-size:1.28rem}
-  p.lead{margin:0; color:var(--muted); font-size:.95rem}
-  .top-actions{margin-top:8px; display:flex; gap:8px; flex-wrap:wrap}
-
+  h1{margin:0 0 6px; font-size:1.28rem}
+  p.lead{margin:4px 0 10px; color:var(--muted); font-size:.95rem}
   .block{border:1px solid var(--stroke); border-radius:12px; overflow:hidden; margin:12px 0; background:rgba(255,255,255,.02)}
   .block header{display:flex; flex-direction:column; gap:10px; padding:10px; border-bottom:1px solid var(--stroke)}
   .title{display:flex; justify-content:space-between; align-items:center; font-weight:800; color:#dbe4ff}
@@ -41,13 +34,10 @@
   .btn.paste{background:linear-gradient(180deg,var(--sms1),var(--sms2)); color:#002411; border-color:#0f5c3f}
   .btn.paste-code{background:linear-gradient(180deg,var(--code1),var(--code2)); color:#001524; border-color:#0a5580}
   .btn.reset{background:var(--danger); border-color:#4c1d1d; color:#ffd2d2}
-  .btn.ghost{background:var(--ghost); border-color:#1a2452; color:#cfe1ff}
   button[disabled]{opacity:.55}
-
   .pill{ display:inline-flex; align-items:center; gap:6px; padding:6px 10px;
          background:#0e1733; border:1px solid var(--stroke); border-radius:999px;
          color:#cbd7ff; font-weight:800; font-size:.9rem }
-
   .toggle-sms{ background:transparent; border:0; color:var(--muted);
                text-decoration:underline; padding:0 10px 8px; font-weight:700; text-align:left }
   .editor{ display:none; max-height:180px; overflow:auto; border-top:1px solid var(--stroke);
@@ -55,40 +45,30 @@
            font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; }
   .editor.show{display:block}
   .editor[data-placeholder]:empty::before{content:attr(data-placeholder); color:#6e7aa6}
-
   .bar{height:12px; background:var(--barbg); border-top:1px solid var(--stroke); position:relative; overflow:hidden}
   .fill{position:absolute; inset:0 auto 0 0; width:0%; background:linear-gradient(90deg,var(--primary),var(--primary-2)); transition:width .25s, background .25s}
   .bar.complete .fill{width:100%!important; background:linear-gradient(90deg,var(--ok),var(--ok-2))}
   .status{display:flex; justify-content:space-between; color:var(--muted); font-size:.9rem; padding:8px 10px}
-  .hint{color:var(--muted); font-size:.85rem; padding:0 10px 8px; display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+  .hint{color:var(--muted); font-size:.85rem; padding:0 10px 8px}
   .row{display:grid; grid-template-columns:1fr; gap:8px; padding:0 10px 10px 10px}
   .toast{position:fixed; right:12px; bottom:12px; background:#0a0d1a; color:#fff; border:1px solid var(--stroke);
          padding:10px 14px; border-radius:10px; opacity:0; transform:translateY(10px); transition:all .25s; z-index:9999}
   .toast.show{opacity:1; transform:translateY(0)}
-
-  /* Alias Microsoft */
-  .alias-box{display:grid; grid-template-columns:1fr; gap:8px}
-  .alias-next{font-weight:800}
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="card">
-    <header class="page">
-      <h1>Criação UniTv</h1>
-      <p class="lead">Fluxo por registro: <b>Número sem DDI</b> → <b>Código SMS</b> → <b>6 caracteres</b>. “Zerar” só habilita quando a barra atingir o máximo (3, 5 ou o valor do Personalizado). Salva tudo (localStorage), exporta CSV/JSON e inclui Alias Microsoft.</p>
-      <div class="top-actions">
-        <button class="btn ghost" id="export-all-csv">Exportar tudo (CSV)</button>
-        <button class="btn ghost" id="export-all-json">Exportar tudo (JSON)</button>
-        <button class="btn ghost" id="wipe-all">Limpar dados locais</button>
-      </div>
-    </header>
+    <h1>Criação UniTv</h1>
+    <p class="lead">Fluxo por registro: <b>Número sem DDI</b> → <b>Código SMS</b> → <b>6 caracteres</b>.  
+    “Zerar” só habilita quando a barra atingir o máximo (3, 5 ou a quantidade do Personalizado).</p>
 
     <!-- CONTA NOVA (3) -->
-    <section class="block" data-title="Conta Nova" data-key="nova" data-limit="3" data-seq="triple">
+    <section class="block" data-title="Conta Nova" data-limit="3" data-seq="triple">
       <header>
         <div class="title"><span>Conta Nova</span><span class="counter">0 / 3</span></div>
         <div class="controls">
+          <!-- ORDEM: Colar Código | Colar SMS | Copiar | Zerar -->
           <button class="btn paste-code">Colar Código</button>
           <button class="btn paste">Colar SMS</button>
           <button class="btn copy">Copiar</button>
@@ -97,12 +77,9 @@
       </header>
       <div class="row">
         <div class="hint">
-          <span>Registros: <b class="det">0</b></span>
-          <span>Próximo: <b class="what">Nº</b></span>
-          <span class="pill">Código: <b class="six-pill">—</b></span>
+          Registros: <b class="det">0</b> • Próximo: <b class="what">Nº</b> • 
+          <span class="pill">Código: <b class="six-pill">—</b></span> •
           <button class="toggle-sms" type="button">Ver SMS (0)</button>
-          <button class="btn ghost export-csv">CSV</button>
-          <button class="btn ghost export-json">JSON</button>
         </div>
       </div>
       <div class="editor" contenteditable="true" spellcheck="false" data-placeholder="Cole aqui o bloco com vários SMS…"></div>
@@ -111,7 +88,7 @@
     </section>
 
     <!-- RENOVAÇÃO (5) -->
-    <section class="block" data-title="Renovação" data-key="renov" data-limit="5" data-seq="triple">
+    <section class="block" data-title="Renovação" data-limit="5" data-seq="triple">
       <header>
         <div class="title"><span>Renovação</span><span class="counter">0 / 5</span></div>
         <div class="controls">
@@ -123,12 +100,9 @@
       </header>
       <div class="row">
         <div class="hint">
-          <span>Registros: <b class="det">0</b></span>
-          <span>Próximo: <b class="what">Nº</b></span>
-          <span class="pill">Código: <b class="six-pill">—</b></span>
+          Registros: <b class="det">0</b> • Próximo: <b class="what">Nº</b> • 
+          <span class="pill">Código: <b class="six-pill">—</b></span> •
           <button class="toggle-sms" type="button">Ver SMS (0)</button>
-          <button class="btn ghost export-csv">CSV</button>
-          <button class="btn ghost export-json">JSON</button>
         </div>
       </div>
       <div class="editor" contenteditable="true" spellcheck="false" data-placeholder="Cole aqui o bloco com vários SMS…"></div>
@@ -137,7 +111,7 @@
     </section>
 
     <!-- PERSONALIZADO (QTD) -->
-    <section class="block" data-title="Personalizado" data-key="custom" data-limit="custom" data-seq="triple">
+    <section class="block" data-title="Personalizado" data-limit="custom" data-seq="triple">
       <header>
         <div class="title"><span>Personalizado</span><span class="counter">0</span></div>
         <div class="controls">
@@ -150,63 +124,14 @@
       </header>
       <div class="row">
         <div class="hint">
-          <span>Registros: <b class="det">0</b></span>
-          <span>Próximo: <b class="what">Nº</b></span>
-          <span class="pill">Código: <b class="six-pill">—</b></span>
+          Registros: <b class="det">0</b> • Próximo: <b class="what">Nº</b> • 
+          <span class="pill">Código: <b class="six-pill">—</b></span> •
           <button class="toggle-sms" type="button">Ver SMS (0)</button>
-          <button class="btn ghost export-csv">CSV</button>
-          <button class="btn ghost export-json">JSON</button>
         </div>
       </div>
       <div class="editor" contenteditable="true" spellcheck="false" data-placeholder="Cole aqui o bloco com vários SMS…"></div>
       <div class="bar"><div class="fill"></div></div>
       <div class="status"><span class="left">—</span><span class="progress">0</span></div>
-    </section>
-
-    <!-- NÚMEROS (APENAS) -->
-    <section class="block" data-title="Somente Números" data-key="nums" data-limit="custom" data-seq="nums">
-      <header>
-        <div class="title"><span>Somente Números</span><span class="counter">0</span></div>
-        <div class="controls">
-          <input class="limit" type="number" min="1" step="1" placeholder="Qtd (ex.: 60)" title="Digite e Enter para fixar" />
-          <button class="btn paste">Colar Números</button>
-          <button class="btn copy">Copiar Número</button>
-          <button class="btn reset" disabled>Zerar</button>
-        </div>
-      </header>
-      <div class="row">
-        <div class="hint">
-          <span>Registros: <b class="det">0</b></span>
-          <span>Próximo: <b class="what">Nº</b></span>
-          <button class="toggle-sms" type="button">Ver lista (0)</button>
-          <button class="btn ghost export-csv">CSV</button>
-          <button class="btn ghost export-json">JSON</button>
-        </div>
-      </div>
-      <div class="editor" contenteditable="true" spellcheck="false" data-placeholder="Cole aqui uma lista de números (com ou sem +55), um por linha…"></div>
-      <div class="bar"><div class="fill"></div></div>
-      <div class="status"><span class="left">—</span><span class="progress">0</span></div>
-    </section>
-
-    <!-- ALIAS MICROSOFT -->
-    <section class="block" data-kind="alias" data-key="alias">
-      <header>
-        <div class="title"><span>Alias Microsoft (@outlook.com)</span><span class="counter alias-count">0</span></div>
-        <div class="controls">
-          <button class="btn paste">Colar lista</button>
-          <button class="btn copy alias-copy">Copiar próximo alias</button>
-        </div>
-      </header>
-      <div class="row alias-box">
-        <div class="hint">
-          <span>Atual: <b class="alias-next">—</b></span>
-          <button class="btn ghost alias-reset">Reset ciclo</button>
-          <button class="btn ghost alias-show">Ver lista (0)</button>
-          <button class="btn ghost alias-export">CSV</button>
-        </div>
-      </div>
-      <div class="editor alias-editor" contenteditable="true" spellcheck="false" data-placeholder="Cole a lista com e-mails (ex.: eliphs1@outlook.com …). O sistema copia APENAS o que vem ANTES do @."></div>
-      <div class="status"><span class="left alias-left">—</span><span class="progress alias-progress">0 / 0</span></div>
     </section>
 
   </div>
@@ -216,14 +141,8 @@
 
 <script>
 (function(){
-  const VERSION='utv-v2.2';
   const toast=document.getElementById('toast');
-  function showToast(msg){ toast.textContent=msg; toast.classList.add('show'); clearTimeout(toast._t); toast._t=setTimeout(()=>toast.classList.remove('show'),1300); }
-
-  function download(name, text, type='text/plain'){
-    const blob=new Blob([text],{type});
-    const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name; document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(a.href); a.remove();},0);
-  }
+  function showToast(msg){ toast.textContent=msg; toast.classList.add('show'); clearTimeout(toast._t); toast._t=setTimeout(()=>toast.classList.remove('show'),1200); }
 
   async function writeClipboard(text){
     try{ await navigator.clipboard.writeText(text); return true; }
@@ -241,85 +160,42 @@
     if(d.length>11) d=d.slice(-11);
     return d;
   };
-  const sanitizeSix = v => (v||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,6);
+
+  function sanitizeSix(v){
+    return (v||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,6);
+  }
 
   function parseSmsBlock(text){
-    const out=[]; const seen=new Set();
-
-    // A) Padrão clássico
-    const reClassic=/Número\s*sem\s*DDI:\s*([0-9]{10,11}).*?Código\s+de\s+verificação:\s*([0-9]{4,8})/gis;
-    let m; while((m=reClassic.exec(text))){ const noDDI=m[1]; const sms=m[2]; const k=noDDI+"|"+sms; if(!seen.has(k)){ seen.add(k); out.push({noDDI,sms}); } }
+    const out=[];
+    const re1=/Número\s*sem\s*DDI:\s*([0-9]{10,11}).*?Código\s+de\s+verificação:\s*([0-9]{4,8})/gis;
+    let m; while((m=re1.exec(text))) out.push({ noDDI:m[1], sms:m[2] });
     if(out.length) return out;
 
-    // B) Padrão curto “Número: +55… … Código de verificação: NNNNNN”
-    const reInline=/Número\s*:\s*([+0-9\s\-\()]{8,})[\s\S]*?Código\s+de\s+verificação\s*:\s*([0-9]{4,8})/gi;
-    while((m=reInline.exec(text))){ const noDDI=extractNoDDI(m[1]||''); const sms=m[2]; if(noDDI && sms){ const k=noDDI+"|"+sms; if(!seen.has(k)){ seen.add(k); out.push({noDDI,sms}); } } }
-    if(out.length) return out;
-
-    // C) Blocos “👨‍💻 SMS recebido…”
+    // Passo rápido para formato compacto:
     {
-      const numM = /Número\s*:\s*([+0-9\s\-\()]+)/i.exec(text);
+      const numM = /Número\s*:\s*([+0-9\s\-()]+)/i.exec(text);
       const codeM = /Código\s+de\s+verificação\s*:\s*([0-9]{4,8})/i.exec(text);
       if(numM && codeM){ const noDDI=extractNoDDI(numM[1]||''); const sms=codeM[1]; if(noDDI){ out.push({noDDI,sms}); } }
     }
-    const segs = text.split(/👨‍💻\s*SMS\s*recebido.*?sucesso\./i);
+    const segs = text.split(/👨‍💻\s*SMS\s*recebido.*?sucesso\\./i);
     for(const seg of segs){
-      const numLine = /Número(?:\s*sem\s*DDI)?:\s*([+0-9][\s\d\-()]+)/i.exec(seg);
-      const codeLine = /Código\s+de\s+verificação\s*:\s*([0-9]{4,8})/i.exec(seg);
-      if(numLine && codeLine){ const noDDI=extractNoDDI(numLine[1]); const sms=codeLine[1]; if(noDDI){ const k=noDDI+"|"+sms; if(!seen.has(k)){ seen.add(k); out.push({noDDI,sms}); } } }
+      const numLine = /Número(?:\s*sem\s*DDI)?:\s*([+0-9][\s\d]+)/i.exec(seg);
+      const codeLine = /Código\s+de\s+verificação:\s*([0-9]{4,8})/i.exec(seg);
+      if(numLine && codeLine){
+        const noDDI = extractNoDDI(numLine[1]); if(noDDI) out.push({ noDDI, sms: codeLine[1] });
+      }
     }
-    if(out.length) return out;
-
-    // D) Fallback
-    const nums=(text.match(/Número[^:\n]*:\s*[+0-9][\s\d\-()]+/gi)||[]).map(s=>extractNoDDI(s));
-    const codes=(text.match(/verificação\s*:\s*\d{4,8}/gi)||[]).map(s=>s.match(/\d{4,8}/)[0]);
-    const n=Math.min(nums.length,codes.length);
-    for(let i=0;i<n;i++){ if(nums[i]){ const k=nums[i]+"|"+codes[i]; if(!seen.has(k)){ seen.add(k); out.push({noDDI:nums[i], sms:codes[i]}); } } }
-
+    if(!out.length){
+      const nums=(text.match(/Número[^:\n]*:\s*[+0-9][\s\d]+/gi)||[]).map(s=>extractNoDDI(s));
+      const codes=(text.match(/verificação:\s*\d{4,8}/gi)||[]).map(s=>s.match(/\d{4,8}/)[0]);
+      const n=Math.min(nums.length,codes.length);
+      for(let i=0;i<n;i++) if(nums[i]) out.push({noDDI:nums[i], sms:codes[i]});
+    }
     return out;
   }
 
-  function fmtDate(){ const d=new Date(); const p=n=>String(n).padStart(2,'0'); return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}_${p(d.getHours())}${p(d.getMinutes())}`; }
-
-  // ===== Persist helpers =====
-  const LS = {
-    k:(key)=>`${VERSION}:${key}`,
-    get(key, def=null){ try{ const s=localStorage.getItem(LS.k(key)); return s?JSON.parse(s):def; }catch{ return def; } },
-    set(key, val){ try{ localStorage.setItem(LS.k(key), JSON.stringify(val)); }catch{} },
-    del(key){ try{ localStorage.removeItem(LS.k(key)); }catch{} },
-    wipe(){ Object.keys(localStorage).filter(k=>k.startsWith(`${VERSION}:`)).forEach(k=>localStorage.removeItem(k)); }
-  };
-
-  // ===== Export All =====
-  function exportAll(kind){
-    const keys=['nova','renov','custom','nums','alias'];
-    const payload={version:VERSION, exportedAt:new Date().toISOString(), sections:{}};
-    for(const k of keys){ payload.sections[k]=LS.get(k, null); }
-    if(kind==='json') download(`utv-export-${fmtDate()}.json`, JSON.stringify(payload, null, 2), 'application/json');
-    else{
-      // CSV: numero;sms;codigo6;timestamp;secao
-      const rows=[];
-      for(const k of ['nova','renov','custom','nums']){
-        const st=LS.get(k, null);
-        if(st && Array.isArray(st.log)){
-          for(const it of st.log){
-            rows.push([it.noDDI||'', it.sms||'', it.six||'', it.ts||'', k].join(';'));
-          }
-        }
-      }
-      const head='numero;sms;codigo6;timestamp;secao';
-      download(`utv-export-${fmtDate()}.csv`, [head, ...rows].join('\n'), 'text/csv');
-    }
-  }
-  document.getElementById('export-all-csv').addEventListener('click', ()=>exportAll('csv'));
-  document.getElementById('export-all-json').addEventListener('click', ()=>exportAll('json'));
-  document.getElementById('wipe-all').addEventListener('click', ()=>{ LS.wipe(); showToast('Dados locais apagados.'); });
-
-  // ====== CORE (3 barras: Conta Nova, Renovação, Personalizado) ======
   document.querySelectorAll('.block[data-seq="triple"]').forEach(block=>{
-    const key = block.dataset.key;
     const limitAttr = block.dataset.limit || '0';
-
     const editor  = block.querySelector('.editor');
     const copyBtn = block.querySelector('.copy');
     const pasteBtn= block.querySelector('.paste');
@@ -335,27 +211,14 @@
     const limitIn = block.querySelector('.limit');
     const toggleSmsBtn = block.querySelector('.toggle-sms');
     const sixPill = block.querySelector('.six-pill');
-    const btnCsv = block.querySelector('.export-csv');
-    const btnJson= block.querySelector('.export-json');
 
     let limit = (limitAttr==='custom') ? Infinity : parseInt(limitAttr,10);
-    let state = LS.get(key, {count:0, idx:0, phase:0, six:'', rows:[], log:[], editor:''});
+    let count=0, locked=false;
 
-    let count=state.count||0, locked=false;
-    let rows=Array.isArray(state.rows)?state.rows:[];   // [{noDDI, sms}]
-    let idx=state.idx||0;     // registro atual
-    let phase=state.phase||0; // 0=Nº, 1=SMS, 2=6car
-    let sixCode=state.six||'';
-    if(limitAttr==='custom'){
-      if(typeof state.limit==='number' && isFinite(state.limit) && state.limit>0){ limit=state.limit; }
-    }
-    if(state.editor){ editor.textContent = state.editor; }
-
-    function persist(){
-      const save={count, idx, phase, six:sixCode, rows, log:state.log||[], editor:editor.textContent||''};
-      if(limitAttr==='custom' && isFinite(limit)) save.limit=limit;
-      LS.set(key, save);
-    }
+    let rows=[];
+    let idx=0;
+    let phase=0;
+    let sixCode='';
 
     function canReset(){ return isFinite(limit) && count>=limit; }
 
@@ -372,15 +235,19 @@
     function setBar(){
       if(isFinite(limit)){
         const pct=Math.min(count/limit,1)*100; fill.style.width=pct+'%';
-        if(count>=limit){ bar.classList.add('complete'); copyBtn.disabled=true; locked=false; }
-        else { bar.classList.remove('complete'); copyBtn.disabled=false; }
+        if(count>=limit){
+          bar.classList.add('complete');
+          copyBtn.disabled=true;
+          locked=false;
+        }else{
+          bar.classList.remove('complete');
+          copyBtn.disabled=false;
+        }
       }else{ fill.style.width='0'; bar.classList.remove('complete'); }
     }
     function applyLocks(){
       pasteBtn.disabled = locked;
-      pasteCodeBtn.disabled = !!sixCode; // TRAVA: código só uma vez
       resetBtn.disabled = locked || !canReset();
-      if(limitAttr==='custom' && limitIn){ limitIn.disabled = isFinite(limit); }
     }
     function updateUI(){
       setCounter(); setBar(); applyLocks();
@@ -391,7 +258,6 @@
       toggleSmsBtn.textContent = editor.classList.contains('show') ? 'Ocultar SMS' : `Ver SMS (${rows.length||0})`;
       if(!editor.textContent.trim()){ editor.setAttribute('data-placeholder', editor.getAttribute('data-placeholder')); }
       else editor.removeAttribute('data-placeholder');
-      persist();
     }
 
     function needSix(){
@@ -412,37 +278,55 @@
     });
 
     pasteCodeBtn.addEventListener('click', async ()=>{
-      if(sixCode){ showToast('Código já definido. Use Zerar para trocar.'); return; }
       let got=false, txt='';
-      if(navigator.clipboard?.readText){ try{ txt=await navigator.clipboard.readText(); got=typeof txt==='string'; }catch{} }
-      if(!got){ const manual=prompt('Cole/insira o código (A–Z/0–9, 6 caracteres):',''); if(manual!==null){ txt=manual; got=true; } }
+      if(navigator.clipboard?.readText){
+        try{ txt=await navigator.clipboard.readText(); got=typeof txt==='string'; }catch{}
+      }
+      if(!got){
+        const manual=prompt('Cole/insira o código (A–Z/0–9, 6 caracteres):','');
+        if(manual!==null){ txt=manual; got=true; }
+      }
       if(!got){ showToast('Nada colado.'); return; }
-      const val = sanitizeSix(txt); if(val.length!==6){ showToast('Código inválido.'); return; }
-      sixCode = val; showToast('Código definido para esta barra.'); updateUI();
+      const val = sanitizeSix(txt);
+      if(val.length!==6){ showToast('Código inválido. Use 6 caracteres A–Z/0–9.'); return; }
+      sixCode = val; updateUI(); showToast('Código definido para esta barra.');
     });
 
     pasteBtn.addEventListener('click', async ()=>{
-      if(locked){ if(idx >= rows.length){ locked=false; } else { showToast('Finalize os registros atuais antes de colar novamente.'); return; } }
+      if(locked){
+        if(idx >= rows.length){ locked=false; }
+        else { showToast('Finalize os registros atuais antes de colar novamente.'); return; }
+      }
       if(limitAttr==='custom'){
         const v=parseInt((limitIn && limitIn.value)||'',10);
         if(!isFinite(v)||v<=0){ showToast('Defina a quantidade primeiro.'); return; }
-        limit=v;
+        limit=v; limitIn.disabled=true;
       }
 
       let clip='', pasted=false;
-      if(navigator.clipboard?.readText){ try{ clip=await navigator.clipboard.readText(); pasted=typeof clip==='string'; }catch{} }
-      if(!pasted){ const manual=prompt('Cole aqui o conteúdo dos SMS:',''); if(manual!==null){ clip=manual; pasted=true; } }
+      if(navigator.clipboard?.readText){
+        try{ clip=await navigator.clipboard.readText(); pasted=typeof clip==='string'; }catch{}
+      }
+      if(!pasted){
+        const manual=prompt('Cole aqui o conteúdo dos SMS:','');
+        if(manual!==null){ clip=manual; pasted=true; }
+      }
       if(!pasted){ showToast('Nada colado.'); return; }
 
-      const added = parseSmsBlock(clip||''); if(!added.length){ showToast('Não encontrei registros nesse texto.'); return; }
+      const added = parseSmsBlock(clip||'');
+      if(!added.length){ showToast('Não encontrei registros nesse texto.'); return; }
+
       const prevLen = rows.length;
       if((editor.textContent||'').trim().length){ editor.textContent += '\n\n'; }
       editor.textContent += clip;
       rows.push(...added);
 
-      locked=true; if(idx < prevLen) { /* mantém idx */ } else { idx = prevLen; }
-      phase = 0; updateUI();
+      locked=true; applyLocks();
+      if(idx < prevLen) { /* mantém idx */ } else { idx = prevLen; }
+      phase = 0;
+
       showToast(`Adicionados ${added.length} registro(s). Travado até completar.`);
+      updateUI();
     });
 
     copyBtn.addEventListener('click', async ()=>{
@@ -457,19 +341,19 @@
       else { text=sixCode; label='6 caracteres'; }
 
       if(!text){ showToast('Conteúdo vazio.'); return; }
-      const ok = await writeClipboard(String(text)); if(!ok){ showToast('Falha ao copiar.'); return; }
+      const ok = await writeClipboard(String(text));
+      if(!ok){ showToast('Falha ao copiar.'); return; }
 
       if(phase<2){ phase++; }
-      else {
-        phase=0; idx++; count++;
-        // registra no log ao concluir o trio
-        state.log = state.log || [];
-        state.log.push({ noDDI:row.noDDI, sms:row.sms, six:sixCode, ts:new Date().toISOString() });
-      }
+      else { phase=0; idx++; count++; }
 
-      if(isFinite(limit) && count>=limit){ showToast('Quantidade concluída. Você pode zerar.'); }
-      else if(idx>=rows.length){ maybeUnlockForMore(); }
-      else { showToast(`${label} copiado${label==='6 caracteres'?' ✓':''}`); }
+      if(isFinite(limit) && count>=limit){
+        showToast('Quantidade concluída. Você pode zerar.');
+      }else if(idx>=rows.length){
+        maybeUnlockForMore();
+      }else{
+        showToast(`${label} copiado${label==='6 caracteres'?' ✓':''}`);
+      }
       updateUI();
     });
 
@@ -478,155 +362,12 @@
       if(locked) return;
       count=0; idx=0; phase=0; rows=[]; editor.textContent=''; editor.classList.remove('show');
       sixCode=''; bar.classList.remove('complete'); copyBtn.disabled=false;
-      if(limitAttr==='custom'){ limit=Infinity; if(limitIn){ limitIn.value=''; } }
+      if(limitAttr==='custom'){ limit=Infinity; if(limitIn){ limitIn.disabled=false; limitIn.value=''; } }
       updateUI(); showToast('Zerado (contagem, SMS e código).');
     });
 
-    // Export por seção
-    btnCsv.addEventListener('click', ()=>{
-      const log = (state.log||[]).map(it=>[it.noDDI||'', it.sms||'', it.six||'', it.ts||''].join(';'));
-      const head='numero;sms;codigo6;timestamp';
-      download(`${key}-export-${fmtDate()}.csv`, [head, ...log].join('\n'), 'text/csv');
-    });
-    btnJson.addEventListener('click', ()=>{
-      const pack = LS.get(key, null) || {};
-      download(`${key}-export-${fmtDate()}.json`, JSON.stringify(pack, null, 2), 'application/json');
-    });
-
-    // init
     updateUI();
   });
-
-  // ===== Somente Números =====
-  document.querySelectorAll('.block[data-seq="nums"]').forEach(block=>{
-    const key = block.dataset.key;
-    const editor  = block.querySelector('.editor');
-    const copyBtn = block.querySelector('.copy');
-    const pasteBtn= block.querySelector('.paste');
-    const resetBtn= block.querySelector('.reset');
-    const counter = block.querySelector('.counter');
-    const progress= block.querySelector('.progress');
-    const bar     = block.querySelector('.bar');
-    const fill    = block.querySelector('.fill');
-    const detEl   = block.querySelector('.det');
-    const whatEl  = block.querySelector('.what');
-    const leftEl  = block.querySelector('.left');
-    const limitIn = block.querySelector('.limit');
-    const toggleBtn = block.querySelector('.toggle-sms');
-    const btnCsv = block.querySelector('.export-csv');
-    const btnJson= block.querySelector('.export-json');
-
-    let state = LS.get(key, {count:0, idx:0, rows:[], editor:'', log:[], limit:null});
-    let count=state.count||0, idx=state.idx||0;
-    let rows=Array.isArray(state.rows)?state.rows:[];
-    let limit=(typeof state.limit==='number' && isFinite(state.limit) && state.limit>0)?state.limit:Infinity;
-    let locked=false;
-
-    if(state.editor){ editor.textContent = state.editor; }
-    if(isFinite(limit) && limitIn){ limitIn.value=String(limit); }
-
-    function persist(){ LS.set(key,{count, idx, rows, editor:editor.textContent||'', log:state.log||[], limit:isFinite(limit)?limit:null}); }
-    function canReset(){ return isFinite(limit) && count>=limit; }
-    function setCounter(){ const limTxt=isFinite(limit)?` / ${limit}`:''; counter.textContent=`${count}${limTxt}`; progress.textContent=`${count}${limTxt}`; }
-    function setBar(){ if(isFinite(limit)){ const pct=Math.min(count/limit,1)*100; fill.style.width=pct+'%'; if(count>=limit){ bar.classList.add('complete'); copyBtn.disabled=true; locked=false; } else { bar.classList.remove('complete'); copyBtn.disabled=false; } } else { fill.style.width='0'; bar.classList.remove('complete'); } }
-    function applyLocks(){ pasteBtn.disabled=locked; resetBtn.disabled=locked || !canReset(); if(limitIn){ limitIn.disabled=isFinite(limit); } }
-    function updateUI(){ setCounter(); setBar(); applyLocks(); detEl.textContent=String(rows.length||0); whatEl.textContent='Nº'; leftEl.textContent=rows[idx]?`Registro ${idx+1}/${rows.length}`:'—'; toggleBtn.textContent = editor.classList.contains('show')? 'Ocultar lista' : `Ver lista (${rows.length||0})`; persist(); }
-
-    function parseNumbers(text){
-      const cands = text.match(/[+]?[\\d\\s().-]{10,}/g) || [];
-      const set=new Set();
-      for(const c of cands){ const n=extractNoDDI(c); if(n && (n.length===10||n.length===11)) set.add(n); }
-      return Array.from(set);
-    }
-
-    toggleBtn.addEventListener('click', ()=>{ editor.classList.toggle('show'); toggleBtn.textContent = editor.classList.contains('show')? 'Ocultar lista' : `Ver lista (${rows.length||0})`; });
-
-    pasteBtn.addEventListener('click', async ()=>{
-      if(locked && idx < rows.length){ showToast('Finalize a lista atual antes de colar novamente.'); return; }
-      if(limitIn){ const v=parseInt(limitIn.value||'',10); if(!isFinite(v)||v<=0){ showToast('Defina a quantidade primeiro.'); return; } limit=v; }
-      let clip='', ok=false; if(navigator.clipboard?.readText){ try{ clip=await navigator.clipboard.readText(); ok=typeof clip==='string'; }catch{} }
-      if(!ok){ const manual=prompt('Cole aqui a lista de números (com/sem +55):',''); if(manual!==null){ clip=manual; ok=true; } }
-      if(!ok){ showToast('Nada colado.'); return; }
-      const added = parseNumbers(clip||''); if(!added.length){ showToast('Não encontrei números válidos (10–11 dígitos).'); return; }
-      const prevLen=rows.length; if((editor.textContent||'').trim().length){ editor.textContent += '\\n\\n'; } editor.textContent += clip;
-      rows.push(...added);
-      locked=true; if(idx < prevLen){} else { idx=prevLen; }
-      updateUI(); showToast(`Adicionados ${added.length} número(s). Travado até completar.`);
-    });
-
-    copyBtn.addEventListener('click', async ()=>{
-      if(isFinite(limit) && count>=limit){ showToast('Limite atingido.'); return; }
-      if(!rows.length || idx>=rows.length){ showToast('Cole mais números para continuar.'); if(idx>=rows.length && count<(isFinite(limit)?limit:Infinity)){ locked=false; applyLocks(); } return; }
-      const num=rows[idx]; const ok=await writeClipboard(String(num)); if(!ok){ showToast('Falha ao copiar.'); return; }
-      state.log=state.log||[]; state.log.push({ noDDI:num, ts:new Date().toISOString() });
-      idx++; count++;
-      if(isFinite(limit) && count>=limit){ showToast('Quantidade concluída. Você pode zerar.'); }
-      updateUI();
-    });
-
-    resetBtn.addEventListener('click', ()=>{
-      if(!(isFinite(limit) && count>=limit)){ showToast('Só é possível zerar após atingir o máximo.'); return; }
-      if(locked) return;
-      count=0; idx=0; rows=[]; editor.textContent=''; editor.classList.remove('show'); bar.classList.remove('complete'); copyBtn.disabled=false; limit=Infinity; if(limitIn){ limitIn.value=''; }
-      updateUI(); showToast('Zerado (contagem e lista).');
-    });
-
-    btnCsv.addEventListener('click', ()=>{ const head='numero;timestamp'; const rowsCsv=(state.log||[]).map(it=>[it.noDDI||'', it.ts||''].join(';')); download(`${key}-export-${fmtDate()}.csv`, [head, ...rowsCsv].join('\n'), 'text/csv'); });
-    btnJson.addEventListener('click', ()=>{ const pack = LS.get(key, null) || {}; download(`${key}-export-${fmtDate()}.json`, JSON.stringify(pack, null, 2), 'application/json'); });
-
-    updateUI();
-  });
-
-  // ===== Alias Microsoft =====
-  (function(sec){
-    const key = 'alias';
-    const secEl = document.querySelector('.block[data-kind="alias"]');
-    if(!secEl) return;
-    const editor = secEl.querySelector('.alias-editor');
-    const btnPaste = secEl.querySelector('.paste');
-    const btnCopy = secEl.querySelector('.alias-copy');
-    const btnReset= secEl.querySelector('.alias-reset');
-    const btnShow = secEl.querySelector('.alias-show');
-    const btnExport = secEl.querySelector('.alias-export');
-    const nextEl = secEl.querySelector('.alias-next');
-    const cntEl = secEl.querySelector('.alias-count');
-    const leftEl = secEl.querySelector('.alias-left');
-    const progEl = secEl.querySelector('.alias-progress');
-
-    let st = LS.get(key, {list:[], idx:0, editor:''});
-    let list = Array.isArray(st.list)?st.list:[]; // só a parte antes do @
-    let idx = st.idx||0;
-    if(st.editor){ editor.textContent = st.editor; }
-
-    function persist(){ LS.set(key, {list, idx, editor:editor.textContent||''}); }
-    function update(){ cntEl.textContent=String(list.length||0); nextEl.textContent=list[idx]||'—'; leftEl.textContent=list.length?`Alias ${idx+1}/${list.length}`:'—'; progEl.textContent=`${list.length?idx+1:0} / ${list.length}`; persist(); }
-
-    function parseEmails(text){
-      const out=[]; const re=/(?:^|\s)([A-Za-z0-9._%+-]+)@outlook\.com\b/gi; let m; while((m=re.exec(text))) out.push(m[1]);
-      return Array.from(new Set(out)); // únicos
-    }
-
-    btnPaste.addEventListener('click', async ()=>{
-      let clip='', ok=false; if(navigator.clipboard?.readText){ try{ clip=await navigator.clipboard.readText(); ok=typeof clip==='string'; }catch{} }
-      if(!ok){ const manual=prompt('Cole aqui a lista com e-mails @outlook.com:',''); if(manual!==null){ clip=manual; ok=true; } }
-      if(!ok){ showToast('Nada colado.'); return; }
-      if((editor.textContent||'').trim().length){ editor.textContent += '\n\n'; } editor.textContent += clip;
-      const got=parseEmails(clip); if(!got.length){ showToast('Não encontrei e-mails @outlook.com.'); return; }
-      const set=new Set(list); for(const a of got) set.add(a); list=[...set]; if(idx>=list.length) idx=0; update(); showToast(`Adicionados ${got.length} alias (apenas antes do @).`);
-    });
-
-    btnCopy.addEventListener('click', async ()=>{
-      if(!list.length){ showToast('Cole a lista primeiro.'); return; }
-      const alias=list[idx]; const ok=await writeClipboard(alias); if(!ok){ showToast('Falha ao copiar.'); return; }
-      idx=(idx+1)%list.length; update(); showToast(`Alias copiado: ${alias}`);
-    });
-
-    btnReset.addEventListener('click', ()=>{ idx=0; update(); showToast('Ciclo reiniciado.'); });
-    btnShow.addEventListener('click', ()=>{ editor.classList.toggle('show'); btnShow.textContent = editor.classList.contains('show')?`Ocultar lista`:`Ver lista (${list.length})`; });
-    btnExport.addEventListener('click', ()=>{ const head='alias'; download(`alias-${fmtDate()}.csv`, [head, ...list].join('\n'), 'text/csv'); });
-
-    update();
-  })();
 })();
 </script>
 </body>
