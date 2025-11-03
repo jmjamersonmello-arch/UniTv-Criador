@@ -215,7 +215,7 @@
     const editor  = block.querySelector('.editor');
     const copyBtn = block.querySelector('.copy');
     const pasteBtn= block.querySelector('.paste');       // Colar SMS
-    const pasteCodeBtn= block.querySelector('.paste-code'); // Colar Código
+    const pasteCodeBtn= block.querySelector('.paste-code'); // Colar Código (6 caracteres)
     const resetBtn= block.querySelector('.reset');
     const counter = block.querySelector('.counter');
     const progress= block.querySelector('.progress');
@@ -263,6 +263,8 @@
     }
     function applyLocks(){
       pasteBtn.disabled = locked;
+      /* trava do código: depois de definido, não pode colar novamente até Zerar */
+      pasteCodeBtn.disabled = !!sixCode;
       resetBtn.disabled = locked || !canReset();
     }
     function updateUI(){
@@ -271,6 +273,7 @@
       whatEl.textContent = ['Nº','SMS','6 caracteres'][phase] || 'Nº';
       leftEl.textContent = rows[idx] ? `Registro ${idx+1}/${rows.length}` : '—';
       sixPill.textContent = sixCode || '—';
+      pasteCodeBtn.textContent = sixCode ? 'Código fixado' : 'Colar Código';
       toggleSmsBtn.textContent = editor.classList.contains('show') ? 'Ocultar SMS' : `Ver SMS (${rows.length||0})`;
       if(!editor.textContent.trim()){ editor.setAttribute('data-placeholder', editor.getAttribute('data-placeholder')); }
       else editor.removeAttribute('data-placeholder');
@@ -293,7 +296,9 @@
       toggleSmsBtn.textContent = editor.classList.contains('show') ? 'Ocultar SMS' : `Ver SMS (${rows.length||0})`;
     });
 
+    /* COLAR CÓDIGO — trava após definir uma vez */
     pasteCodeBtn.addEventListener('click', async ()=>{
+      if(sixCode){ showToast('Código já definido. Use Zerar para trocar.'); return; }
       let got=false, txt='';
       if(navigator.clipboard?.readText){
         try{ txt=await navigator.clipboard.readText(); got=typeof txt==='string'; }catch{}
@@ -305,9 +310,12 @@
       if(!got){ showToast('Nada colado.'); return; }
       const val = sanitizeSix(txt);
       if(val.length!==6){ showToast('Código inválido. Use 6 caracteres A–Z/0–9.'); return; }
-      sixCode = val; updateUI(); showToast('Código definido para esta barra.');
+      sixCode = val;
+      showToast('Código definido para esta barra.');
+      updateUI();
     });
 
+    /* COLAR SMS — trava até consumir os registros colados */
     pasteBtn.addEventListener('click', async ()=>{
       if(locked){
         if(idx >= rows.length){ locked=false; }
@@ -345,6 +353,7 @@
       updateUI();
     });
 
+    /* COPIAR — Nº → SMS → 6car, conta progresso e limita por barra */
     copyBtn.addEventListener('click', async ()=>{
       if(isFinite(limit) && count>=limit){ showToast('Limite atingido.'); return; }
       if(!rows.length || idx>=rows.length){ showToast('Cole mais SMS para continuar.'); maybeUnlockForMore(); return; }
@@ -373,11 +382,14 @@
       updateUI();
     });
 
+    /* ZERAR — só habilita ao atingir o máximo; reseta também o CÓDIGO */
     resetBtn.addEventListener('click', ()=>{
       if(!(isFinite(limit) && count>=limit)) { showToast('Só é possível zerar após atingir o máximo.'); return; }
       if(locked) return;
       count=0; idx=0; phase=0; rows=[]; editor.textContent=''; editor.classList.remove('show');
       sixCode=''; bar.classList.remove('complete'); copyBtn.disabled=false;
+      /* libera Colar Código novamente */
+      pasteCodeBtn.disabled=false; pasteCodeBtn.textContent='Colar Código';
       if(limitAttr==='custom'){ limit=Infinity; if(limitIn){ limitIn.disabled=false; limitIn.value=''; } }
       updateUI(); showToast('Zerado (contagem, SMS e código).');
     });
