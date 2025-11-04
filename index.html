@@ -3,13 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Criação UniTv — v3.4</title>
+<title>Criação UniTv — v3.4.2</title>
 <style>
-:root{--bg:#0b1020;--card:#0f152b;--ink:#e8ecff;--muted:#9aa4c7;--stroke:#202744;--bar:#162044;--primary:#7c5cff;--primary2:#9f87ff;--ok:#22c55e;--ok2:#16a34a;--blue1:#38bdf8;--blue2:#0ea5e9;--green1:#34d399;--green2:#10b981;--danger:#2a1220;--ghost:#0c1330;--btn:#121a35}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial}
+:root{
+  --bg:#0b1020;--card:#0f152b;--ink:#e8ecff;--muted:#9aa4c7;--stroke:#202744;--bar:#162044;
+  --primary:#7c5cff;--primary2:#9f87ff;--ok:#22c55e;--ok2:#16a34a;--blue1:#38bdf8;--blue2:#0ea5e9;
+  --green1:#34d399;--green2:#10b981;--danger:#2a1220;--ghost:#0c1330;--btn:#121a35
+}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial}
 .wrap{max-width:820px;margin:0 auto;padding:12px}
 .card{background:linear-gradient(180deg,#0f152b,#0d1327);border:1px solid var(--stroke);border-radius:14px;box-shadow:0 16px 48px rgba(0,0,0,.35);padding:12px}
 h1{margin:0 0 8px;font-size:1.28rem}
+
 /* Tabs */
 .tabs{position:sticky;top:0;z-index:5;background:linear-gradient(180deg,#0d1327,#0b1020);padding:8px;border:1px solid var(--stroke);border-radius:12px;margin:6px 0 10px;display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
 @media(min-width:560px){.tabs{grid-template-columns:repeat(3,1fr)}}
@@ -17,6 +22,7 @@ h1{margin:0 0 8px;font-size:1.28rem}
 .tab{display:flex;justify-content:space-between;align-items:center;gap:8px;border:1px solid var(--stroke);background:#0b1330;color:#cfe1ff;border-radius:12px;padding:10px 12px;font-weight:800}
 .tab .badge{font-size:.9rem;color:#aab7e8}.tab .dot{width:8px;height:8px;border-radius:50%;background:#2a325a;border:1px solid #3a477a}
 .tab.active{outline:2px solid #3c4cff}.tab.done .dot{background:var(--ok);border-color:#167a3d}
+
 /* Panels/blocks */
 .panel{display:none}.panel.active{display:block}
 .block{border:1px solid var(--stroke);border-radius:12px;overflow:hidden;background:rgba(255,255,255,.02);margin:12px 0}
@@ -25,6 +31,7 @@ h1{margin:0 0 8px;font-size:1.28rem}
 .counter{color:var(--muted);font-weight:700;min-width:7ch;text-align:right}
 .controls{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
 .row-ghost{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}
+
 /* Buttons */
 button.btn{background:var(--btn);color:var(--ink);border:1px solid var(--stroke);border-radius:10px;padding:12px 10px;font-weight:800;font-size:.95rem}
 .btn.copy{background:linear-gradient(180deg,var(--primary),var(--primary2));color:#fff;border-color:#3a2f7d}
@@ -33,17 +40,20 @@ button.btn{background:var(--btn);color:var(--ink);border:1px solid var(--stroke)
 .btn.reset{background:var(--danger);border-color:#4c1d1d;color:#ffd2d2}
 .btn.ghost{background:var(--ghost);border-color:#1a2452;color:#cfe1ff}
 button[disabled]{opacity:.55}
+
 /* Details */
 .pill{display:inline-flex;gap:6px;align-items:center;padding:6px 10px;background:#0e1733;border:1px solid var(--stroke);border-radius:999px;color:#cbd7ff;font-weight:800;font-size:.9rem}
 .toggle-sms{background:transparent;border:0;color:var(--muted);text-decoration:underline;padding:0 10px 8px;font-weight:700}
 .hint{color:var(--muted);font-size:.86rem;display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:6px 10px}
 .editor{display:none;max-height:180px;overflow:auto;border-top:1px solid var(--stroke);background:#0b1229;color:#eaf0ff;padding:10px 12px;white-space:pre-wrap;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
 .editor.show{display:block}.editor[data-placeholder]:empty::before{content:attr(data-placeholder);color:#6e7aa6}
+
 /* Progress */
 .bar{height:12px;background:var(--bar);border-top:1px solid var(--stroke);position:relative;overflow:hidden}
 .fill{position:absolute;inset:0 auto 0 0;width:0%;background:linear-gradient(90deg,var(--primary),var(--primary2));transition:width .25s,background .25s}
 .bar.complete .fill{width:100%!important;background:linear-gradient(90deg,var(--ok),var(--ok2))}
 .status{display:flex;justify-content:space-between;color:var(--muted);font-size:.9rem;padding:8px 10px}
+
 /* Inputs */
 .select-line{display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding:0 10px 6px}
 .toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:#111a36;border:1px solid var(--stroke);padding:8px 12px;border-radius:10px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:50}
@@ -99,7 +109,7 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
         <div class="row-ghost"><button class="btn ghost undo">⟲ Desfazer</button><button class="btn ghost skip">» Pular</button></div>
       </header>
       <div class="hint">Registros: <b class="det">0</b> • Próximo: <b class="what">Nº</b> • <span class="pill">Código: <b class="six-pill">—</b></span> · <a class="toggle-sms" href="javascript:void(0)">Ver SMS (0)</a></div>
-      <div class="editor" contenteditable="true" spellcheck="false" data-placeholder="Cole aqui os SMS… Pode estar com '🔹SMS:' ou '📩 SMS Recebido:'"></div>
+      <div class="editor" contenteditable="true" spellcheck="false" data-placeholder="Cole aqui os SMS… Aceito '🔹SMS:' ou '📩 SMS Recebido:'"></div>
       <div class="bar"><div class="fill"></div></div>
       <div class="status"><span class="left">—</span><span class="progress">0 / 5</span></div>
     </section>
@@ -194,8 +204,8 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
   </div>
 
   <div style="color:#9aa4c7;font-size:.85rem;margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
-    <div><b>Versão:</b> v3.4 (04/11/2025)</div>
-    <div><b>Changelog:</b> pareamento Nº↔Código entre blocos; regex “Número/Número sem DDI/🔹SMS/Recebido” mais flexíveis; correção DDI/DDD mantida.</div>
+    <div><b>Versão:</b> v3.4.2 (04/11/2025)</div>
+    <div><b>Changelog:</b> correção de aspas na seção E-mail; tabs reativadas; restante intacto.</div>
   </div>
 </div></div>
 
@@ -206,7 +216,11 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
   /* Tabs */
   const panels=[...document.querySelectorAll('.panel')];
   const tabs=[...document.querySelectorAll('.tab')];
-  function showTab(key){panels.forEach(p=>p.classList.toggle('active',p.dataset.panel===key));tabs.forEach(t=>t.classList.toggle('active',t.dataset.tab===key));location.hash='#'+key}
+  function showTab(key){
+    panels.forEach(p=>p.classList.toggle('active',p.dataset.panel===key));
+    tabs.forEach(t=>t.classList.toggle('active',t.dataset.tab===key));
+    location.hash='#'+key;
+  }
   tabs.forEach(t=>t.addEventListener('click',()=>showTab(t.dataset.tab)));
   showTab((location.hash?location.hash.substring(1):'nova'));
 
@@ -216,14 +230,10 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
   const toastOK=t=>{toast.textContent=t;toast.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(()=>toast.classList.remove('show'),1200)}
   async function copyClip(t){try{await navigator.clipboard.writeText(t);return true}catch{const ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.left='-9999px';document.body.appendChild(ta);ta.select();const ok=document.execCommand('copy');document.body.removeChild(ta);return ok}}
   const cleanDigits=s=>(s||'').replace(/\D+/g,'');
-  // Remove DDI 55 apenas se houver '+' ou se > 11 dígitos
   const extractNoDDI=(s)=>{
-    const raw=String(s||'');
-    let d=cleanDigits(raw);
-    const hasPlus=/^\s*\+/.test(raw);
+    const raw=String(s||''); let d=cleanDigits(raw); const hasPlus=/^\s*\+/.test(raw);
     if((hasPlus||d.length>11) && d.startsWith('55')) d=d.slice(2);
-    if(d.length>11) d=d.slice(-11);
-    return d;
+    if(d.length>11) d=d.slice(-11); return d;
   };
   const sanitizeSix=v=>(v||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,6);
   const fmtPhone=d=>!d?d:(d.length===11?`${d.slice(0,2)} ${d.slice(2,7)}-${d.slice(7)}`:d.length===10?`${d.slice(0,2)} ${d.slice(2,6)}-${d.slice(6)}`:d);
@@ -234,7 +244,7 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
   const badge=(key,{count,limit,isDone})=>{const t=document.querySelector(`.tab[data-tab="${key}"]`);if(!t)return;const b=t.querySelector('.badge');b.textContent=Number.isFinite(limit)?`${count}/${limit}`:String(count);t.classList.toggle('done',!!isDone)}
   const hookLimitInput=(el,setL,upd)=>{if(!el)return;const go=()=>{const v=parseInt(el.value||'',10);if(Number.isFinite(v)&&v>0){setL(v);upd()}};el.addEventListener('change',go);el.addEventListener('keyup',e=>{if(e.key==='Enter')go()})}
 
-  /* ===== Helpers de parsing ===== */
+  /* Split de blocos */
   function splitBlocks(text){
     if(!text) return [];
     let chunks=text.split(/\n{2,}/).map(s=>s.trim()).filter(Boolean);
@@ -244,16 +254,13 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
     }
     return chunks;
   }
-  // aceita "Número sem DDI:", "Numero sem DDI:", "Número:" e variantes
   function pickNumberFromBlock(b){
     let m=b.match(/N[úu]?mero\s*sem\s*DDI\s*[:\-]?\s*([+0-9()\s\-.]+)/i);
     if(m){const n=extractNoDDI(m[1]);return n}
     m=b.match(/N[úu]?m(?:e|é)ro\s*[:\-]?\s*([+0-9()\s\-.]+)/i);
     if(m){return extractNoDDI(m[1])}
     const all=b.match(/[+]?[\d()\s\-.]{10,}/g)||[];
-    for(const cand of all){
-      const n=extractNoDDI(cand); if(n&&(n.length===10||n.length===11)) return n;
-    }
+    for(const cand of all){const n=extractNoDDI(cand); if(n&&(n.length===10||n.length===11)) return n;}
     return '';
   }
   function pickCodeFromBlock(b){
@@ -266,7 +273,7 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
     return '';
   }
 
-  /* ===== Barras TRIPLAS (Nº → SMS → 6 dígitos) ===== */
+  /* ===== TRIPLE (Nº → SMS → 6 dígitos) ===== */
   document.querySelectorAll('.block[data-seq="triple"]').forEach(block=>{
     const key=block.dataset.key, defLim=block.dataset.limit, editor=block.querySelector('.editor');
     const copyBtn=block.querySelector('.copy'), pasteBtn=block.querySelector('.paste'),
@@ -300,7 +307,6 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
     undoBtn&&undoBtn.addEventListener('click',()=>{if(!last){toastOK('Nada para desfazer.');return}restore();updateUI();toastOK('Desfeito.')})
     skipBtn&&skipBtn.addEventListener('click',()=>{last=null;if(st.idx<st.rows.length)st.idx++;st.phase=0;if(st.idx>=st.rows.length){st.locked=false}updateUI();toastOK('Registro pulado.')})
 
-    // NOVO: pareamento entre blocos
     function parseSmsBlocks(text){
       const blocks=splitBlocks(text); const out=[];
       let pendN=null, pendC=null, pendD=null;
@@ -420,9 +426,122 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
   /* ===== E-mails ===== */
   document.querySelectorAll('.block[data-seq="emails"]').forEach(block=>{
     const editor=block.querySelector('.editor');
-    const copyBtn=block.querySelector('.copy"), pasteBtn=block.querySelector('.paste'), resetBtn=block.querySelector('.reset');
+    const copyBtn=block.querySelector('.copy'), pasteBtn=block.querySelector('.paste'), resetBtn=block.querySelector('.reset');
+    const counter=block.querySelector('.counter'), progress=block.querySelector('.progress'), bar=block.querySelector('.bar'), fill=block.querySelector('.fill');
+    const detEl=block.querySelector('.det'), whatEl=block.querySelector('.what'), toggle=block.querySelector('.toggle-sms');
+    const domainSel=block.querySelector('.domain'), fullChk=block.querySelector('.fullmail'), limitIn=block.querySelector('.limit');
+    const st={limit:null,count:0,idx:0,rows:[],locked:false};
+    const canReset=()=>st.rows.length>0&&st.count>=st.rows.length;
+    const setCounter=()=>{counter.textContent=String(st.count);progress.textContent=String(st.count);badge('emails',{count:st.count,limit:st.rows.length,isDone:canReset()})}
+    const setBar=()=>{const total=st.rows.length||1;const p=Math.min(st.count/total,1)*100;fill.style.width=p+'%';bar.classList.toggle('complete',st.rows.length>0&&st.count>=st.rows.length);copyBtn.disabled=st.rows.length>0&&st.count>=st.rows.length}
+    const updateUI=()=>{setCounter();setBar();pasteBtn.disabled=st.locked;resetBtn.disabled=!canReset();detEl.textContent=String(st.rows.length||0);whatEl.textContent='local';toggle.textContent=editor.classList.contains('show')?'Ocultar lista':`Ver lista (${st.rows.length||0})`}
+    hookLimitInput(limitIn,(v)=>{st.limit=v},updateUI)
+    toggle.addEventListener('click',()=>{editor.classList.toggle('show');updateUI()})
+
+    function parseEmails(text){
+      const locals=[];
+      const lines=text.split(/\n+/).map(s=>s.trim()).filter(Boolean);
+      for(const ln of lines){
+        const m=ln.match(/[A-Z0-9._%+-]+@([A-Z0-9.-]+\.[A-Z]{2,})/i);
+        if(m){locals.push(ln.split('@')[0]);continue}
+        const onlyLocal=ln.match(/^[A-Z0-9._%+-]+$/i); if(onlyLocal){locals.push(onlyLocal[0])}
+      }
+      return locals;
+    }
+
+    pasteBtn.addEventListener('click',async()=>{
+      if(st.locked){toastOK('Já colado. Zere para colar novamente.');return}
+      let text='';try{text=await navigator.clipboard.readText()}catch{} if(!text){const m=prompt('Cole os e-mails ou locals:','');if(m!==null)text=m}
+      if(!text){toastOK('Nada colado.');return}
+      const found=parseEmails(text); if(!found.length){toastOK('Nenhum e-mail/local encontrado.');return}
+      if(editor.textContent.trim().length) editor.textContent+='\n'; editor.textContent+=text;
+      st.rows.push(...found); st.locked=true; updateUI(); toastOK(`Adicionados ${found.length}.`)
+    });
+
+    copyBtn.addEventListener('click',async()=>{
+      if(!st.rows.length||st.idx>=st.rows.length){toastOK('Cole a lista para continuar.');return}
+      const local=st.rows[st.idx];
+      const out=fullChk.checked?`${local}${domainSel.value}`:local;
+      const ok=await copyClip(out); if(!ok){toastOK('Falha ao copiar.');return}
+      st.idx++; st.count++; updateUI(); buzz(15);
+    });
+
+    resetBtn.addEventListener('click',()=>{
+      if(!canReset()){toastOK('Só zera após terminar todos.');return}
+      if(!confirm('Confirma ZERAR esta barra?'))return;
+      st.count=0;st.idx=0;st.rows=[];st.locked=false;editor.textContent='';editor.classList.remove('show');bar.classList.remove('complete');copyBtn.disabled=false;updateUI();toastOK('Zerado.')
+    });
+
+    updateUI();
   });
-  // (Para manter a resposta compacta, a seção de E-mails e Conta formatada permanece idêntica à versão 3.3 acima — já estavam ok.)
+
+  /* ===== Conta formatada ===== */
+  document.querySelectorAll('.block[data-seq="account"]').forEach(block=>{
+    const editor=block.querySelector('.editor');
+    const copyBtn=block.querySelector('.copy'), pasteBtn=block.querySelector('.paste'), resetBtn=block.querySelector('.reset');
+    const counter=block.querySelector('.counter'), progress=block.querySelector('.progress'), bar=block.querySelector('.bar'), fill=block.querySelector('.fill');
+    const detEl=block.querySelector('.det'), whatEl=block.querySelector('.what'), toggle=block.querySelector('.toggle-sms'), limitIn=block.querySelector('.limit'), plus1=block.querySelector('.plus1');
+    const st={limit:null,count:0,idx:0,rows:[],locked:false};
+    const canReset=()=>st.rows.length>0&&st.count>=st.rows.length;
+    const setCounter=()=>{counter.textContent=String(st.count);progress.textContent=String(st.count);badge('conta',{count:st.count,limit:st.rows.length,isDone:canReset()})}
+    const setBar=()=>{const total=st.rows.length||1;const p=Math.min(st.count/total,1)*100;fill.style.width=p+'%';bar.classList.toggle('complete',st.rows.length>0&&st.count>=st.rows.length);copyBtn.disabled=st.rows.length>0&&st.count>=st.rows.length}
+    const updateUI=()=>{setCounter();setBar();pasteBtn.disabled=st.locked;resetBtn.disabled=!canReset();detEl.textContent=String(st.rows.length||0);whatEl.textContent='Conta';toggle.textContent=editor.classList.contains('show')?'Ocultar SMS':`Ver SMS (${st.rows.length||0})`}
+    hookLimitInput(limitIn,(v)=>{st.limit=v},updateUI)
+    toggle.addEventListener('click',()=>{editor.classList.toggle('show');updateUI()})
+
+    function parseAccounts(text){
+      const blocks=splitBlocks(text); const out=[];
+      let pendN=null, pendC=null, pendD=null;
+      for(const b of blocks){
+        const num=pickNumberFromBlock(b);
+        const code=pickCodeFromBlock(b);
+        const dt=pickDateFromBlock(b)||null;
+        if(num && code){ out.push({noDDI:num,sms:code,dt}); pendN=pendC=pendD=null; continue; }
+        if(num && !code){ if(pendC){ out.push({noDDI:num,sms:pendC,dt:pendD||dt}); pendC=pendD=null; } else { pendN=num; pendD=dt||pendD; } continue;}
+        if(code && !num){ if(pendN){ out.push({noDDI:pendN,sms:code,dt:pendD||dt}); pendN=pendD=null; } else { pendC=code; pendD=dt||pendD; } continue;}
+      }
+      return out;
+    }
+
+    pasteBtn.addEventListener('click',async()=>{
+      if(st.locked){toastOK('Já colado. Zere para colar novamente.');return}
+      let text='';try{text=await navigator.clipboard.readText()}catch{} if(!text){const m=prompt('Cole os SMS:','');if(m!==null)text=m}
+      if(!text){toastOK('Nada colado.');return}
+      const found=parseAccounts(text); if(!found.length){toastOK('Nenhum Nº+Código encontrado.');return}
+      if(editor.textContent.trim().length) editor.textContent+='\n\n'; editor.textContent+=text;
+      st.rows.push(...found); st.locked=true; updateUI(); toastOK(`Adicionados ${found.length}.`)
+    });
+
+    copyBtn.addEventListener('click',async()=>{
+      if(!st.rows.length||st.idx>=st.rows.length){toastOK('Cole os SMS para continuar.');return}
+      const row=st.rows[st.idx];
+      const dt=row.dt?(parsePtDate(row.dt)||parseIsoDate(row.dt)):new Date();
+      const venc=plus1.checked?fmtPt(addMonths(dt,1)):fmtPt(dt);
+      const texto=
+`UNITV
+📱 Conta UniTv
+
+Conta: ${fmtPhone(row.noDDI)}
+Senha: ${row.sms}
+
+📅 Vencimento: ${venc}
+
+🔑 Vá em *Perfil > Entrar com outras contas > Telefone* e insira os dados acima.
+💡 *(É um número de telefone criado como conta pro UniTv)* 
+
+🎁 Ganhe 7 dias grátis ao indicar um amigo!`;
+      const ok=await copyClip(texto); if(!ok){toastOK('Falha ao copiar.');return}
+      st.idx++; st.count++; updateUI(); buzz(15);
+    });
+
+    resetBtn.addEventListener('click',()=>{
+      if(!canReset()){toastOK('Só zera após terminar todos.');return}
+      if(!confirm('Confirma ZERAR esta barra?'))return;
+      st.count=0;st.idx=0;st.rows=[];st.locked=false;editor.textContent='';editor.classList.remove('show');bar.classList.remove('complete');copyBtn.disabled=false;updateUI();toastOK('Zerado.')
+    });
+
+    updateUI();
+  });
 })();
 </script>
 </body>
