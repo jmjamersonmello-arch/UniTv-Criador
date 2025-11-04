@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Criação UniTv — v2.7</title>
+<title>Criação UniTv — v2.9.1</title>
 <style>
 :root{
   --bg:#0b1020;--card:#0f152b;--ink:#e8ecff;--muted:#9aa4c7;
@@ -13,9 +13,25 @@
   --code1:#38bdf8;--code2:#0ea5e9; --sms1:#34d399;--sms2:#10b981; --ghost:#0c1330;
 }
 *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial}
-.wrap{max-width:780px;margin:0 auto;padding:12px}
+.wrap{max-width:820px;margin:0 auto;padding:12px}
 .card{background:linear-gradient(180deg,#0f152b,#0d1327);border:1px solid var(--stroke);border-radius:14px;box-shadow:0 16px 48px rgba(0,0,0,.35);padding:12px}
-h1{margin:0 0 6px 0;font-size:1.28rem} .lead{color:var(--muted);margin:0 0 6px 0}
+h1{margin:0 0 6px 0;font-size:1.28rem}
+
+/* Tabs EM GRADE (sem arrastar) */
+.tabs{position:sticky;top:0;z-index:10;background:linear-gradient(180deg,#0d1327,#0b1020);padding:8px;border:1px solid var(--stroke);border-radius:12px;margin:8px 0 10px 0;
+  display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+@media(min-width:560px){.tabs{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:840px){.tabs{grid-template-columns:repeat(4,1fr)}}
+.tab{display:flex;justify-content:space-between;align-items:center;gap:8px;border:1px solid var(--stroke);background:#0b1330;color:#cfe1ff;border-radius:12px;padding:10px 12px;font-weight:800}
+.tab .badge{font-size:.9rem;color:#aab7e8}
+.tab .dot{width:8px;height:8px;border-radius:50%;background:#2a325a;border:1px solid #3a477a}
+.tab.active{outline:2px solid #3c4cff}
+.tab.done .dot{background:var(--ok);border-color:#167a3d}
+
+/* Panels */
+.panel{display:none} .panel.active{display:block}
+
+/* Blocks */
 .block{border:1px solid var(--stroke);border-radius:12px;overflow:hidden;background:rgba(255,255,255,.02);margin:12px 0}
 .block header{padding:10px;border-bottom:1px solid var(--stroke)}
 .title{display:flex;justify-content:space-between;align-items:center;font-weight:800;color:#dbe4ff}
@@ -40,7 +56,7 @@ button[disabled]{opacity:.55}
 .bar.complete .fill{width:100%!important;background:linear-gradient(90deg,var(--ok),var(--ok-2))}
 .status{display:flex;justify-content:space-between;color:var(--muted);font-size:.9rem;padding:8px 10px}
 .select-line{display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding:0 10px 6px}
-.toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:#111a36;border:1px solid var(--stroke);padding:8px 12px;border-radius:10px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:5}
+.toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:#111a36;border:1px solid var(--stroke);padding:8px 12px;border-radius:10px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:50}
 .toast.show{opacity:1}
 @media(max-width:480px){.controls,.row-ghost{grid-template-columns:1fr 1fr}}
 </style>
@@ -48,146 +64,162 @@ button[disabled]{opacity:.55}
 <body>
 <div class="wrap"><div class="card">
   <h1>Criação UniTv</h1>
-  <p class="lead">Fluxo padrão: <b>Número</b> → <b>SMS</b> → <b>6 chars</b>. Zerar só libera quando atingir o máximo. Tudo persiste localmente.</p>
 
-  <!-- CONTA NOVA -->
-  <section class="block" data-title="Conta Nova" data-key="nova" data-limit="3" data-seq="triple">
-    <header>
-      <div class="title"><span>Conta Nova</span><span class="counter">0 / 3</span></div>
-      <div class="controls">
-        <button class="btn paste-code">Colar Código</button>
-        <button class="btn paste">Colar SMS</button>
-        <button class="btn copy">Copiar (restantes: 3)</button>
-        <button class="btn reset" disabled>Zerar</button>
-      </div>
-      <div class="row-ghost">
-        <button class="btn ghost undo">⟲ Desfazer</button>
-        <button class="btn ghost skip">» Pular</button>
-      </div>
-    </header>
-    <div class="hint">
-      Registros: <b class="det">0</b> • Próximo: <b class="what">Nº</b> • <span class="pill">Código: <b class="six-pill">—</b></span>
-      · <a class="toggle-sms" href="javascript:void(0)">Ver SMS (0)</a>
-    </div>
-    <div class="editor" contenteditable="true" spellcheck="false" data-placeholder="Cole aqui o bloco com vários SMS…"></div>
-    <div class="bar"><div class="fill"></div></div>
-    <div class="status"><span class="left">—</span><span class="progress">0 / 3</span></div>
-  </section>
+  <!-- NAV TABS -->
+  <div class="tabs" id="tabs">
+    <button class="tab" data-tab="nova"><span>Conta Nova</span><span class="badge">0/3</span><span class="dot"></span></button>
+    <button class="tab" data-tab="renov"><span>Renovação</span><span class="badge">0/5</span><span class="dot"></span></button>
+    <button class="tab" data-tab="custom"><span>Personalizado</span><span class="badge">0</span><span class="dot"></span></button>
+    <button class="tab" data-tab="nums"><span>Somente Números</span><span class="badge">0</span><span class="dot"></span></button>
+    <button class="tab" data-tab="emails"><span>E-mail</span><span class="badge">0</span><span class="dot"></span></button>
+    <button class="tab" data-tab="conta"><span>Conta formatada</span><span class="badge">0</span><span class="dot"></span></button>
+  </div>
 
-  <!-- RENOVAÇÃO -->
-  <section class="block" data-title="Renovação" data-key="renov" data-limit="5" data-seq="triple">
-    <header>
-      <div class="title"><span>Renovação</span><span class="counter">0 / 5</span></div>
-      <div class="controls">
-        <button class="btn paste-code">Colar Código</button>
-        <button class="btn paste">Colar SMS</button>
-        <button class="btn copy">Copiar (restantes: 5)</button>
-        <button class="btn reset" disabled>Zerar</button>
+  <!-- === PANELS === -->
+  <div class="panel" data-panel="nova">
+    <section class="block" data-title="Conta Nova" data-key="nova" data-limit="3" data-seq="triple">
+      <header>
+        <div class="title"><span>Conta Nova</span><span class="counter">0 / 3</span></div>
+        <div class="controls">
+          <button class="btn paste-code">Colar Código</button>
+          <button class="btn paste">Colar SMS</button>
+          <button class="btn copy">Copiar (restantes: 3)</button>
+          <button class="btn reset" disabled>Zerar</button>
+        </div>
+        <div class="row-ghost">
+          <button class="btn ghost undo">⟲ Desfazer</button>
+          <button class="btn ghost skip">» Pular</button>
+        </div>
+      </header>
+      <div class="hint">
+        Registros: <b class="det">0</b> • Próximo: <b class="what">Nº</b> • <span class="pill">Código: <b class="six-pill">—</b></span>
+        · <a class="toggle-sms" href="javascript:void(0)">Ver SMS (0)</a>
       </div>
-      <div class="row-ghost">
-        <button class="btn ghost undo">⟲ Desfazer</button>
-        <button class="btn ghost skip">» Pular</button>
-      </div>
-    </header>
-    <div class="hint">
-      Registros: <b class="det">0</b> • Próximo: <b class="what">Nº</b> • <span class="pill">Código: <b class="six-pill">—</b></span>
-      · <a class="toggle-sms" href="javascript:void(0)">Ver SMS (0)</a>
-    </div>
-    <div class="editor" contenteditable="true" spellcheck="false" data-placeholder="Cole aqui o bloco com vários SMS…"></div>
-    <div class="bar"><div class="fill"></div></div>
-    <div class="status"><span class="left">—</span><span class="progress">0 / 5</span></div>
-  </section>
+      <div class="editor" contenteditable="true" spellcheck="false" data-placeholder="Cole aqui o bloco com vários SMS…"></div>
+      <div class="bar"><div class="fill"></div></div>
+      <div class="status"><span class="left">—</span><span class="progress">0 / 3</span></div>
+    </section>
+  </div>
 
-  <!-- PERSONALIZADO -->
-  <section class="block" data-title="Personalizado" data-key="custom" data-limit="custom" data-seq="triple">
-    <header>
-      <div class="title"><span>Personalizado</span><span class="counter">0</span></div>
-      <div class="controls">
-        <input class="limit" type="number" min="1" step="1" placeholder="Qtd (ex.: 60)" title="Digite e Enter para fixar">
-        <button class="btn paste-code">Colar Código</button>
-        <button class="btn paste">Colar SMS</button>
-        <button class="btn copy">Copiar</button>
-        <button class="btn reset" disabled>Zerar</button>
+  <div class="panel" data-panel="renov">
+    <section class="block" data-title="Renovação" data-key="renov" data-limit="5" data-seq="triple">
+      <header>
+        <div class="title"><span>Renovação</span><span class="counter">0 / 5</span></div>
+        <div class="controls">
+          <button class="btn paste-code">Colar Código</button>
+          <button class="btn paste">Colar SMS</button>
+          <button class="btn copy">Copiar (restantes: 5)</button>
+          <button class="btn reset" disabled>Zerar</button>
+        </div>
+        <div class="row-ghost">
+          <button class="btn ghost undo">⟲ Desfazer</button>
+          <button class="btn ghost skip">» Pular</button>
+        </div>
+      </header>
+      <div class="hint">
+        Registros: <b class="det">0</b> • Próximo: <b class="what">Nº</b> • <span class="pill">Código: <b class="six-pill">—</b></span>
+        · <a class="toggle-sms" href="javascript:void(0)">Ver SMS (0)</a>
       </div>
-      <div class="row-ghost">
-        <button class="btn ghost undo">⟲ Desfazer</button>
-        <button class="btn ghost skip">» Pular</button>
-      </div>
-    </header>
-    <div class="hint">
-      Registros: <b class="det">0</b> • Próximo: <b class="what">Nº</b> • <span class="pill">Código: <b class="six-pill">—</b></span>
-      · <a class="toggle-sms" href="javascript:void(0)">Ver SMS (0)</a>
-    </div>
-    <div class="editor" contenteditable="true" spellcheck="false" data-placeholder="Cole aqui o bloco com vários SMS…"></div>
-    <div class="bar"><div class="fill"></div></div>
-    <div class="status"><span class="left">—</span><span class="progress">0</span></div>
-  </section>
+      <div class="editor" contenteditable="true" spellcheck="false" data-placeholder="Cole aqui o bloco com vários SMS…"></div>
+      <div class="bar"><div class="fill"></div></div>
+      <div class="status"><span class="left">—</span><span class="progress">0 / 5</span></div>
+    </section>
+  </div>
 
-  <!-- SOMENTE NÚMEROS -->
-  <section class="block" data-title="Somente Números" data-key="nums" data-limit="custom" data-seq="nums">
-    <header>
-      <div class="title"><span>Somente Números</span><span class="counter">0</span></div>
-      <div class="controls">
-        <input class="limit" type="number" min="1" step="1" placeholder="Qtd (ex.: 60)">
-        <button class="btn paste">Colar Números</button>
-        <button class="btn copy">Copiar Número</button>
-        <button class="btn reset" disabled>Zerar</button>
+  <div class="panel" data-panel="custom">
+    <section class="block" data-title="Personalizado" data-key="custom" data-limit="custom" data-seq="triple">
+      <header>
+        <div class="title"><span>Personalizado</span><span class="counter">0</span></div>
+        <div class="controls">
+          <input class="limit" type="number" min="1" step="1" placeholder="Qtd (ex.: 60)" title="Digite e Enter para fixar">
+          <button class="btn paste-code">Colar Código</button>
+          <button class="btn paste">Colar SMS</button>
+          <button class="btn copy">Copiar</button>
+          <button class="btn reset" disabled>Zerar</button>
+        </div>
+        <div class="row-ghost">
+          <button class="btn ghost undo">⟲ Desfazer</button>
+          <button class="btn ghost skip">» Pular</button>
+        </div>
+      </header>
+      <div class="hint">
+        Registros: <b class="det">0</b> • Próximo: <b class="what">Nº</b> • <span class="pill">Código: <b class="six-pill">—</b></span>
+        · <a class="toggle-sms" href="javascript:void(0)">Ver SMS (0)</a>
       </div>
-    </header>
-    <div class="hint">Registros: <b class="det">0</b> • Próximo: <b class="what">Nº</b> · <a class="toggle-sms" href="javascript:void(0)">Ver lista (0)</a></div>
-    <div class="editor" contenteditable="true" spellcheck="false" data-placeholder="Cole blocos com “Número: +55 … / Telefone: … / Celular: …”. Eu extraio só o número sem DDI (10–11 dígitos)."></div>
-    <div class="bar"><div class="fill"></div></div>
-    <div class="status"><span class="left">—</span><span class="progress">0</span></div>
-  </section>
+      <div class="editor" contenteditable="true" spellcheck="false" data-placeholder="Cole aqui o bloco com vários SMS…"></div>
+      <div class="bar"><div class="fill"></div></div>
+      <div class="status"><span class="left">—</span><span class="progress">0</span></div>
+    </section>
+  </div>
 
-  <!-- E-MAILS -->
-  <section class="block" data-title="E-mail Microsoft" data-key="emails" data-limit="custom" data-seq="emails">
-    <header>
-      <div class="title"><span>E-mail Microsoft</span><span class="counter">0</span></div>
-      <div class="controls">
-        <input class="limit" type="number" min="1" step="1" placeholder="Qtd (ex.: 30)">
-        <button class="btn paste">Colar E-mails</button>
-        <button class="btn copy">Copiar</button>
-        <button class="btn reset" disabled>Zerar</button>
-      </div>
-    </header>
-    <div class="select-line">
-      <label><input type="checkbox" class="fullmail"> Copiar e-mail completo</label>
-      <label>Domínio:
-        <select class="domain">
-          <option value="@outlook.com">@outlook.com</option>
-          <option value="@hotmail.com">@hotmail.com</option>
-          <option value="@live.com">@live.com</option>
-        </select>
-      </label>
-    </div>
-    <div class="hint">Registros: <b class="det">0</b> • Próximo: <b class="what">local</b> · <a class="toggle-sms" href="javascript:void(0)">Ver lista (0)</a></div>
-    <div class="editor" contenteditable="true" spellcheck="false" data-placeholder="Cole sua lista (qualquer formato). Copio só o local-part ou completo com o domínio escolhido."></div>
-    <div class="bar"><div class="fill"></div></div>
-    <div class="status"><span class="left">—</span><span class="progress">0</span></div>
-  </section>
+  <div class="panel" data-panel="nums">
+    <section class="block" data-title="Somente Números" data-key="nums" data-limit="custom" data-seq="nums">
+      <header>
+        <div class="title"><span>Somente Números</span><span class="counter">0</span></div>
+        <div class="controls">
+          <input class="limit" type="number" min="1" step="1" placeholder="Qtd (ex.: 60)">
+          <button class="btn paste">Colar Números</button>
+          <button class="btn copy">Copiar Número</button>
+          <button class="btn reset" disabled>Zerar</button>
+        </div>
+      </header>
+      <div class="hint">Registros: <b class="det">0</b> • Próximo: <b class="what">Nº</b> · <a class="toggle-sms" href="javascript:void(0)">Ver lista (0)</a></div>
+      <div class="editor" contenteditable="true" spellcheck="false" data-placeholder="Cole blocos com “Número: +55 … / Telefone: … / Celular: …”. Eu extraio só o número sem DDI (10–11 dígitos)."></div>
+      <div class="bar"><div class="fill"></div></div>
+      <div class="status"><span class="left">—</span><span class="progress">0</span></div>
+    </section>
+  </div>
 
-  <!-- CONTA FORMATADA -->
-  <section class="block" data-title="Conta formatada" data-key="conta" data-limit="custom" data-seq="account">
-    <header>
-      <div class="title"><span>Conta formatada</span><span class="counter">0</span></div>
-      <div class="controls">
-        <input class="limit" type="number" min="1" step="1" placeholder="Qtd (ex.: 30)">
-        <button class="btn paste">Colar SMS</button>
-        <button class="btn copy">Copiar Conta</button>
-        <button class="btn reset" disabled>Zerar</button>
+  <div class="panel" data-panel="emails">
+    <section class="block" data-title="E-mail Microsoft" data-key="emails" data-limit="custom" data-seq="emails">
+      <header>
+        <div class="title"><span>E-mail Microsoft</span><span class="counter">0</span></div>
+        <div class="controls">
+          <input class="limit" type="number" min="1" step="1" placeholder="Qtd (ex.: 30)">
+          <button class="btn paste">Colar E-mails</button>
+          <button class="btn copy">Copiar</button>
+          <button class="btn reset" disabled>Zerar</button>
+        </div>
+      </header>
+      <div class="select-line">
+        <label><input type="checkbox" class="fullmail"> Copiar e-mail completo</label>
+        <label>Domínio:
+          <select class="domain">
+            <option value="@outlook.com">@outlook.com</option>
+            <option value="@hotmail.com">@hotmail.com</option>
+            <option value="@live.com">@live.com</option>
+          </select>
+        </label>
       </div>
-    </header>
-    <div class="select-line"><label><input type="checkbox" class="plus1"> Vencimento +1 mês</label></div>
-    <div class="hint">Registros: <b class="det">0</b> • Próximo: <b class="what">Conta</b> · <a class="toggle-sms" href="javascript:void(0)">Ver SMS (0)</a></div>
-    <div class="editor" contenteditable="true" spellcheck="false" data-placeholder="Cole os blocos de SMS. Eu extraio o Nº sem DDI, o código do SMS e a data para gerar a mensagem pronta."></div>
-    <div class="bar"><div class="fill"></div></div>
-    <div class="status"><span class="left">—</span><span class="progress">0</span></div>
-  </section>
+      <div class="hint">Registros: <b class="det">0</b> • Próximo: <b class="what">local</b> · <a class="toggle-sms" href="javascript:void(0)">Ver lista (0)</a></div>
+      <div class="editor" contenteditable="true" spellcheck="false" data-placeholder="Cole sua lista (qualquer formato). Copio só o local-part ou completo com o domínio escolhido."></div>
+      <div class="bar"><div class="fill"></div></div>
+      <div class="status"><span class="left">—</span><span class="progress">0</span></div>
+    </section>
+  </div>
+
+  <div class="panel" data-panel="conta">
+    <section class="block" data-title="Conta formatada" data-key="conta" data-limit="custom" data-seq="account">
+      <header>
+        <div class="title"><span>Conta formatada</span><span class="counter">0</span></div>
+        <div class="controls">
+          <input class="limit" type="number" min="1" step="1" placeholder="Qtd (ex.: 30)">
+          <button class="btn paste">Colar SMS</button>
+          <button class="btn copy">Copiar Conta</button>
+          <button class="btn reset" disabled>Zerar</button>
+        </div>
+      </header>
+      <div class="select-line"><label><input type="checkbox" class="plus1"> Vencimento +1 mês</label></div>
+      <div class="hint">Registros: <b class="det">0</b> • Próximo: <b class="what">Conta</b> · <a class="toggle-sms" href="javascript:void(0)">Ver SMS (0)</a></div>
+      <div class="editor" contenteditable="true" spellcheck="false" data-placeholder="Cole os blocos de SMS. Eu extraio o Nº sem DDI, o código do SMS e a data para gerar a mensagem pronta."></div>
+      <div class="bar"><div class="fill"></div></div>
+      <div class="status"><span class="left">—</span><span class="progress">0</span></div>
+    </section>
+  </div>
 
   <div style="display:flex;justify-content:space-between;color:var(--muted);font-size:.85rem;margin-top:12px">
-    <div><b>Versão:</b> v2.7 (03/11/2025)</div>
-    <div><b>Changelog:</b> mensagens de duplicado; Qtd aplicada no ato; parser de data tolerante; pequenos ajustes.</div>
+    <div><b>Versão:</b> v2.9.1 (03/11/2025)</div>
+    <div><b>Changelog:</b> removido texto do topo; abas em grade.</div>
   </div>
 </div></div>
 
@@ -195,7 +227,15 @@ button[disabled]{opacity:.55}
 
 <script>
 (function(){
-  /* ===== Util ===== */
+  /* Tabs */
+  const TABKEY='utv-tab-v2.9.1';
+  const panels=[...document.querySelectorAll('.panel')];
+  const tabs=[...document.querySelectorAll('.tab')];
+  function showTab(key){panels.forEach(p=>p.classList.toggle('active',p.dataset.panel===key)); tabs.forEach(t=>t.classList.toggle('active',t.dataset.tab===key)); localStorage.setItem(TABKEY,key); location.hash='#'+key;}
+  tabs.forEach(t=>t.addEventListener('click',()=>showTab(t.dataset.tab)));
+  const initial=(location.hash?location.hash.substring(1):localStorage.getItem(TABKEY))||'nova'; showTab(initial);
+
+  /* Utils */
   const toast=document.getElementById('toast');
   const buzz=ms=>navigator.vibrate&&navigator.vibrate(ms);
   function beep(ms=90,f=880){try{const a=new (window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.value=f;o.connect(g);g.connect(a.destination);o.start();g.gain.setValueAtTime(.12,a.currentTime);g.gain.exponentialRampToValueAtTime(.0001,a.currentTime+ms/1000);setTimeout(()=>{o.stop();a.close();},ms+20);}catch{}}
@@ -209,14 +249,12 @@ button[disabled]{opacity:.55}
   const fmtPt=d=>String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear();
 
   /* Persistência */
-  const SKEY='utv-v2.7';
+  const SKEY='utv-v2.9.1';
   const store={load(){try{return JSON.parse(localStorage.getItem(SKEY)||'{}')}catch{return{}}},save(d){try{localStorage.setItem(SKEY,JSON.stringify(d))}catch{}}}
   const db=store.load();
 
-  /* Dedup global */
   const globalPairs=new Set(), globalNums=new Set(), globalLocs=new Set();
 
-  /* Parser de SMS: nº + código + data(dd/mm/aaaa) */
   function parseSmsBlock(text){
     const out=[], seen=new Set(); let m;
     const nums=[], codes=[], dates=[];
@@ -231,13 +269,17 @@ button[disabled]{opacity:.55}
     return out;
   }
 
-  /* Helpers UI */
+  function badge(key,{count,limit,isDone}){
+    const t=document.querySelector(`.tab[data-tab="${key}"]`); if(!t)return;
+    const b=t.querySelector('.badge'); b.textContent=Number.isFinite(limit)?`${count}/${limit}`:String(count);
+    t.classList.toggle('done',!!isDone);
+  }
   function hookLimitInput(limitIn,setLimit,update){ if(!limitIn)return;
     const apply=()=>{const v=parseInt(limitIn.value||'',10); if(Number.isFinite(v)&&v>0) setLimit(v), update();}
     limitIn.addEventListener('change',apply); limitIn.addEventListener('keyup',e=>{if(e.key==='Enter')apply()})
   }
 
-  /* ===== Blocos do fluxo triplo ===== */
+  /* === Fluxo TRIPLO === */
   document.querySelectorAll('.block[data-seq="triple"]').forEach(block=>{
     const key=block.dataset.key, defLim=block.dataset.limit, editor=block.querySelector('.editor');
     const copyBtn=block.querySelector('.copy'), pasteBtn=block.querySelector('.paste'), pasteCodeBtn=block.querySelector('.paste-code'), resetBtn=block.querySelector('.reset');
@@ -250,11 +292,11 @@ button[disabled]{opacity:.55}
     const canReset=()=>Number.isFinite(st.limit)&&st.count>=st.limit;
     const rest=()=>Number.isFinite(st.limit)?Math.max(st.limit-st.count,0):'∞';
     const paintBtns=()=>copyBtn.textContent=`Copiar (restantes: ${rest()})`;
-    const setCounter=()=>{counter.textContent=Number.isFinite(st.limit)?`${st.count} / ${st.limit}`:String(st.count);progress.textContent=counter.textContent;paintBtns();}
+    const setCounter=()=>{counter.textContent=Number.isFinite(st.limit)?`${st.count} / ${st.limit}`:String(st.count);progress.textContent=counter.textContent;paintBtns();badge(key,{count:st.count,limit:st.limit,isDone:canReset()});}
     const setBar=()=>{if(Number.isFinite(st.limit)){const p=Math.min(st.count/st.limit,1)*100;fill.style.width=p+'%'; if(st.count>=st.limit){bar.classList.add('complete');copyBtn.disabled=true;}else{bar.classList.remove('complete');copyBtn.disabled=false;}}}
     const applyLocks=()=>{pasteBtn.disabled=st.locked;pasteCodeBtn.disabled=!!st.six;resetBtn.disabled=!canReset(); if(defLim==='custom'&&limitIn) limitIn.disabled=Number.isFinite(st.limit);}
     const persist=()=>{st.text=editor.textContent;store.save(db);}
-    const updateUI=()=>{setCounter();setBar();applyLocks();detEl.textContent=String(st.rows.length||0);whatEl.textContent=['Nº','SMS','6 caracteres'][st.phase]||'Nº';leftEl.textContent=st.rows[st.idx]?`Registro ${st.idx+1}/${st.rows.length}`:'—';sixPill.textContent=st.six||'—';toggle.textContent=editor.classList.contains('show')?`Ocultar SMS`:`Ver SMS (${st.rows.length||0})`;if(st.text&&!editor.textContent.trim())editor.textContent=st.text;}
+    const updateUI=()=>{setCounter();setBar();applyLocks();detEl.textContent=String(st.rows.length||0);whatEl.textContent=['Nº','SMS','6 caracteres'][st.phase]||'Nº';leftEl.textContent=st.rows[st.idx]?`Registro ${st.idx+1}/${st.rows.length}`:'—';sixPill.textContent=st.six||'—';toggle.textContent=editor.classList.contains('show')?`Ocultar SMS`:`Ver SMS (${st.rows.length||0})`;if(st.text&&!editor.textContent.trim())editor.textContent=st.text;};
     hookLimitInput(limitIn,(v)=>{st.limit=v;},()=>{store.save(db);updateUI();});
 
     toggle.addEventListener('click',()=>{editor.classList.toggle('show');updateUI();});
@@ -266,8 +308,8 @@ button[disabled]{opacity:.55}
     });
 
     let last=null; const snapshot=()=>{last={count:st.count,idx:st.idx,phase:st.phase}}, restore=()=>{if(!last)return;Object.assign(st,last);last=null;}
-    undoBtn.addEventListener('click',()=>{if(!last){toastOK('Nada para desfazer.');return;}restore();persist();updateUI();toastOK('Desfeito.');});
-    skipBtn.addEventListener('click',()=>{last=null;st.phase=0;if(st.idx<st.rows.length)st.idx++;persist();updateUI();toastOK('Registro pulado.');});
+    undoBtn.addEventListener('click',()=>{if(!last){toastOK('Nada para desfazer.');return;}restore();persist();updateUI();toastOK('Desfeito.')});
+    skipBtn.addEventListener('click',()=>{last=null;st.phase=0;if(st.idx<st.rows.length)st.idx++;persist();updateUI();toastOK('Registro pulado.')});
 
     pasteBtn.addEventListener('click',async()=>{
       if(st.locked && st.idx<st.rows.length){toastOK('Finalize os registros antes de colar novamente.');return;}
@@ -290,7 +332,6 @@ button[disabled]{opacity:.55}
       else if(st.phase===1){text=row.sms;label='Código SMS';}
       else {text=st.six;label='6 caracteres';}
       if(!text){toastOK('Conteúdo vazio.');return;}
-      snapshot();
       const ok=await copyClip(String(text)); if(!ok){toastOK('Falha ao copiar.');return;}
       buzz(15);beep(70,920);
       if(st.phase<2) st.phase++; else {st.phase=0;st.idx++;st.count++; if(Number.isFinite(st.limit)&&st.count>=st.limit){buzz(60);beep(120,640);}}
@@ -302,13 +343,13 @@ button[disabled]{opacity:.55}
       if(!confirm('Confirma ZERAR esta barra? (contagem, SMS e código)'))return;
       st.count=0;st.idx=0;st.phase=0;st.rows=[];editor.textContent='';editor.classList.remove('show');st.six='';st.locked=false;
       if(defLim==='custom'){st.limit=null;if(limitIn)limitIn.value='';}
-      store.save(db);bar.classList.remove('complete');copyBtn.disabled=false;updateUI();toastOK('Zerado.');
+      store.save(db);bar.classList.remove('complete');block.querySelector('.copy').disabled=false;updateUI();toastOK('Zerado.');
     });
 
     updateUI();
   });
 
-  /* ===== Somente Números ===== */
+  /* Somente Números */
   document.querySelectorAll('.block[data-seq="nums"]').forEach(block=>{
     const key='nums', editor=block.querySelector('.editor');
     const copyBtn=block.querySelector('.copy'), pasteBtn=block.querySelector('.paste'), resetBtn=block.querySelector('.reset');
@@ -317,7 +358,7 @@ button[disabled]{opacity:.55}
 
     const st=db[key]||{limit:null,count:0,idx:0,rows:[],text:''}; db[key]=st;
     const canReset=()=>Number.isFinite(st.limit)&&st.count>=st.limit;
-    const setCounter=()=>{const t=Number.isFinite(st.limit)?` / ${st.limit}`:'';counter.textContent=`${st.count}${t}`;progress.textContent=counter.textContent;}
+    const setCounter=()=>{const t=Number.isFinite(st.limit)?` / ${st.limit}`:'';counter.textContent=`${st.count}${t}`;progress.textContent=counter.textContent;badge(key,{count:st.count,limit:st.limit,isDone:canReset()});}
     const setBar=()=>{if(Number.isFinite(st.limit)){const p=Math.min(st.count/st.limit,1)*100;fill.style.width=p+'%';if(st.count>=st.limit){bar.classList.add('complete');copyBtn.disabled=true;}else{bar.classList.remove('complete');copyBtn.disabled=false;}}}
     const persist=()=>{st.text=editor.textContent;store.save(db);}
     const updateUI=()=>{setCounter();setBar();resetBtn.disabled=!canReset();detEl.textContent=String(st.rows.length||0);whatEl.textContent='Nº';leftEl.textContent=st.rows[st.idx]?`Registro ${st.idx+1}/${st.rows.length}`:'—';toggle.textContent=editor.classList.contains('show')?'Ocultar lista':`Ver lista (${st.rows.length||0})`;if(st.text&&!editor.textContent.trim())editor.textContent=st.text;}
@@ -354,7 +395,7 @@ button[disabled]{opacity:.55}
     updateUI();
   });
 
-  /* ===== E-mails ===== */
+  /* E-mails */
   document.querySelectorAll('.block[data-seq="emails"]').forEach(block=>{
     const key='emails', editor=block.querySelector('.editor');
     const copyBtn=block.querySelector('.copy'), pasteBtn=block.querySelector('.paste'), resetBtn=block.querySelector('.reset');
@@ -365,7 +406,7 @@ button[disabled]{opacity:.55}
     const st=db[key]||{limit:null,count:0,idx:0,locals:[],text:'',full:false,domain:'@outlook.com'}; db[key]=st;
     fullChk.checked=!!st.full; domainSel.value=st.domain;
     const canReset=()=>Number.isFinite(st.limit)&&st.count>=st.limit;
-    const setCounter=()=>{const t=Number.isFinite(st.limit)?` / ${st.limit}`:'';counter.textContent=`${st.count}${t}`;progress.textContent=counter.textContent;}
+    const setCounter=()=>{const t=Number.isFinite(st.limit)?` / ${st.limit}`:'';counter.textContent=`${st.count}${t}`;progress.textContent=counter.textContent;badge(key,{count:st.count,limit:st.limit,isDone:canReset()});}
     const setBar=()=>{if(Number.isFinite(st.limit)){const p=Math.min(st.count/st.limit,1)*100;fill.style.width=p+'%';if(st.count>=st.limit){bar.classList.add('complete');copyBtn.disabled=true;}else{bar.classList.remove('complete');copyBtn.disabled=false;}}}
     const persist=()=>{st.text=editor.textContent;st.full=fullChk.checked;st.domain=domainSel.value;store.save(db);}
     const updateUI=()=>{setCounter();setBar();resetBtn.disabled=!canReset();detEl.textContent=String(st.locals.length||0);whatEl.textContent='local';leftEl.textContent=st.locals[st.idx]?`Registro ${st.idx+1}/${st.locals.length}`:'—';toggle.textContent=editor.classList.contains('show')?'Ocultar lista':`Ver lista (${st.locals.length||0})`;if(st.text&&!editor.textContent.trim())editor.textContent=st.text;}
@@ -395,7 +436,7 @@ button[disabled]{opacity:.55}
     updateUI();
   });
 
-  /* ===== Conta formatada ===== */
+  /* Conta formatada */
   document.querySelectorAll('.block[data-seq="account"]').forEach(block=>{
     const key='conta', editor=block.querySelector('.editor');
     const copyBtn=block.querySelector('.copy'), pasteBtn=block.querySelector('.paste'), resetBtn=block.querySelector('.reset');
@@ -404,13 +445,27 @@ button[disabled]{opacity:.55}
 
     const st=db[key]||{limit:null,count:0,idx:0,rows:[],text:'',plus1:false}; db[key]=st; plus1.checked=!!st.plus1;
     const canReset=()=>Number.isFinite(st.limit)&&st.count>=st.limit;
-    const setCounter=()=>{const t=Number.isFinite(st.limit)?` / ${st.limit}`:'';counter.textContent=`${st.count}${t}`;progress.textContent=counter.textContent;}
+    const setCounter=()=>{const t=Number.isFinite(st.limit)?` / ${st.limit}`:'';counter.textContent=`${st.count}${t}`;progress.textContent=counter.textContent;badge(key,{count:st.count,limit:st.limit,isDone:canReset()});}
     const setBar=()=>{if(Number.isFinite(st.limit)){const p=Math.min(st.count/st.limit,1)*100;fill.style.width=p+'%';if(st.count>=st.limit){bar.classList.add('complete');copyBtn.disabled=true;}else{bar.classList.remove('complete');copyBtn.disabled=false;}}}
     const persist=()=>{st.text=editor.textContent;st.plus1=!!plus1.checked;store.save(db);}
     const updateUI=()=>{setCounter();setBar();resetBtn.disabled=!canReset();detEl.textContent=String(st.rows.length||0);whatEl.textContent='Conta';leftEl.textContent=st.rows[st.idx]?`Registro ${st.idx+1}/${st.rows.length}`:'—';toggle.textContent=editor.classList.contains('show')?'Ocultar SMS':`Ver SMS (${st.rows.length||0})`;if(st.text&&!editor.textContent.trim())editor.textContent=st.text;}
     hookLimitInput(limitIn,(v)=>{st.limit=v;},()=>{store.save(db);updateUI();});
     toggle.addEventListener('click',()=>{editor.classList.toggle('show');updateUI();});
     plus1.addEventListener('change',persist);
+
+    function parseSmsBlock(text){
+      const out=[], seen=new Set(); let m;
+      const nums=[], codes=[], dates=[];
+      const numRe=/(Número|Telefone|Celular)\s*:\s*([+0-9()\s\-\.,]+)/gi;
+      while((m=numRe.exec(text))){const n=extractNoDDI(m[2]||''); if(n) nums.push(n);}
+      const codeRe=/Código\s*(?:de)?\s*verificação\s*:\s*([0-9]{4,8})/gi;
+      while((m=codeRe.exec(text))){codes.push(m[1]);}
+      const dateRe=/(?:Data\s*(?:de\s*recebimento\s*do\s*SMS|do\s*SMS)\s*:\s*)(\d{2}\/\d{2}\/\d{4})(?:\s+\d{2}:\d{2}:\d{2})?/gi;
+      while((m=dateRe.exec(text))){dates.push(m[1]);}
+      const n=Math.min(nums.length,codes.length);
+      for(let i=0;i<n;i++){const noDDI=nums[i],sms=codes[i],dt=dates[i]||null,k=noDDI+'|'+sms;if(!globalPairs.has(k)&&!seen.has(k)){seen.add(k);globalPairs.add(k);out.push({noDDI,sms,dt});}}
+      return out;
+    }
 
     pasteBtn.addEventListener('click',async()=>{
       if(limitIn){const v=parseInt(limitIn.value||'',10);if(Number.isFinite(v)&&v>0)st.limit=v;}
@@ -422,9 +477,14 @@ button[disabled]{opacity:.55}
       for(const r of added){st.rows.push(r);} persist();updateUI();toastOK(`Adicionados ${added.length} registro(s).`);
     });
 
+    const fmtPhone=d=>!d?d:(d.length===11?`${d.slice(0,2)} ${d.slice(2,7)}-${d.slice(7)}`:d.length===10?`${d.slice(0,2)} ${d.slice(2,6)}-${d.slice(6)}`:d);
+    const parsePtDate=s=>{const m=/^(\d{2})\/(\d{2})\/(\d{4})/.exec(s||'');if(!m)return null;const d=new Date(+m[3],+m[2]-1,+m[1],12,0,0);return isNaN(d)?null:d;}
+    const addMonths=(d,m=1)=>{const x=new Date(d.getTime()),day=x.getDate();x.setMonth(x.getMonth()+m);if(x.getDate()<day)x.setDate(0);return x;}
+    const fmtPt=d=>String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear();
+
     function buildMessage(row){
       const base = row.dt ? (parsePtDate(row.dt)||new Date()) : new Date();
-      const due = st.plus1 ? addMonths(base,1) : base;
+      const due = plus1.checked ? addMonths(base,1) : base;
       return `UNITV
 📱 Conta UniTv
 
@@ -447,7 +507,8 @@ Senha: ${row.sms}
     resetBtn.addEventListener('click',()=>{
       if(!canReset()){toastOK('Só é possível zerar após atingir o máximo.');return;}
       if(!confirm('Confirma ZERAR esta barra?'))return;
-      st.count=0;st.idx=0;st.rows=[];editor.textContent='';editor.classList.remove('show');bar.classList.remove('complete');copyBtn.disabled=false;st.limit=null;if(limitIn)limitIn.value='';persist();toastOK('Zerado.');
+      st.count=0;st.idx=0;st.rows=[];editor.textContent='';editor.classList.remove('show');bar.classList.remove('complete');copyBtn.disabled=false;st.limit=null;if(limitIn)limitIn.value='';
+      persist();toastOK('Zerado.');
     });
     updateUI();
   });
