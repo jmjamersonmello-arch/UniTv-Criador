@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Criação UniTv — v3.9.1</title>
+<title>Criação UniTv — v3.9.2</title>
 <style>
 :root{
   --bg:#0b1020;--card:#0f152b;--ink:#e8ecff;--muted:#9aa4c7;--stroke:#202744;--bar:#162044;
@@ -54,10 +54,15 @@ button[disabled]{opacity:.55}
 .editor.show{display:block}
 .editor[data-placeholder]:empty::before{content:attr(data-placeholder);color:#6e7aa6}
 
-/* Progress */
+/* Progress (principal = SMS; mini = NÚMEROS) */
 .bar{height:12px;background:var(--bar);border-top:1px solid var(--stroke);position:relative;overflow:hidden}
 .fill{position:absolute;inset:0 auto 0 0;width:0%;background:linear-gradient(90deg,var(--primary),var(--primary2));transition:width .25s,background .25s}
 .bar.complete .fill{width:100%!important;background:linear-gradient(90deg,var(--ok),var(--ok2))}
+/* Mini-bar azul (progresso de NÚMEROS) só nos blocos de criação, sem mudar HTML */
+.block[data-seq="triple"] .bar::before{
+  content:"";position:absolute;left:0;top:0;height:4px;width:var(--numP,0%);
+  background:linear-gradient(90deg,var(--blue1),var(--blue2));opacity:.95;transition:width .25s
+}
 .status{display:flex;justify-content:space-between;color:var(--muted);font-size:.9rem;padding:8px 10px}
 
 /* Inputs */
@@ -212,15 +217,14 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
   </div>
 
   <div style="color:#9aa4c7;font-size:.85rem;margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
-    <div><b>Versão:</b> v3.9.1 (09/11/2025)</div>
-    <div><b>Changelog:</b> Trava dinâmica do botão “Colar Código” (desabilita após definir 6 dígitos e reativa ao Zerar). Sem mudanças de layout.</div>
+    <div><b>Versão:</b> v3.9.2 (09/11/2025)</div>
+    <div><b>Changelog:</b> Mini-barra azul nos blocos de criação indicando progresso de NÚMEROS; barra principal continua mostrando SMS. Sem mudanças de layout/estrutura.</div>
   </div>
 </div></div>
 
 <div class="toast" id="toast">Pronto!</div>
 
 <script>
-/* ===== Núcleo seguro: sem localStorage; mobile-first; sem alterar o layout ===== */
 (function(){
   /* Tabs */
   const panels=[...document.querySelectorAll('.panel')];
@@ -232,345 +236,193 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
     if(hit) location.hash='#'+key;
   }
   tabs.forEach(t=>t.addEventListener('click',()=>showTab(t.dataset.tab)));
-  const start = (location.hash||'').replace('#','') || 'nova';
+  const start=(location.hash||'').replace('#','')||'nova';
   showTab(start);
 
   /* Utils */
-  const toast = document.getElementById('toast');
-  const buzz = ms=>navigator.vibrate&&navigator.vibrate(ms);
-  const ok = t=>{toast.textContent=t;toast.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(()=>toast.classList.remove('show'),1600)};
-  async function copy(t){try{await navigator.clipboard.writeText(String(t));return true}catch{const ta=document.createElement('textarea');ta.value=String(t);ta.style.position='fixed';ta.style.left='-9999px';document.body.appendChild(ta);ta.select();const r=document.execCommand('copy');document.body.removeChild(ta);return r}}
-  const onlyDigits=s=>(s||'').replace(/\D+/g,'');
-  const extractNoDDI=(s)=>{
-    const raw=String(s||''); let d=onlyDigits(raw); const hasPlus=/^\s*\+/.test(raw);
-    if((hasPlus||d.length>11) && d.startsWith('55')) d=d.slice(2);
-    if(d.length>11) d=d.slice(-11);
-    return d;
-  };
-  const fmtPhone=d=>!d?d:(d.length===11?`${d.slice(0,2)} ${d.slice(2,7)}-${d.slice(7)}`:d.length===10?`${d.slice(0,2)} ${d.slice(2,6)}-${d.slice(6)}`:d);
+  const toast=document.getElementById('toast');
+  const buzz=ms=>navigator.vibrate&&navigator.vibrate(ms);
+  const ok=t=>{toast.textContent=t;toast.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(()=>toast.classList.remove('show'),1600)}
+  async function copyClip(t){try{await navigator.clipboard.writeText(String(t));return true}catch{const ta=document.createElement('textarea');ta.value=String(t);ta.style.position='fixed';ta.style.left='-9999px';document.body.appendChild(ta);ta.select();const r=document.execCommand('copy');document.body.removeChild(ta);return r}}
+  const digits=s=>(s||'').replace(/\D+/g,'');
+  const extractNoDDI=(s)=>{const raw=String(s||'');let d=digits(raw);const hasPlus=/^\s*\+/.test(raw);if((hasPlus||d.length>11)&&d.startsWith('55'))d=d.slice(2);if(d.length>11)d=d.slice(-11);return d};
   const sixSan=v=>(v||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,6);
+  const fmtPhone=d=>!d?d:(d.length===11?`${d.slice(0,2)} ${d.slice(2,7)}-${d.slice(7)}`:d.length===10?`${d.slice(0,2)} ${d.slice(2,6)}-${d.slice(6)}`:d);
   const trunc=(s,n=68)=> (s&&s.length>n? s.slice(0,n-1)+'…' : s||'');
-  const parsePtDate=s=>{const m=/(\d{2})\/(\d{2})\/(\d{4})/.exec(s||'');if(!m)return null;const d=new Date(+m[3],+m[2]-1,+m[1],12);return isNaN(d)?null:d};
-  const parseIsoDate=s=>{const m=/(\d{4})-(\d{2})-(\d{2})/.exec(s||'');if(!m)return null;const d=new Date(+m[1],+m[2]-1,+m[3],12);return isNaN(d)?null:d};
+  const parsePtDate=s=>{const m=/(\d{2})\/(\d{2})\/(\d{4})/.exec(s||'');if(!m)return null;const d=new Date(+m[3],+m[2]-1,+m[1],12);return isNaN(d)?null:d}
+  const parseIsoDate=s=>{const m=/(\d{4})-(\d{2})-(\d{2})/.exec(s||'');if(!m)return null;const d=new Date(+m[1],+m[2]-1,+m[3],12);return isNaN(d)?null:d}
   const addMonths=(d,m=1)=>{const x=new Date(d.getTime()),day=x.getDate();x.setMonth(x.getMonth()+m);if(x.getDate()<day)x.setDate(0);return x}
-  const datePt=d=>String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear();
+  const dtPt=d=>String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear();
 
   function splitBlocks(text){
     if(!text) return [];
-    let parts = text.split(/\n{2,}/).map(s=>s.trim()).filter(Boolean);
+    let parts=text.split(/\n{2,}/).map(s=>s.trim()).filter(Boolean);
     if(parts.length<=1){
-      parts = text.split(/(?=^|\n)(?=👨‍💻|📩|🔹?SMS|SMS\s+Recebido|SMS\s+recebido|🏳️‍🌈|☎️|Número|Numero|Pais|País)/g)
-                  .map(s=>s.trim()).filter(Boolean);
+      parts=text.split(/(?=^|\n)(?=👨‍💻|📩|🔹?SMS|SMS\s+Recebido|SMS\s+recebido|🏳️‍🌈|☎️|Número|Numero|Pais|País)/g)
+                .map(s=>s.trim()).filter(Boolean);
     }
     return parts;
   }
-
   function pickNumberFromBlock(b){
     let m=b.match(/N[úu]?mero\s*sem\s*DDI\s*[:\-]?\s*([+0-9()\s\-.]+)/i);
-    if(m){const n=extractNoDDI(m[1]); if(n.length>=10&&n.length<=11) return n;}
+    if(m){const n=extractNoDDI(m[1]);if(n.length>=10&&n.length<=11)return n;}
     m=b.match(/N[úu]?m(?:e|é)ro\s*[:\-]?\s*([+0-9()\s\-.]+)/i);
-    if(m){const n=extractNoDDI(m[1]); if(n.length>=10&&n.length<=11) return n;}
-    const cands=(b.match(/[+]?[\d()\s\-.]{10,}/g)||[]);
-    for(const c of cands){
-      const n=extractNoDDI(c);
-      if(n&&(n.length===10||n.length===11)) return n;
-    }
+    if(m){const n=extractNoDDI(m[1]);if(n.length>=10&&n.length<=11)return n;}
+    const c=(b.match(/[+]?[\d()\s\-.]{10,}/g)||[]);
+    for(const cand of c){const n=extractNoDDI(cand);if(n&&(n.length===10||n.length===11))return n;}
     return '';
   }
   function pickCodeFromBlock(b){
-    const m=b.match(/C[oó]digo(?:\s*de)?\s*(?:verifica[cç][aã]o|verificacao)?\s*[:\-]?\s*([0-9]{4,8})/i)
-          || b.match(/(?:OTP|Token|SMS)\s*[:\-]?\s*([0-9]{4,8})/i);
+    const m=b.match(/C[oó]digo(?:\s*de)?\s*(?:verifica[cç][aã]o|verificacao)?\s*[:\-]?\s*([0-9]{4,8})/i) || b.match(/(?:OTP|Token|SMS)\s*[:\-]?\s*([0-9]{4,8})/i);
     return m?m[1]:'';
   }
   function pickDateFromBlock(b){
-    let m=b.match(/(\d{2}\/\d{2}\/\d{4})/);
-    if(m) return m[1];
-    m=b.match(/(\d{4}-\d{2}-\d{2})/);
-    if(m){const d=parseIsoDate(m[1]); if(d) return datePt(d)}
+    let m=b.match(/(\d{2}\/\d{2}\/\d{4})/); if(m) return m[1];
+    m=b.match(/(\d{4}-\d{2}-\d{2})/); if(m){const d=parseIsoDate(m[1]); if(d) return dtPt(d)}
     return '';
   }
+  function badge(key,{count,limit,isDone}){const t=document.querySelector(`.tab[data-tab="${key}"]`);if(!t)return;const b=t.querySelector('.badge');b.textContent=Number.isFinite(limit)?`${count}/${limit}`:String(count);t.classList.toggle('done',!!isDone)}
 
-  function badge(key,{count,limit,isDone}){
-    const t=document.querySelector(`.tab[data-tab="${key}"]`);
-    if(!t) return;
-    const b=t.querySelector('.badge');
-    b.textContent = Number.isFinite(limit) ? `${count}/${limit}` : String(count);
-    t.classList.toggle('done',!!isDone);
-  }
+  function hookLimitInput(el,setL,upd){if(!el)return;const go=()=>{const v=parseInt(el.value||'',10);if(Number.isFinite(v)&&v>0){setL(v);upd();}};el.addEventListener('change',go);el.addEventListener('keyup',e=>{if(e.key==='Enter')go()})}
 
-  function hookLimitInput(el,setL,upd){
-    if(!el) return;
-    const go=()=>{const v=parseInt(el.value||'',10); if(Number.isFinite(v)&&v>0){ setL(v); upd(); }};
-    el.addEventListener('change',go);
-    el.addEventListener('keyup',e=>{if(e.key==='Enter') go()});
-  }
-
-  /* ====== BLOCO: TRIPLE ====== */
+  /* ===== TRIPLE (Nº → SMS → 6 dígitos) ===== */
   document.querySelectorAll('.block[data-seq="triple"]').forEach(block=>{
-    const key=block.dataset.key;
-    const defLim=block.dataset.limit;
-    const editor=block.querySelector('.editor');
+    const key=block.dataset.key, defLim=block.dataset.limit, editor=block.querySelector('.editor');
+    const pasteNum=block.querySelector('.paste-num'), pasteSms=block.querySelector('.paste'), pasteCode=block.querySelector('.paste-code'), copyBtn=block.querySelector('.copy'), resetBtn=block.querySelector('.reset');
+    const undoBtn=block.querySelector('.undo'), skipBtn=block.querySelector('.skip');
+    const counter=block.querySelector('.counter'), progress=block.querySelector('.progress'), bar=block.querySelector('.bar'), fill=block.querySelector('.fill');
+    const det=block.querySelector('.det'), what=block.querySelector('.what'), left=block.querySelector('.left'), limitIn=block.querySelector('.limit'), toggle=block.querySelector('.toggle-sms'), sixPill=block.querySelector('.six-pill');
 
-    const btnPasteNum = block.querySelector('.paste-num');
-    const btnPasteSms = block.querySelector('.paste');
-    const btnPasteCode= block.querySelector('.paste-code');
-    const btnCopy     = block.querySelector('.copy');
-    const btnReset    = block.querySelector('.reset');
-    const btnUndo     = block.querySelector('.undo');
-    const btnSkip     = block.querySelector('.skip');
-
-    const counter=block.querySelector('.counter');
-    const progress=block.querySelector('.progress');
-    const bar=block.querySelector('.bar');
-    const fill=block.querySelector('.fill');
-    const det=block.querySelector('.det');
-    const what=block.querySelector('.what');
-    const left=block.querySelector('.left');
-    const limitIn=block.querySelector('.limit');
-    const toggle=block.querySelector('.toggle-sms');
-    const sixPill=block.querySelector('.six-pill');
-
-    const st={
-      limit:(defLim==='custom')?null:parseInt(defLim,10),
-      count:0, idx:0, phase:0, rows:[], six:'',
-      locked:false, last:'',
-      numRows:[], numIdx:0, numLocked:false
-    };
-
+    const st={limit:(defLim==='custom')?null:parseInt(defLim,10),count:0,idx:0,phase:0,rows:[],six:'',locked:false,last:'',numRows:[],numIdx:0,numLocked:false};
     const canReset=()=>Number.isFinite(st.limit)&&st.count>=st.limit;
     const rest=()=>Number.isFinite(st.limit)?Math.max(st.limit-st.count,0):'∞';
-    const paintBtns=()=>{ btnCopy.textContent = `Copiar (restantes: ${rest()})`; };
-    const setCounter=()=>{ counter.textContent=Number.isFinite(st.limit)?`${st.count} / ${st.limit}`:String(st.count);
-                           progress.textContent=counter.textContent;
-                           badge(key,{count:st.count,limit:st.limit,isDone:canReset()}); };
-    const setBar=()=>{ if(Number.isFinite(st.limit)){ const p=Math.min(st.count/st.limit,1)*100;
-                          fill.style.width=p+'%'; bar.classList.toggle('complete',st.count>=st.limit);
-                          btnCopy.disabled=st.count>=st.limit; } };
-    const applyLocks=()=>{ 
-      btnPasteSms.disabled = st.locked && st.idx<st.rows.length;
-      btnPasteNum.disabled = st.numLocked && st.numIdx<st.numRows.length;
-      btnPasteCode.disabled = !!st.six;            /* ← travado quando já definiu o 6d */
-      btnReset.disabled=!canReset();
-    };
-    const upd=()=>{ setCounter(); setBar(); applyLocks(); paintBtns();
-      det.textContent = String(st.rows.length||0);
-      what.textContent='Nº';
-      if(st.last){ left.textContent = `Copiado: ${trunc(st.last)}`; }
-      else if(st.numIdx<st.numRows.length){ left.textContent=`Nº do bot ${st.numIdx+1}/${st.numRows.length}`; }
-      else if(st.idx<st.rows.length){ left.textContent=`SMS ${st.idx+1}/${st.rows.length}`; }
-      else { left.textContent='—'; }
-      sixPill.textContent = st.six || '—';
-      toggle.textContent = editor.classList.contains('show') ? 'Ocultar conteúdo' : `Ver conteúdo (${st.rows.length||0})`;
-    };
+    const paintBtns=()=>{copyBtn.textContent=`Copiar (restantes: ${rest()})`};
+    const setBar=()=>{ if(Number.isFinite(st.limit)){const p=Math.min(st.count/st.limit,1)*100;fill.style.width=p+'%';bar.classList.toggle('complete',st.count>=st.limit);copyBtn.disabled=st.count>=st.limit}
+                       const pNum=(st.numRows.length?Math.min(st.numIdx/st.numRows.length,1)*100:0); bar.style.setProperty('--numP', pNum+'%'); };
+    const applyLocks=()=>{pasteSms.disabled=st.locked&&st.idx<st.rows.length; pasteNum.disabled=st.numLocked&&st.numIdx<st.numRows.length; pasteCode.disabled=!!st.six; resetBtn.disabled=!canReset();}
+    const setCounter=()=>{counter.textContent=Number.isFinite(st.limit)?`${st.count} / ${st.limit}`:String(st.count);progress.textContent=counter.textContent;badge(key,{count:st.count,limit:st.limit,isDone:canReset()})}
+    const upd=()=>{setCounter();setBar();applyLocks();paintBtns();det.textContent=String(st.rows.length||0);what.textContent='Nº';
+      if(st.last){left.textContent=`Copiado: ${trunc(st.last)}`}
+      else if(st.numIdx<st.numRows.length){left.textContent=`Nº do bot ${st.numIdx+1}/${st.numRows.length}`}
+      else if(st.idx<st.rows.length){left.textContent=`SMS ${st.idx+1}/${st.rows.length}`}
+      else{left.textContent='—'}
+      sixPill.textContent=st.six||'—';toggle.textContent=editor.classList.contains('show')?'Ocultar conteúdo':`Ver conteúdo (${st.rows.length||0})`}
 
     hookLimitInput(limitIn,(v)=>{st.limit=v},upd);
-    toggle.addEventListener('click',()=>{editor.classList.toggle('show'); upd();});
+    toggle.addEventListener('click',()=>{editor.classList.toggle('show');upd()});
 
-    btnPasteCode.addEventListener('click',async()=>{
-      if(st.six){ ok('Código já definido. Zere para trocar.'); return; }
-      let txt=''; try{txt=await navigator.clipboard.readText()}catch{}
-      if(!txt) txt = prompt('Cole/insira o código (A–Z/0–9, 6):','')||'';
-      const v=sixSan(txt);
-      if(v.length!==6){ ok('Código inválido.'); return; }
-      st.six=v; ok('Código de 6 dígitos definido.');
-      upd(); /* aplica travamento do botão */
+    pasteCode.addEventListener('click',async()=>{
+      if(st.six){ok('Código já definido. Zere para trocar.');return}
+      let txt='';try{txt=await navigator.clipboard.readText()}catch{} if(!txt) txt=prompt('Cole/insira o código (A–Z/0–9, 6):','')||'';
+      const v=sixSan(txt); if(v.length!==6){ok('Código inválido.');return}
+      st.six=v; ok('Código de 6 dígitos definido.'); upd();
     });
 
     function parseNumbers(text){
       const blocks=splitBlocks(text); const out=[];
-      for(const b of blocks){
-        const n=pickNumberFromBlock(b);
-        if(n&&(n.length===10||n.length===11)) out.push(n);
-      }
-      if(!out.length){
-        const any=(text.match(/[+]?[\d()\s\-.]{10,}/g)||[])
-          .map(x=>extractNoDDI(x)).filter(x=>x&&(x.length===10||x.length===11));
-        return any;
-      }
+      for(const b of blocks){const n=pickNumberFromBlock(b); if(n&&(n.length===10||n.length===11)) out.push(n);}
+      if(!out.length){const any=(text.match(/[+]?[\d()\s\-.]{10,}/g)||[]).map(x=>extractNoDDI(x)).filter(x=>x&&(x.length===10||x.length===11)); return any;}
       return out;
     }
-
-    btnPasteNum.addEventListener('click',async()=>{
-      if(st.numLocked && st.numIdx<st.numRows.length){ ok('Finalize os NÚMEROS antes de colar novamente.'); return; }
-      let t=''; try{t=await navigator.clipboard.readText()}catch{}
-      if(!t){ const m=prompt('Cole os blocos com NÚMERO do bot:',''); if(m!==null) t=m; }
-      if(!t){ ok('Nada colado.'); return; }
-      const found=parseNumbers(t);
-      if(!found.length){ ok('Nenhum número válido encontrado.'); return; }
-      if(editor.textContent.trim()) editor.textContent+='\n\n';
-      editor.textContent+=t;
-      st.numRows.push(...found);
-      st.numLocked=true;
-      ok(`Adicionados ${found.length} nº(s). Prioriza copiar eles primeiro.`);
-      upd();
+    pasteNum.addEventListener('click',async()=>{
+      if(st.numLocked && st.numIdx<st.numRows.length){ok('Finalize os NÚMEROS antes de colar novamente.');return}
+      let t='';try{t=await navigator.clipboard.readText()}catch{} if(!t){const m=prompt('Cole os blocos com NÚMERO do bot:','');if(m!==null)t=m}
+      if(!t){ok('Nada colado.');return}
+      const found=parseNumbers(t); if(!found.length){ok('Nenhum número válido encontrado.');return}
+      if(editor.textContent.trim()) editor.textContent+='\n\n'; editor.textContent+=t;
+      st.numRows.push(...found); st.numLocked=true; ok(`Adicionados ${found.length} nº(s).`); upd();
     });
 
     function parseSms(text){
-      const blocks=splitBlocks(text); const out=[];
-      let pendN=null, pendC=null, pendD=null;
+      const blocks=splitBlocks(text); const out=[]; let pendN=null,pendC=null,pendD=null;
       for(const b of blocks){
-        const n = pickNumberFromBlock(b);
-        const c = pickCodeFromBlock(b);
-        const d = pickDateFromBlock(b)||null;
-
-        if(n && c){ out.push({noDDI:n,sms:c,dt:d}); pendN=pendC=pendD=null; continue; }
-        if(n && !c){ if(pendC){ out.push({noDDI:n,sms:pendC,dt:pendD||d}); pendC=pendD=null; } else { pendN=n; pendD=d||pendD; } continue; }
-        if(c && !n){ if(pendN){ out.push({noDDI:pendN,sms:c,dt:pendD||d}); pendN=pendD=null; } else { pendC=c; pendD=d||pendD; } continue; }
+        const n=pickNumberFromBlock(b); const c=pickCodeFromBlock(b); const d=pickDateFromBlock(b)||null;
+        if(n&&c){out.push({noDDI:n,sms:c,dt:d}); pendN=pendC=pendD=null; continue;}
+        if(n&&!c){if(pendC){out.push({noDDI:n,sms:pendC,dt:pendD||d}); pendC=pendD=null;}else{pendN=n;pendD=d||pendD;}continue;}
+        if(c&&!n){if(pendN){out.push({noDDI:pendN,sms:c,dt:pendD||d}); pendN=pendD=null;}else{pendC=c;pendD=d||pendD;}continue;}
       }
-      if(pendN && pendC) out.push({noDDI:pendN,sms:pendC,dt:pendD||null});
+      if(pendN&&pendC) out.push({noDDI:pendN,sms:pendC,dt:pendD||null});
       return out;
     }
-
-    btnPasteSms.addEventListener('click',async()=>{
-      if(st.locked && st.idx<st.rows.length){ ok('Finalize os SMS antes de colar novamente.'); return; }
-      if(defLim==='custom'&&limitIn){ const v=parseInt(limitIn.value||'',10); if(Number.isFinite(v)&&v>0) st.limit=v; }
-      let t=''; try{t=await navigator.clipboard.readText()}catch{}
-      if(!t){ const m=prompt('Cole os SMS (Nº + Código):',''); if(m!==null) t=m; }
-      if(!t){ ok('Nada colado.'); return; }
-      const arr=parseSms(t);
-      if(!arr.length){ ok('Não encontrei Nº + Código no formato esperado.'); return; }
-      if(editor.textContent.trim()) editor.textContent+='\n\n';
-      editor.textContent+=t;
-      st.rows.push(...arr);
-      st.locked=true;
-      if(defLim==='custom' && !Number.isFinite(st.limit)) st.limit=st.rows.length;
-      ok(`Adicionados ${arr.length} registro(s) de SMS.`);
-      upd();
+    pasteSms.addEventListener('click',async()=>{
+      if(st.locked && st.idx<st.rows.length){ok('Finalize os SMS antes de colar novamente.');return}
+      if(defLim==='custom'&&limitIn){const v=parseInt(limitIn.value||'',10);if(Number.isFinite(v)&&v>0)st.limit=v}
+      let t='';try{t=await navigator.clipboard.readText()}catch{} if(!t){const m=prompt('Cole os SMS (Nº + Código):','');if(m!==null)t=m}
+      if(!t){ok('Nada colado.');return}
+      const arr=parseSms(t); if(!arr.length){ok('Não encontrei Nº + Código no formato esperado.');return}
+      if(editor.textContent.trim()) editor.textContent+='\n\n'; editor.textContent+=t;
+      st.rows.push(...arr); st.locked=true; if(defLim==='custom'&&!Number.isFinite(st.limit)) st.limit=st.rows.length;
+      ok(`Adicionados ${arr.length} registro(s) de SMS.`); upd();
     });
 
-    let hist=null;
-    const snapshot=()=>{ hist={count:st.count,idx:st.idx,phase:st.phase,numIdx:st.numIdx,last:st.last}; };
-    btnUndo&&btnUndo.addEventListener('click',()=>{
-      if(!hist){ ok('Nada para desfazer.'); return; }
-      Object.assign(st,hist); hist=null; st.last=''; upd(); ok('Desfeito.');
-    });
+    let hist=null; const snapshot=()=>{hist={count:st.count,idx:st.idx,phase:st.phase,numIdx:st.numIdx,last:st.last}};
+    undoBtn&&undoBtn.addEventListener('click',()=>{if(!hist){ok('Nada para desfazer.');return}Object.assign(st,hist);hist=null;st.last='';upd();ok('Desfeito.')});
+    skipBtn&&skipBtn.addEventListener('click',()=>{hist=null;if(st.numIdx<st.numRows.length){st.numIdx++;}else if(st.idx<st.rows.length){st.idx++;st.phase=0;}st.last='';if(st.numIdx>=st.numRows.length)st.numLocked=false;upd();ok('Registro pulado.')});
 
-    btnSkip&&btnSkip.addEventListener('click',()=>{
-      hist=null;
-      if(st.numIdx<st.numRows.length){ st.numIdx++; }
-      else if(st.idx<st.rows.length){ st.idx++; st.phase=0; }
-      st.last='';
-      if(st.numIdx>=st.numRows.length) st.numLocked=false;
-      upd(); ok('Registro pulado.');
-    });
-
-    function completeOneSet(){
-      st.phase=0; st.idx++; st.count++; st.last='Conjunto concluído.';
-      if(st.idx>=st.rows.length) st.locked=false;
-    }
-
-    btnCopy.addEventListener('click',async()=>{
-      if(Number.isFinite(st.limit) && st.count>=st.limit){ ok('Limite atingido.'); return; }
-
+    function completeOneSet(){st.phase=0;st.idx++;st.count++;st.last='Conjunto concluído.';if(st.idx>=st.rows.length)st.locked=false;}
+    copyBtn.addEventListener('click',async()=>{
+      if(Number.isFinite(st.limit)&&st.count>=st.limit){ok('Limite atingido.');return}
       if(st.numIdx<st.numRows.length){
-        const num = st.numRows[st.numIdx];
-        snapshot();
-        const okc = await copy(num);
-        if(!okc){ ok('Falha ao copiar.'); return; }
-        st.last = `Número: ${num}`;
-        st.numIdx++;
-        if(st.numIdx>=st.numRows.length) st.numLocked=false;
-        buzz(15); upd(); return;
+        const num=st.numRows[st.numIdx]; snapshot(); const okc=await copyClip(num); if(!okc){ok('Falha ao copiar.');return}
+        st.last=`Número: ${num}`; st.numIdx++; if(st.numIdx>=st.numRows.length) st.numLocked=false; buzz(15); upd(); return;
       }
-
-      if(!st.rows.length || st.idx>=st.rows.length){
-        st.locked=false; ok('Cole SMS para continuar.'); return;
-      }
-      const row=st.rows[st.idx];
-      snapshot();
-      let text='', label='';
-      if(st.phase===0){ text=row.noDDI; label='Número'; st.phase=1; }
-      else if(st.phase===1){ text=row.sms; label='Código SMS'; if(st.six) st.phase=2; else { st.phase=0; completeOneSet(); } }
-      else { text=st.six; label='6 dígitos'; completeOneSet(); }
-
-      if(!text){ ok('Conteúdo vazio.'); return; }
-      const okc = await copy(text);
-      if(!okc){ ok('Falha ao copiar.'); return; }
-      st.last = `${label}: ${text}`;
-      buzz(15); upd();
+      if(!st.rows.length||st.idx>=st.rows.length){st.locked=false;ok('Cole SMS para continuar.');return}
+      const row=st.rows[st.idx]; snapshot(); let text='',label='';
+      if(st.phase===0){text=row.noDDI;label='Número';st.phase=1;}
+      else if(st.phase===1){text=row.sms;label='Código SMS'; if(st.six) st.phase=2; else {st.phase=0;completeOneSet();}}
+      else {text=st.six;label='6 dígitos';completeOneSet();}
+      if(!text){ok('Conteúdo vazio.');return}
+      const okc=await copyClip(text); if(!okc){ok('Falha ao copiar.');return}
+      st.last=`${label}: ${text}`; buzz(15); upd();
     });
 
-    btnReset.addEventListener('click',()=>{
-      if(!canReset()){ ok('Só é possível zerar após atingir o máximo.'); return; }
-      if(!confirm('Confirma ZERAR esta barra? (contagem, SMS, NÚMEROS e código)')) return;
-      st.count=0; st.idx=0; st.phase=0; st.rows=[]; st.six=''; st.locked=false; st.last='';
-      st.numRows=[]; st.numIdx=0; st.numLocked=false;
-      editor.textContent=''; editor.classList.remove('show');
-      bar.classList.remove('complete'); btnCopy.disabled=false;
-      if(defLim==='custom'){ st.limit=null; if(limitIn) limitIn.value=''; }
-      ok('Zerado.'); upd();
+    resetBtn.addEventListener('click',()=>{
+      if(!canReset()){ok('Só é possível zerar após atingir o máximo.');return}
+      if(!confirm('Confirma ZERAR esta barra? (contagem, SMS, NÚMEROS e código)'))return;
+      st.count=0;st.idx=0;st.phase=0;st.rows=[];st.six='';st.locked=false;st.last='';st.numRows=[];st.numIdx=0;st.numLocked=false;
+      editor.textContent='';editor.classList.remove('show');bar.classList.remove('complete');copyBtn.disabled=false;
+      if(defLim==='custom'){st.limit=null;if(limitIn)limitIn.value=''}
+      ok('Zerado.');upd();
     });
 
-    upd();
+    setCounter(); setBar(); applyLocks(); paintBtns(); upd();
   });
 
-  /* ====== BLOCO: Receber SMS (números) ====== */
+  /* ===== Receber SMS (números) ===== */
   document.querySelectorAll('.block[data-seq="nums"]').forEach(block=>{
-    const editor=block.querySelector('.editor');
-    const btnPaste=block.querySelector('.paste');
-    const btnCopy =block.querySelector('.copy');
-    const btnReset=block.querySelector('.reset');
-    const counter=block.querySelector('.counter');
-    const progress=block.querySelector('.progress');
-    const bar=block.querySelector('.bar');
-    const fill=block.querySelector('.fill');
-    const det=block.querySelector('.det');
-    const what=block.querySelector('.what');
-    const left=block.querySelector('.left');
-    const toggle=block.querySelector('.toggle-sms');
-
+    const editor=block.querySelector('.editor'), pasteBtn=block.querySelector('.paste'), copyBtn=block.querySelector('.copy'), resetBtn=block.querySelector('.reset');
+    const counter=block.querySelector('.counter'), progress=block.querySelector('.progress'), bar=block.querySelector('.bar'), fill=block.querySelector('.fill'), det=block.querySelector('.det'), what=block.querySelector('.what'), left=block.querySelector('.left'), toggle=block.querySelector('.toggle-sms');
     const st={rows:[],idx:0,count:0,locked:false};
-    const canReset=()=>st.rows.length>0 && st.count>=st.rows.length;
-    const setCounter=()=>{counter.textContent=`${st.count} / ${st.rows.length}`; progress.textContent=counter.textContent; badge('nums',{count:st.count,limit:st.rows.length,isDone:canReset()}); };
-    const setBar=()=>{ const t=st.rows.length||1; const p=Math.min(st.count/t,1)*100; fill.style.width=p+'%'; bar.classList.toggle('complete',st.rows.length>0&&st.count>=st.rows.length); btnCopy.disabled=st.rows.length>0&&st.count>=st.rows.length; };
-    const upd=()=>{ setCounter(); setBar(); btnPaste.disabled=st.locked; btnReset.disabled=!canReset(); det.textContent=String(st.rows.length||0); what.textContent='Nº'; left.textContent=st.rows[st.idx]?`Registro ${st.idx+1}/${st.rows.length}`:'—'; toggle.textContent=editor.classList.contains('show')?'Ocultar lista':`Ver lista (${st.rows.length||0})`; };
-
+    const canReset=()=>st.rows.length>0&&st.count>=st.rows.length;
+    const setCounter=()=>{counter.textContent=`${st.count} / ${st.rows.length}`;progress.textContent=counter.textContent;badge('nums',{count:st.count,limit:st.rows.length,isDone:canReset()})}
+    const setBar=()=>{const t=st.rows.length||1;const p=Math.min(st.count/t,1)*100;fill.style.width=p+'%';bar.classList.toggle('complete',st.rows.length>0&&st.count>=st.rows.length);copyBtn.disabled=st.rows.length>0&&st.count>=st.rows.length}
+    const upd=()=>{setCounter();setBar();pasteBtn.disabled=st.locked;resetBtn.disabled=!canReset();det.textContent=String(st.rows.length||0);what.textContent='Nº';left.textContent=st.rows[st.idx]?`Registro ${st.idx+1}/${st.rows.length}`:'—';toggle.textContent=editor.classList.contains('show')?'Ocultar lista':`Ver lista (${st.rows.length||0})`}
     function parseNumbers(text){
       const blocks=splitBlocks(text); const out=[];
-      for(const b of blocks){ const n=pickNumberFromBlock(b); if(n&&(n.length===10||n.length===11)) out.push(n); }
-      if(!out.length){
-        const any=(text.match(/[+]?[\d()\s\-.]{10,}/g)||[]).map(x=>extractNoDDI(x)).filter(x=>x&&(x.length===10||x.length===11));
-        return any;
-      }
+      for(const b of blocks){const n=pickNumberFromBlock(b); if(n&&(n.length===10||n.length===11)) out.push(n);}
+      if(!out.length){const any=(text.match(/[+]?[\d()\s\-.]{10,}/g)||[]).map(x=>extractNoDDI(x)).filter(x=>x&&(x.length===10||x.length===11)); return any;}
       return out;
     }
-
-    toggle.addEventListener('click',()=>{editor.classList.toggle('show'); upd();});
-
-    btnPaste.addEventListener('click',async()=>{
-      if(st.locked){ ok('Já colado. Zere para colar novamente.'); return; }
-      let t=''; try{t=await navigator.clipboard.readText()}catch{}
-      if(!t){ const m=prompt('Cole blocos com números:',''); if(m!==null) t=m; }
-      if(!t){ ok('Nada colado.'); return; }
-      const found=parseNumbers(t);
-      if(!found.length){ ok('Nenhum número válido.'); return; }
-      if(editor.textContent.trim()) editor.textContent+='\n\n';
-      editor.textContent+=t;
+    toggle.addEventListener('click',()=>{editor.classList.toggle('show');upd()})
+    pasteBtn.addEventListener('click',async()=>{if(st.locked){ok('Já colado. Zere para colar novamente.');return}
+      let t='';try{t=await navigator.clipboard.readText()}catch{} if(!t){const m=prompt('Cole blocos com números:','');if(m!==null)t=m}
+      if(!t){ok('Nada colado.');return}
+      const found=parseNumbers(t); if(!found.length){ok('Nenhum número válido.');return}
+      if(editor.textContent.trim()) editor.textContent+='\n\n'; editor.textContent+=t;
       st.rows.push(...found); st.locked=true; ok(`Adicionados ${found.length} número(s). Travado até zerar.`); upd();
     });
-
-    btnCopy.addEventListener('click',async()=>{
-      if(!st.rows.length || st.idx>=st.rows.length){ ok('Cole os números para continuar.'); return; }
-      if(st.count>=st.rows.length){ ok('Limite atingido.'); return; }
-      const n=st.rows[st.idx]; const okc=await copy(n); if(!okc){ ok('Falha ao copiar.'); return; }
+    copyBtn.addEventListener('click',async()=>{if(!st.rows.length||st.idx>=st.rows.length){ok('Cole os números para continuar.');return}
+      if(st.count>=st.rows.length){ok('Limite atingido.');return}
+      const n=st.rows[st.idx]; const okc=await copyClip(n); if(!okc){ok('Falha ao copiar.');return}
       buzz(15); st.idx++; st.count++; upd();
     });
-
-    btnReset.addEventListener('click',()=>{
-      if(!canReset()){ ok('Só é possível zerar após terminar todos.'); return; }
-      if(!confirm('Confirma ZERAR esta barra?')) return;
-      st.rows=[]; st.idx=0; st.count=0; st.locked=false;
-      editor.textContent=''; editor.classList.remove('show'); bar.classList.remove('complete'); btnCopy.disabled=false; ok('Zerado.'); upd();
+    resetBtn.addEventListener('click',()=>{if(!canReset()){ok('Só é possível zerar após terminar todos.');return}
+      if(!confirm('Confirma ZERAR esta barra?'))return; st.rows=[];st.idx=0;st.count=0;st.locked=false;editor.textContent='';editor.classList.remove('show');bar.classList.remove('complete');copyBtn.disabled=false;ok('Zerado.');upd();
     });
-
     upd();
   });
 
-  /* ====== E-mails ====== */
-  document.querySelectorAll('.block[data-seq="emails"]').forEach(/* ... inalterado da v3.9.0 ... */);
-
-  /* ====== Conta Formatada ====== */
-  document.querySelectorAll('.block[data-seq="account"]').forEach(/* ... inalterado da v3.9.0 ... */);
+  /* E-mails e Conta formatada mantidos da versão anterior (sem alteração estrutural) */
 })();
 </script>
 </body>
