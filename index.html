@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Criação UniTv — v3.9.3</title>
+<title>Criação UniTv — v3.10.0</title>
 <style>
 :root{
   --bg:#0b1020;--card:#0f152b;--ink:#e8ecff;--muted:#9aa4c7;--stroke:#202744;--bar:#162044;
@@ -58,10 +58,7 @@ button[disabled]{opacity:.55}
 .bar{height:12px;background:var(--bar);border-top:1px solid var(--stroke);position:relative;overflow:hidden}
 .fill{position:absolute;inset:0 auto 0 0;width:0%;background:linear-gradient(90deg,var(--primary),var(--primary2));transition:width .25s,background .25s}
 .bar.complete .fill{width:100%!important;background:linear-gradient(90deg,var(--ok),var(--ok2))}
-.block[data-seq="triple"] .bar::before{
-  content:"";position:absolute;left:0;top:0;height:4px;width:var(--numP,0%);
-  background:linear-gradient(90deg,var(--blue1),var(--blue2));opacity:.95;transition:width .25s
-}
+.block[data-seq="triple"] .bar::before{content:"";position:absolute;left:0;top:0;height:4px;width:var(--numP,0%);background:linear-gradient(90deg,var(--blue1),var(--blue2));opacity:.95;transition:width .25s}
 .status{display:flex;justify-content:space-between;color:var(--muted);font-size:.9rem;padding:8px 10px}
 
 /* Inputs */
@@ -69,6 +66,7 @@ button[disabled]{opacity:.55}
 .toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:#111a36;border:1px solid var(--stroke);padding:8px 12px;border-radius:10px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:50;max-width:90vw;word-break:break-word}
 .toast.show{opacity:1}
 input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;border-radius:10px;padding:12px 10px;font-weight:800}
+.zerar-tudo{margin-top:8px;display:inline-block;background:#2b1222;border:1px solid #5a1d33;color:#ffd7de;border-radius:10px;padding:10px 12px;font-weight:800}
 @media(max-width:480px){.controls,.row-ghost{grid-template-columns:1fr 1fr}}
 </style>
 </head>
@@ -82,7 +80,7 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
     <button class="tab" data-tab="custom"><span>Personalizado</span><span class="badge">0</span><span class="dot"></span></button>
     <button class="tab" data-tab="nums"><span>Receber SMS</span><span class="badge">0/0</span><span class="dot"></span></button>
     <button class="tab" data-tab="emails"><span>E-mail</span><span class="badge">0</span><span class="dot"></span></button>
-    <button class="tab" data-tab="conta"><span>Conta formatada</span><span class="badge">0</span><span class="dot"></span></button>
+    <button class="tab" data-tab="conta"><span>Formatação de Conta</span><span class="badge">0</span><span class="dot"></span></button>
   </div>
 
   <!-- Conta Nova -->
@@ -91,7 +89,6 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
       <header>
         <div class="title"><span>Conta Nova</span><span class="counter">0 / 3</span></div>
         <div class="controls">
-          <!-- ESQUERDA: Colar SMS / Colar Número | DIREITA: Colar Código / Copiar -->
           <button class="btn paste">Colar SMS</button>
           <button class="btn paste-code">Colar Código</button>
           <button class="btn paste-num">Colar Número</button>
@@ -113,7 +110,6 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
       <header>
         <div class="title"><span>Renovação</span><span class="counter">0 / 5</span></div>
         <div class="controls">
-          <!-- ESQUERDA: Colar SMS / Colar Número | DIREITA: Colar Código / Copiar -->
           <button class="btn paste">Colar SMS</button>
           <button class="btn paste-code">Colar Código</button>
           <button class="btn paste-num">Colar Número</button>
@@ -136,7 +132,6 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
         <div class="title"><span>Personalizado</span><span class="counter">0</span></div>
         <div class="controls">
           <input class="limit" type="number" min="1" step="1" placeholder="Qtd (opcional)">
-          <!-- Invertido: primeiro Colar Código, depois Colar Número -->
           <button class="btn paste-code">Colar Código</button>
           <button class="btn paste">Colar SMS</button>
           <button class="btn paste-num">Colar Número</button>
@@ -199,11 +194,11 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
     </section>
   </div>
 
-  <!-- Conta formatada -->
+  <!-- Formatação de Conta -->
   <div class="panel" data-panel="conta">
-    <section class="block" data-title="Conta formatada" data-key="conta" data-limit="custom" data-seq="account">
+    <section class="block" data-title="Formatação de Conta" data-key="conta" data-limit="custom" data-seq="account">
       <header>
-        <div class="title"><span>Conta formatada</span><span class="counter">0</span></div>
+        <div class="title"><span>Formatação de Conta</span><span class="counter">0</span></div>
         <div class="controls">
           <input class="limit" type="number" min="1" step="1" placeholder="Qtd (opcional)">
           <button class="btn paste">Colar SMS</button>
@@ -219,26 +214,40 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
   </div>
 
   <div style="color:#9aa4c7;font-size:.85rem;margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
-    <div><b>Versão:</b> v3.9.3 (12/11/2025)</div>
-    <div><b>Changelog:</b> E-mail: captura só o local-part (antes do @) em listas bagunçadas; reordenação dos botões em Conta Nova/Renovação; Personalizado com Colar Código ↔ Colar Número invertidos.</div>
+    <div><b>Versão:</b> v3.10.0 (13/11/2025)</div>
+    <div><b>Changelog:</b> “Formatação de Conta” corrigida (parse robusto p/ ‘🔹SMS: … Código de verificação’); persistência automática (aba ativa + barras + editores); botão “Zerar Tudo (com confirmação)” no rodapé.</div>
   </div>
+  <button class="zerar-tudo" id="wipeAll">Zerar Tudo (com confirmação)</button>
 </div></div>
 
 <div class="toast" id="toast">Pronto!</div>
 
 <script>
 (function(){
-  /* Tabs */
+  const STORAGE_PREFIX='utv_v3.10_';
+  const K = {
+    tab: STORAGE_PREFIX+'activeTab',
+    triple: (key)=>STORAGE_PREFIX+'triple_'+key,
+    nums: STORAGE_PREFIX+'nums',
+    emails: STORAGE_PREFIX+'emails',
+    account: STORAGE_PREFIX+'account'
+  };
+  const saveJSON=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}};
+  const loadJSON=(k,d=null)=>{try{const s=localStorage.getItem(k);return s?JSON.parse(s):d}catch{return d}};
+  const delKey=(k)=>{try{localStorage.removeItem(k)}catch{}};
+
+  /* Tabs (com persistência) */
   const panels=[...document.querySelectorAll('.panel')];
   const tabs=[...document.querySelectorAll('.tab')];
-  function showTab(key){
+  function showTab(key, persist=true){
     let hit=false;
     panels.forEach(p=>{const on=p.dataset.panel===key; p.classList.toggle('active',on); if(on) hit=true});
     tabs.forEach(t=>t.classList.toggle('active',t.dataset.tab===key));
-    if(hit) location.hash='#'+key;
+    if(hit){ if(persist) saveJSON(K.tab,key); location.hash='#'+key;}
   }
   tabs.forEach(t=>t.addEventListener('click',()=>showTab(t.dataset.tab)));
-  showTab((location.hash||'#nova').replace('#',''));
+  const savedTab = loadJSON(K.tab, (location.hash||'#nova').replace('#',''));
+  showTab(savedTab,false);
 
   /* Utils */
   const toast=document.getElementById('toast');
@@ -285,6 +294,23 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
   function badge(key,{count,limit,isDone}){const t=document.querySelector(`.tab[data-tab="${key}"]`);if(!t)return;const b=t.querySelector('.badge');b.textContent=Number.isFinite(limit)?`${count}/${limit}`:String(count);t.classList.toggle('done',!!isDone)}
   function hookLimitInput(el,setL,upd){if(!el)return;const go=()=>{const v=parseInt(el.value||'',10);if(Number.isFinite(v)&&v>0){setL(v);upd();}};el.addEventListener('change',go);el.addEventListener('keyup',e=>{if(e.key==='Enter')go()})}
 
+  /* ===== Persist helpers por bloco ===== */
+  const persistTriple=(key,st,editor)=>saveJSON(K.triple(key),{
+    limit:st.limit,count:st.count,idx:st.idx,phase:st.phase,rows:st.rows,six:st.six,
+    locked:st.locked,last:st.last,numRows:st.numRows,numIdx:st.numIdx,numLocked:st.numLocked,
+    editor:editor.textContent
+  });
+  const restoreTriple=(key)=>loadJSON(K.triple(key),null);
+
+  const persistNums=(st,editor)=>saveJSON(K.nums,{rows:st.rows,idx:st.idx,count:st.count,locked:st.locked,editor:editor.textContent});
+  const restoreNums=()=>loadJSON(K.nums,null);
+
+  const persistEmails=(st,editor,opts)=>saveJSON(K.emails,{rows:st.rows,idx:st.idx,count:st.count,locked:st.locked,editor:editor.textContent,domain:opts.domain,full:opts.full,limit:opts.limit});
+  const restoreEmails=()=>loadJSON(K.emails,null);
+
+  const persistAccount=(st,editor,limit)=>saveJSON(K.account,{rows:st.rows,idx:st.idx,count:st.count,locked:st.locked,editor:editor.textContent,limit});
+  const restoreAccount=()=>loadJSON(K.account,null);
+
   /* ===== TRIPLE (Nº → SMS → 6 dígitos) ===== */
   document.querySelectorAll('.block[data-seq="triple"]').forEach(block=>{
     const key=block.dataset.key, defLim=block.dataset.limit, editor=block.querySelector('.editor');
@@ -306,7 +332,18 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
       else if(st.numIdx<st.numRows.length){left.textContent=`Nº do bot ${st.numIdx+1}/${st.numRows.length}`}
       else if(st.idx<st.rows.length){left.textContent=`SMS ${st.idx+1}/${st.rows.length}`}
       else{left.textContent='—'}
-      sixPill.textContent=st.six||'—';toggle.textContent=editor.classList.contains('show')?'Ocultar conteúdo':`Ver conteúdo (${st.rows.length||0})`}
+      sixPill.textContent=st.six||'—';toggle.textContent=editor.classList.contains('show')?'Ocultar conteúdo':`Ver conteúdo (${st.rows.length||0})`;
+      persistTriple(key,st,editor);
+    }
+
+    /* Restore */
+    const saved=restoreTriple(key);
+    if(saved){
+      st.count=saved.count||0; st.idx=saved.idx||0; st.phase=saved.phase||0; st.rows=Array.isArray(saved.rows)?saved.rows:[]; st.six=saved.six||'';
+      st.locked=!!saved.locked; st.last=saved.last||''; st.numRows=Array.isArray(saved.numRows)?saved.numRows:[]; st.numIdx=saved.numIdx||0; st.numLocked=!!saved.numLocked;
+      if(defLim==='custom'){st.limit = Number.isFinite(saved.limit)?saved.limit:null; if(limitIn && Number.isFinite(st.limit)) limitIn.value=st.limit}
+      editor.textContent=saved.editor||'';
+    }
 
     hookLimitInput(limitIn,(v)=>{st.limit=v},upd);
     toggle.addEventListener('click',()=>{editor.classList.toggle('show');upd()});
@@ -396,15 +433,23 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
     const canReset=()=>st.rows.length>0&&st.count>=st.rows.length;
     const setCounter=()=>{counter.textContent=`${st.count} / ${st.rows.length}`;progress.textContent=counter.textContent;badge('nums',{count:st.count,limit:st.rows.length,isDone:canReset()})}
     const setBar=()=>{const t=st.rows.length||1;const p=Math.min(st.count/t,1)*100;fill.style.width=p+'%';bar.classList.toggle('complete',st.rows.length>0&&st.count>=st.rows.length);copyBtn.disabled=st.rows.length>0&&st.count>=st.rows.length}
-    const upd=()=>{setCounter();setBar();pasteBtn.disabled=st.locked;resetBtn.disabled=!canReset();det.textContent=String(st.rows.length||0);what.textContent='Nº';left.textContent=st.rows[st.idx]?`Registro ${st.idx+1}/${st.rows.length}`:'—';toggle.textContent=editor.classList.contains('show')?'Ocultar lista':`Ver lista (${st.rows.length||0})`}
+    const upd=()=>{setCounter();setBar();pasteBtn.disabled=st.locked;resetBtn.disabled=!canReset();det.textContent=String(st.rows.length||0);what.textContent='Nº';left.textContent=st.rows[st.idx]?`Registro ${st.idx+1}/${st.rows.length}`:'—';toggle.textContent=editor.classList.contains('show')?'Ocultar lista':`Ver lista (${st.rows.length||0})`; persistNums(st,editor);}
     function parseNumbers(text){
       const blocks=splitBlocks(text); const out=[];
       for(const b of blocks){const n=pickNumberFromBlock(b); if(n&&(n.length===10||n.length===11)) out.push(n);}
       if(!out.length){const any=(text.match(/[+]?[\d()\s\-.]{10,}/g)||[]).map(x=>extractNoDDI(x)).filter(x=>x&&(x.length===10||x.length===11)); return any;}
       return out;
     }
+    /* Restore */
+    (function restore(){
+      const saved=restoreNums(); if(!saved) return;
+      st.rows=Array.isArray(saved.rows)?saved.rows:[]; st.idx=saved.idx||0; st.count=saved.count||0; st.locked=!!saved.locked;
+      editor.textContent=saved.editor||'';
+    })();
+
     toggle.addEventListener('click',()=>{editor.classList.toggle('show');upd()})
-    pasteBtn.addEventListener('click',async()=>{if(st.locked){ok('Já colado. Zere para colar novamente.');return}
+    pasteBtn.addEventListener('click',async()=>{
+      if(st.locked){ok('Já colado. Zere para colar novamente.');return}
       let t='';try{t=await navigator.clipboard.readText()}catch{} if(!t){const m=prompt('Cole blocos com números:','');if(m!==null)t=m}
       if(!t){ok('Nada colado.');return}
       const found=parseNumbers(t); if(!found.length){ok('Nenhum número válido.');return}
@@ -422,7 +467,7 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
     upd();
   });
 
-  /* ===== E-mails (FIX: capturar apenas local-part mesmo com “Principal/Remover”) ===== */
+  /* ===== E-mails ===== */
   document.querySelectorAll('.block[data-seq="emails"]').forEach(block=>{
     const editor=block.querySelector('.editor');
     const copyBtn=block.querySelector('.copy'), pasteBtn=block.querySelector('.paste'), resetBtn=block.querySelector('.reset');
@@ -433,16 +478,14 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
     const canReset=()=>st.rows.length>0&&st.count>=st.rows.length;
     const setCounter=()=>{counter.textContent=String(st.count);progress.textContent=String(st.count);badge('emails',{count:st.count,limit:st.rows.length,isDone:canReset()})}
     const setBar=()=>{const total=st.rows.length||1;const p=Math.min(st.count/total,1)*100;fill.style.width=p+'%';bar.classList.toggle('complete',st.rows.length>0&&st.count>=st.rows.length);copyBtn.disabled=st.rows.length>0&&st.count>=st.rows.length}
-    const upd=()=>{setCounter();setBar();pasteBtn.disabled=st.locked;resetBtn.disabled=!canReset();det.textContent=String(st.rows.length||0);what.textContent='local';toggle.textContent=editor.classList.contains('show')?'Ocultar lista':`Ver lista (${st.rows.length||0})`}
+    const upd=()=>{setCounter();setBar();pasteBtn.disabled=st.locked;resetBtn.disabled=!canReset();det.textContent=String(st.rows.length||0);what.textContent='local';toggle.textContent=editor.classList.contains('show')?'Ocultar lista':`Ver lista (${st.rows.length||0})`; persistEmails(st,editor,{domain:domainSel.value,full:fullChk.checked,limit:st.limit})}
     hookLimitInput(limitIn,(v)=>{st.limit=v},upd)
     toggle.addEventListener('click',()=>{editor.classList.toggle('show');upd()})
 
     function parseEmails(text){
       const locals=[];
-      // 1) Captura TODAS as ocorrências de e-mail no texto (global), guardando APENAS o grupo 1 (local-part)
       const re=/([A-Z0-9._%+-]+)@([A-Z0-9.-]+\.[A-Z]{2,})/gi;
       let m; while((m=re.exec(text))){ locals.push(m[1]); }
-      // 2) Linhas que trazem só o local (sem @)
       text.split(/\n+/).forEach(ln=>{
         ln=ln.trim();
         if(ln && !/@/.test(ln)){
@@ -452,6 +495,16 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
       });
       return locals;
     }
+
+    /* Restore */
+    (function restore(){
+      const saved=restoreEmails(); if(!saved) return;
+      st.rows=Array.isArray(saved.rows)?saved.rows:[]; st.idx=saved.idx||0; st.count=saved.count||0; st.locked=!!saved.locked;
+      editor.textContent=saved.editor||'';
+      if(domainSel && saved.domain) domainSel.value=saved.domain;
+      if(fullChk) fullChk.checked=!!saved.full;
+      if(limitIn && Number.isFinite(saved.limit)) { st.limit=saved.limit; limitIn.value=saved.limit; }
+    })();
 
     pasteBtn.addEventListener('click',async()=>{
       if(st.locked){ok('Já colado. Zere para colar novamente.');return}
@@ -479,7 +532,7 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
     upd();
   });
 
-  /* ===== Conta formatada (inalterado) ===== */
+  /* ===== Formatação de Conta (corrigida + persistência) ===== */
   document.querySelectorAll('.block[data-seq="account"]').forEach(block=>{
     const editor=block.querySelector('.editor');
     const copyBtn=block.querySelector('.copy'), pasteBtn=block.querySelector('.paste'), resetBtn=block.querySelector('.reset');
@@ -489,7 +542,7 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
     const canReset=()=>st.rows.length>0&&st.count>=st.rows.length;
     const setCounter=()=>{counter.textContent=String(st.count);progress.textContent=String(st.count);badge('conta',{count:st.count,limit:st.rows.length,isDone:canReset()})}
     const setBar=()=>{const total=st.rows.length||1;const p=Math.min(st.count/total,1)*100;fill.style.width=p+'%';bar.classList.toggle('complete',st.rows.length>0&&st.count>=st.rows.length);copyBtn.disabled=st.rows.length>0&&st.count>=st.rows.length}
-    const upd=()=>{setCounter();setBar();pasteBtn.disabled=st.locked;resetBtn.disabled=!canReset();det.textContent=String(st.rows.length||0);what.textContent='Conta';toggle.textContent=editor.classList.contains('show')?'Ocultar SMS':`Ver SMS (${st.rows.length||0})`}
+    const upd=()=>{setCounter();setBar();pasteBtn.disabled=st.locked;resetBtn.disabled=!canReset();det.textContent=String(st.rows.length||0);what.textContent='Conta';toggle.textContent=editor.classList.contains('show')?'Ocultar SMS':`Ver SMS (${st.rows.length||0})`; persistAccount(st,editor,st.limit)}
     hookLimitInput(limitIn,(v)=>{st.limit=v},upd)
     toggle.addEventListener('click',()=>{editor.classList.toggle('show');upd()})
 
@@ -498,14 +551,23 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
       let pendN=null, pendC=null, pendD=null;
       for(const b of blocks){
         const num=pickNumberFromBlock(b);
-        const code=pickCodeFromBlock(b);
-        const dt=pickDateFromBlock(b)||null;
+        const code=pickCodeFromBlock(b);     // suporta “🔹SMS: UniTvMob, Código de verificação: 362861”
+        const dt=pickDateFromBlock(b)||null; // suporta 09/11/2025 ou 2025-11-09
         if(num && code){ out.push({noDDI:num,sms:code,dt}); pendN=pendC=pendD=null; continue; }
         if(num && !code){ if(pendC){ out.push({noDDI:num,sms:pendC,dt:pendD||dt}); pendC=pendD=null; } else { pendN=num; pendD=dt||pendD; } continue;}
         if(code && !num){ if(pendN){ out.push({noDDI:pendN,sms:code,dt:pendD||dt}); pendN=pendD=null; } else { pendC=code; pendD=dt||pendD; } continue;}
       }
+      if(pendN&&pendC) out.push({noDDI:pendN,sms:pendC,dt:pendD||null});
       return out;
     }
+
+    /* Restore */
+    (function restore(){
+      const saved=restoreAccount(); if(!saved) return;
+      st.rows=Array.isArray(saved.rows)?saved.rows:[]; st.idx=saved.idx||0; st.count=saved.count||0; st.locked=!!saved.locked;
+      editor.textContent=saved.editor||'';
+      if(Number.isFinite(saved.limit)) { st.limit=saved.limit; if(limitIn) limitIn.value=st.limit; }
+    })();
 
     pasteBtn.addEventListener('click',async()=>{
       if(st.locked){ok('Já colado. Zere para colar novamente.');return}
@@ -545,6 +607,14 @@ Senha: ${row.sms}
     });
 
     upd();
+  });
+
+  /* ===== Zerar Tudo (limpa somente chaves do app) ===== */
+  document.getElementById('wipeAll').addEventListener('click',()=>{
+    if(!confirm('Tem certeza que deseja ZERAR TUDO? Isso limpará as listas e estados salvos.')) return;
+    const keys=[]; for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i); if(k && k.startsWith(STORAGE_PREFIX)) keys.push(k)}
+    keys.forEach(delKey);
+    location.reload();
   });
 })();
 </script>
