@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Criação UniTv — v3.6.1</title>
+<title>Criação UniTv — v3.6.2</title>
 <style>
 :root{
   --bg:#0b1020;--card:#0f152b;--ink:#e8ecff;--muted:#9aa4c7;--stroke:#202744;--bar:#162044;
@@ -43,6 +43,18 @@ button.btn{background:var(--btn);color:var(--ink);border:1px solid var(--stroke)
 .btn.paste-code{background:linear-gradient(180deg,var(--blue1),var(--blue2));color:#001524;border-color:#0a5580}
 .btn.reset{background:var(--danger);border-color:#4c1d1d;color:#ffd2d2}
 .btn.ghost{background:var(--ghost);border-color:#1a2452;color:#cfe1ff}
+
+/* NOVO: botão Colar Número destacado e com estado pressionado */
+.btn.paste-num{
+  background:linear-gradient(180deg,#fbbf24,#f59e0b);
+  color:#1f1300;
+  border-color:#b45309;
+}
+.btn.paste-num.pressed{
+  box-shadow:inset 0 0 0 2px rgba(0,0,0,.35);
+  filter:brightness(.92);
+}
+
 button[disabled]{opacity:.55}
 
 /* Details */
@@ -246,8 +258,8 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
   </div>
 
   <div style="color:#9aa4c7;font-size:.85rem;margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
-    <div><b>Versão:</b> v3.6.1 (03/12/2025)</div>
-    <div><b>Changelog:</b> Adicionado botão “Colar Número” nos menus de criação; prioridade de cópia para números antes do fluxo SMS (número → código+a → 6 dígitos).</div>
+    <div><b>Versão:</b> v3.6.2 (03/12/2025)</div>
+    <div><b>Changelog:</b> Destaque visual para o botão “Colar Número” (cor nova + estado pressionado após adicionar números).</div>
   </div>
 
   <div class="global-reset">
@@ -566,6 +578,8 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
           return;
         }
         numRows = numRows.concat(found);
+        // VISUAL: marca botão como "pressionado" após adicionar números
+        pasteNumBtn.classList.add("pressed");
         showToast("Adicionados "+found.length+" número(s) para receber SMS.");
         updateUI();
       });
@@ -695,6 +709,8 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
       }else{
         limit=defLimit;
       }
+      // limpa visual pressionado do botão de número
+      if(pasteNumBtn) pasteNumBtn.classList.remove("pressed");
       updateUI();
       showToast("Zerado.");
     });
