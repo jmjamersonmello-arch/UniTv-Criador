@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Criação UniTv — v3.5.1</title>
+<title>Criação UniTv — v3.5.2</title>
 <style>
 :root{
   --bg:#0b1020;--card:#0f152b;--ink:#e8ecff;--muted:#9aa4c7;--stroke:#202744;--bar:#162044;
@@ -37,6 +37,7 @@ button.btn{background:var(--btn);color:var(--ink);border:1px solid var(--stroke)
 .btn.copy{background:linear-gradient(180deg,var(--primary),var(--primary2));color:#fff;border-color:#3a2f7d}
 .btn.paste{background:linear-gradient(180deg,var(--green1),var(--green2));color:#002411;border-color:#0f5c3f}
 .btn.paste-code{background:linear-gradient(180deg,var(--blue1),var(--blue2));color:#001524;border-color:#0a5580}
+.btn.paste-num{background:linear-gradient(180deg,#94e2ff,#3cc1ff);color:#00121c;border-color:#0a4a68}
 .btn.reset{background:var(--danger);border-color:#4c1d1d;color:#ffd2d2}
 .btn.ghost{background:var(--ghost);border-color:#1a2452;color:#cfe1ff}
 button[disabled]{opacity:.55}
@@ -81,8 +82,9 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
       <header>
         <div class="title"><span>Conta Nova</span><span class="counter">0 / 3</span></div>
         <div class="controls">
-          <button class="btn paste-code">Colar Código</button>
+          <button class="btn paste-num">Colar Números</button>
           <button class="btn paste">Colar SMS</button>
+          <button class="btn paste-code">Colar Código</button>
           <button class="btn copy">Copiar (restantes: 3)</button>
           <button class="btn reset" disabled>Zerar</button>
         </div>
@@ -101,8 +103,9 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
       <header>
         <div class="title"><span>Renovação</span><span class="counter">0 / 5</span></div>
         <div class="controls">
-          <button class="btn paste-code">Colar Código</button>
+          <button class="btn paste-num">Colar Números</button>
           <button class="btn paste">Colar SMS</button>
+          <button class="btn paste-code">Colar Código</button>
           <button class="btn copy">Copiar (restantes: 5)</button>
           <button class="btn reset" disabled>Zerar</button>
         </div>
@@ -122,8 +125,9 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
         <div class="title"><span>Personalizado</span><span class="counter">0</span></div>
         <div class="controls">
           <input class="limit" type="number" min="1" step="1" placeholder="Qtd (opcional)">
-          <button class="btn paste-code">Colar Código</button>
+          <button class="btn paste-num">Colar Números</button>
           <button class="btn paste">Colar SMS</button>
+          <button class="btn paste-code">Colar Código</button>
           <button class="btn copy">Copiar</button>
           <button class="btn reset" disabled>Zerar</button>
         </div>
@@ -154,7 +158,7 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
     </section>
   </div>
 
-  <!-- E-mail (apenas esta aba foi alterada) -->
+  <!-- E-mail (mantido com Colar Código + fluxo e-mail→6 dígitos) -->
   <div class="panel" data-panel="emails">
     <section class="block" data-title="E-mail Microsoft" data-key="emails" data-limit="custom" data-seq="emails">
       <header>
@@ -204,8 +208,8 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
   </div>
 
   <div style="color:#9aa4c7;font-size:.85rem;margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
-    <div><b>Versão:</b> v3.5.1 (02/12/2025)</div>
-    <div><b>Changelog:</b> E-mail: adicionado “Colar Código”; fluxo do “Copiar” alterna E-mail → Código 6 dígitos.</div>
+    <div><b>Versão:</b> v3.5.2 (03/12/2025)</div>
+    <div><b>Changelog:</b> Adicionado botão “Colar Números” em Conta Nova / Renovação / Personalizado; Copiar prioriza números e, ao terminar, segue para Nº → Código SMS → 6 dígitos.</div>
   </div>
 </div></div>
 
@@ -243,10 +247,8 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
   const fmtPt=d=>String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear();
   const badge=(key,{count,limit,isDone})=>{const t=document.querySelector(`.tab[data-tab="${key}"]`);if(!t)return;const b=t.querySelector('.badge');b.textContent=Number.isFinite(limit)?`${count}/${limit}`:String(count);t.classList.toggle('done',!!isDone)}
   const hookLimitInput=(el,setL,upd)=>{if(!el)return;const go=()=>{const v=parseInt(el.value||'',10);if(Number.isFinite(v)&&v>0){setL(v);upd()}};el.addEventListener('change',go);el.addEventListener('keyup',e=>{if(e.key==='Enter')go()})}
-  const truncate = (s,n=60)=> (s.length>n? (s.slice(0,n-1)+'…') : s);
-
-  /* Split de blocos */
-  function splitBlocks(text){
+  const truncate=(s,n=60)=> (s.length>n? (s.slice(0,n-1)+'…') : s);
+  const splitBlocks=(text)=>{
     if(!text) return [];
     let chunks=text.split(/\n{2,}/).map(s=>s.trim()).filter(Boolean);
     if(chunks.length<=1){
@@ -254,7 +256,8 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
                   .map(s=>s.trim()).filter(s=>s.length>0);
     }
     return chunks;
-  }
+  };
+
   function pickNumberFromBlock(b){
     let m=b.match(/N[úu]?mero\s*sem\s*DDI\s*[:\-]?\s*([+0-9()\s\-.]+)/i);
     if(m){const n=extractNoDDI(m[1]);return n}
@@ -274,11 +277,12 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
     return '';
   }
 
-  /* ===== TRIPLE (Nº → SMS → 6 dígitos) ===== */
+  /* ===== TRIPLE (Números → (Nº→SMS→6 dígitos)) ===== */
   document.querySelectorAll('.block[data-seq="triple"]').forEach(block=>{
     const key=block.dataset.key, defLim=block.dataset.limit, editor=block.querySelector('.editor');
     const copyBtn=block.querySelector('.copy'), pasteBtn=block.querySelector('.paste'),
-          pasteCodeBtn=block.querySelector('.paste-code'), resetBtn=block.querySelector('.reset');
+          pasteCodeBtn=block.querySelector('.paste-code'), pasteNumBtn=block.querySelector('.paste-num'),
+          resetBtn=block.querySelector('.reset');
     const undoBtn=block.querySelector('.undo'), skipBtn=block.querySelector('.skip');
     const counter=block.querySelector('.counter'), progress=block.querySelector('.progress'),
           bar=block.querySelector('.bar'), fill=block.querySelector('.fill');
@@ -286,14 +290,39 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
           leftEl=block.querySelector('.left'), limitIn=block.querySelector('.limit'),
           toggle=block.querySelector('.toggle-sms'), sixPill=block.querySelector('.six-pill');
 
-    const st={limit:(defLim==='custom')?null:parseInt(defLim,10),count:0,idx:0,phase:0,rows:[],six:'',locked:false,lastCopied:''};
+    const st={
+      limit:(defLim==='custom')?null:parseInt(defLim,10),
+      count:0, idx:0, phase:0,
+      rows:[],            // SMS (com Nº e código)
+      nums:[], numIdx:0,  // Números para enviar ao bot
+      six:'', locked:false, numLocked:false, lastCopied:''
+    };
+
     const canReset=()=>Number.isFinite(st.limit)&&st.count>=st.limit;
     const rest=()=>Number.isFinite(st.limit)?Math.max(st.limit-st.count,0):'∞';
     const paintBtns=()=>copyBtn.textContent=`Copiar (restantes: ${rest()})`;
     const setCounter=()=>{counter.textContent=Number.isFinite(st.limit)?`${st.count} / ${st.limit}`:String(st.count);progress.textContent=counter.textContent;badge(key,{count:st.count,limit:st.limit,isDone:canReset()})}
     const setBar=()=>{if(Number.isFinite(st.limit)){const p=Math.min(st.count/st.limit,1)*100;fill.style.width=p+'%';bar.classList.toggle('complete',st.count>=st.limit);copyBtn.disabled=st.count>=st.limit}}
-    const applyLocks=()=>{pasteBtn.disabled=st.locked&&st.idx<st.rows.length;pasteCodeBtn.disabled=!!st.six;resetBtn.disabled=!canReset()}
-    const updateUI=()=>{setCounter();setBar();applyLocks();paintBtns();detEl.textContent=String(st.rows.length||0);whatEl.textContent=['Nº','Código SMS','6 dígitos'][st.phase]||'Nº';leftEl.textContent=st.lastCopied?`Copiado: ${truncate(st.lastCopied)}`:(st.rows[st.idx]?`Registro ${st.idx+1}/${st.rows.length}`:'—');sixPill.textContent=st.six||'—';toggle.textContent=editor.classList.contains('show')?`Ocultar SMS`:`Ver SMS (${st.rows.length||0})`}
+    const applyLocks=()=>{
+      pasteBtn.disabled=st.locked&&st.idx<st.rows.length;
+      pasteNumBtn.disabled=st.numLocked&&st.numIdx<st.nums.length;
+      pasteCodeBtn.disabled=!!st.six;
+      resetBtn.disabled=!canReset();
+    }
+    const nextLabel=()=>{
+      if(st.numIdx<st.nums.length) return 'Nº (lista)';
+      return ['Nº','Código SMS','6 dígitos'][st.phase]||'Nº';
+    }
+    const updateUI=()=>{
+      setCounter();setBar();applyLocks();paintBtns();
+      detEl.textContent=String(st.rows.length||0);
+      whatEl.textContent=nextLabel();
+      leftEl.textContent=st.lastCopied?`Copiado: ${truncate(st.lastCopied)}`:
+        (st.numIdx<st.nums.length?`Números ${st.numIdx+1}/${st.nums.length}`:
+         (st.rows[st.idx]?`Registro ${st.idx+1}/${st.rows.length}`:'—'));
+      sixPill.textContent=st.six||'—';
+      toggle.textContent=editor.classList.contains('show')?`Ocultar SMS`:`Ver SMS (${st.rows.length||0})`;
+    }
     hookLimitInput(limitIn,(v)=>{st.limit=v},updateUI)
     toggle.addEventListener('click',()=>{editor.classList.toggle('show');updateUI()})
 
@@ -304,7 +333,7 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
       st.six=val;toastOK('Código definido.');updateUI()
     });
 
-    let last=null;const snapshot=()=>{last={count:st.count,idx:st.idx,phase:st.phase}};const restore=()=>{if(!last)return;Object.assign(st,last);last=null}
+    let last=null;const snapshot=()=>{last={count:st.count,idx:st.idx,phase:st.phase,numIdx:st.numIdx}};const restore=()=>{if(!last)return;Object.assign(st,last);last=null}
     undoBtn&&undoBtn.addEventListener('click',()=>{if(!last){toastOK('Nada para desfazer.');return}restore();st.lastCopied='';updateUI();toastOK('Desfeito.')})
     skipBtn&&skipBtn.addEventListener('click',()=>{last=null;if(st.idx<st.rows.length)st.idx++;st.phase=0;st.lastCopied='';if(st.idx>=st.rows.length){st.locked=false}updateUI();toastOK('Registro pulado.')})
 
@@ -329,6 +358,27 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
       }
       return out;
     }
+    function parseNumbers(text){
+      const blocks=splitBlocks(text); const out=[];
+      for(const b of blocks){
+        const n=pickNumberFromBlock(b);
+        if(n&&(n.length===10||n.length===11)) out.push(n);
+      }
+      if(!out.length){
+        const any=(text.match(/[+]?[\d()\s\-.]{10,}/g)||[]).map(x=>extractNoDDI(x)).filter(x=>x&&(x.length===10||x.length===11));
+        return any;
+      }
+      return out;
+    }
+
+    pasteNumBtn.addEventListener('click',async()=>{
+      if(st.numLocked&&st.numIdx<st.nums.length){toastOK('Finalize a lista de números antes de colar novamente.');return}
+      let text='';try{text=await navigator.clipboard.readText()}catch{} if(!text){const m=prompt('Cole blocos com os números:','');if(m!==null)text=m}
+      if(!text){toastOK('Nada colado.');return}
+      const found=parseNumbers(text); if(!found.length){toastOK('Nenhum número válido encontrado.');return}
+      st.nums.push(...found); st.numLocked=true;
+      updateUI(); toastOK(`Adicionados ${found.length} número(s).`)
+    });
 
     pasteBtn.addEventListener('click',async()=>{
       if(st.locked&&st.idx<st.rows.length){toastOK('Finalize os registros antes de colar novamente.');return}
@@ -344,15 +394,29 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
 
     copyBtn.addEventListener('click',async()=>{
       if(Number.isFinite(st.limit)&&st.count>=st.limit){toastOK('Limite atingido.');return}
+
+      /* Prioridade: copiar números (pré-etapa) */
+      if(st.numIdx<st.nums.length){
+        const num=st.nums[st.numIdx];
+        const ok=await copyClip(String(num));
+        if(!ok){toastOK('Falha ao copiar.');return}
+        snapshot(); st.numIdx++; st.lastCopied=`Número (lista): ${num}`; buzz(15);
+        if(st.numIdx>=st.nums.length){st.numLocked=false}
+        updateUI(); return;
+      }
+
+      /* Depois que números acabam, roda a sequência Nº → SMS → 6 dígitos */
       if(!st.rows.length||st.idx>=st.rows.length){toastOK('Cole SMS para continuar.'); st.locked=false; return}
       if(st.six.length!==6){toastOK('Cole o código de 6 dígitos.');return}
+
       const row=st.rows[st.idx]; let text='',label='';
       if(st.phase===0){text=row.noDDI;label='Número'}
       else if(st.phase===1){text=row.sms;label='Código SMS'}
       else {text=st.six;label='6 dígitos'}
+
       if(!text){toastOK('Conteúdo vazio.');return}
       const ok=await copyClip(String(text)); if(!ok){toastOK('Falha ao copiar.');return}
-      buzz(15); 
+      buzz(15); snapshot();
       st.lastCopied=`${label}: ${text}`;
       toastOK(truncate(st.lastCopied,70));
       if(st.phase<2) st.phase++; else {st.phase=0;st.idx++;st.count++; st.lastCopied=`Conjunto concluído. Último: ${label}: ${text}`;}
@@ -362,16 +426,18 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
 
     resetBtn.addEventListener('click',()=>{
       if(!canReset()){toastOK('Só é possível zerar após atingir o máximo.');return}
-      if(!confirm('Confirma ZERAR esta barra? (contagem, SMS e código)'))return;
-      st.count=0;st.idx=0;st.phase=0;st.rows=[];editor.textContent='';editor.classList.remove('show');st.six='';st.locked=false;st.lastCopied='';
+      if(!confirm('Confirma ZERAR esta barra? (contagem, SMS, números e código)'))return;
+      st.count=0;st.idx=0;st.phase=0;st.rows=[];editor.textContent='';editor.classList.remove('show');
+      st.six='';st.locked=false;st.lastCopied='';
+      st.nums=[];st.numIdx=0;st.numLocked=false;
       if(defLim==='custom'){st.limit=null;if(limitIn)limitIn.value=''}
       bar.classList.remove('complete');copyBtn.disabled=false;updateUI();toastOK('Zerado.')
     });
 
-    updateUI();
+    paintBtns(); updateUI();
   });
 
-  /* ===== Receber SMS (números) ===== */
+  /* ===== Receber SMS (números) — sem mudanças ===== */
   document.querySelectorAll('.block[data-seq="nums"]').forEach(block=>{
     const editor=block.querySelector('.editor');
     const copyBtn=block.querySelector('.copy'), pasteBtn=block.querySelector('.paste'), resetBtn=block.querySelector('.reset');
@@ -426,7 +492,7 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
     updateUI();
   });
 
-  /* ===== E-mails (ALTERADO) ===== */
+  /* ===== E-mails (mantido) ===== */
   document.querySelectorAll('.block[data-seq="emails"]').forEach(block=>{
     const editor=block.querySelector('.editor');
     const copyBtn=block.querySelector('.copy'), pasteBtn=block.querySelector('.paste'),
@@ -508,10 +574,7 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
     const setCounter=()=>{counter.textContent=String(st.count);progress.textContent=String(st.count);badge('conta',{count:st.count,limit:st.rows.length,isDone:canReset()})}
     const setBar=()=>{const total=st.rows.length||1;const p=Math.min(st.count/total,1)*100;fill.style.width=p+'%';bar.classList.toggle('complete',st.rows.length>0&&st.count>=st.rows.length);copyBtn.disabled=st.rows.length>0&&st.count>=st.rows.length}
     const updateUI=()=>{setCounter();setBar();pasteBtn.disabled=st.locked;resetBtn.disabled=!canReset();detEl.textContent=String(st.rows.length||0);whatEl.textContent='Conta';toggle.textContent=editor.classList.contains('show')?'Ocultar SMS':`Ver SMS (${st.rows.length||0})`}
-    hookLimitInput(limitIn,(v)=>{st.limit=v},updateUI)
-    toggle.addEventListener('click',()=>{editor.classList.toggle('show');updateUI()})
-
-    function parseAccounts(text){
+    const parseAccounts=(text)=>{
       const blocks=splitBlocks(text); const out=[];
       let pendN=null, pendC=null, pendD=null;
       for(const b of blocks){
@@ -524,6 +587,8 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
       }
       return out;
     }
+    hookLimitInput(limitIn,(v)=>{st.limit=v},updateUI)
+    toggle.addEventListener('click',()=>{editor.classList.toggle('show');updateUI()})
 
     pasteBtn.addEventListener('click',async()=>{
       if(st.locked){toastOK('Já colado. Zere para colar novamente.');return}
@@ -538,7 +603,7 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
       if(!st.rows.length||st.idx>=st.rows.length){toastOK('Cole os SMS para continuar.');return}
       const row=st.rows[st.idx];
       const dt=row.dt?(parsePtDate(row.dt)||parseIsoDate(row.dt)):new Date();
-      const venc=fmtPt(addMonths(dt,1)); // data do SMS + 1 mês
+      const venc=fmtPt(addMonths(dt,1));
       const texto=
 `UNITV
 📱 Conta UniTv
