@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Criação UniTv — v3.5.3</title>
+<title>Criação UniTv — v3.5.5</title>
 <style>
 :root{
   --bg:#0b1020;--card:#0f152b;--ink:#e8ecff;--muted:#9aa4c7;--stroke:#202744;--bar:#162044;
@@ -212,14 +212,14 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
   </div>
 
   <div style="color:#9aa4c7;font-size:.85rem;margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
-    <div><b>Versão:</b> v3.5.3 (03/12/2025)</div>
-    <div><b>Changelog:</b> Adicionado botão “Zerar Tudo” no final do site (com confirmação). Sem outras alterações.</div>
+    <div><b>Versão:</b> v3.5.5 (03/12/2025)</div>
+    <div><b>Changelog:</b> Persistência automática (localStorage). Atualizar/reabrir não limpa. “Zerar Tudo” no rodapé apaga e recarrega.</div>
   </div>
 
   <!-- ZERAR TUDO -->
   <div class="global-reset">
     <button id="resetAllBtn" class="btn reset">Zerar Tudo</button>
-    <span>Dica: isso recarrega a página e limpa todo o progresso atual.</span>
+    <span>Dica: isso recarrega a página e limpa o progresso salvo.</span>
   </div>
 
 </div></div>
@@ -228,6 +228,11 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
 
 <script>
 (function(){
+  /* =========== Persistência (localStorage) =========== */
+  const APPKEY='cut-3.5.5';
+  const save=(k,obj)=>{ try{ localStorage.setItem(APPKEY+'::'+k, JSON.stringify(obj)); }catch(e){} };
+  const load=(k)=>{ try{ const raw=localStorage.getItem(APPKEY+'::'+k); return raw?JSON.parse(raw):null; }catch(e){ return null } };
+
   /* Tabs */
   const panels=[...document.querySelectorAll('.panel')];
   const tabs=[...document.querySelectorAll('.tab')];
@@ -288,6 +293,10 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
     return '';
   }
 
+  /* ---------- Funções genéricas de persistência por bloco ---------- */
+  function persistBlock(key, payload){ save('block:'+key, payload); }
+  function restoreBlock(key){ return load('block:'+key) || null; }
+
   /* ===== TRIPLE (Números → (Nº→SMS→6 dígitos)) ===== */
   document.querySelectorAll('.block[data-seq="triple"]').forEach(block=>{
     const key=block.dataset.key, defLim=block.dataset.limit, editor=block.querySelector('.editor');
@@ -324,6 +333,12 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
       if(st.numIdx<st.nums.length) return 'Nº (lista)';
       return ['Nº','Código SMS','6 dígitos'][st.phase]||'Nº';
     }
+    const snapshotForSave=()=>({
+      limit:st.limit,count:st.count,idx:st.idx,phase:st.phase,
+      rows:st.rows,nums:st.nums,numIdx:st.numIdx,six:st.six,
+      locked:st.locked,numLocked:st.numLocked,lastCopied:st.lastCopied,
+      editor:editor.textContent||''
+    });
     const updateUI=()=>{
       setCounter();setBar();applyLocks();paintBtns();
       detEl.textContent=String(st.rows.length||0);
@@ -333,9 +348,23 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
          (st.rows[st.idx]?`Registro ${st.idx+1}/${st.rows.length}`:'—'));
       sixPill.textContent=st.six||'—';
       toggle.textContent=editor.classList.contains('show')?`Ocultar SMS`:`Ver SMS (${st.rows.length||0})`;
-    }
+      persistBlock(key, snapshotForSave());
+    };
     hookLimitInput(limitIn,(v)=>{st.limit=v},updateUI)
     toggle.addEventListener('click',()=>{editor.classList.toggle('show');updateUI()})
+
+    /* RESTORE */
+    (function restore(){
+      const saved=restoreBlock(key);
+      if(saved){
+        st.limit=(defLim==='custom')?(Number.isFinite(saved.limit)?saved.limit:null):parseInt(defLim,10);
+        st.count=saved.count||0; st.idx=saved.idx||0; st.phase=saved.phase||0;
+        st.rows=Array.isArray(saved.rows)?saved.rows:[]; st.nums=Array.isArray(saved.nums)?saved.nums:[];
+        st.numIdx=saved.numIdx||0; st.six=saved.six||''; st.locked=!!saved.locked; st.numLocked=!!saved.numLocked;
+        st.lastCopied=saved.lastCopied||''; if(typeof saved.editor==='string') editor.textContent=saved.editor;
+      }
+      updateUI();
+    })();
 
     pasteCodeBtn.addEventListener('click',async()=>{
       if(st.six){toastOK('Código já definido. Zere para trocar.');return}
@@ -344,8 +373,8 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
       st.six=val;toastOK('Código definido.');updateUI()
     });
 
-    let last=null;const snapshot=()=>{last={count:st.count,idx:st.idx,phase:st.phase,numIdx:st.numIdx}};const restore=()=>{if(!last)return;Object.assign(st,last);last=null}
-    undoBtn&&undoBtn.addEventListener('click',()=>{if(!last){toastOK('Nada para desfazer.');return}restore();st.lastCopied='';updateUI();toastOK('Desfeito.')})
+    let last=null;const snapshot=()=>{last={count:st.count,idx:st.idx,phase:st.phase,numIdx:st.numIdx}};const restoreSnap=()=>{if(!last)return;Object.assign(st,last);last=null}
+    undoBtn&&undoBtn.addEventListener('click',()=>{if(!last){toastOK('Nada para desfazer.');return}restoreSnap();st.lastCopied='';updateUI();toastOK('Desfeito.')})
     skipBtn&&skipBtn.addEventListener('click',()=>{last=null;if(st.idx<st.rows.length)st.idx++;st.phase=0;st.lastCopied='';if(st.idx>=st.rows.length){st.locked=false}updateUI();toastOK('Registro pulado.')})
 
     function parseSmsBlocks(text){
@@ -416,13 +445,13 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
         updateUI(); return;
       }
 
-      /* Depois que números acabam, roda a sequência Nº → SMS → 6 dígitos */
+      /* Depois que números acabam, roda a sequência Nº → SMS(+a) → 6 dígitos */
       if(!st.rows.length||st.idx>=st.rows.length){toastOK('Cole SMS para continuar.'); st.locked=false; return}
       if(st.six.length!==6){toastOK('Cole o código de 6 dígitos.');return}
 
       const row=st.rows[st.idx]; let text='',label='';
       if(st.phase===0){text=row.noDDI;label='Número'}
-      else if(st.phase===1){text=row.sms;label='Código SMS'}
+      else if(st.phase===1){text=row.sms+'a';label='Código SMS'}
       else {text=st.six;label='6 dígitos'}
 
       if(!text){toastOK('Conteúdo vazio.');return}
@@ -450,6 +479,7 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
 
   /* ===== Receber SMS (números) ===== */
   document.querySelectorAll('.block[data-seq="nums"]').forEach(block=>{
+    const key=block.dataset.key;
     const editor=block.querySelector('.editor');
     const copyBtn=block.querySelector('.copy'), pasteBtn=block.querySelector('.paste'), resetBtn=block.querySelector('.reset');
     const counter=block.querySelector('.counter'), progress=block.querySelector('.progress'), bar=block.querySelector('.bar'), fill=block.querySelector('.fill');
@@ -458,7 +488,17 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
     const canReset=()=>st.rows.length>0&&st.count>=st.rows.length;
     const setCounter=()=>{counter.textContent=`${st.count} / ${st.rows.length}`;progress.textContent=counter.textContent;badge('nums',{count:st.count,limit:st.rows.length,isDone:canReset()})}
     const setBar=()=>{const total=st.rows.length||1;const p=Math.min(st.count/total,1)*100;fill.style.width=p+'%';bar.classList.toggle('complete',st.rows.length>0&&st.count>=st.rows.length);copyBtn.disabled=st.rows.length>0&&st.count>=st.rows.length}
-    const updateUI=()=>{setCounter();setBar();pasteBtn.disabled=st.locked;resetBtn.disabled=!canReset();detEl.textContent=String(st.rows.length||0);whatEl.textContent='Nº';leftEl.textContent=st.rows[st.idx]?`Registro ${st.idx+1}/${st.rows.length}`:'—';toggle.textContent=editor.classList.contains('show')?'Ocultar lista':`Ver lista (${st.rows.length||0})`}
+    const updateUI=()=>{setCounter();setBar();pasteBtn.disabled=st.locked;resetBtn.disabled=!canReset();detEl.textContent=String(st.rows.length||0);whatEl.textContent='Nº';leftEl.textContent=st.rows[st.idx]?`Registro ${st.idx+1}/${st.rows.length}`:'—';toggle.textContent=editor.classList.contains('show')?'Ocultar lista':`Ver lista (${st.rows.length||0})`;persistBlock(key,{...st,editor:editor.textContent||''})}
+
+    /* RESTORE */
+    (function restore(){
+      const saved=restoreBlock(key);
+      if(saved){
+        st.count=saved.count||0; st.idx=saved.idx||0; st.rows=Array.isArray(saved.rows)?saved.rows:[]; st.locked=!!saved.locked;
+        if(typeof saved.editor==='string') editor.textContent=saved.editor;
+      }
+      updateUI();
+    })();
 
     function splitPerBlockOrAll(text){
       const blocks=splitBlocks(text); if(blocks.length>1) return blocks;
@@ -499,12 +539,11 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
       if(!confirm('Confirma ZERAR esta barra?'))return;
       st.count=0;st.idx=0;st.rows=[];st.locked=false;editor.textContent='';editor.classList.remove('show');bar.classList.remove('complete');copyBtn.disabled=false;updateUI();toastOK('Zerado.')
     });
-
-    updateUI();
   });
 
   /* ===== E-mails ===== */
   document.querySelectorAll('.block[data-seq="emails"]').forEach(block=>{
+    const key=block.dataset.key;
     const editor=block.querySelector('.editor');
     const copyBtn=block.querySelector('.copy'), pasteBtn=block.querySelector('.paste'),
           pasteCodeBtn=block.querySelector('.paste-code'), resetBtn=block.querySelector('.reset');
@@ -518,9 +557,22 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
     const canReset=()=>st.rows.length>0&&st.count>=st.rows.length;
     const setCounter=()=>{counter.textContent=String(st.count);progress.textContent=String(st.count);badge('emails',{count:st.count,limit:st.rows.length,isDone:canReset()})}
     const setBar=()=>{const total=st.rows.length||1;const p=Math.min(st.count/total,1)*100;fill.style.width=p+'%';bar.classList.toggle('complete',st.rows.length>0&&st.count>=st.rows.length);copyBtn.disabled=st.rows.length>0&&st.count>=st.rows.length}
-    const updateUI=()=>{setCounter();setBar();pasteBtn.disabled=st.locked;resetBtn.disabled=!canReset();detEl.textContent=String(st.rows.length||0);whatEl.textContent=(st.next==='email'?'local':'código');toggle.textContent=editor.classList.contains('show')?'Ocultar lista':`Ver lista (${st.rows.length||0})`;leftEl.textContent=st.last||'—'}
+    const updateUI=()=>{setCounter();setBar();pasteBtn.disabled=st.locked;resetBtn.disabled=!canReset();detEl.textContent=String(st.rows.length||0);whatEl.textContent=(st.next==='email'?'local':'código');toggle.textContent=editor.classList.contains('show')?'Ocultar lista':`Ver lista (${st.rows.length||0})`;leftEl.textContent=st.last||'—';persistBlock(key,{...st,editor:editor.textContent||'',domain:domainSel.value,full:fullChk.checked})}
     hookLimitInput(limitIn,(v)=>{st.limit=v},updateUI)
     toggle.addEventListener('click',()=>{editor.classList.toggle('show');updateUI()})
+
+    /* RESTORE */
+    (function restore(){
+      const saved=restoreBlock(key);
+      if(saved){
+        st.count=saved.count||0; st.idx=saved.idx||0; st.rows=Array.isArray(saved.rows)?saved.rows:[]; st.locked=!!saved.locked;
+        st.next=saved.next||'email'; st.six=saved.six||''; st.last=saved.last||'';
+        if(typeof saved.editor==='string') editor.textContent=saved.editor;
+        if(saved.domain) domainSel.value=saved.domain;
+        if(typeof saved.full==='boolean') fullChk.checked=saved.full;
+      }
+      updateUI();
+    })();
 
     function parseEmails(text){
       const locals=[];
@@ -570,12 +622,11 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
       st.count=0;st.idx=0;st.rows=[];st.locked=false;st.six='';st.next='email';st.last='';
       editor.textContent='';editor.classList.remove('show');bar.classList.remove('complete');copyBtn.disabled=false;updateUI();toastOK('Zerado.')
     });
-
-    updateUI();
   });
 
   /* ===== Conta formatada ===== */
   document.querySelectorAll('.block[data-seq="account"]').forEach(block=>{
+    const key=block.dataset.key;
     const editor=block.querySelector('.editor');
     const copyBtn=block.querySelector('.copy'), pasteBtn=block.querySelector('.paste'), resetBtn=block.querySelector('.reset');
     const counter=block.querySelector('.counter'), progress=block.querySelector('.progress'), bar=block.querySelector('.bar'), fill=block.querySelector('.fill');
@@ -584,7 +635,7 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
     const canReset=()=>st.rows.length>0&&st.count>=st.rows.length;
     const setCounter=()=>{counter.textContent=String(st.count);progress.textContent=String(st.count);badge('conta',{count:st.count,limit:st.rows.length,isDone:canReset()})}
     const setBar=()=>{const total=st.rows.length||1;const p=Math.min(st.count/total,1)*100;fill.style.width=p+'%';bar.classList.toggle('complete',st.rows.length>0&&st.count>=st.rows.length);copyBtn.disabled=st.rows.length>0&&st.count>=st.rows.length}
-    const updateUI=()=>{setCounter();setBar();pasteBtn.disabled=st.locked;resetBtn.disabled=!canReset();detEl.textContent=String(st.rows.length||0);whatEl.textContent='Conta';toggle.textContent=editor.classList.contains('show')?'Ocultar SMS':`Ver SMS (${st.rows.length||0})`}
+    const updateUI=()=>{setCounter();setBar();pasteBtn.disabled=st.locked;resetBtn.disabled=!canReset();detEl.textContent=String(st.rows.length||0);whatEl.textContent='Conta';toggle.textContent=editor.classList.contains('show')?'Ocultar SMS':`Ver SMS (${st.rows.length||0})`;persistBlock(key,{...st,editor:editor.textContent||''})}
     const parseAccounts=(text)=>{
       const blocks=splitBlocks(text); const out=[];
       let pendN=null, pendC=null, pendD=null;
@@ -601,6 +652,16 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
     hookLimitInput(limitIn,(v)=>{st.limit=v},updateUI)
     toggle.addEventListener('click',()=>{editor.classList.toggle('show');updateUI()})
 
+    /* RESTORE */
+    (function restore(){
+      const saved=restoreBlock(key);
+      if(saved){
+        st.count=saved.count||0; st.idx=saved.idx||0; st.rows=Array.isArray(saved.rows)?saved.rows:[]; st.locked=!!saved.locked;
+        if(typeof saved.editor==='string') editor.textContent=saved.editor;
+      }
+      updateUI();
+    })();
+
     pasteBtn.addEventListener('click',async()=>{
       if(st.locked){toastOK('Já colado. Zere para colar novamente.');return}
       let text='';try{text=await navigator.clipboard.readText()}catch{} if(!text){const m=prompt('Cole os SMS:','');if(m!==null)text=m}
@@ -615,12 +676,14 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
       const row=st.rows[st.idx];
       const dt=row.dt?(parsePtDate(row.dt)||parseIsoDate(row.dt)):new Date();
       const venc=fmtPt(addMonths(dt,1));
+      const senha=row.sms+'a'; /* <- código de SMS + 'a' */
+
       const texto=
 `UNITV
 📱 Conta UniTv
 
 Conta: ${fmtPhone(row.noDDI)}
-Senha: ${row.sms}
+Senha: ${senha}
 
 📅 Vencimento: ${venc}
 
@@ -637,8 +700,6 @@ Senha: ${row.sms}
       if(!confirm('Confirma ZERAR esta barra?'))return;
       st.count=0;st.idx=0;st.rows=[];st.locked=false;editor.textContent='';editor.classList.remove('show');bar.classList.remove('complete');copyBtn.disabled=false;updateUI();toastOK('Zerado.')
     });
-
-    updateUI();
   });
 
   /* ===== Global Reset (Zerar Tudo) ===== */
