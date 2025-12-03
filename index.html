@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Criação UniTv — v3.5.2</title>
+<title>Criação UniTv — v3.5.3</title>
 <style>
 :root{
   --bg:#0b1020;--card:#0f152b;--ink:#e8ecff;--muted:#9aa4c7;--stroke:#202744;--bar:#162044;
@@ -61,6 +61,10 @@ button[disabled]{opacity:.55}
 .toast.show{opacity:1}
 input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;border-radius:10px;padding:12px 10px;font-weight:800}
 @media(max-width:480px){.controls,.row-ghost{grid-template-columns:1fr 1fr}}
+
+/* Global reset section */
+.global-reset{margin-top:10px;display:flex;align-items:center;gap:10px;color:#9aa4c7;font-size:.85rem}
+.global-reset .btn{padding:10px 12px}
 </style>
 </head>
 <body>
@@ -158,7 +162,7 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
     </section>
   </div>
 
-  <!-- E-mail (mantido com Colar Código + fluxo e-mail→6 dígitos) -->
+  <!-- E-mail -->
   <div class="panel" data-panel="emails">
     <section class="block" data-title="E-mail Microsoft" data-key="emails" data-limit="custom" data-seq="emails">
       <header>
@@ -208,9 +212,16 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
   </div>
 
   <div style="color:#9aa4c7;font-size:.85rem;margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
-    <div><b>Versão:</b> v3.5.2 (03/12/2025)</div>
-    <div><b>Changelog:</b> Adicionado botão “Colar Números” em Conta Nova / Renovação / Personalizado; Copiar prioriza números e, ao terminar, segue para Nº → Código SMS → 6 dígitos.</div>
+    <div><b>Versão:</b> v3.5.3 (03/12/2025)</div>
+    <div><b>Changelog:</b> Adicionado botão “Zerar Tudo” no final do site (com confirmação). Sem outras alterações.</div>
   </div>
+
+  <!-- ZERAR TUDO -->
+  <div class="global-reset">
+    <button id="resetAllBtn" class="btn reset">Zerar Tudo</button>
+    <span>Dica: isso recarrega a página e limpa todo o progresso atual.</span>
+  </div>
+
 </div></div>
 
 <div class="toast" id="toast">Pronto!</div>
@@ -437,7 +448,7 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
     paintBtns(); updateUI();
   });
 
-  /* ===== Receber SMS (números) — sem mudanças ===== */
+  /* ===== Receber SMS (números) ===== */
   document.querySelectorAll('.block[data-seq="nums"]').forEach(block=>{
     const editor=block.querySelector('.editor');
     const copyBtn=block.querySelector('.copy'), pasteBtn=block.querySelector('.paste'), resetBtn=block.querySelector('.reset');
@@ -492,7 +503,7 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
     updateUI();
   });
 
-  /* ===== E-mails (mantido) ===== */
+  /* ===== E-mails ===== */
   document.querySelectorAll('.block[data-seq="emails"]').forEach(block=>{
     const editor=block.querySelector('.editor');
     const copyBtn=block.querySelector('.copy'), pasteBtn=block.querySelector('.paste'),
@@ -628,6 +639,15 @@ Senha: ${row.sms}
     });
 
     updateUI();
+  });
+
+  /* ===== Global Reset (Zerar Tudo) ===== */
+  const resetAllBtn=document.getElementById('resetAllBtn');
+  resetAllBtn.addEventListener('click',()=>{
+    if(confirm('Deseja ZERAR TUDO? Isso limpa o progresso atual e recarrega a página.')){
+      try{ localStorage.clear(); sessionStorage.clear(); }catch(e){}
+      location.reload();
+    }
   });
 })();
 </script>
