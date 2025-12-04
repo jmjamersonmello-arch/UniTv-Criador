@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Criação UniTv — v3.9.4</title>
+<title>Criação UniTv — v3.9.6</title>
 <style>
 :root{
   --bg:#0b1020;--card:#0f152b;--ink:#e8ecff;--muted:#9aa4c7;--stroke:#202744;--bar:#162044;
@@ -320,6 +320,7 @@ input.limit{
           <button class="btn gen3-code-paste">Colar código (6 dígitos)</button>
           <button class="btn gen3-generate">Gerar 3 e-mails</button>
           <button class="btn copy gen3-copy">Copiar sequência</button>
+          <button class="btn ghost gen3-softreset" disabled>Zerar e-mails</button>
           <button class="btn reset gen3-reset" disabled>Zerar</button>
         </div>
       </header>
@@ -327,7 +328,8 @@ input.limit{
         E1: <b class="gen3-e1">—</b> ·
         E2: <b class="gen3-e2">—</b> ·
         E3: <b class="gen3-e3">—</b> ·
-        Código: <b class="gen3-code">—</b>
+        Código: <b class="gen3-code">—</b> ·
+        Cópias de código: <b class="gen3-code-count">0</b>
       </div>
       <div class="status">
         <span class="left gen3-left">
@@ -358,8 +360,8 @@ input.limit{
   </div>
 
   <div style="color:#9aa4c7;font-size:.85rem;margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
-    <div><b>Versão:</b> v3.9.4 (03/12/2025)</div>
-    <div><b>Changelog:</b> Pacote 3 (menu E-mail) ajustado para fluxo: 3 e-mails separados + senha, depois E1,código,E2,código,E3,código (tudo separado, sempre sem @).</div>
+    <div><b>Versão:</b> v3.9.6 (03/12/2025)</div>
+    <div><b>Changelog:</b> Pacote 3 (menu E-mail) ganhou botão “Zerar e-mails” que limpa e-mails e etapas, mas mantém o código e o contador de cópias. O botão “Zerar” continua resetando tudo.</div>
   </div>
 </div></div>
 
@@ -876,11 +878,13 @@ Senha: ${row.sms}
     const btnPasteCode=root.querySelector('.gen3-code-paste');
     const btnGenerate=root.querySelector('.gen3-generate');
     const btnCopy=root.querySelector('.gen3-copy');
+    const btnSoftReset=root.querySelector('.gen3-softreset');
     const btnReset=root.querySelector('.gen3-reset');
     const lblE1=root.querySelector('.gen3-e1');
     const lblE2=root.querySelector('.gen3-e2');
     const lblE3=root.querySelector('.gen3-e3');
     const lblCode=root.querySelector('.gen3-code');
+    const lblCodeCount=root.querySelector('.gen3-code-count');
     const lblStep=root.querySelector('.step-label');
     const lblProg=root.querySelector('.gen3-progress');
     const lblLeft=root.querySelector('.gen3-left');
@@ -912,7 +916,7 @@ Senha: ${row.sms}
       return local;
     }
 
-    const st={emails:[],code:'',step:0,totalSteps:0,done:false};
+    const st={emails:[],code:'',step:0,totalSteps:0,done:false,codeCopies:0};
     const FIXED_PASS='12345jm@';
 
     function refreshUI(){
@@ -920,10 +924,12 @@ Senha: ${row.sms}
       lblE2.textContent=st.emails[1]||'—';
       lblE3.textContent=st.emails[2]||'—';
       lblCode.textContent=st.code||'—';
+      lblCodeCount.textContent=st.codeCopies;
       lblStep.textContent=`Etapa: ${st.step} / ${st.totalSteps||0}`;
       lblProg.textContent=`${st.step} / ${st.totalSteps||0}`;
       btnCopy.disabled=!st.emails.length || !st.code || st.done;
-      btnReset.disabled=st.step===0 && !st.emails.length && !st.code;
+      btnSoftReset.disabled=!st.emails.length && st.step===0;
+      btnReset.disabled=st.step===0 && !st.emails.length && !st.code && st.codeCopies===0;
     }
 
     btnGenerate.addEventListener('click',()=>{
@@ -987,6 +993,7 @@ Senha: ${row.sms}
         case 6:
           out=st.code;
           msg='Código copiado (par 1)';
+          st.codeCopies++;
           break;
         case 7:
           out=locals[1];
@@ -995,6 +1002,7 @@ Senha: ${row.sms}
         case 8:
           out=st.code;
           msg='Código copiado (par 2)';
+          st.codeCopies++;
           break;
         case 9:
           out=locals[2];
@@ -1003,6 +1011,7 @@ Senha: ${row.sms}
         case 10:
           out=st.code;
           msg='Código copiado (par 3)';
+          st.codeCopies++;
           break;
         default:
           st.step=st.totalSteps;
@@ -1013,7 +1022,7 @@ Senha: ${row.sms}
       }
 
       const ok=await copyClip(out);
-      if(!ok){toastOK('Falha ao copiar.');st.step--;return}
+      if(!ok){toastOK('Falha ao copiar.');st.step--;if([6,8,10].includes(st.step+1))st.codeCopies--;refreshUI();return}
       buzz(15);toastOK(msg);
 
       if(st.step>=st.totalSteps){
@@ -1023,9 +1032,26 @@ Senha: ${row.sms}
       refreshUI();
     });
 
+    /* ZERADOR PARCIAL: limpa apenas e-mails + etapas, mantém código e contador */
+    btnSoftReset.addEventListener('click',()=>{
+      if(!st.emails.length && st.step===0){
+        toastOK('Nada para zerar (e-mails).');
+        return;
+      }
+      if(!confirm('Zerar apenas os e-mails e etapas? Código e contador serão mantidos.'))return;
+      st.emails=[];
+      st.step=0;
+      st.totalSteps=0;
+      st.done=false;
+      lblLeft.textContent='Fluxo: 1=E1, 2=senha, 3=E2, 4=E3, depois: E1,código,E2,código,E3,código (sempre sem @)';
+      refreshUI();
+      toastOK('E-mails zerados. Código e contador mantidos.');
+    });
+
+    /* ZERAR TOTAL: limpa tudo, incluindo código e contador */
     btnReset.addEventListener('click',()=>{
-      if(!confirm('Zerar o pacote 3 E-mails + Código?'))return;
-      st.emails=[];st.code='';st.step=0;st.totalSteps=0;st.done=false;
+      if(!confirm('Zerar TUDO do pacote 3 (e-mails, código e contador)?'))return;
+      st.emails=[];st.code='';st.step=0;st.totalSteps=0;st.done=false;st.codeCopies=0;
       lblLeft.textContent='Fluxo: 1=E1, 2=senha, 3=E2, 4=E3, depois: E1,código,E2,código,E3,código (sempre sem @)';
       refreshUI();toastOK('Pacote 3 E-mails + Código zerado.');
     });
