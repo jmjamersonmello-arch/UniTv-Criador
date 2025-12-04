@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Criação UniTv — v3.9.7</title>
+<title>Criação UniTv — v3.9.8</title>
 <style>
 :root{
   --bg:#0b1020;--card:#0f152b;--ink:#e8ecff;--muted:#9aa4c7;--stroke:#202744;--bar:#162044;
@@ -87,7 +87,7 @@ button.btn{
   background:linear-gradient(180deg,var(--blue1),var(--blue2));
   color:#001524;border-color:#0a5580
 }
-/* NOVO: botão COLAR NÚMERO (azul) */
+/* COLAR NÚMERO (azul) */
 .btn.paste-num{
   background:linear-gradient(180deg,var(--blue1),var(--blue2));
   color:#001524;
@@ -137,14 +137,22 @@ button[disabled]{opacity:.55}
   position:relative;overflow:hidden
 }
 .fill{
-  position:absolute;inset:0 auto 0 0;
-  width:0%;
-  background:linear-gradient(90deg,var(--primary),var(--primary2));
-  transition:width .25s,background .25s
+  position:absolute;inset:0;
 }
-.bar.complete .fill{
-  width:100%!important;
-  background:linear-gradient(90deg,var(--ok),var(--ok2))
+.fill-num,.fill-sms{
+  position:absolute;top:0;left:0;height:100%;
+  width:0%;
+  transition:width .25s;
+}
+.fill-num{
+  background:linear-gradient(90deg,var(--blue1),var(--blue2));
+}
+.fill-sms{
+  background:linear-gradient(90deg,#ec4899,#db2777);
+}
+.bar.complete .fill-num,
+.bar.complete .fill-sms{
+  opacity:.9;
 }
 .status{
   display:flex;justify-content:space-between;
@@ -319,7 +327,7 @@ input.limit{
       <div class="status"><span class="left">—</span><span class="progress">0</span></div>
     </section>
 
-    <!-- ÚNICA FERRAMENTA EXTRA: Pacote 3 E-mails + Código -->
+    <!-- PACOTE 3 E-mails + Código -->
     <section class="block" id="email-pack3-tool">
       <header>
         <div class="title">
@@ -370,9 +378,12 @@ input.limit{
   </div>
 
   <div style="color:#9aa4c7;font-size:.85rem;margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
-    <div><b>Versão:</b> v3.9.7 (03/12/2025)</div>
-    <div><b>Changelog:</b> Botão “Colar Número” (azul) nos menus Conta Nova / Renovação / Personalizado: recebe SMS com número + DDI, guarda fila de números sem DDI com prioridade na cópia, e fica “pressionado” enquanto houver números pendentes.</div>
+    <div><b>Versão:</b> v3.9.8 (04/12/2025)</div>
+    <div><b>Changelog:</b> Barra dupla azul/rosa (número x SMS), botão “Colar Número” pressionado com fila ativa e salvamento automático no navegador (só zera tudo no botão final).</div>
   </div>
+
+  <button class="btn reset" id="reset-all" style="margin-top:8px;width:100%;">Zerar tudo (site)</button>
+
 </div></div>
 
 <div class="toast" id="toast">Pronto!</div>
@@ -432,15 +443,43 @@ input.limit{
     b.textContent=Number.isFinite(limit)?`${count}/${limit}`:String(count);
     t.classList.toggle('done',!!isDone)
   };
-  const hookLimitInput=(el,setL,upd)=>{
-    if(!el)return;
-    const go=()=>{
-      const v=parseInt(el.value||'',10);
-      if(Number.isFinite(v)&&v>0){setL(v);upd()}
-    };
-    el.addEventListener('change',go);
-    el.addEventListener('keyup',e=>{if(e.key==='Enter')go()})
-  };
+
+  /* Persistência */
+  const STORAGE_KEY='unitv_v398_state';
+  const stateRegistry=[];
+  let saveTimer=null;
+  function saveAll(){
+    const payload={blocks:{},pack3:null};
+    stateRegistry.forEach(reg=>{
+      payload.blocks[reg.key]=reg.get();
+    });
+    if(typeof window.pack3GetState==='function'){
+      payload.pack3=window.pack3GetState();
+    }
+    try{
+      localStorage.setItem(STORAGE_KEY,JSON.stringify(payload));
+    }catch(e){}
+  }
+  function queueSave(){
+    clearTimeout(saveTimer);
+    saveTimer=setTimeout(saveAll,200);
+  }
+  function loadAll(){
+    let data=null;
+    try{
+      const raw=localStorage.getItem(STORAGE_KEY);
+      if(!raw)return;
+      data=JSON.parse(raw);
+    }catch(e){return}
+    if(data && data.blocks){
+      stateRegistry.forEach(reg=>{
+        if(data.blocks[reg.key]) reg.set(data.blocks[reg.key]);
+      });
+    }
+    if(data && data.pack3 && typeof window.pack3SetState==='function'){
+      window.pack3SetState(data.pack3);
+    }
+  }
 
   function splitBlocks(text){
     if(!text) return [];
@@ -475,6 +514,16 @@ input.limit{
     return '';
   }
 
+  const hookLimitInput=(el,setL,upd)=>{
+    if(!el)return;
+    const go=()=>{
+      const v=parseInt(el.value||'',10);
+      if(Number.isFinite(v)&&v>0){setL(v);upd()}
+    };
+    el.addEventListener('change',go);
+    el.addEventListener('keyup',e=>{if(e.key==='Enter')go()})
+  };
+
   /* ===== TRIPLE (Nº → SMS → 6 dígitos) ===== */
   document.querySelectorAll('.block[data-seq="triple"]').forEach(block=>{
     const key=block.dataset.key, defLim=block.dataset.limit, editor=block.querySelector('.editor');
@@ -488,10 +537,18 @@ input.limit{
           leftEl=block.querySelector('.left'), limitIn=block.querySelector('.limit'),
           toggle=block.querySelector('.toggle-sms'), sixPill=block.querySelector('.six-pill');
 
+    let fillNum=fill.querySelector('.fill-num');
+    let fillSms=fill.querySelector('.fill-sms');
+    if(!fillNum){
+      fillNum=document.createElement('div');fillNum.className='fill-num';
+      fillSms=document.createElement('div');fillSms.className='fill-sms';
+      fill.appendChild(fillNum);fill.appendChild(fillSms);
+    }
+
     const st={
       limit:(defLim==='custom')?null:parseInt(defLim,10),
       count:0,idx:0,phase:0,rows:[],six:'',locked:false,lastCopied:'',
-      numRows:[],numIdx:0  // FILA PRIORITÁRIA DE NÚMEROS (COLAR NÚMERO)
+      numRows:[],numIdx:0
     };
     const canReset=()=>Number.isFinite(st.limit)&&st.count>=st.limit;
     const rest=()=>Number.isFinite(st.limit)?Math.max(st.limit-st.count,0):'∞';
@@ -502,10 +559,14 @@ input.limit{
       badge(key,{count:st.count,limit:st.limit,isDone:canReset()})
     };
     const setBar=()=>{
+      const numTotal=st.numRows.length||0;
+      const smsTotal=(Number.isFinite(st.limit)&&st.limit>0)?st.limit:st.rows.length;
+      const numPct=numTotal?Math.min(st.numIdx/numTotal,1)*100:0;
+      const smsPct=smsTotal?Math.min(st.count/smsTotal,1)*100:0;
+      fillNum.style.width=numPct+'%';
+      fillSms.style.width=smsPct+'%';
+      bar.classList.toggle('complete',(numTotal===0||st.numIdx>=numTotal)&&(smsTotal>0&&st.count>=smsTotal));
       if(Number.isFinite(st.limit)){
-        const p=Math.min(st.count/st.limit,1)*100;
-        fill.style.width=p+'%';
-        bar.classList.toggle('complete',st.count>=st.limit);
         copyBtn.disabled=st.count>=st.limit;
       }
     };
@@ -524,9 +585,9 @@ input.limit{
       leftEl.textContent=st.lastCopied?truncate(st.lastCopied,70):(st.rows[st.idx]?`Registro ${st.idx+1}/${st.rows.length}`:'—');
       sixPill.textContent=st.six||'—';
       toggle.textContent=editor.classList.contains('show')?`Ocultar SMS`:`Ver SMS (${st.rows.length||0})`;
+      queueSave();
     };
-    const hookLimitInputLocal=(el,setL)=>hookLimitInput(el,setL,updateUI);
-    hookLimitInputLocal(limitIn,(v)=>{st.limit=v});
+    hookLimitInput(limitIn,(v)=>{st.limit=v},updateUI);
     toggle.addEventListener('click',()=>{editor.classList.toggle('show');updateUI()});
 
     pasteCodeBtn.addEventListener('click',async()=>{
@@ -587,7 +648,6 @@ input.limit{
       return out;
     }
 
-    /* parser local para COLAR NÚMERO (número + DDI) */
     function parseNumbersLocal(text){
       const blocks=splitBlocks(text); const out=[];
       for(const b of blocks){
@@ -621,7 +681,6 @@ input.limit{
       updateUI();toastOK(`Adicionados ${added.length} registro(s). Colar SMS bloqueado até terminar.`)
     });
 
-    /* NOVO: COLAR NÚMERO (fila prioritária de números sem DDI) */
     if(pasteNumBtn){
       pasteNumBtn.addEventListener('click',async()=>{
         let text='';try{text=await navigator.clipboard.readText()}catch{}
@@ -640,7 +699,7 @@ input.limit{
     copyBtn.addEventListener('click',async()=>{
       if(Number.isFinite(st.limit)&&st.count>=st.limit){toastOK('Limite atingido.');return}
 
-      /* 1º prioridade: fila de COLAR NÚMERO */
+      /* 1º: fila de COLAR NÚMERO (barra azul) */
       if(st.numRows.length && st.numIdx<st.numRows.length){
         const num=st.numRows[st.numIdx];
         if(!num){toastOK('Número vazio.');return}
@@ -656,7 +715,7 @@ input.limit{
         return;
       }
 
-      /* 2ª prioridade: fluxo normal (Colar SMS: Nº → Código SMS → 6 dígitos) */
+      /* 2º: fluxo normal (barra rosa) */
       if(!st.rows.length||st.idx>=st.rows.length){
         toastOK('Cole SMS para continuar.');
         st.locked=false;
@@ -693,20 +752,69 @@ input.limit{
       bar.classList.remove('complete');copyBtn.disabled=false;updateUI();toastOK('Zerado.')
     });
 
+    stateRegistry.push({
+      key,
+      get:()=>({
+        type:'triple',
+        key,
+        st:{
+          limit:st.limit,count:st.count,idx:st.idx,phase:st.phase,
+          rows:st.rows,six:st.six,locked:st.locked,lastCopied:st.lastCopied,
+          numRows:st.numRows,numIdx:st.numIdx
+        },
+        editor:editor.textContent,
+        limitVal:limitIn?limitIn.value:''
+      }),
+      set:(data)=>{
+        if(!data||!data.st)return;
+        const src=data.st;
+        st.limit=src.limit;
+        st.count=src.count||0;
+        st.idx=src.idx||0;
+        st.phase=src.phase||0;
+        st.rows=Array.isArray(src.rows)?src.rows:[];
+        st.six=src.six||'';
+        st.locked=!!src.locked;
+        st.lastCopied=src.lastCopied||'';
+        st.numRows=Array.isArray(src.numRows)?src.numRows:[];
+        st.numIdx=src.numIdx||0;
+        if(limitIn && data.limitVal!=null) limitIn.value=data.limitVal;
+        editor.textContent=data.editor||'';
+        updateUI();
+      }
+    });
+
     paintBtns();updateUI();
   });
 
   /* ===== Receber SMS (números) ===== */
   document.querySelectorAll('.block[data-seq="nums"]').forEach(block=>{
+    const key=block.dataset.key;
     const editor=block.querySelector('.editor');
     const copyBtn=block.querySelector('.copy'), pasteBtn=block.querySelector('.paste'), resetBtn=block.querySelector('.reset');
     const counter=block.querySelector('.counter'), progress=block.querySelector('.progress'), bar=block.querySelector('.bar'), fill=block.querySelector('.fill');
     const detEl=block.querySelector('.det'), whatEl=block.querySelector('.what'), leftEl=block.querySelector('.left'), toggle=block.querySelector('.toggle-sms');
+
+    let fillNum=fill.querySelector('.fill-num');
+    let fillSms=fill.querySelector('.fill-sms');
+    if(!fillNum){
+      fillNum=document.createElement('div');fillNum.className='fill-num';
+      fillSms=document.createElement('div');fillSms.className='fill-sms';
+      fill.appendChild(fillNum);fill.appendChild(fillSms);
+    }
+
     const st={count:0,idx:0,rows:[],locked:false};
     const canReset=()=>st.rows.length>0&&st.count>=st.rows.length;
     const setCounter=()=>{counter.textContent=`${st.count} / ${st.rows.length}`;progress.textContent=counter.textContent;badge('nums',{count:st.count,limit:st.rows.length,isDone:canReset()})}
-    const setBar=()=>{const total=st.rows.length||1;const p=Math.min(st.count/total,1)*100;fill.style.width=p+'%';bar.classList.toggle('complete',st.rows.length>0&&st.count>=st.rows.length);copyBtn.disabled=st.rows.length>0&&st.count>=st.rows.length}
-    const updateUI=()=>{setCounter();setBar();pasteBtn.disabled=st.locked;resetBtn.disabled=!canReset();detEl.textContent=String(st.rows.length||0);whatEl.textContent='Nº';leftEl.textContent=st.rows[st.idx]?`Registro ${st.idx+1}/${st.rows.length}`:'—';toggle.textContent=editor.classList.contains('show')?'Ocultar lista':`Ver lista (${st.rows.length||0})`}
+    const setBar=()=>{
+      const total=st.rows.length||1;
+      const p=Math.min(st.count/total,1)*100;
+      fillNum.style.width=p+'%';
+      fillSms.style.width='0%';
+      bar.classList.toggle('complete',st.rows.length>0&&st.count>=st.rows.length);
+      copyBtn.disabled=st.rows.length>0&&st.count>=st.rows.length
+    }
+    const updateUI=()=>{setCounter();setBar();pasteBtn.disabled=st.locked;resetBtn.disabled=!canReset();detEl.textContent=String(st.rows.length||0);whatEl.textContent='Nº';leftEl.textContent=st.rows[st.idx]?`Registro ${st.idx+1}/${st.rows.length}`:'—';toggle.textContent=editor.classList.contains('show')?'Ocultar lista':`Ver lista (${st.rows.length||0})`;queueSave()}
     function parseNumbers(text){
       const blocks=splitBlocks(text); const out=[];
       for(const b of blocks){
@@ -743,11 +851,33 @@ input.limit{
       if(!confirm('Confirma ZERAR esta barra?'))return;
       st.count=0;st.idx=0;st.rows=[];st.locked=false;editor.textContent='';editor.classList.remove('show');bar.classList.remove('complete');copyBtn.disabled=false;updateUI();toastOK('Zerado.')
     });
+
+    stateRegistry.push({
+      key,
+      get:()=>({
+        type:'nums',
+        key,
+        st:{count:st.count,idx:st.idx,rows:st.rows,locked:st.locked},
+        editor:editor.textContent
+      }),
+      set:(data)=>{
+        if(!data||!data.st)return;
+        const src=data.st;
+        st.count=src.count||0;
+        st.idx=src.idx||0;
+        st.rows=Array.isArray(src.rows)?src.rows:[];
+        st.locked=!!src.locked;
+        editor.textContent=data.editor||'';
+        updateUI();
+      }
+    });
+
     updateUI();
   });
 
   /* ===== E-mails (colar lista + código 6 dígitos) ===== */
   document.querySelectorAll('.block[data-seq="emails"]').forEach(block=>{
+    const key=block.dataset.key;
     const editor=block.querySelector('.editor');
     const copyBtn=block.querySelector('.copy'), pasteBtn=block.querySelector('.paste'),
           resetBtn=block.querySelector('.reset'), pasteCodeBtn=block.querySelector('.paste-code');
@@ -755,12 +885,28 @@ input.limit{
           bar=block.querySelector('.bar'), fill=block.querySelector('.fill');
     const detEl=block.querySelector('.det'), whatEl=block.querySelector('.what'), toggle=block.querySelector('.toggle-sms');
     const domainSel=block.querySelector('.domain'), fullChk=block.querySelector('.fullmail'), limitIn=block.querySelector('.limit');
+
+    let fillNum=fill.querySelector('.fill-num');
+    let fillSms=fill.querySelector('.fill-sms');
+    if(!fillNum){
+      fillNum=document.createElement('div');fillNum.className='fill-num';
+      fillSms=document.createElement('div');fillSms.className='fill-sms';
+      fill.appendChild(fillNum);fill.appendChild(fillSms);
+    }
+
     const sixPill=block.querySelector('.six-pill');
     const st={limit:null,count:0,idx:0,rows:[],locked:false,six:''};
     const canReset=()=>st.rows.length>0&&st.count>=st.rows.length;
     const setCounter=()=>{counter.textContent=String(st.count);progress.textContent=String(st.count);badge('emails',{count:st.count,limit:st.rows.length,isDone:canReset()})}
-    const setBar=()=>{const total=st.rows.length||1;const p=Math.min(st.count/total,1)*100;fill.style.width=p+'%';bar.classList.toggle('complete',st.rows.length>0&&st.count>=st.rows.length);copyBtn.disabled=st.rows.length>0&&st.count>=st.rows.length}
-    const updateUI=()=>{setCounter();setBar();pasteBtn.disabled=st.locked;resetBtn.disabled=!canReset();detEl.textContent=String(st.rows.length||0);whatEl.textContent='local';toggle.textContent=editor.classList.contains('show')?'Ocultar lista':`Ver lista (${st.rows.length||0})`;sixPill.textContent=st.six||'—'}
+    const setBar=()=>{
+      const total=st.rows.length||1;
+      const p=Math.min(st.count/total,1)*100;
+      fillNum.style.width='0%';
+      fillSms.style.width=p+'%';
+      bar.classList.toggle('complete',st.rows.length>0&&st.count>=st.rows.length);
+      copyBtn.disabled=st.rows.length>0&&st.count>=st.rows.length
+    }
+    const updateUI=()=>{setCounter();setBar();pasteBtn.disabled=st.locked;resetBtn.disabled=!canReset();detEl.textContent=String(st.rows.length||0);whatEl.textContent='local';toggle.textContent=editor.classList.contains('show')?'Ocultar lista':`Ver lista (${st.rows.length||0})`;sixPill.textContent=st.six||'—';queueSave()}
     hookLimitInput(limitIn,(v)=>{st.limit=v},updateUI);
     toggle.addEventListener('click',()=>{editor.classList.toggle('show');updateUI()});
 
@@ -803,10 +949,8 @@ input.limit{
       const local=st.rows[st.idx];
       let out='';
       if(!st.six){
-        /* fase 1: sem código ainda -> só e-mail/local */
         out=fullChk.checked?`${local}${domainSel.value}`:local;
       }else{
-        /* fase 2: já tem código -> alternar email/local + código */
         if(st.count%2===0){
           out=fullChk.checked?`${local}${domainSel.value}`:local;
         }else{
@@ -818,7 +962,6 @@ input.limit{
       buzz(15);
       st.count++;
       if(st.six){
-        /* a cada par (email+codigo) avança para o próximo local */
         if(st.count%2===0) st.idx++;
       }else{
         st.idx++;
@@ -836,20 +979,65 @@ input.limit{
       updateUI();toastOK('Zerado.')
     });
 
+    stateRegistry.push({
+      key,
+      get:()=>({
+        type:'emails',
+        key,
+        st:{limit:st.limit,count:st.count,idx:st.idx,rows:st.rows,locked:st.locked,six:st.six},
+        editor:editor.textContent,
+        limitVal:limitIn?limitIn.value:'',
+        domain:domainSel.value,
+        full:fullChk.checked
+      }),
+      set:(data)=>{
+        if(!data||!data.st)return;
+        const src=data.st;
+        st.limit=src.limit;
+        st.count=src.count||0;
+        st.idx=src.idx||0;
+        st.rows=Array.isArray(src.rows)?src.rows:[];
+        st.locked=!!src.locked;
+        st.six=src.six||'';
+        editor.textContent=data.editor||'';
+        if(limitIn && data.limitVal!=null) limitIn.value=data.limitVal;
+        if(data.domain) domainSel.value=data.domain;
+        if(typeof data.full==='boolean') fullChk.checked=data.full;
+        updateUI();
+      }
+    });
+
     updateUI();
   });
 
   /* ===== Conta formatada ===== */
   document.querySelectorAll('.block[data-seq="account"]').forEach(block=>{
+    const key=block.dataset.key;
     const editor=block.querySelector('.editor');
     const copyBtn=block.querySelector('.copy'), pasteBtn=block.querySelector('.paste'), resetBtn=block.querySelector('.reset');
     const counter=block.querySelector('.counter'), progress=block.querySelector('.progress'), bar=block.querySelector('.bar'), fill=block.querySelector('.fill');
     const detEl=block.querySelector('.det'), whatEl=block.querySelector('.what'), toggle=block.querySelector('.toggle-sms'), limitIn=block.querySelector('.limit');
+
+    let fillNum=fill.querySelector('.fill-num');
+    let fillSms=fill.querySelector('.fill-sms');
+    if(!fillNum){
+      fillNum=document.createElement('div');fillNum.className='fill-num';
+      fillSms=document.createElement('div');fillSms.className='fill-sms';
+      fill.appendChild(fillNum);fill.appendChild(fillSms);
+    }
+
     const st={limit:null,count:0,idx:0,rows:[],locked:false};
     const canReset=()=>st.rows.length>0&&st.count>=st.rows.length;
     const setCounter=()=>{counter.textContent=String(st.count);progress.textContent=String(st.count);badge('conta',{count:st.count,limit:st.rows.length,isDone:canReset()})}
-    const setBar=()=>{const total=st.rows.length||1;const p=Math.min(st.count/total,1)*100;fill.style.width=p+'%';bar.classList.toggle('complete',st.rows.length>0&&st.count>=st.rows.length);copyBtn.disabled=st.rows.length>0&&st.count>=st.rows.length}
-    const updateUI=()=>{setCounter();setBar();pasteBtn.disabled=st.locked;resetBtn.disabled=!canReset();detEl.textContent=String(st.rows.length||0);whatEl.textContent='Conta';toggle.textContent=editor.classList.contains('show')?'Ocultar SMS':`Ver SMS (${st.rows.length||0})`}
+    const setBar=()=>{
+      const total=st.rows.length||1;
+      const p=Math.min(st.count/total,1)*100;
+      fillNum.style.width='0%';
+      fillSms.style.width=p+'%';
+      bar.classList.toggle('complete',st.rows.length>0&&st.count>=st.rows.length);
+      copyBtn.disabled=st.rows.length>0&&st.count>=st.rows.length
+    }
+    const updateUI=()=>{setCounter();setBar();pasteBtn.disabled=st.locked;resetBtn.disabled=!canReset();detEl.textContent=String(st.rows.length||0);whatEl.textContent='Conta';toggle.textContent=editor.classList.contains('show')?'Ocultar SMS':`Ver SMS (${st.rows.length||0})`;queueSave()}
     hookLimitInput(limitIn,(v)=>{st.limit=v},updateUI);
     toggle.addEventListener('click',()=>{editor.classList.toggle('show');updateUI()});
 
@@ -890,7 +1078,7 @@ input.limit{
       if(!st.rows.length||st.idx>=st.rows.length){toastOK('Cole os SMS para continuar.');return}
       const row=st.rows[st.idx];
       const dt=row.dt?(parsePtDate(row.dt)||parseIsoDate(row.dt)):new Date();
-      const venc=fmtPt(addMonths(dt,1)); // sempre data do SMS + 1 mês
+      const venc=fmtPt(addMonths(dt,1));
       const texto=
 `UNITV
 📱 Conta UniTv
@@ -917,10 +1105,35 @@ Senha: ${row.sms}
       bar.classList.remove('complete');copyBtn.disabled=false;updateUI();toastOK('Zerado.')
     });
 
+    stateRegistry.push({
+      key,
+      get:()=>({
+        type:'conta',
+        key,
+        st:{limit:st.limit,count:st.count,idx:st.idx,rows:st.rows,locked:st.locked},
+        editor:editor.textContent,
+        limitVal:limitIn?limitIn.value:''
+      }),
+      set:(data)=>{
+        if(!data||!data.st)return;
+        const src=data.st;
+        st.limit=src.limit;
+        st.count=src.count||0;
+        st.idx=src.idx||0;
+        st.rows=Array.isArray(src.rows)?src.rows:[];
+        st.locked=!!src.locked;
+        editor.textContent=data.editor||'';
+        if(limitIn && data.limitVal!=null) limitIn.value=data.limitVal;
+        updateUI();
+      }
+    });
+
     updateUI();
   });
 
   /* ===== FERRAMENTA: Pacote 3 E-mails + Código (menu E-mail) ===== */
+  window.pack3GetState=null;
+  window.pack3SetState=null;
   (function(){
     const root=document.getElementById('email-pack3-tool');
     if(!root)return;
@@ -938,7 +1151,6 @@ Senha: ${row.sms}
     const lblProg=root.querySelector('.gen3-progress');
     const lblLeft=root.querySelector('.gen3-left');
 
-    /* NOMES CURTOS DE OBJETOS + NÚMEROS (4–5 dígitos) */
     const objectNames=[
       'mesa','copo','fone','cabo','teclado','mouse','tvbox','sofa','cadeira','livro',
       'radio','tela','janela','porta','garrafa','caneta','papel','monitor','foneusb',
@@ -953,11 +1165,11 @@ Senha: ${row.sms}
       let local='',tries=0;
       do{
         const obj=pick(objectNames);
-        const len=rand(4,5);                     // 4 ou 5 dígitos
-        const min=Math.pow(10,len-1);            // 1000 ou 10000
-        const max=Math.pow(10,len)-1;            // 9999 ou 99999
+        const len=rand(4,5);
+        const min=Math.pow(10,len-1);
+        const max=Math.pow(10,len)-1;
         const n=rand(min,max);
-        local=`${obj}${n}`;                      // ex: mesa4821, tvbox12034
+        local=`${obj}${n}`;
         tries++;
         if(tries>80)break;
       }while(used.has(local));
@@ -979,6 +1191,7 @@ Senha: ${row.sms}
       btnCopy.disabled=!st.emails.length || !st.code || st.done;
       btnSoftReset.disabled=!st.emails.length && st.step===0;
       btnReset.disabled=st.step===0 && !st.emails.length && !st.code && st.codeCopies===0;
+      queueSave();
     }
 
     btnGenerate.addEventListener('click',()=>{
@@ -989,7 +1202,7 @@ Senha: ${row.sms}
         `${genLocal(used)}@outlook.com`
       ];
       st.step=0;st.done=false;
-      st.totalSteps=10; // 1–10 conforme fluxo pedido
+      st.totalSteps=10;
       lblLeft.textContent='Fluxo: 1=E1, 2=senha, 3=E2, 4=E3, depois: E1,código,E2,código,E3,código (sempre sem @)';
       refreshUI();buzz(15);toastOK('3 e-mails gerados.');
     });
@@ -1081,7 +1294,6 @@ Senha: ${row.sms}
       refreshUI();
     });
 
-    /* ZERADOR PARCIAL: limpa apenas e-mails + etapas, mantém código e contador */
     btnSoftReset.addEventListener('click',()=>{
       if(!st.emails.length && st.step===0){
         toastOK('Nada para zerar (e-mails).');
@@ -1097,7 +1309,6 @@ Senha: ${row.sms}
       toastOK('E-mails zerados. Código e contador mantidos.');
     });
 
-    /* ZERAR TOTAL: limpa tudo, incluindo código e contador */
     btnReset.addEventListener('click',()=>{
       if(!confirm('Zerar TUDO do pacote 3 (e-mails, código e contador)?'))return;
       st.emails=[];st.code='';st.step=0;st.totalSteps=0;st.done=false;st.codeCopies=0;
@@ -1107,8 +1318,39 @@ Senha: ${row.sms}
 
     lblLeft.textContent='Fluxo: 1=E1, 2=senha, 3=E2, 4=E3, depois: E1,código,E2,código,E3,código (sempre sem @)';
     refreshUI();
+
+    window.pack3GetState=()=>({
+      emails:st.emails,
+      code:st.code,
+      step:st.step,
+      totalSteps:st.totalSteps,
+      done:st.done,
+      codeCopies:st.codeCopies
+    });
+    window.pack3SetState=(data)=>{
+      if(!data)return;
+      st.emails=Array.isArray(data.emails)?data.emails:[];
+      st.code=data.code||'';
+      st.step=data.step||0;
+      st.totalSteps=data.totalSteps||0;
+      st.done=!!data.done;
+      st.codeCopies=data.codeCopies||0;
+      refreshUI();
+    };
   })();
 
+  /* Carregar estado salvo (depois de tudo registrado) */
+  loadAll();
+
+  /* Zerar tudo (site) */
+  const resetAllBtn=document.getElementById('reset-all');
+  if(resetAllBtn){
+    resetAllBtn.addEventListener('click',()=>{
+      if(!confirm('Zerar TUDO do site? (todos os blocos, SMS, códigos, progresso e memória salva)'))return;
+      try{localStorage.removeItem(STORAGE_KEY);}catch(e){}
+      location.reload();
+    });
+  }
 })();
 </script>
 </body>
