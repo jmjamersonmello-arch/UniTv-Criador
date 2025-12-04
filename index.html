@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Criação UniTv — v3.9.6</title>
+<title>Criação UniTv — v3.9.7</title>
 <style>
 :root{
   --bg:#0b1020;--card:#0f152b;--ink:#e8ecff;--muted:#9aa4c7;--stroke:#202744;--bar:#162044;
@@ -86,6 +86,16 @@ button.btn{
 .btn.paste-code{
   background:linear-gradient(180deg,var(--blue1),var(--blue2));
   color:#001524;border-color:#0a5580
+}
+/* NOVO: botão COLAR NÚMERO (azul) */
+.btn.paste-num{
+  background:linear-gradient(180deg,var(--blue1),var(--blue2));
+  color:#001524;
+  border-color:#0a5580;
+}
+.btn.paste-num.active{
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.25);
+  transform:translateY(1px);
 }
 .btn.reset{background:var(--danger);border-color:#4c1d1d;color:#ffd2d2}
 .btn.ghost{background:var(--ghost);border-color:#1a2452;color:#cfe1ff}
@@ -201,7 +211,7 @@ input.limit{
         <div class="controls">
           <button class="btn paste-code">Colar Código</button>
           <button class="btn paste">Colar SMS</button>
-          <button class="btn copy-num">Copiar Número</button>
+          <button class="btn paste-num">Colar Número</button>
           <button class="btn copy">Copiar (restantes: 3)</button>
           <button class="btn reset" disabled>Zerar</button>
         </div>
@@ -222,7 +232,7 @@ input.limit{
         <div class="controls">
           <button class="btn paste-code">Colar Código</button>
           <button class="btn paste">Colar SMS</button>
-          <button class="btn copy-num">Copiar Número</button>
+          <button class="btn paste-num">Colar Número</button>
           <button class="btn copy">Copiar (restantes: 5)</button>
           <button class="btn reset" disabled>Zerar</button>
         </div>
@@ -244,7 +254,7 @@ input.limit{
           <input class="limit" type="number" min="1" step="1" placeholder="Qtd (opcional)">
           <button class="btn paste-code">Colar Código</button>
           <button class="btn paste">Colar SMS</button>
-          <button class="btn copy-num">Copiar Número</button>
+          <button class="btn paste-num">Colar Número</button>
           <button class="btn copy">Copiar</button>
           <button class="btn reset" disabled>Zerar</button>
         </div>
@@ -360,8 +370,8 @@ input.limit{
   </div>
 
   <div style="color:#9aa4c7;font-size:.85rem;margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
-    <div><b>Versão:</b> v3.9.6 (03/12/2025)</div>
-    <div><b>Changelog:</b> Pacote 3 (menu E-mail) ganhou botão “Zerar e-mails” que limpa e-mails e etapas, mas mantém o código e o contador de cópias. O botão “Zerar” continua resetando tudo.</div>
+    <div><b>Versão:</b> v3.9.7 (03/12/2025)</div>
+    <div><b>Changelog:</b> Botão “Colar Número” (azul) nos menus Conta Nova / Renovação / Personalizado: recebe SMS com número + DDI, guarda fila de números sem DDI com prioridade na cópia, e fica “pressionado” enquanto houver números pendentes.</div>
   </div>
 </div></div>
 
@@ -470,7 +480,7 @@ input.limit{
     const key=block.dataset.key, defLim=block.dataset.limit, editor=block.querySelector('.editor');
     const copyBtn=block.querySelector('.copy'), pasteBtn=block.querySelector('.paste'),
           pasteCodeBtn=block.querySelector('.paste-code'), resetBtn=block.querySelector('.reset');
-    const copyNumberBtn=block.querySelector('.copy-num');
+    const pasteNumBtn=block.querySelector('.paste-num');
     const undoBtn=block.querySelector('.undo'), skipBtn=block.querySelector('.skip');
     const counter=block.querySelector('.counter'), progress=block.querySelector('.progress'),
           bar=block.querySelector('.bar'), fill=block.querySelector('.fill');
@@ -478,7 +488,11 @@ input.limit{
           leftEl=block.querySelector('.left'), limitIn=block.querySelector('.limit'),
           toggle=block.querySelector('.toggle-sms'), sixPill=block.querySelector('.six-pill');
 
-    const st={limit:(defLim==='custom')?null:parseInt(defLim,10),count:0,idx:0,phase:0,rows:[],six:'',locked:false,lastCopied:''};
+    const st={
+      limit:(defLim==='custom')?null:parseInt(defLim,10),
+      count:0,idx:0,phase:0,rows:[],six:'',locked:false,lastCopied:'',
+      numRows:[],numIdx:0  // FILA PRIORITÁRIA DE NÚMEROS (COLAR NÚMERO)
+    };
     const canReset=()=>Number.isFinite(st.limit)&&st.count>=st.limit;
     const rest=()=>Number.isFinite(st.limit)?Math.max(st.limit-st.count,0):'∞';
     const paintBtns=()=>{copyBtn.textContent=`Copiar (restantes: ${rest()})`};
@@ -499,6 +513,9 @@ input.limit{
       pasteBtn.disabled=st.locked&&st.idx<st.rows.length;
       pasteCodeBtn.disabled=!!st.six;
       resetBtn.disabled=!canReset();
+      if(pasteNumBtn){
+        pasteNumBtn.classList.toggle('active',st.numRows.length>st.numIdx);
+      }
     };
     const updateUI=()=>{
       setCounter();setBar();applyLocks();paintBtns();
@@ -570,6 +587,22 @@ input.limit{
       return out;
     }
 
+    /* parser local para COLAR NÚMERO (número + DDI) */
+    function parseNumbersLocal(text){
+      const blocks=splitBlocks(text); const out=[];
+      for(const b of blocks){
+        const n=pickNumberFromBlock(b);
+        if(n&&(n.length===10||n.length===11)) out.push(n);
+      }
+      if(!out.length){
+        const any=(text.match(/[+]?[\d()\s\-.]{10,}/g)||[])
+          .map(x=>extractNoDDI(x))
+          .filter(x=>x&&(x.length===10||x.length===11));
+        return any;
+      }
+      return out;
+    }
+
     pasteBtn.addEventListener('click',async()=>{
       if(st.locked&&st.idx<st.rows.length){toastOK('Finalize os registros antes de colar novamente.');return}
       if(defLim==='custom'&&limitIn){
@@ -585,13 +618,49 @@ input.limit{
       editor.textContent+=text;
       st.rows.push(...added);st.locked=true;
       if(defLim==='custom'&&!Number.isFinite(st.limit)) st.limit=st.rows.length;
-      updateUI();toastOK(`Adicionados ${added.length} registro(s). Colar bloqueado até terminar.`)
+      updateUI();toastOK(`Adicionados ${added.length} registro(s). Colar SMS bloqueado até terminar.`)
     });
+
+    /* NOVO: COLAR NÚMERO (fila prioritária de números sem DDI) */
+    if(pasteNumBtn){
+      pasteNumBtn.addEventListener('click',async()=>{
+        let text='';try{text=await navigator.clipboard.readText()}catch{}
+        if(!text){const m=prompt('Cole o SMS com NÚMERO + DDI:','');if(m!==null)text=m}
+        if(!text){toastOK('Nada colado.');return}
+        const found=parseNumbersLocal(text);
+        if(!found.length){toastOK('Nenhum número válido encontrado.');return}
+        st.numRows.push(...found);
+        if(st.numIdx>st.numRows.length) st.numIdx=st.numRows.length-1;
+        st.lastCopied=`Fila de números: ${st.numRows.length} carregados.`;
+        updateUI();
+        toastOK(`Adicionados ${found.length} número(s) na fila de prioridade.`);
+      });
+    }
 
     copyBtn.addEventListener('click',async()=>{
       if(Number.isFinite(st.limit)&&st.count>=st.limit){toastOK('Limite atingido.');return}
+
+      /* 1º prioridade: fila de COLAR NÚMERO */
+      if(st.numRows.length && st.numIdx<st.numRows.length){
+        const num=st.numRows[st.numIdx];
+        if(!num){toastOK('Número vazio.');return}
+        const okNum=await copyClip(String(num));
+        if(!okNum){toastOK('Falha ao copiar número.');return}
+        buzz(15);
+        st.lastCopied=`Número (prioridade): ${num}`;
+        st.numIdx++;
+        if(st.numIdx>=st.numRows.length){
+          st.lastCopied+=` — fila de números esgotada.`;
+        }
+        updateUI();
+        return;
+      }
+
+      /* 2ª prioridade: fluxo normal (Colar SMS: Nº → Código SMS → 6 dígitos) */
       if(!st.rows.length||st.idx>=st.rows.length){
-        toastOK('Cole SMS para continuar.');st.locked=false;return;
+        toastOK('Cole SMS para continuar.');
+        st.locked=false;
+        return;
       }
       if(st.six.length!==6){toastOK('Cole o código de 6 dígitos.');return}
       const row=st.rows[st.idx];let text='',label='';
@@ -613,31 +682,13 @@ input.limit{
       updateUI();
     });
 
-    /* Botão COPIAR NÚMERO (atalho, não mexe na fase) */
-    if(copyNumberBtn){
-      copyNumberBtn.addEventListener('click',async()=>{
-        if(!st.rows.length||st.idx>=st.rows.length){
-          toastOK('Cole SMS para ter número para copiar.');
-          return;
-        }
-        const row=st.rows[st.idx];
-        const num=row.noDDI;
-        if(!num){toastOK('Número vazio.');return}
-        const ok=await copyClip(String(num));
-        if(!ok){toastOK('Falha ao copiar.');return}
-        buzz(15);
-        st.lastCopied=`Número (atalho): ${num}`;
-        leftEl.textContent=truncate(st.lastCopied,70);
-        toastOK(`Número copiado: ${num}`);
-      });
-    }
-
     resetBtn.addEventListener('click',()=>{
       if(!canReset()){toastOK('Só é possível zerar após atingir o máximo.');return}
-      if(!confirm('Confirma ZERAR esta barra? (contagem, SMS e código)'))return;
+      if(!confirm('Confirma ZERAR esta barra? (contagem, SMS, código e fila de números)'))return;
       st.count=0;st.idx=0;st.phase=0;st.rows=[];
       editor.textContent='';editor.classList.remove('show');
       st.six='';st.locked=false;st.lastCopied='';
+      st.numRows=[];st.numIdx=0;
       if(defLim==='custom'){st.limit=null;if(limitIn)limitIn.value=''}
       bar.classList.remove('complete');copyBtn.disabled=false;updateUI();toastOK('Zerado.')
     });
@@ -656,18 +707,16 @@ input.limit{
     const setCounter=()=>{counter.textContent=`${st.count} / ${st.rows.length}`;progress.textContent=counter.textContent;badge('nums',{count:st.count,limit:st.rows.length,isDone:canReset()})}
     const setBar=()=>{const total=st.rows.length||1;const p=Math.min(st.count/total,1)*100;fill.style.width=p+'%';bar.classList.toggle('complete',st.rows.length>0&&st.count>=st.rows.length);copyBtn.disabled=st.rows.length>0&&st.count>=st.rows.length}
     const updateUI=()=>{setCounter();setBar();pasteBtn.disabled=st.locked;resetBtn.disabled=!canReset();detEl.textContent=String(st.rows.length||0);whatEl.textContent='Nº';leftEl.textContent=st.rows[st.idx]?`Registro ${st.idx+1}/${st.rows.length}`:'—';toggle.textContent=editor.classList.contains('show')?'Ocultar lista':`Ver lista (${st.rows.length||0})`}
-    function splitPerBlockOrAll(text){
-      const blocks=splitBlocks(text); if(blocks.length>1) return blocks;
-      return [text];
-    }
     function parseNumbers(text){
-      const blocks=splitPerBlockOrAll(text); const out=[];
+      const blocks=splitBlocks(text); const out=[];
       for(const b of blocks){
         const n=pickNumberFromBlock(b);
         if(n&&(n.length===10||n.length===11)) out.push(n);
       }
       if(!out.length){
-        const any=(text.match(/[+]?[\d()\s\-.]{10,}/g)||[]).map(x=>extractNoDDI(x)).filter(x=>x&&(x.length===10||x.length===11));
+        const any=(text.match(/[+]?[\d()\s\-.]{10,}/g)||[])
+          .map(x=>extractNoDDI(x))
+          .filter(x=>x&&(x.length===10||x.length===11));
         return any;
       }
       return out;
