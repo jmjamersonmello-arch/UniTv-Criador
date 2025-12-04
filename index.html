@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Criação UniTv — v3.9.3</title>
+<title>Criação UniTv — v3.9.4</title>
 <style>
 :root{
   --bg:#0b1020;--card:#0f152b;--ink:#e8ecff;--muted:#9aa4c7;--stroke:#202744;--bar:#162044;
@@ -314,7 +314,7 @@ input.limit{
       <header>
         <div class="title">
           <span>Pacote 3 E-mails + Código</span>
-          <span class="counter step-label">Etapa: 0 / 7</span>
+          <span class="counter step-label">Etapa: 0 / 0</span>
         </div>
         <div class="controls">
           <button class="btn gen3-code-paste">Colar código (6 dígitos)</button>
@@ -330,7 +330,9 @@ input.limit{
         Código: <b class="gen3-code">—</b>
       </div>
       <div class="status">
-        <span class="left gen3-left">Fluxo: 1=E1, 2=senha, 3=E2, 4=E3, 5=E1+cod, 6=E2+cod, 7=E3+cod (sem @)</span>
+        <span class="left gen3-left">
+          Fluxo: 1=E1, 2=senha, 3=E2, 4=E3, depois: E1,código,E2,código,E3,código (sempre sem @)
+        </span>
         <span class="progress gen3-progress">0 / 0</span>
       </div>
     </section>
@@ -356,8 +358,8 @@ input.limit{
   </div>
 
   <div style="color:#9aa4c7;font-size:.85rem;margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
-    <div><b>Versão:</b> v3.9.3 (03/12/2025)</div>
-    <div><b>Changelog:</b> Pacote 3 (menu E-mail) agora gera e-mails com nomes de objetos + números (mín. 4 dígitos) para reduzir conflito de endereço já existente no Outlook.</div>
+    <div><b>Versão:</b> v3.9.4 (03/12/2025)</div>
+    <div><b>Changelog:</b> Pacote 3 (menu E-mail) ajustado para fluxo: 3 e-mails separados + senha, depois E1,código,E2,código,E3,código (tudo separado, sempre sem @).</div>
   </div>
 </div></div>
 
@@ -918,7 +920,7 @@ Senha: ${row.sms}
       lblE2.textContent=st.emails[1]||'—';
       lblE3.textContent=st.emails[2]||'—';
       lblCode.textContent=st.code||'—';
-      lblStep.textContent=`Etapa: ${st.step} / ${st.totalSteps||7}`;
+      lblStep.textContent=`Etapa: ${st.step} / ${st.totalSteps||0}`;
       lblProg.textContent=`${st.step} / ${st.totalSteps||0}`;
       btnCopy.disabled=!st.emails.length || !st.code || st.done;
       btnReset.disabled=st.step===0 && !st.emails.length && !st.code;
@@ -932,8 +934,8 @@ Senha: ${row.sms}
         `${genLocal(used)}@outlook.com`
       ];
       st.step=0;st.done=false;
-      st.totalSteps=7; // 1–7 conforme fluxo pedido
-      lblLeft.textContent='Fluxo: 1=E1, 2=senha, 3=E2, 4=E3, 5=E1+cod, 6=E2+cod, 7=E3+cod (sem @)';
+      st.totalSteps=10; // 1–10 conforme fluxo pedido
+      lblLeft.textContent='Fluxo: 1=E1, 2=senha, 3=E2, 4=E3, depois: E1,código,E2,código,E3,código (sempre sem @)';
       refreshUI();buzz(15);toastOK('3 e-mails gerados.');
     });
 
@@ -943,8 +945,8 @@ Senha: ${row.sms}
       txt=txt.replace(/\s+/g,'');
       const val=sanitizeSix(txt);
       if(!val){toastOK('Código inválido.');return}
-      st.code=val;st.step=0;st.done=false;st.totalSteps=7;
-      lblLeft.textContent='Fluxo: 1=E1, 2=senha, 3=E2, 4=E3, 5=E1+cod, 6=E2+cod, 7=E3+cod (sem @)';
+      st.code=val;st.step=0;st.done=false;st.totalSteps=10;
+      lblLeft.textContent='Fluxo: 1=E1, 2=senha, 3=E2, 4=E3, depois: E1,código,E2,código,E3,código (sempre sem @)';
       refreshUI();buzz(10);toastOK('Código definido. Agora copie a sequência.');
     });
 
@@ -979,16 +981,28 @@ Senha: ${row.sms}
           msg='E-mail 3 copiado (sem @)';
           break;
         case 5:
-          out=`${locals[0]}\n${st.code}`;
-          msg='E-mail 1 + código copiados';
+          out=locals[0];
+          msg='E-mail 1 copiado (para par com código)';
           break;
         case 6:
-          out=`${locals[1]}\n${st.code}`;
-          msg='E-mail 2 + código copiados';
+          out=st.code;
+          msg='Código copiado (par 1)';
           break;
         case 7:
-          out=`${locals[2]}\n${st.code}`;
-          msg='E-mail 3 + código copiados';
+          out=locals[1];
+          msg='E-mail 2 copiado (para par com código)';
+          break;
+        case 8:
+          out=st.code;
+          msg='Código copiado (par 2)';
+          break;
+        case 9:
+          out=locals[2];
+          msg='E-mail 3 copiado (para par com código)';
+          break;
+        case 10:
+          out=st.code;
+          msg='Código copiado (par 3)';
           break;
         default:
           st.step=st.totalSteps;
@@ -1012,11 +1026,11 @@ Senha: ${row.sms}
     btnReset.addEventListener('click',()=>{
       if(!confirm('Zerar o pacote 3 E-mails + Código?'))return;
       st.emails=[];st.code='';st.step=0;st.totalSteps=0;st.done=false;
-      lblLeft.textContent='Fluxo: 1=E1, 2=senha, 3=E2, 4=E3, 5=E1+cod, 6=E2+cod, 7=E3+cod (sem @)';
+      lblLeft.textContent='Fluxo: 1=E1, 2=senha, 3=E2, 4=E3, depois: E1,código,E2,código,E3,código (sempre sem @)';
       refreshUI();toastOK('Pacote 3 E-mails + Código zerado.');
     });
 
-    lblLeft.textContent='Fluxo: 1=E1, 2=senha, 3=E2, 4=E3, 5=E1+cod, 6=E2+cod, 7=E3+cod (sem @)';
+    lblLeft.textContent='Fluxo: 1=E1, 2=senha, 3=E2, 4=E3, depois: E1,código,E2,código,E3,código (sempre sem @)';
     refreshUI();
   })();
 
