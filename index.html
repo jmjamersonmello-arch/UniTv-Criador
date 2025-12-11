@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Criação UniTv — v3.6.0</title>
+<title>Criação UniTv — v3.6.1</title>
 <style>
 :root{
   --bg:#0b1020;--card:#0f152b;--ink:#e8ecff;--muted:#9aa4c7;--stroke:#202744;--bar:#162044;
@@ -231,9 +231,9 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
 
   <div style="color:#9aa4c7;font-size:.85rem;margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between">
     <div>
-      <b>Versão:</b> v3.6.0 (11/12/2025)
+      <b>Versão:</b> v3.6.1 (11/12/2025)
       &nbsp;•&nbsp;
-      <b>Changelog:</b> “Criar UniTv” com prioridade Colar Número, fluxo Nº→Código→Senha 12345jm, estoque automático de contas, contador de código, barras azul/rosa e persistência em localStorage.
+      <b>Changelog:</b> Travar código da conta em “Criar UniTv” após colar + parser de SMS mais inteligente (pega número + código mesmo em formatos variados).
     </div>
     <button class="btn reset-all" style="padding:6px 10px;font-size:.8rem">Zerar TUDO (exceto estoque de contas)</button>
   </div>
@@ -309,6 +309,11 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
     if(m) return m[1];
     m=b.match(/UniTvMob[^0-9]*([0-9]{4,8})/i);
     if(m) return m[1];
+    const all=(b.match(/\b(\d{4,8})\b/g)||[]);
+    if(all.length){
+      const six=all.find(x=>x.length===6);
+      return six||all[0];
+    }
     return '';
   }
 
@@ -564,7 +569,7 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
       pasteNumBtn.classList.toggle('active',numsTotal>0 && numsUsed<numsTotal);
 
       pasteSmsBtn.disabled=false;
-      pasteCodeBtn.disabled=false;
+      pasteCodeBtn.disabled=!!uni.codigoConta;
       copyBtn.disabled=false;
       copyAccBtn.disabled=stock.length===0 || !uni.codigoConta;
       resetBtn.disabled=(numsTotal===0 && smsTotal===0 && uni.codeCopyCount===0 && !uni.codigoConta);
@@ -641,6 +646,10 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
     });
 
     pasteCodeBtn.addEventListener('click',async()=>{
+      if(uni.codigoConta){
+        toastOK('Código da conta já definido. Zere o fluxo para trocar.');
+        return;
+      }
       let text='';try{text=await navigator.clipboard.readText()}catch{}
       if(!text){const m=prompt('Cole o CÓDIGO da conta (ex.: 3N9MUZ):','');if(m!==null)text=m;}
       if(!text){toastOK('Nada colado.');return;}
@@ -678,7 +687,6 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
       const ok=await copyClip(String(texto));
       if(!ok){toastOK('Falha ao copiar.');return;}
       buzz(15);
-
       if(uni.sPhase<2){
         uni.sPhase++;
         toastOK(`${label} copiado.`);
@@ -720,7 +728,7 @@ input.limit{background:#0c1433;border:1px solid var(--stroke);color:#e8ecff;bord
     });
 
     resetBtn.addEventListener('click',()=>{
-      if(!confirm('Zerar fluxo? (números, SMS, fases e contador de código serão zerados, mas o ESTOQUE de contas será mantido)'))return;
+      if(!confirm('Zerar fluxo? (números, SMS, fases, código da conta e contador serão zerados; ESTOQUE de contas será mantido)'))return;
       uni.numbers=[];uni.nIndex=0;
       uni.sms=[];uni.sIndex=0;uni.sPhase=0;
       uni.codeCopyCount=0;
