@@ -61,7 +61,7 @@
       }
     }
 
-    /* HEADER SIMPLIFICADO */
+    /* HEADER */
     header.app-header{
       display:flex;
       flex-direction:row;
@@ -104,7 +104,7 @@
       color:transparent;
     }
 
-    /* TABS (MENUS) – SEM ROLAGEM, QUEBRANDO LINHA */
+    /* TABS (MENUS) – sem rolagem */
     nav.tabs{
       display:flex;
       flex-wrap:wrap;
@@ -225,7 +225,7 @@
       gap:6px;
     }
 
-    /* BOTÕES – MAIORES E COLORIDOS PARA MOBILE */
+    /* BOTÕES – maiores */
     .btn{
       --btn-bg:rgba(15,23,42,.96);
       --btn-border:rgba(55,65,81,.9);
@@ -544,7 +544,7 @@
       </section>
     </div>
 
-    <!-- Renovação (limite 5, trava menu ao atingir) -->
+    <!-- Renovação (limite 5) -->
     <div class="panel" data-panel="renov">
       <section class="block" data-title="Renovação" data-key="renov" data-limit="5" data-seq="triple">
         <header>
@@ -620,6 +620,7 @@
         <header>
           <div class="title"><span>E-mail em 2 fases</span><span class="counter">0</span></div>
           <div class="controls">
+            <button class="btn" data-role="paste-email">Colar e-mail</button>
             <button class="btn" data-role="gen-email">Gerar 2 nomes locais</button>
             <button class="btn" data-role="paste-code">Colar Código</button>
             <button class="btn copy primary" disabled>Copiar (próximo)</button>
@@ -627,13 +628,13 @@
           </div>
         </header>
         <div class="hint">
-          <span class="pill"><b>Fases:</b>&nbsp;1) nomes (sem @) · 2) nome + código (para cada e-mail)</span>
+          <span class="pill"><b>Fases:</b>&nbsp;1) e-mail colado + nomes (sem @) · 2) e-mail/nome + código (para cada)</span>
           <span class="pill">Nomes: <span class="det">0</span></span>
           <span class="pill">Código (6): <b class="email-code-pill">—</b></span>
           <span class="pill">Cópias do código: <b class="email-copies">0</b></span>
           <a class="toggle-sms" href="javascript:void(0)">Ver e-mails</a>
         </div>
-        <div class="editor" contenteditable="false" spellcheck="false" data-placeholder="Clique em “Gerar 2 nomes locais” para começar."></div>
+        <div class="editor" contenteditable="false" spellcheck="false" data-placeholder="Clique em “Gerar 2 nomes locais” ou “Colar e-mail” para começar."></div>
         <div class="bar"><div class="fill"></div></div>
         <div class="status">
           <span class="left">Pronto para gerar.</span>
@@ -704,14 +705,14 @@
 
   </div>
 
-  <!-- ZERAR TOTAL DO SITE -->
+  <!-- ZERAR TOTAL DO PAINEL -->
   <div style="margin-top:12px;display:flex;justify-content:flex-end;">
     <button class="btn reset small" id="reset-all-global">Zerar Total do Painel</button>
   </div>
 
   <div style="color:#9aa4c7;font-size:.85rem;margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
     <div><b>Versão:</b> v3.9.10</div>
-    <div><b>Changelog:</b> Limite Conta nova=3; Renovação=5 (trava menu); Colar número aceita vários SMS; Colar SMS aceita novos SMS a qualquer momento; Código de SMS com “q” no final; Conta formatada copia senha com “q”; E-mail: 2 locais sem @ no passo 1; passo 2: nome + código (sem @outlook.com); Zerar mantém o código; Zerar Total limpa todo o painel.</div>
+    <div><b>Changelog:</b> Limite Conta nova=3; Renovação=5 (trava menu); Colar número aceita vários SMS; Colar SMS aceita novos SMS a qualquer momento; Código de SMS com “q” no final; Conta formatada copia senha com “q”; E-mail: colar e-mail prioritário + 2 locais sem @; passo 2: e-mail/nome + código (sem @outlook.com); Zerar mantém o código; Zerar Total limpa todo o painel.</div>
   </div>
 </div>
 
@@ -901,7 +902,7 @@
 
   const badge=(key,data)=>updateBadge(key,data);
 
-  // Menus de 3 fases (Conta nova, Renovação, Personalizada)
+  /* Menus de 3 fases (Conta nova, Renovação, Personalizada) */
   document.querySelectorAll('.block[data-seq="triple"]').forEach(block=>{
     const key=block.dataset.key, defLim=block.dataset.limit, editor=block.querySelector('.editor');
     const copyBtn=block.querySelector('.copy'),
@@ -925,7 +926,6 @@
     };
     const st = loadState('triple_'+key, defaults);
 
-    // forçar limites definidos
     if(key==='nova') st.limit = 3;
     if(key==='renov') st.limit = 5;
 
@@ -1055,7 +1055,7 @@
           editor.classList.add('show');
         }
       }catch(e){
-        // se der erro mas já existirem SMS carregados, segue usando os existentes
+        // se der erro mas já existirem SMS carregados, segue
       }
 
       if(!st.rows.length){
@@ -1072,7 +1072,7 @@
         rotulo='Número';
         st.phase=1;
       }else if(st.phase===1){
-        texto=row.code; // já com "q"
+        texto=row.code;
         rotulo='Código SMS';
         st.phase=2;
       }else if(st.phase===2){
@@ -1168,7 +1168,7 @@
           texto=row.number;
           st.lastCopied=`Número: ${row.number}`;
         }else if(st.phase===1){
-          texto=row.code; // com "q"
+          texto=row.code;
           st.lastCopied=`Código SMS: ${row.code}`;
         }else if(st.phase===2){
           if(!st.six){toastErr('Defina o código (6) primeiro.');return;}
@@ -1199,9 +1199,10 @@
     updateUI();
   });
 
-  // E-mails
+  /* E-mails */
   document.querySelectorAll('.block[data-seq="emails"]').forEach(block=>{
     const editor=block.querySelector('.editor');
+    const pasteEmailBtn=block.querySelector('[data-role="paste-email"]');
     const genBtn=block.querySelector('[data-role="gen-email"]');
     const pasteCodeBtn=block.querySelector('[data-role="paste-code"]');
     const copyBtn=block.querySelector('.copy');
@@ -1216,7 +1217,18 @@
     const codePill=block.querySelector('.email-code-pill');
     const copiesEl=block.querySelector('.email-copies');
 
-    const defaults={locals:[],code:'',codeCopies:0,clicks:0,phase:0,idx:0,sub:0};
+    const defaults={
+      locals:[],
+      code:'',
+      codeCopies:0,
+      clicks:0,
+      phase:0,
+      idx:0,
+      sub:0,
+      email:'',
+      emailStep1Done:false,
+      emailPhase2:0
+    };
     const st = loadState('emails', defaults);
 
     if(hasStorage){
@@ -1253,34 +1265,51 @@
 
     function totalClicksNeeded(){
       const n = st.locals.length || 0;
-      return n ? (3 * n) : 0;
+      let total = n ? (3 * n) : 0; // para cada local: fase1 + fase2 (nome + código)
+      if(st.email){
+        total += 3; // e-mail colado: fase1 (1) + fase2 (email + código)
+      }
+      return total;
     }
 
     function updateUI(){
       const totalNeeded = totalClicksNeeded();
+      const hasEmail = !!st.email;
+      const nLoc = st.locals.length || 0;
 
-      counter.textContent=String(st.locals.length);
-      detEl.textContent=String(st.locals.length);
+      const countForBadge = nLoc + (hasEmail ? 1 : 0);
+      const limitForBadge = nLoc || (hasEmail ? 1 : 1);
+
+      counter.textContent=String(nLoc);
+      detEl.textContent=String(nLoc);
       codePill.textContent=st.code||'—';
       copiesEl.textContent=String(st.codeCopies);
 
       pasteCodeBtn.disabled = !!st.code;
 
-      let passoTxt = st.locals.length ? (st.phase===0 ? 1 : 2) : 0;
-
+      let passoTxt = (nLoc || hasEmail) ? (st.phase===0 ? 1 : 2) : 0;
       let prox='—';
-      if(st.locals.length){
-        const currentLocal = st.locals[Math.min(st.idx, st.locals.length-1)];
+
+      if(nLoc || hasEmail){
         if(st.phase===0){
-          prox = currentLocal;
+          if(hasEmail && !st.emailStep1Done){
+            prox = st.email;
+          }else if(nLoc){
+            const idx = Math.min(st.idx, nLoc-1);
+            prox = st.locals[idx];
+          }
         }else{
-          prox = st.sub===0
-            ? currentLocal
-            : (st.code || 'Código (6)');
+          if(hasEmail && st.emailPhase2<2){
+            prox = st.emailPhase2===0 ? st.email : (st.code || 'Código (6)');
+          }else if(nLoc){
+            const idx = Math.min(st.idx, nLoc-1);
+            const currentLocal = st.locals[idx];
+            prox = st.sub===0 ? currentLocal : (st.code || 'Código (6)');
+          }
         }
       }
 
-      statusLeft.textContent = st.locals.length
+      statusLeft.textContent = (nLoc || hasEmail)
         ? `Passo ${passoTxt} de 2 · Próximo: ${prox}`
         : 'Pronto para gerar.';
 
@@ -1292,18 +1321,46 @@
       fill.style.width = p + '%';
       bar.classList.toggle('complete',p>=99.9);
 
-      copyBtn.disabled = !st.locals.length || (totalNeeded && st.clicks >= totalNeeded);
-      resetBtn.disabled = !st.locals.length && !st.codeCopies && !st.clicks;
+      copyBtn.disabled = (!nLoc && !hasEmail) || (totalNeeded && st.clicks >= totalNeeded);
+      resetBtn.disabled = !nLoc && !st.codeCopies && !st.clicks;
 
-      if(!st.locals.length){
+      if(!nLoc && !hasEmail){
         editor.textContent='';
       }else{
-        editor.textContent=st.locals.join('\n');
+        const lines = [];
+        if(hasEmail) lines.push(`E-mail colado: ${st.email}`);
+        if(nLoc) lines.push(...st.locals);
+        editor.textContent = lines.join('\n');
       }
+
       toggle.textContent=editor.classList.contains('show')?'Ocultar e-mails':'Ver e-mails';
-      badge('emails',{count:st.locals.length,limit:st.locals.length||1,isDone:totalNeeded && st.clicks>=totalNeeded});
+      badge('emails',{count:countForBadge,limit:limitForBadge,isDone:totalNeeded && st.clicks>=totalNeeded});
       saveState('emails', st, editor.textContent);
     }
+
+    // Colar e-mail (primeiro da fila)
+    pasteEmailBtn.addEventListener('click', async ()=>{
+      try{
+        const text = await navigator.clipboard.readText();
+        const match = String(text).match(/[^\s<>@]+@[^\s<>@]+\.[^\s<>@]+/);
+        if(!match){
+          toastErr('Nenhum e-mail válido encontrado na área de transferência.');
+          return;
+        }
+        st.email = match[0];
+        st.emailStep1Done = false;
+        st.emailPhase2 = 0;
+        st.clicks = 0;
+        st.codeCopies = 0;
+        st.phase = 0;
+        st.idx = 0;
+        st.sub = 0;
+        updateUI();
+        toastOK('E-mail colado salvo como prioridade.');
+      }catch(e){
+        toastErr('Não consegui ler o e-mail. Verifique as permissões do navegador.');
+      }
+    });
 
     genBtn.addEventListener('click',()=>{
       st.locals=genLocals(2);
@@ -1312,6 +1369,8 @@
       st.phase=0;
       st.idx=0;
       st.sub=0;
+      st.emailStep1Done = false;
+      st.emailPhase2 = 0;
       updateUI();
       toastOK('2 nomes de e-mail gerados (sem @).');
     });
@@ -1334,8 +1393,11 @@
     });
 
     copyBtn.addEventListener('click',async()=>{
-      if(!st.locals.length){
-        toastErr('Nenhum e-mail gerado ainda.');
+      const hasEmail = !!st.email;
+      const nLoc = st.locals.length || 0;
+
+      if(!nLoc && !hasEmail){
+        toastErr('Nenhum e-mail disponível. Use "Colar e-mail" ou "Gerar 2 nomes locais".');
         return;
       }
 
@@ -1345,43 +1407,89 @@
         return;
       }
 
-      const currentIndex = Math.min(st.idx, st.locals.length-1);
-      const currentLocal = st.locals[currentIndex];
       let texto='', label='';
 
       if(st.phase===0){
-        texto = currentLocal;
-        label = currentIndex===0 ? 'E-mail 1 (sem @)' : 'E-mail 2 (sem @)';
-        st.idx++;
-        if(st.idx>=st.locals.length){
-          st.idx=0;
-          st.phase=1;
-          st.sub=0;
+        // Fase 1 – primeiro o e-mail colado (se existir), depois os locais
+        if(hasEmail && !st.emailStep1Done){
+          texto = st.email;
+          label = 'E-mail colado (passo 1)';
+          st.emailStep1Done = true;
+
+          // se não existir nenhum local, já prepara para fase 2
+          if(!nLoc){
+            st.phase = 1;
+            st.sub = 0;
+            st.emailPhase2 = 0;
+          }
+        }else{
+          if(!nLoc){
+            // não há locais, então pula direto para fase 2
+            st.phase = 1;
+            st.sub = 0;
+            st.emailPhase2 = 0;
+          }else{
+            const currentIndex = Math.min(st.idx, nLoc-1);
+            const currentLocal = st.locals[currentIndex];
+            texto = currentLocal;
+            label = currentIndex===0 ? 'E-mail 1 (sem @)' : 'E-mail 2 (sem @)';
+            st.idx++;
+            if(st.idx>=nLoc){
+              st.idx=0;
+              st.phase=1;
+              st.sub=0;
+              st.emailPhase2 = 0;
+            }
+          }
         }
       }else{
-        if(!st.code){
-          toastErr('Cole primeiro o código (6) em "Colar Código".');
-          return;
-        }
-
-        if(st.sub===0){
-          texto = currentLocal;
-          label = currentIndex===0 ? 'E-mail 1 (passo 2)' : 'E-mail 2 (passo 2)';
-          st.sub = 1;
+        // Fase 2 – primeiro e-mail colado (e código), depois os locais
+        if(hasEmail && st.emailPhase2<2){
+          if(st.emailPhase2===0){
+            texto = st.email;
+            label = 'E-mail colado (passo 2)';
+            st.emailPhase2 = 1;
+          }else{
+            if(!st.code){
+              toastErr('Cole primeiro o código (6) em "Colar Código".');
+              return;
+            }
+            texto = st.code;
+            label = 'Código do e-mail colado';
+            st.emailPhase2 = 2;
+            st.codeCopies++;
+          }
         }else{
-          texto = st.code;
-          label = currentIndex===0 ? 'Código do e-mail 1' : 'Código do e-mail 2';
-          st.sub = 0;
-          st.idx++;
-          st.codeCopies++;
-          if(st.idx>=st.locals.length){
-            st.idx = st.locals.length-1;
+          if(!nLoc){
+            toastErr('Nenhum nome local gerado.');
+            return;
+          }
+          const currentIndex = Math.min(st.idx, nLoc-1);
+          const currentLocal = st.locals[currentIndex];
+
+          if(st.sub===0){
+            texto = currentLocal;
+            label = currentIndex===0 ? 'E-mail 1 (passo 2)' : 'E-mail 2 (passo 2)';
+            st.sub = 1;
+          }else{
+            if(!st.code){
+              toastErr('Cole primeiro o código (6) em "Colar Código".');
+              return;
+            }
+            texto = st.code;
+            label = currentIndex===0 ? 'Código do e-mail 1' : 'Código do e-mail 2';
+            st.sub = 0;
+            st.idx++;
+            st.codeCopies++;
+            if(st.idx>=nLoc){
+              st.idx = nLoc-1;
+            }
           }
         }
       }
 
       st.clicks++;
-      const ok=await navigator.clipboard.writeText(texto).then(()=>true).catch(()=>false);
+      const ok=await copyToClipboard(texto);
       if(ok){
         toastOK(`${label} copiado.`);
       }else{
@@ -1402,6 +1510,8 @@
       st.phase=0;
       st.idx=0;
       st.sub=0;
+      st.emailStep1Done=false;
+      st.emailPhase2=0;
       updateUI();
       toastOK('E-mails e progresso zerados. Código (6) mantido.');
     });
@@ -1414,11 +1524,11 @@
     updateUI();
   });
 
-  // Conta formatada
+  /* Conta formatada */
   document.querySelectorAll('.block[data-seq="account"]').forEach(block=>{
     const editor=block.querySelector('.editor');
     const copyBtn=block.querySelector('.copy'), pasteBtn=block.querySelector('.paste'), resetBtn=block.querySelector('.reset');
-    const counter=block.querySelector('.counter'), progress=block.querySelector('.progress'), bar=block.querySelector('.bar'), fill=block.querySelector('.fill');
+    const counter=block.querySelector('.counter'), progress=block.querySelector('.progress'), bar=block.querySelector('.bar'), fill=bar.querySelector('.fill');
     const detEl=block.querySelector('.det'), whatEl=block.querySelector('.what'), leftEl=block.querySelector('.left'), toggle=block.querySelector('.toggle-sms'), limitIn=block.querySelector('.limit');
     const defaults={limit:null,count:0,idx:0,rows:[],locked:false};
     const st = loadState('account', defaults);
@@ -1490,7 +1600,7 @@
     updateUI();
   });
 
-  // Menu Site
+  /* Menu Site */
   document.querySelectorAll('.panel[data-panel="site"] .block[data-seq="site"]').forEach(block=>{
     const editor=block.querySelector('.editor');
     const pasteNumBtn=block.querySelector('.paste-num');
@@ -1598,7 +1708,7 @@
       toastErr('Nenhum SMS para pular.');
     });
 
-    // Colar número no Site – aceita vários SMS também
+    // Colar número no Site – aceita vários
     pasteNumBtn.addEventListener('click',async()=>{
       try{
         const text=await navigator.clipboard.readText();
@@ -1772,7 +1882,7 @@
         return;
       }
 
-      const ok=await navigator.clipboard.writeText(texto).then(()=>true).catch(()=>false);
+      const ok=await copyToClipboard(texto);
       if(ok){
         toastOK(`${label} copiado.`);
       }else{
