@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Criação UniTv — v3.9.10</title>
+<title>Criação UniTv — v1.0</title>
 <style>
 :root{
   --bg:#0b1020;--card:#0f152b;--ink:#e8ecff;--muted:#9aa4c7;--stroke:#202744;--bar:#162044;
@@ -341,8 +341,8 @@ input.limit{
   </div>
 
   <div style="color:#9aa4c7;font-size:.85rem;margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
-    <div><b>Versão:</b> v3.9.10</div>
-    <div><b>Changelog:</b> Menu “E-mail” agora em 3 fases (1 e 2 = e-mails, 3 = código), com trava inteligente de cliques. Código não trava mais à toa e só libera trocando ao usar o botão Zerar (com confirmação).</div>
+    <div><b>Versão:</b> v1.0</div>
+    <div><b>Changelog:</b> Menu “E-mail” agora em 3 fases (1 e 2 = e-mails, 3 = código), com trava inteligente de cliques. Código não trava mais à toa e só libera trocando ao usar o botão Zerar (com confirmação). Persistência ativada em todos os editores.</div>
   </div>
   <div style="margin-top:8px">
     <button class="btn reset" id="reset-all">Zerar tudo</button>
@@ -1248,7 +1248,23 @@ Senha: ${row.sms}
       saveText('editor_'+key,text);
     });
   }
+  function attachEditorPersistence(){
+    const blocks=[...document.querySelectorAll('.block')];
+    blocks.forEach((block,idx)=>{
+      const ed=block.querySelector('.editor');
+      if(!ed) return;
+      const key=block.dataset.key || ('idx_'+idx);
+      const handler=()=>{
+        const text=ed.textContent || '';
+        saveText('editor_'+key,text);
+      };
+      ['input','blur','keyup','paste'].forEach(evt=>{
+        ed.addEventListener(evt,handler);
+      });
+    });
+  }
   restoreEditors();
+  attachEditorPersistence();
   window.addEventListener('beforeunload',persistEditors);
 
   const resetAll=document.getElementById('reset-all');
