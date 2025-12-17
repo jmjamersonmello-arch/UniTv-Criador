@@ -243,7 +243,7 @@ input.limit{
           <button class="btn paste-num">Colar número</button>
           <button class="btn paste-code">Colar Código</button>
           <button class="btn paste">Colar SMS</button>
-          <button classbtn copy">Copiar</button>
+          <button class="btn copy">Copiar</button>
           <button class="btn reset" disabled>Zerar</button>
         </div>
         <div class="row-ghost"><button class="btn ghost undo">⟲ Desfazer</button><button class="btn ghost skip">» Pular</button></div>
@@ -354,15 +354,15 @@ input.limit{
 <script>
 (function(){
   const LS_PREFIX='cu_v1_';
-  const saveText=(key,value)=>{try{localStorage.setItem(LS_PREFIX+key,value);}catch{}};
-  const loadText=(key)=>{try{return localStorage.getItem(LS_PREFIX+key)||'';}catch{return ''}};
+  const saveText=(key,value)=>{try{localStorage.setItem(LS_PREFIX+key,value);}catch(e){}};
+  const loadText=(key)=>{try{return localStorage.getItem(LS_PREFIX+key)||'';}catch(e){return ''}};
   /* Tabs */
   const panels=[...document.querySelectorAll('.panel')];
   const tabs=[...document.querySelectorAll('.tab')];
   function showTab(key){
     panels.forEach(p=>p.classList.toggle('active',p.dataset.panel===key));
     tabs.forEach(t=>t.classList.toggle('active',t.dataset.tab===key));
-    try{localStorage.setItem(LS_PREFIX+'tab',key)}catch{}
+    try{localStorage.setItem(LS_PREFIX+'tab',key);}catch(e){}
     location.hash='#'+key;
   }
   tabs.forEach(t=>t.addEventListener('click',()=>showTab(t.dataset.tab)));
@@ -370,8 +370,10 @@ input.limit{
   try{
     const savedTab=localStorage.getItem(LS_PREFIX+'tab');
     if(savedTab) initialTab=savedTab;
-  }catch{}
-  if(location.hash && location.hash.substring(1)) initialTab=location.hash.substring(1);
+  }catch(e){}
+  if(location.hash && location.hash.substring(1)){
+    initialTab=location.hash.substring(1);
+  }
   showTab(initialTab);
 
   /* Utils */
@@ -387,11 +389,11 @@ input.limit{
   };
   const sanitizeSix=v=>(v||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,6);
   const fmtPhone=d=>!d?d:(d.length===11?`${d.slice(0,2)} ${d.slice(2,7)}-${d.slice(7)}`:d.length===10?`${d.slice(0,2)} ${d.slice(2,6)}-${d.slice(6)}`:d);
-  const parsePtDate=s=>{const m=/(\d{2})\/(\d{2})\/(\d{4})/.exec(s||'');if(!m)return null;const d=new Date(+m[3],+m[2]-1,+m[1],12);return isNaN(d)?null:d}
+  const parsePtDate=s=>{const m=/(\d{2}\/\d{2}\/\d{4})/.exec(s||'');if(!m)return null;const d=new Date(+m[3],+m[2]-1,+m[1],12);return isNaN(d)?null:d}
   const parseIsoDate=s=>{const m=/(\d{4})-(\d{2})-(\d{2})/.exec(s||'');if(!m)return null;const d=new Date(+m[1],+m[2]-1,+m[3],12);return isNaN(d)?null:d}
   const addMonths=(d,m=1)=>{const x=new Date(d.getTime()),day=x.getDate();x.setMonth(x.getMonth()+m);if(x.getDate()<day)x.setDate(0);return x}
   const fmtPt=d=>String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear();
-  const truncate = (s,n=60)=> (s.length>n? (s.slice(0,n-1)+'…') : s);
+  const truncate=(s,n=60)=>s.length>n?(s.slice(0,n-1)+'…'):s;
   const badge=(key,{count,limit,isDone})=>{
     const t=document.querySelector(`.tab[data-tab="${key}"]`);if(!t)return;
     const b=t.querySelector('.badge');
@@ -1225,7 +1227,7 @@ Senha: ${row.sms}
     updateUI();
   });
 
-  /* ===== Persistência simples (editores + aba ativa) ===== */
+  /* Persistência de conteúdo dos editores + botão "Zerar tudo" */
   function restoreEditors(){
     const blocks=[...document.querySelectorAll('.block')];
     blocks.forEach((block,idx)=>{
@@ -1233,7 +1235,7 @@ Senha: ${row.sms}
       if(!ed) return;
       const key=block.dataset.key || ('idx_'+idx);
       const val=loadText('editor_'+key);
-      if(val) ed.textContent=val;
+      if(val) ed.textContent = val;
     });
   }
   function persistEditors(){
@@ -1242,7 +1244,7 @@ Senha: ${row.sms}
       const ed=block.querySelector('.editor');
       if(!ed) return;
       const key=block.dataset.key || ('idx_'+idx);
-      const text=ed.textContent||'';
+      const text=ed.textContent || '';
       saveText('editor_'+key,text);
     });
   }
@@ -1260,7 +1262,7 @@ Senha: ${row.sms}
           if(k && k.startsWith(LS_PREFIX)) keys.push(k);
         }
         keys.forEach(k=>localStorage.removeItem(k));
-      }catch{}
+      }catch(e){}
       location.reload();
     });
   }
