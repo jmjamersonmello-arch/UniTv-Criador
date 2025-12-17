@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Criação UniTv — v1.0</title>
+<title>Criação UniTv — v3.9.10</title>
 <style>
 :root{
   --bg:#0b1020;--card:#0f152b;--ink:#e8ecff;--muted:#9aa4c7;--stroke:#202744;--bar:#162044;
@@ -146,7 +146,7 @@ button[disabled]{opacity:.55}
   color:var(--muted);font-size:.9rem;padding:8px 10px
 }
 
-/* Inputs */
+/* Inputs / extras */
 .select-line{
   display:flex;gap:12px;align-items:center;flex-wrap:wrap;
   padding:0 10px 6px
@@ -243,7 +243,7 @@ input.limit{
           <button class="btn paste-num">Colar número</button>
           <button class="btn paste-code">Colar Código</button>
           <button class="btn paste">Colar SMS</button>
-          <button class="btn copy">Copiar</button>
+          <button classbtn copy">Copiar</button>
           <button class="btn reset" disabled>Zerar</button>
         </div>
         <div class="row-ghost"><button class="btn ghost undo">⟲ Desfazer</button><button class="btn ghost skip">» Pular</button></div>
@@ -341,8 +341,11 @@ input.limit{
   </div>
 
   <div style="color:#9aa4c7;font-size:.85rem;margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
-    <div><b>Versão:</b> v1.0</div>
-    <div><b>Changelog:</b> Menu “E-mail” agora com botão “Colar e-mail” + geração de 2 e-mails aleatórios. Passo 1 copia somente os e-mails (sem @outlook.com) e Passo 2 alterna e-mail e código (6 dígitos), sempre separados. Código trava após definido e só libera ao usar o botão Zerar.</div>
+    <div><b>Versão:</b> v3.9.10</div>
+    <div><b>Changelog:</b> Menu “E-mail” agora em 3 fases (1 e 2 = e-mails, 3 = código), com trava inteligente de cliques. Código não trava mais à toa e só libera trocando ao usar o botão Zerar (com confirmação).</div>
+  </div>
+  <div style="margin-top:8px">
+    <button class="btn reset" id="reset-all">Zerar tudo</button>
   </div>
 </div></div>
 
@@ -350,16 +353,26 @@ input.limit{
 
 <script>
 (function(){
+  const LS_PREFIX='cu_v1_';
+  const saveText=(key,value)=>{try{localStorage.setItem(LS_PREFIX+key,value);}catch{}};
+  const loadText=(key)=>{try{return localStorage.getItem(LS_PREFIX+key)||'';}catch{return ''}};
   /* Tabs */
   const panels=[...document.querySelectorAll('.panel')];
   const tabs=[...document.querySelectorAll('.tab')];
   function showTab(key){
     panels.forEach(p=>p.classList.toggle('active',p.dataset.panel===key));
     tabs.forEach(t=>t.classList.toggle('active',t.dataset.tab===key));
+    try{localStorage.setItem(LS_PREFIX+'tab',key)}catch{}
     location.hash='#'+key;
   }
   tabs.forEach(t=>t.addEventListener('click',()=>showTab(t.dataset.tab)));
-  showTab((location.hash?location.hash.substring(1):'nova'));
+  let initialTab='nova';
+  try{
+    const savedTab=localStorage.getItem(LS_PREFIX+'tab');
+    if(savedTab) initialTab=savedTab;
+  }catch{}
+  if(location.hash && location.hash.substring(1)) initialTab=location.hash.substring(1);
+  showTab(initialTab);
 
   /* Utils */
   const toast=document.getElementById('toast');
@@ -533,16 +546,8 @@ input.limit{
         const code=pickCodeFromBlock(b);
         const dt=pickDateFromBlock(b)||null;
         if(num && code){ out.push({noDDI:num,sms:code,dt}); pendN=pendC=pendD=null; continue; }
-        if(num && !code){
-          if(pendC){ out.push({noDDI:num,sms:pendC,dt:pendD||dt}); pendC=pendD=null; }
-          else { pendN=num; pendD=dt||pendD; }
-          continue;
-        }
-        if(code && !num){
-          if(pendN){ out.push({noDDI:pendN,sms:code,dt:pendD||dt}); pendN=pendD=null; }
-          else { pendC=code; pendD=dt||pendD; }
-          continue;
-        }
+        if(num && !code){ if(pendC){ out.push({noDDI:num,sms:pendC,dt:pendD||dt}); pendC=pendD=null; } else { pendN=num; pendD=dt||pendD; } continue;}
+        if(code && !num){ if(pendN){ out.push({noDDI:pendN,sms:code,dt:pendD||dt}); pendN=pendD=null; } else { pendC=code; pendD=dt||pendD; } continue;}
       }
       return out;
     }
@@ -709,7 +714,7 @@ input.limit{
       copyBtn.disabled= !!(total && st.clicks>=total);
       resetBtn.disabled=false;
       toggle.textContent=editor.classList.contains('show')?'Ocultar e-mails':'Ver e-mails';
-      badge('emails',{count:n,limit:n||1,isDone:total>0 && st.clicks>=total});
+      badge('emails',{count:n,limit:n||1,isDone:total>0 && used>=total});
     }
 
     genBtn.addEventListener('click',()=>{
@@ -1219,6 +1224,46 @@ Senha: ${row.sms}
 
     updateUI();
   });
+
+  /* ===== Persistência simples (editores + aba ativa) ===== */
+  function restoreEditors(){
+    const blocks=[...document.querySelectorAll('.block')];
+    blocks.forEach((block,idx)=>{
+      const ed=block.querySelector('.editor');
+      if(!ed) return;
+      const key=block.dataset.key || ('idx_'+idx);
+      const val=loadText('editor_'+key);
+      if(val) ed.textContent=val;
+    });
+  }
+  function persistEditors(){
+    const blocks=[...document.querySelectorAll('.block')];
+    blocks.forEach((block,idx)=>{
+      const ed=block.querySelector('.editor');
+      if(!ed) return;
+      const key=block.dataset.key || ('idx_'+idx);
+      const text=ed.textContent||'';
+      saveText('editor_'+key,text);
+    });
+  }
+  restoreEditors();
+  window.addEventListener('beforeunload',persistEditors);
+
+  const resetAll=document.getElementById('reset-all');
+  if(resetAll){
+    resetAll.addEventListener('click',()=>{
+      if(!confirm('Tem certeza que deseja ZERAR TUDO (informações salvas e estado atual)?')) return;
+      try{
+        const keys=[];
+        for(let i=0;i<localStorage.length;i++){
+          const k=localStorage.key(i);
+          if(k && k.startsWith(LS_PREFIX)) keys.push(k);
+        }
+        keys.forEach(k=>localStorage.removeItem(k));
+      }catch{}
+      location.reload();
+    });
+  }
 
 })();
 </script>
