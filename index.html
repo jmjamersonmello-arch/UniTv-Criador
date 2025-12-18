@@ -334,7 +334,7 @@ input.limit{
 
   <div style="color:#9aa4c7;font-size:.85rem;margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
     <div><b>Versão:</b> v1.0</div>
-    <div><b>Changelog:</b> Menu “E-mail” agora em 3 fases (1 e 2 = e-mails, 3 = código), com trava inteligente de cliques. Código 6 dígitos trava após definido e só libera trocando ao usar o botão Zerar (com confirmação).</div>
+    <div><b>Changelog:</b> Persistência ligada em todas as áreas digitáveis + fluxo de e-mail ajustado (1 manual + 3 gerados, cópia separada e em fases).</div>
   </div>
   <div style="margin-top:8px">
     <button class="btn reset" id="reset-all">Zerar tudo</button>
@@ -647,7 +647,7 @@ input.limit{
     function recalcTotals(){
       const locals=getLocals();
       const n=locals.length;
-      const total = n + (st.code ? n*2 : 0);
+      const total = st.code ? n*3 : n; // passo1: n, passo2: n*2
       return {locals,n,total};
     }
 
