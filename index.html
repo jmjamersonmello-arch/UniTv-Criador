@@ -88,14 +88,12 @@ button.btn{
   background:linear-gradient(180deg,#38bdf8,#0ea5e9);
   color:#001524;border-color:#0a5580
 }
-/* Azul escuro para COLAR NÚMERO e GERAR E-MAIL */
 .btn.paste-num,
 .btn[data-role="gen-email"]{
   background:linear-gradient(180deg,var(--blue1),var(--blue2));
   border-color:#26417f;
   color:#e8ecff;
 }
-/* Rosa para botão SMS (antigo SMS0) no menu Site */
 .btn[data-role="paste-sms0"]{
   background:linear-gradient(180deg,#ec4899,#db2777);
   border-color:#be185d;
@@ -183,7 +181,6 @@ input.limit{
     <button class="tab" data-tab="site"><span>Site</span><span class="badge">0</span><span class="dot"></span></button>
   </div>
 
-  <!-- Conta Nova -->
   <div class="panel" data-panel="nova">
     <section class="block" data-title="Conta Nova" data-key="nova" data-limit="3" data-seq="triple">
       <header>
@@ -208,7 +205,6 @@ input.limit{
     </section>
   </div>
 
-  <!-- Renovação -->
   <div class="panel" data-panel="renov">
     <section class="block" data-title="Renovação" data-key="renov" data-limit="5" data-seq="triple">
       <header>
@@ -233,7 +229,6 @@ input.limit{
     </section>
   </div>
 
-  <!-- Personalizado -->
   <div class="panel" data-panel="custom">
     <section class="block" data-title="Personalizado" data-key="custom" data-limit="custom" data-seq="triple">
       <header>
@@ -259,14 +254,13 @@ input.limit{
     </section>
   </div>
 
-  <!-- E-mail -->
   <div class="panel" data-panel="emails">
     <section class="block" data-title="E-mail Microsoft" data-key="emails" data-limit="custom" data-seq="emails">
       <header>
         <div class="title"><span>E-mail</span><span class="counter">0</span></div>
         <div class="controls">
           <button class="btn paste" data-role="paste-email">Colar e-mail</button>
-          <button class="btn paste" data-role="gen-email">Gerar 2 e-mails</button>
+          <button class="btn paste" data-role="gen-email">Gerar 3 e-mails</button>
           <button class="btn paste-code" data-role="paste-code">Colar código (6 dígitos)</button>
           <button class="btn copy">Copiar (sequência)</button>
           <button class="btn reset" disabled>Zerar</button>
@@ -280,7 +274,7 @@ input.limit{
         E-mails (manual + gerados): <b class="det">0</b> ·
         <a class="toggle-sms" href="javascript:void(0)">Ver e-mails</a>
       </div>
-      <div class="editor" contenteditable="false" spellcheck="false" data-placeholder="Use &quot;Colar e-mail&quot; para adicionar 1 e-mail e &quot;Gerar 2 e-mails&quot; para criar mais 2 nomes (sem @outlook.com)."></div>
+      <div class="editor" contenteditable="false" spellcheck="false" data-placeholder="Use &quot;Colar e-mail&quot; para adicionar 1 e-mail e &quot;Gerar 3 e-mails&quot; para criar os nomes (sem @outlook.com)."></div>
       <div class="bar"><div class="fill"></div></div>
       <div class="status">
         <span class="left">Pronto para gerar.</span>
@@ -289,7 +283,6 @@ input.limit{
     </section>
   </div>
 
-  <!-- Conta formatada -->
   <div class="panel" data-panel="conta">
     <section class="block" data-title="Conta formatada" data-key="conta" data-limit="custom" data-seq="account">
       <header>
@@ -311,7 +304,6 @@ input.limit{
     </section>
   </div>
 
-  <!-- Site -->
   <div class="panel" data-panel="site">
     <section class="block" data-title="Site" data-key="site" data-limit="custom" data-seq="site">
       <header>
@@ -342,7 +334,7 @@ input.limit{
 
   <div style="color:#9aa4c7;font-size:.85rem;margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
     <div><b>Versão:</b> v1.0</div>
-    <div><b>Changelog:</b> Menu “E-mail” agora em 3 fases (1 e 2 = e-mails, 3 = código), com trava inteligente de cliques. Código não trava mais à toa e só libera trocando ao usar o botão Zerar (com confirmação). Persistência ativada em todos os editores.</div>
+    <div><b>Changelog:</b> Menu “E-mail” agora em 3 fases (1 e 2 = e-mails, 3 = código), com trava inteligente de cliques. Código 6 dígitos trava após definido e só libera trocando ao usar o botão Zerar (com confirmação).</div>
   </div>
   <div style="margin-top:8px">
     <button class="btn reset" id="reset-all">Zerar tudo</button>
@@ -353,28 +345,16 @@ input.limit{
 
 <script>
 (function(){
-  const LS_PREFIX='cu_v1_';
-  const saveText=(key,value)=>{try{localStorage.setItem(LS_PREFIX+key,value);}catch(e){}};
-  const loadText=(key)=>{try{return localStorage.getItem(LS_PREFIX+key)||'';}catch(e){return ''}};
   /* Tabs */
   const panels=[...document.querySelectorAll('.panel')];
   const tabs=[...document.querySelectorAll('.tab')];
   function showTab(key){
     panels.forEach(p=>p.classList.toggle('active',p.dataset.panel===key));
     tabs.forEach(t=>t.classList.toggle('active',t.dataset.tab===key));
-    try{localStorage.setItem(LS_PREFIX+'tab',key);}catch(e){}
     location.hash='#'+key;
   }
   tabs.forEach(t=>t.addEventListener('click',()=>showTab(t.dataset.tab)));
-  let initialTab='nova';
-  try{
-    const savedTab=localStorage.getItem(LS_PREFIX+'tab');
-    if(savedTab) initialTab=savedTab;
-  }catch(e){}
-  if(location.hash && location.hash.substring(1)){
-    initialTab=location.hash.substring(1);
-  }
-  showTab(initialTab);
+  showTab((location.hash?location.hash.substring(1):'nova'));
 
   /* Utils */
   const toast=document.getElementById('toast');
@@ -437,7 +417,6 @@ input.limit{
     return '';
   }
 
-  /* ===== TRIPLE (Conta nova / renov / personalizado) ===== */
   document.querySelectorAll('.block[data-seq="triple"]').forEach(block=>{
     const key=block.dataset.key, defLim=block.dataset.limit, editor=block.querySelector('.editor');
     const copyBtn=block.querySelector('.copy'),
@@ -506,7 +485,6 @@ input.limit{
     hookLimitInput(limitIn,(v)=>{st.limit=v},updateUI)
     toggle.addEventListener('click',()=>{editor.classList.toggle('show');updateUI()})
 
-    // Colar código 6 dígitos
     pasteCodeBtn.addEventListener('click',async()=>{
       if(st.six){toastOK('Código já definido. Use "Zerar" para trocar.');return}
       let txt='';try{txt=await navigator.clipboard.readText()}catch{} if(!txt) txt=prompt('Cole/insira o código (A–Z/0–9, 6):','')||'';
@@ -514,7 +492,6 @@ input.limit{
       st.six=val;toastOK('Código definido.');updateUI()
     });
 
-    // Colar número
     pasteNumBtn&&pasteNumBtn.addEventListener('click',async()=>{
       let text='';try{text=await navigator.clipboard.readText()}catch{}
       if(!text){
@@ -554,7 +531,6 @@ input.limit{
       return out;
     }
 
-    // Colar SMS
     pasteBtn.addEventListener('click',async()=>{
       if(st.locked&&st.idx<st.rows.length){toastOK('Finalize os registros antes de colar novamente.');return}
       if(defLim==='custom'&&limitIn){const v=parseInt(limitIn.value||'',10);if(Number.isFinite(v)&&v>0)st.limit=v}
@@ -567,7 +543,6 @@ input.limit{
       updateUI(); toastOK(`Adicionados ${added.length} registro(s). Colar bloqueado até terminar.`)
     });
 
-    // Copiar (prioridade fila números)
     copyBtn.addEventListener('click',async()=>{
       if(st.numQueue && st.numQueue.length>0){
         const num=st.numQueue.shift();
@@ -607,7 +582,6 @@ input.limit{
     paintBtns(); updateUI();
   });
 
-  /* ===== E-mails (2 passos: e-mails → e-mail+código) ===== */
   document.querySelectorAll('.block[data-seq="emails"]').forEach(block=>{
     const editor=block.querySelector('.editor');
     const genBtn=block.querySelector('[data-role="gen-email"]');
@@ -630,11 +604,11 @@ input.limit{
       code:'',
       codeCopies:0,
       clicks:0,
-      stage:0,      // 0 = Passo 1 (só e-mails), 1 = Passo 2 (e-mail + código)
-      idx1:0,       // índice passo 1
+      stage:0,
+      idx1:0,
       emailsCopied:0,
-      idx2:0,       // índice passo 2
-      sub2:0        // 0 = e-mail, 1 = código
+      idx2:0,
+      sub2:0
     };
 
     const objectsPt=['copo','mesa','caderno','nuvem','teclado','fone','monitor','janela','porta','cadeira','notebook','luz','papel','garrafa','chave','controle','lampada','fonepreto','foneblu','quadro'];
@@ -673,7 +647,7 @@ input.limit{
     function recalcTotals(){
       const locals=getLocals();
       const n=locals.length;
-      const total = n + (st.code ? n*2 : 0); // passo 1 = n cliques; passo 2 = n*2
+      const total = n + (st.code ? n*2 : 0);
       return {locals,n,total};
     }
 
@@ -720,7 +694,7 @@ input.limit{
     }
 
     genBtn.addEventListener('click',()=>{
-      st.generated=genLocals(2);
+      st.generated=genLocals(3);
       st.clicks=0;
       st.stage=0;
       st.idx1=0;
@@ -728,7 +702,7 @@ input.limit{
       st.idx2=0;
       st.sub2=0;
       updateUI();
-      toastOK('2 nomes de e-mail gerados (sem @outlook.com).');
+      toastOK('3 nomes de e-mail gerados (sem @outlook.com).');
     });
 
     pasteEmailBtn.addEventListener('click',async()=>{
@@ -781,7 +755,7 @@ input.limit{
     copyBtn.addEventListener('click',async()=>{
       const {locals,n,total}=recalcTotals();
       if(!n){
-        toastOK('Use "Colar e-mail" e/ou "Gerar 2 e-mails" primeiro.');
+        toastOK('Use "Colar e-mail" e/ou "Gerar 3 e-mails" primeiro.');
         return;
       }
       if(total && st.clicks>=total){
@@ -867,7 +841,6 @@ input.limit{
     updateUI();
   });
 
-  /* ===== Conta formatada ===== */
   document.querySelectorAll('.block[data-seq="account"]').forEach(block=>{
     const editor=block.querySelector('.editor');
     const copyBtn=block.querySelector('.copy'), pasteBtn=block.querySelector('.paste'), resetBtn=block.querySelector('.reset');
@@ -935,14 +908,13 @@ Senha: ${row.sms}
     updateUI();
   });
 
-  /* ===== SITE (prioridade: Nº -> SMS -> Conta) ===== */
   document.querySelectorAll('.block[data-seq="site"]').forEach(block=>{
     const editor=block.querySelector('.editor');
     const copyBtn=block.querySelector('.copy');
-    const pasteBtnConta=block.querySelector('.paste'); // Conta
+    const pasteBtnConta=block.querySelector('.paste');
     const pasteCodeBtn=block.querySelector('.paste-code');
     const pasteNumBtn=block.querySelector('.paste-num');
-    const pasteSmsBtn=block.querySelector('[data-role="paste-sms0"]'); // SMS
+    const pasteSmsBtn=block.querySelector('[data-role="paste-sms0"]');
     const resetBtn=block.querySelector('.reset');
     const undoBtn=block.querySelector('.undo');
     const skipBtn=block.querySelector('.skip');
@@ -953,14 +925,14 @@ Senha: ${row.sms}
     const toggle=block.querySelector('.toggle-sms');
     const sixPill=block.querySelector('.six-pill');
     const detNum=block.querySelector('.det-num');
-    const detSms=block.querySelector('.det-sms0');   // fila SMS
-    const detConta=block.querySelector('.det-sms');  // fila Conta
+    const detSms=block.querySelector('.det-sms0');
+    const detConta=block.querySelector('.det-sms');
     const leftEl=block.querySelector('.left');
 
     const st={
       numQueue:[],
-      smsRows:[],     // SMS: número -> código SMS -> senha
-      contaRows:[],   // Conta: número -> senha -> código 6 dígitos
+      smsRows:[],
+      contaRows:[],
       six:'',
       count:0,
       smsIdx:0,
@@ -993,7 +965,6 @@ Senha: ${row.sms}
       resetBtn.disabled = !st.totalExpected && !st.six && !st.count;
       copyBtn.disabled = !st.numQueue.length && !st.smsRows.length && !st.contaRows.length && !st.six;
 
-      // trava SMS enquanto existir fila
       pasteSmsBtn.disabled = st.smsRows.length>0;
       toggle.textContent=editor.classList.contains('show')?'Ocultar dados':`Ver dados`;
     }
@@ -1059,7 +1030,6 @@ Senha: ${row.sms}
       updateUI();
     });
 
-    // SMS (Número -> Código SMS -> Senha 12345jm)
     pasteSmsBtn.addEventListener('click',async()=>{
       if(st.smsRows.length){toastOK('Já existem SMS pendentes. Consuma ou zere antes de colar novamente.');return}
       let text='';try{text=await navigator.clipboard.readText()}catch{}
@@ -1079,7 +1049,6 @@ Senha: ${row.sms}
       updateUI();
     });
 
-    // Conta (Número -> Senha 12345jm -> Código 6 dígitos)
     pasteBtnConta.addEventListener('click',async()=>{
       let text='';try{text=await navigator.clipboard.readText()}catch{}
       if(!text){
@@ -1106,7 +1075,6 @@ Senha: ${row.sms}
     });
 
     skipBtn.addEventListener('click',()=>{
-      // pular Conta atual (fila Conta)
       if(st.contaRows.length && st.contaIdx<st.contaRows.length){
         st.contaIdx++;
         st.contaPhase=0;
@@ -1124,7 +1092,6 @@ Senha: ${row.sms}
       }
       snapshot();
 
-      // 1) Prioridade: fila de números
       if(st.numQueue.length){
         const num=st.numQueue.shift();
         const ok=await copyClip(String(num));
@@ -1136,7 +1103,6 @@ Senha: ${row.sms}
         return;
       }
 
-      // 2) Depois SMS: Número -> Código SMS -> Senha fixa 12345jm
       if(st.smsRows.length && (st.smsIdx<st.smsRows.length || st.smsPhase>0)){
         if(st.smsIdx>=st.smsRows.length) st.smsIdx=0;
         const row=st.smsRows[st.smsIdx];
@@ -1163,7 +1129,6 @@ Senha: ${row.sms}
         st.lastCopied=`${label}: ${text}`;
         toastOK(truncate(st.lastCopied,70));
 
-        // Se acabou a fila de SMS (ciclo completo), limpa para liberar botão
         if(st.smsIdx>=st.smsRows.length && st.smsPhase===0){
           st.smsRows=[];
           st.smsIdx=0;
@@ -1173,7 +1138,6 @@ Senha: ${row.sms}
         return;
       }
 
-      // 3) Por fim Conta: Número -> Senha 12345jm -> Código 6 dígitos
       if(!st.contaRows.length || st.contaIdx>=st.contaRows.length){
         toastOK('Nenhuma Conta disponível.');return;
       }
@@ -1205,7 +1169,6 @@ Senha: ${row.sms}
       st.lastCopied=`${label}: ${text}`;
       toastOK(truncate(st.lastCopied,70));
 
-      // Se acabou a fila de contas, limpa
       if(st.contaIdx>=st.contaRows.length && st.contaPhase===0){
         st.contaRows=[];
         st.contaIdx=0;
@@ -1227,62 +1190,75 @@ Senha: ${row.sms}
     updateUI();
   });
 
-  /* Persistência de conteúdo dos editores + botão "Zerar tudo" */
-  function restoreEditors(){
-    const blocks=[...document.querySelectorAll('.block')];
-    blocks.forEach((block,idx)=>{
-      const ed=block.querySelector('.editor');
-      if(!ed) return;
-      const key=block.dataset.key || ('idx_'+idx);
-      const val=loadText('editor_'+key);
-      if(val) ed.textContent = val;
-    });
+})();
+</script>
+<script>
+(function(){
+  const LS_PREFIX = 'cu_persist_v1_';
+
+  function save(key, value) {
+    try {
+      localStorage.setItem(LS_PREFIX + key, value);
+    } catch (e) {
+      console.warn('Não foi possível salvar no localStorage:', e);
+    }
   }
-  function persistEditors(){
-    const blocks=[...document.querySelectorAll('.block')];
-    blocks.forEach((block,idx)=>{
-      const ed=block.querySelector('.editor');
-      if(!ed) return;
-      const key=block.dataset.key || ('idx_'+idx);
-      const text=ed.textContent || '';
-      saveText('editor_'+key,text);
-    });
+
+  function load(key) {
+    try {
+      return localStorage.getItem(LS_PREFIX + key) || '';
+    } catch (e) {
+      console.warn('Não foi possível ler do localStorage:', e);
+      return '';
+    }
   }
-  function attachEditorPersistence(){
-    const blocks=[...document.querySelectorAll('.block')];
-    blocks.forEach((block,idx)=>{
-      const ed=block.querySelector('.editor');
-      if(!ed) return;
-      const key=block.dataset.key || ('idx_'+idx);
-      const handler=()=>{
-        const text=ed.textContent || '';
-        saveText('editor_'+key,text);
+
+  function initPersist() {
+    const blocks = document.querySelectorAll('.block');
+    blocks.forEach((block, idx) => {
+      const editor = block.querySelector('.editor[contenteditable="true"]');
+      if (!editor) return;
+
+      const key = block.dataset.key || ('block_' + idx);
+
+      const salvo = load(key);
+      if (salvo) {
+        editor.textContent = salvo;
+      }
+
+      const handler = () => {
+        save(key, editor.textContent || '');
       };
-      ['input','blur','keyup','paste'].forEach(evt=>{
-        ed.addEventListener(evt,handler);
+
+      ['input', 'keyup', 'paste', 'blur'].forEach(evt => {
+        editor.addEventListener(evt, handler);
       });
     });
-  }
-  restoreEditors();
-  attachEditorPersistence();
-  window.addEventListener('beforeunload',persistEditors);
 
-  const resetAll=document.getElementById('reset-all');
-  if(resetAll){
-    resetAll.addEventListener('click',()=>{
-      if(!confirm('Tem certeza que deseja ZERAR TUDO (informações salvas e estado atual)?')) return;
-      try{
-        const keys=[];
-        for(let i=0;i<localStorage.length;i++){
-          const k=localStorage.key(i);
-          if(k && k.startsWith(LS_PREFIX)) keys.push(k);
+    const resetAll = document.getElementById('reset-all');
+    if (resetAll) {
+      resetAll.addEventListener('click', () => {
+        if (!confirm('Zerar TODO o conteúdo digitado e salvo em todos os blocos?')) return;
+
+        try {
+          const keys = Object.keys(localStorage);
+          keys.forEach(k => {
+            if (k.startsWith(LS_PREFIX)) {
+              localStorage.removeItem(k);
+            }
+          });
+        } catch (e) {
+          console.warn('Erro ao limpar localStorage:', e);
         }
-        keys.forEach(k=>localStorage.removeItem(k));
-      }catch(e){}
-      location.reload();
-    });
+      });
+    }
   }
 
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initPersist);
+  } else {
+    initPersist();
+  }
 })();
 </script>
 </body>
