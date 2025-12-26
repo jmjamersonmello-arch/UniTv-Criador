@@ -426,7 +426,7 @@ h1{
       </div>
 
       <div class="controls">
-        <button class="btn paste" data-role="paste-email">Colar e-mail</button>
+        <button class="btn paste" data-role="paste-email">Gerar aliás</button>
         <button class="btn paste" data-role="gen-email">Gerar e-mail</button>
         <button class="btn paste" data-role="paste-code">Colar Código</button>
         <button class="btn copy copy">Copiar <span class="muted">(restantes: 0)</span></button>
@@ -511,8 +511,8 @@ h1{
   </div>
 
   <div class="footer small">
-    Versão: <strong>v2.1</strong><br/>
-    Changelog: Botão <strong>Colar e-mail</strong> agora gera automaticamente alias do Gmail <strong>com pontos</strong> a partir de <strong>jmjamersonmello@gmail.com</strong> (sem repetir até 8192 combinações).
+    <div><b>Versão:</b> v3.9.12</div>
+    <div><b>Changelog:</b> Menu “E-mail” — botão renomeado para “Gerar aliás”. Agora gera automaticamente alias do Gmail com pontos a partir de <b>jmjamersonmello@gmail.com</b> (sem repetir até 8192 combinações).</div>
   </div>
 </div>
 
@@ -899,11 +899,9 @@ h1{
       }catch(e){}
     }
 
-    /* ===== ALTERAÇÃO PEDIDA: Colar e-mail agora gera alias do seu Gmail com pontos ===== */
-    const BASE_GMAIL_FULL = 'jmjamersonmello@gmail.com';
     const BASE_GMAIL_LOCAL = 'jmjamersonmello';
-    const GAPS = BASE_GMAIL_LOCAL.length - 1; // 13
-    const MOD = 1 << GAPS; // 8192
+    const GAPS = BASE_GMAIL_LOCAL.length - 1;
+    const MOD = 1 << GAPS;
 
     function randInt(max){
       if(window.crypto && crypto.getRandomValues){
@@ -932,26 +930,21 @@ h1{
       let s = getStore(key, null);
       let step, lastMask;
       if(!s || typeof s.step!=='number' || typeof s.lastMask!=='number'){
-        step = randOdd(MOD);       // ímpar => ciclo completo no 2^13
-        lastMask = randInt(MOD);   // ponto inicial
+        step = randOdd(MOD);
+        lastMask = randInt(MOD);
       }else{
         step = s.step;
         lastMask = s.lastMask;
       }
 
-      // avança 1 passo (evita repetir logo de cara)
       lastMask = (lastMask + step) & (MOD - 1);
-
-      // evita o mask 0 (sem pontos) se você quiser sempre "diferente" do original
       if(lastMask === 0){
         lastMask = (lastMask + step) & (MOD - 1);
       }
 
       setStore(key, {step, lastMask});
-
       return applyDotMask(BASE_GMAIL_LOCAL, lastMask);
     }
-    /* ===== fim alteração ===== */
 
     const sanitizeLocal=(s)=>{
       const raw=String(s||'').trim();
@@ -1052,14 +1045,12 @@ h1{
       persist();
     }
 
-    /* ===== ALTERAÇÃO AQUI: clique em "Colar e-mail" agora gera alias do seu Gmail ===== */
     pasteEmailBtn && pasteEmailBtn.addEventListener('click',()=>{
-      const aliasLocal = nextDotAliasLocal(); // ex: jm.jamersonmello
+      const aliasLocal = nextDotAliasLocal();
       st.queue.push(sanitizeLocal(aliasLocal));
       toastOK(`Alias gerado: ${aliasLocal}@gmail.com`);
       updateUI();
     });
-    /* ===== fim alteração ===== */
 
     genBtn.addEventListener('click',()=>{
       regenLocals();
@@ -1128,7 +1119,6 @@ h1{
     resetBtn.addEventListener('click',()=>{
       st.queue=[]; st.qIndex=0; st.locals=[]; st.code=''; st.codeCopies=0; st.clicks=0; st.phase=0; st.idx=0; st.sub=0;
       editor.textContent=''; editor.classList.remove('show');
-      // reseta também o gerador de alias
       setStore('gmail_alias_gen', null);
       updateUI();
     });
