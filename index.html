@@ -511,8 +511,8 @@ h1{
   </div>
 
   <div class="footer small">
-    <div><b>Versão:</b> v3.9.12</div>
-    <div><b>Changelog:</b> Menu “E-mail” — botão renomeado para “Gerar aliás”. Agora gera automaticamente alias do Gmail com pontos a partir de <b>jmjamersonmello@gmail.com</b> (sem repetir até 8192 combinações).</div>
+    <div><b>Versão:</b> v3.9.13</div>
+    <div><b>Changelog:</b> Ajuste do botão <b>Copiar</b> no menu “E-mail”: agora ele só reinicia o fluxo depois que você clicar em <b>Gerar e-mail</b> novamente, evitando repetir o primeiro e-mail do lote.</div>
   </div>
 </div>
 
@@ -1100,7 +1100,8 @@ h1{
           st.idx++;
           if(st.idx>=st.locals.length){
             if(hasGmail()) st.qIndex=Math.min(st.qIndex+1, st.queue.length);
-            st.phase=0; st.idx=0; st.sub=0; st.clicks=0;
+            st.phase=0; st.idx=0; st.sub=0;
+            // **não** zera st.clicks aqui: obriga gerar novo e-mail pra recomeçar
           }
         }
       }
