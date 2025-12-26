@@ -511,8 +511,8 @@ h1{
   </div>
 
   <div class="footer small">
-    Versão: <strong>v2.0</strong><br/>
-    Changelog: No passo “SMS” agora copia somente os <strong>6 dígitos</strong> do SMS (sem texto).
+    Versão: <strong>v2.1</strong><br/>
+    Changelog: Botão <strong>Colar e-mail</strong> agora gera automaticamente alias do Gmail <strong>com pontos</strong> a partir de <strong>jmjamersonmello@gmail.com</strong> (sem repetir até 8192 combinações).
   </div>
 </div>
 
@@ -670,7 +670,7 @@ h1{
       six:'',
       numQueue:[],
       smsItems:[],
-      smsStep:0, // 0=numero,1=sms(codigo 6 digitos),2=codigo colar-codigo
+      smsStep:0,
       lastSnapshot:null
     };
 
@@ -801,7 +801,6 @@ h1{
         st.smsStep = 1;
 
       }else if(st.smsStep===1){
-        // ✅ AQUI: agora copia somente os 6 dígitos do SMS
         const digits6 = (String(cur.smsText||'').match(/\b\d{6}\b/)||[])[0] || (String(cur.smsText||'').match(/\d{6}/)||[])[0] || '';
         if(!digits6){
           toastOK('Não achei 6 dígitos no SMS. Cole o SMS novamente.');
@@ -864,7 +863,7 @@ h1{
     updateUI();
   });
 
-  /* ===== E-mails / Conta formatada / Site (iguais do v2.0 anterior) ===== */
+  /* ===== E-mails ===== */
   document.querySelectorAll('.block[data-seq="emails"]').forEach(block=>{
     const editor=block.querySelector('.editor');
     const pasteEmailBtn=block.querySelector('[data-role="paste-email"]');
@@ -900,20 +899,66 @@ h1{
       }catch(e){}
     }
 
+    /* ===== ALTERAÇÃO PEDIDA: Colar e-mail agora gera alias do seu Gmail com pontos ===== */
+    const BASE_GMAIL_FULL = 'jmjamersonmello@gmail.com';
+    const BASE_GMAIL_LOCAL = 'jmjamersonmello';
+    const GAPS = BASE_GMAIL_LOCAL.length - 1; // 13
+    const MOD = 1 << GAPS; // 8192
+
+    function randInt(max){
+      if(window.crypto && crypto.getRandomValues){
+        const buf = new Uint32Array(1);
+        crypto.getRandomValues(buf);
+        return buf[0] % max;
+      }
+      return Math.floor(Math.random()*max);
+    }
+    function randOdd(maxPow2){
+      let n = randInt(maxPow2);
+      if((n % 2) === 0) n = (n + 1) % maxPow2;
+      if(n === 0) n = 1;
+      return n;
+    }
+    function applyDotMask(local, mask){
+      let out = local.charAt(0);
+      for(let i=1;i<local.length;i++){
+        if(mask & (1 << (i-1))) out += '.';
+        out += local.charAt(i);
+      }
+      return out;
+    }
+    function nextDotAliasLocal(){
+      const key = 'gmail_alias_gen';
+      let s = getStore(key, null);
+      let step, lastMask;
+      if(!s || typeof s.step!=='number' || typeof s.lastMask!=='number'){
+        step = randOdd(MOD);       // ímpar => ciclo completo no 2^13
+        lastMask = randInt(MOD);   // ponto inicial
+      }else{
+        step = s.step;
+        lastMask = s.lastMask;
+      }
+
+      // avança 1 passo (evita repetir logo de cara)
+      lastMask = (lastMask + step) & (MOD - 1);
+
+      // evita o mask 0 (sem pontos) se você quiser sempre "diferente" do original
+      if(lastMask === 0){
+        lastMask = (lastMask + step) & (MOD - 1);
+      }
+
+      setStore(key, {step, lastMask});
+
+      return applyDotMask(BASE_GMAIL_LOCAL, lastMask);
+    }
+    /* ===== fim alteração ===== */
+
     const sanitizeLocal=(s)=>{
       const raw=String(s||'').trim();
       if(!raw) return '';
       const part=raw.split(/\s+/)[0].trim();
       const a=part.split('@')[0];
       return a.replace(/[^\w.\-]/g,'').slice(0,40);
-    };
-    const parseManyEmails=(text)=>{
-      const parts=String(text||'')
-        .replace(/\r/g,'\n')
-        .split(/[\n,; ]+/)
-        .map(s=>sanitizeLocal(s))
-        .filter(Boolean);
-      return parts;
     };
 
     const OBJECTS = [
@@ -923,14 +968,6 @@ h1{
       "forno","panela","microondas","ventilador","geladeira","tapete","pente","escova","caderno",
       "lapis","borracha","mochila","quadro","corrente","anel","bone","oculos","carro","moto"
     ];
-    function randInt(max){
-      if(window.crypto && crypto.getRandomValues){
-        const buf = new Uint32Array(1);
-        crypto.getRandomValues(buf);
-        return buf[0] % max;
-      }
-      return Math.floor(Math.random()*max);
-    }
     function pick(arr){ return arr[randInt(arr.length)] }
     function pad3(n){ return String(n).padStart(3,'0') }
     function makeEmail(){
@@ -1015,14 +1052,14 @@ h1{
       persist();
     }
 
-    pasteEmailBtn && pasteEmailBtn.addEventListener('click',async ()=>{
-      const text=await getClipOrPrompt('Cole aqui 1 ou vários e-mails (com ou sem @gmail.com).');
-      const items=parseManyEmails(text);
-      if(!items.length){toastOK('Nenhum e-mail válido.');return;}
-      items.forEach(x=>{ if(!st.queue.includes(x)) st.queue.push(x); });
-      toastOK(`E-mails guardados: ${st.queue.length}`);
+    /* ===== ALTERAÇÃO AQUI: clique em "Colar e-mail" agora gera alias do seu Gmail ===== */
+    pasteEmailBtn && pasteEmailBtn.addEventListener('click',()=>{
+      const aliasLocal = nextDotAliasLocal(); // ex: jm.jamersonmello
+      st.queue.push(sanitizeLocal(aliasLocal));
+      toastOK(`Alias gerado: ${aliasLocal}@gmail.com`);
       updateUI();
     });
+    /* ===== fim alteração ===== */
 
     genBtn.addEventListener('click',()=>{
       regenLocals();
@@ -1091,6 +1128,8 @@ h1{
     resetBtn.addEventListener('click',()=>{
       st.queue=[]; st.qIndex=0; st.locals=[]; st.code=''; st.codeCopies=0; st.clicks=0; st.phase=0; st.idx=0; st.sub=0;
       editor.textContent=''; editor.classList.remove('show');
+      // reseta também o gerador de alias
+      setStore('gmail_alias_gen', null);
       updateUI();
     });
 
@@ -1102,6 +1141,7 @@ h1{
     updateUI();
   });
 
+  /* ===== Conta formatada ===== */
   document.querySelectorAll('.block[data-seq="account"]').forEach(block=>{
     const editor=block.querySelector('.editor');
     const pasteSmsBtn=block.querySelector('[data-role="paste-sms"]');
@@ -1194,6 +1234,7 @@ h1{
     updateUI();
   });
 
+  /* ===== Site ===== */
   document.querySelectorAll('.block[data-seq="site"]').forEach(block=>{
     const editor=block.querySelector('.editor');
     const pasteNumBtn=block.querySelector('[data-role="paste-number"]');
