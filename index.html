@@ -511,8 +511,8 @@ h1{
   </div>
 
   <div class="footer small">
-    <div><b>Versão:</b> v3.9.15</div>
-    <div><b>Changelog:</b> E-mail: o <b>Copiar</b> só inclui o <b>aliás Gmail</b> se você clicar em <b>Gerar aliás</b>; caso contrário, ele copia apenas os <b>3 e-mails gerados</b>.</div>
+    <div><b>Versão:</b> v3.9.16</div>
+    <div><b>Changelog:</b> E-mail: corrigido o bug onde, após copiar o aliás Gmail, pulava para o 2º e-mail gerado. Agora copia: aliás → 1º → 2º → 3º.</div>
   </div>
 </div>
 
@@ -880,8 +880,12 @@ h1{
     const codePill=block.querySelector('.email-code-pill');
     const copiesEl=block.querySelector('.email-copies');
 
-    // useAliasNext => só inclui o Gmail se você clicou em "Gerar aliás"
-    const st={queue:[],qIndex:0,locals:[],code:'',codeCopies:0,clicks:0,phase:0,idx:0,sub:0,useAliasNext:false};
+    const st={
+      queue:[],qIndex:0,locals:[],code:'',codeCopies:0,clicks:0,phase:0,idx:0,sub:0,
+      useAliasNext:false,
+      aliasInCycle:false,   /* FIX: mantém o slot do aliás no ciclo */
+      aliasCopied:false     /* FIX: marca que o aliás já foi copiado */
+    };
 
     const _psKey='emails_state';
     const _saved=getStore(_psKey,null);
@@ -897,6 +901,8 @@ h1{
         if(typeof _saved.idx==='number') st.idx=_saved.idx;
         if(typeof _saved.sub==='number') st.sub=_saved.sub;
         if(typeof _saved.useAliasNext==='boolean') st.useAliasNext=_saved.useAliasNext;
+        if(typeof _saved.aliasInCycle==='boolean') st.aliasInCycle=_saved.aliasInCycle;
+        if(typeof _saved.aliasCopied==='boolean') st.aliasCopied=_saved.aliasCopied;
         if(typeof _saved.editorText==='string') editor.textContent=_saved.editorText;
       }catch(e){}
     }
@@ -979,22 +985,26 @@ h1{
     const regenLocals=()=>{
       st.locals=[makeEmail(),makeEmail(),makeEmail()];
       st.phase=0; st.idx=0; st.sub=0; st.clicks=0;
+      // FIX: se gerou novamente os e-mails, reinicia o slot do aliás no ciclo (se estiver ativo)
+      if(st.aliasInCycle) st.aliasCopied=false;
       updateUI();
     };
 
-    // >>> Agora só tem Gmail se você clicou em "Gerar aliás"
-    const hasGmail=()=> (st.useAliasNext === true) && (st.qIndex < st.queue.length);
-    const currentGmail=()=>hasGmail() ? (st.queue[st.qIndex]+'@gmail.com') : '';
+    const aliasActive = ()=> (st.aliasInCycle === true) && (st.qIndex < st.queue.length);
+    const aliasNext = ()=> aliasActive() && (st.aliasCopied === false);
+    const currentGmail=()=> aliasActive() ? (st.queue[st.qIndex]+'@gmail.com') : '';
+
     const totalClicks=()=>{
       const base = st.locals.length;
       if(!base) return 0;
-      return (hasGmail()?1:0) + base + base*2;
+      return (aliasActive()?1:0) + base + base*2;
     };
+
     const nextLabel=()=>{
       if(!st.locals.length) return 'Gerar e-mails';
       if(st.phase===0){
-        if(hasGmail() && st.idx===0) return currentGmail();
-        const gIdx = hasGmail()?Math.max(st.idx-1,0):st.idx;
+        if(aliasNext() && st.idx===0) return currentGmail();
+        const gIdx = aliasActive()?Math.max(st.idx-1,0):st.idx;
         return st.locals[Math.min(gIdx, st.locals.length-1)];
       }
       if(st.phase===1){
@@ -1008,6 +1018,8 @@ h1{
         queue:st.queue,qIndex:st.qIndex,locals:st.locals,code:st.code,
         codeCopies:st.codeCopies,clicks:st.clicks,phase:st.phase,idx:st.idx,sub:st.sub,
         useAliasNext:st.useAliasNext,
+        aliasInCycle:st.aliasInCycle,
+        aliasCopied:st.aliasCopied,
         editorText:editor.textContent
       });
     };
@@ -1049,7 +1061,6 @@ h1{
       persist();
     }
 
-    // Gerar aliás: habilita usar Gmail APENAS nesse próximo ciclo
     pasteEmailBtn && pasteEmailBtn.addEventListener('click',()=>{
       const aliasLocal = nextDotAliasLocal();
       const clean = sanitizeLocal(aliasLocal);
@@ -1057,10 +1068,11 @@ h1{
       st.queue.push(clean);
       st.qIndex = st.queue.length - 1;
 
-      // >>> Só copia o alias se clicar aqui
+      // Slot do aliás entra no ciclo (até terminar a Fase 2)
       st.useAliasNext = true;
+      st.aliasInCycle = true;
+      st.aliasCopied = false;
 
-      // resetar fluxo pro novo aliás
       st.phase = 0;
       st.idx   = 0;
       st.sub   = 0;
@@ -1090,20 +1102,19 @@ h1{
 
       let text='',label='';
       if(st.phase===0){
-        if(hasGmail() && st.idx===0){
+        // FIX: não perde o slot do aliás no ciclo; após copiar, continua para locals[0]
+        if(aliasNext() && st.idx===0){
           text=currentGmail();
           label='E-mail (Gmail)';
-          st.idx=1;
-
-          // >>> depois que copiar o alias 1x, desativa até clicar em "Gerar aliás" de novo
-          st.useAliasNext = false;
-
+          st.aliasCopied = true;
+          st.idx = 1; // IMPORTANT: agora o próximo vira locals[0] via idx-1
         }else{
-          const gIdx = hasGmail()?st.idx-1:st.idx;
+          const gIdx = aliasActive()?st.idx-1:st.idx;
           text=st.locals[Math.min(gIdx,st.locals.length-1)];
           label='E-mail (Gerado)';
           st.idx++;
-          const endF1 = (hasGmail()? (st.idx>st.locals.length) : (st.idx>=st.locals.length));
+
+          const endF1 = aliasActive()? (st.idx>st.locals.length) : (st.idx>=st.locals.length);
           if(endF1){
             st.phase=1; st.idx=0; st.sub=0;
           }
@@ -1123,6 +1134,10 @@ h1{
           if(st.idx>=st.locals.length){
             if(st.qIndex < st.queue.length) st.qIndex=Math.min(st.qIndex+1, st.queue.length);
             st.phase=0; st.idx=0; st.sub=0;
+            // encerra o ciclo do aliás: só volta a incluir se clicar em "Gerar aliás" novamente
+            st.aliasInCycle=false;
+            st.aliasCopied=false;
+            st.useAliasNext=false;
           }
         }
       }
@@ -1139,7 +1154,8 @@ h1{
     });
 
     resetBtn.addEventListener('click',()=>{
-      st.queue=[]; st.qIndex=0; st.locals=[]; st.code=''; st.codeCopies=0; st.clicks=0; st.phase=0; st.idx=0; st.sub=0; st.useAliasNext=false;
+      st.queue=[]; st.qIndex=0; st.locals=[]; st.code=''; st.codeCopies=0; st.clicks=0; st.phase=0; st.idx=0; st.sub=0;
+      st.useAliasNext=false; st.aliasInCycle=false; st.aliasCopied=false;
       editor.textContent=''; editor.classList.remove('show');
       setStore('gmail_alias_gen', null);
       updateUI();
