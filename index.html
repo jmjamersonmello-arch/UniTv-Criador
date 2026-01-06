@@ -511,8 +511,8 @@ h1{
   </div>
 
   <div class="footer small">
-    <div><b>Versão:</b> v3.9.16</div>
-    <div><b>Changelog:</b> E-mail: corrigido o bug onde, após copiar o aliás Gmail, pulava para o 2º e-mail gerado. Agora copia: aliás → 1º → 2º → 3º.</div>
+    <div><b>Versão:</b> v3.9.17</div>
+    <div><b>Changelog:</b> Gerar e-mail: nomes menores + 5 dígitos únicos persistentes (sem repetição por 100.000 gerações).</div>
   </div>
 </div>
 
@@ -883,8 +883,8 @@ h1{
     const st={
       queue:[],qIndex:0,locals:[],code:'',codeCopies:0,clicks:0,phase:0,idx:0,sub:0,
       useAliasNext:false,
-      aliasInCycle:false,   /* FIX: mantém o slot do aliás no ciclo */
-      aliasCopied:false     /* FIX: marca que o aliás já foi copiado */
+      aliasInCycle:false,
+      aliasCopied:false
     };
 
     const _psKey='emails_state';
@@ -919,6 +919,29 @@ h1{
       }
       return Math.floor(Math.random()*max);
     }
+
+    function gcd(a,b){ while(b){ const t=a%b; a=b; b=t; } return Math.abs(a); }
+
+    // ===== 5 dígitos únicos e persistentes (sem repetir por 100.000 gerações) =====
+    function nextUnique5(){
+      const key='email_num_seq';
+      let s=getStore(key, null);
+      let step, last;
+      if(!s || typeof s.step!=='number' || typeof s.last!=='number'){
+        last = randInt(100000);
+        do{
+          step = randInt(99999) + 1; // 1..100000-1
+        }while(gcd(step,100000)!==1); // coprimo => período máximo
+      }else{
+        step = s.step;
+        last = s.last;
+        if(gcd(step,100000)!==1) step = 1;
+      }
+      last = (last + step) % 100000;
+      setStore(key, {step, last});
+      return String(last).padStart(5,'0');
+    }
+
     function randOdd(maxPow2){
       let n = randInt(maxPow2);
       if((n % 2) === 0) n = (n + 1) % maxPow2;
@@ -962,30 +985,26 @@ h1{
       return a.replace(/[^\w.\-]/g,'').slice(0,40);
     };
 
-    const OBJECTS = [
-      "mesa","copo","cadeira","lampada","caneta","livro","fone","teclado","mouse","tv",
-      "sofa","bolsa","relogio","chave","porta","janela","garrafa","caixa","papel","prato",
-      "camisa","tenis","controle","celular","carregador","tomada","espelho","toalha","colher",
-      "forno","panela","microondas","ventilador","geladeira","tapete","pente","escova","caderno",
-      "lapis","borracha","mochila","quadro","corrente","anel","bone","oculos","carro","moto"
+    // ===== Nomes menores (só palavras curtas) =====
+    const SHORT_OBJECTS = [
+      "mesa","copo","chave","porta","livro","fone","mouse","tv","sofa","anel",
+      "bone","oculos","carro","moto","caixa","prato","pano","toalha","pilha","cabo",
+      "bolo","cafe","suco","pizza","pote","saco","lata","tampa","papel","dado",
+      "bola","rede","vazo","vaso","vela","pino","rato","gato","pato","leao",
+      "sol","lua","ceu","mar","rio","lago","vento","fogo","neve","areia"
     ];
+
     function pick(arr){ return arr[randInt(arr.length)] }
-    function pad3(n){ return String(n).padStart(3,'0') }
+
     function makeEmail(){
-      const wordsCount = (randInt(100) < 35) ? 3 : 2;
-      let out = '';
-      for(let i=0;i<wordsCount;i++){
-        const w = pick(OBJECTS);
-        out += (i===0) ? w : (w.charAt(0).toUpperCase()+w.slice(1));
-      }
-      out += pad3(randInt(1000));
-      return out;
+      const w = pick(SHORT_OBJECTS);
+      const n = nextUnique5(); // único e persistente
+      return w + n;            // letras + 5 dígitos, sem . _ -
     }
 
     const regenLocals=()=>{
       st.locals=[makeEmail(),makeEmail(),makeEmail()];
       st.phase=0; st.idx=0; st.sub=0; st.clicks=0;
-      // FIX: se gerou novamente os e-mails, reinicia o slot do aliás no ciclo (se estiver ativo)
       if(st.aliasInCycle) st.aliasCopied=false;
       updateUI();
     };
@@ -1068,7 +1087,6 @@ h1{
       st.queue.push(clean);
       st.qIndex = st.queue.length - 1;
 
-      // Slot do aliás entra no ciclo (até terminar a Fase 2)
       st.useAliasNext = true;
       st.aliasInCycle = true;
       st.aliasCopied = false;
@@ -1102,12 +1120,11 @@ h1{
 
       let text='',label='';
       if(st.phase===0){
-        // FIX: não perde o slot do aliás no ciclo; após copiar, continua para locals[0]
         if(aliasNext() && st.idx===0){
           text=currentGmail();
           label='E-mail (Gmail)';
           st.aliasCopied = true;
-          st.idx = 1; // IMPORTANT: agora o próximo vira locals[0] via idx-1
+          st.idx = 1;
         }else{
           const gIdx = aliasActive()?st.idx-1:st.idx;
           text=st.locals[Math.min(gIdx,st.locals.length-1)];
@@ -1134,7 +1151,6 @@ h1{
           if(st.idx>=st.locals.length){
             if(st.qIndex < st.queue.length) st.qIndex=Math.min(st.qIndex+1, st.queue.length);
             st.phase=0; st.idx=0; st.sub=0;
-            // encerra o ciclo do aliás: só volta a incluir se clicar em "Gerar aliás" novamente
             st.aliasInCycle=false;
             st.aliasCopied=false;
             st.useAliasNext=false;
