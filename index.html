@@ -511,8 +511,8 @@ h1{
   </div>
 
   <div class="footer small">
-    <div><b>Versão:</b> v3.9.18</div>
-    <div><b>Changelog:</b> E-mail: na Fase 1, o 1º e-mail (aliás) agora copia com <b>@outlook.com</b>; os demais continuam sem @.</div>
+    <div><b>Versão:</b> v3.9.19</div>
+    <div><b>Changelog:</b> E-mail: aliás volta a copiar com <b>@gmail.com</b>; na Fase 1, o <b>1º e-mail do “Gerar e-mail”</b> agora copia com <b>@outlook.com</b> (só ele).</div>
   </div>
 </div>
 
@@ -1008,8 +1008,14 @@ h1{
     const aliasActive = ()=> (st.aliasInCycle === true) && (st.qIndex < st.queue.length);
     const aliasNext = ()=> aliasActive() && (st.aliasCopied === false);
 
-    // >>> ALTERAÇÃO PEDIDA: o primeiro e-mail da Fase 1 (aliás) agora é @outlook.com
-    const currentAliasOutlook = ()=> aliasActive() ? (st.queue[st.qIndex]+'@outlook.com') : '';
+    // Aliás sempre Gmail
+    const currentAliasGmail = ()=> aliasActive() ? (st.queue[st.qIndex]+'@gmail.com') : '';
+
+    // Na Fase 1: 1º email gerado vem com @outlook.com (só ele)
+    const phase1Generated = (gIdx)=>{
+      if(gIdx===0) return st.locals[0] + '@outlook.com';
+      return st.locals[gIdx];
+    };
 
     const totalClicks=()=>{
       const base = st.locals.length;
@@ -1020,8 +1026,9 @@ h1{
     const nextLabel=()=>{
       if(!st.locals.length) return 'Gerar e-mails';
       if(st.phase===0){
-        if(aliasNext() && st.idx===0) return currentAliasOutlook();
+        if(aliasNext() && st.idx===0) return currentAliasGmail();
         const gIdx = aliasActive()?Math.max(st.idx-1,0):st.idx;
+        if(gIdx===0) return phase1Generated(0);
         return st.locals[Math.min(gIdx, st.locals.length-1)];
       }
       if(st.phase===1){
@@ -1094,7 +1101,7 @@ h1{
       st.sub   = 0;
       st.clicks = 0;
 
-      toastOK(`Aliás: ${clean}@outlook.com`);
+      toastOK(`Aliás: ${clean}@gmail.com`);
       updateUI();
     });
 
@@ -1119,14 +1126,21 @@ h1{
       let text='',label='';
       if(st.phase===0){
         if(aliasNext() && st.idx===0){
-          text=currentAliasOutlook();
-          label='E-mail (Outlook)';
+          text=currentAliasGmail();
+          label='E-mail (Gmail)';
           st.aliasCopied = true;
           st.idx = 1;
         }else{
           const gIdx = aliasActive()?st.idx-1:st.idx;
-          text=st.locals[Math.min(gIdx,st.locals.length-1)];
-          label='E-mail (Gerado)';
+
+          if(gIdx===0){
+            text = phase1Generated(0);
+            label='E-mail (Outlook)';
+          }else{
+            text = st.locals[Math.min(gIdx, st.locals.length-1)];
+            label='E-mail (Gerado)';
+          }
+
           st.idx++;
 
           const endF1 = aliasActive()? (st.idx>st.locals.length) : (st.idx>=st.locals.length);
