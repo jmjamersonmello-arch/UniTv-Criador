@@ -512,8 +512,8 @@ h1{
   </div>
 
   <div class="footer small">
-    <div><b>Versão:</b> v3.9.21</div>
-    <div><b>Changelog:</b> Renovação: Colar SMS agora copia em 4 passos (<b>Nº 11 dígitos</b> → <b>SMS</b> → <b>6 dígitos</b> → <b>Colar Código</b>).</div>
+    <div><b>Versão:</b> v3.9.22</div>
+    <div><b>Changelog:</b> Renovação: Colar SMS agora copia em 3 passos (<b>Nº 11 dígitos</b> → <b>6 dígitos do SMS</b> → <b>Colar Código</b> no final).</div>
   </div>
 </div>
 
@@ -670,8 +670,9 @@ h1{
       count:0,
       six:'',
       numQueue:[],
-      smsItems:[], // [{phone, smsText, raw}]
-      smsStep:0,   // renov: 0..3 | outros: 0..2
+      smsItems:[],     // [{phone, smsText, raw, smsCode6}]
+      smsStep:0,
+      finalCodePending:false, // Renovação: depois de copiar todos os SMS (nº + 6 dígitos), copia o "Colar Código" uma única vez
       lastSnapshot:null
     };
 
@@ -685,14 +686,16 @@ h1{
         if(Array.isArray(_saved.numQueue)) st.numQueue=_saved.numQueue;
         if(Array.isArray(_saved.smsItems)) st.smsItems=_saved.smsItems;
         if(typeof _saved.smsStep==='number') st.smsStep=_saved.smsStep;
+        if(typeof _saved.finalCodePending==='boolean') st.finalCodePending=_saved.finalCodePending;
         if(typeof _saved.editorText==='string') editor.textContent=_saved.editorText;
         if(defLim==='custom' && _saved.customLimit!=null) customLimit.value=String(_saved.customLimit);
       }catch(e){}
     }
 
-    const stepsPerSms = (key === 'renov') ? 4 : 3;
+    // Renovação: 2 passos por SMS (Nº -> 6 dígitos do SMS) + 1 passo final (Colar Código)
+    const stepsPerSms = (key === 'renov') ? 2 : 3;
     const smsStepLabels = (key === 'renov')
-      ? ['Nº','SMS','6 dígitos','Código']
+      ? ['Nº','6 dígitos do SMS']
       : ['Nº','6 dígitos','Código'];
 
     function snapshot(){ st.lastSnapshot=JSON.parse(JSON.stringify(st)); }
@@ -704,6 +707,11 @@ h1{
     }
 
     function smsRemaining(){
+      if(key === 'renov'){
+        const base = (st.smsItems.length * stepsPerSms) - Math.min(Math.max(st.smsStep,0), stepsPerSms);
+        const extra = (st.finalCodePending ? 1 : 0);
+        return Math.max(base,0) + extra;
+      }
       if(!st.smsItems.length) return 0;
       const doneInCurrent = Math.min(Math.max(st.smsStep,0), stepsPerSms);
       return (st.smsItems.length * stepsPerSms) - doneInCurrent;
@@ -725,14 +733,14 @@ h1{
       copyBtn.innerHTML=`Copiar <span class="muted">(restantes: ${remain})</span>`;
       copyBtn.disabled = (remain===0);
 
-      resetBtn.disabled=(st.count===0 && st.numQueue.length===0 && st.smsItems.length===0 && !st.six && !editor.textContent);
+      resetBtn.disabled=(st.count===0 && st.numQueue.length===0 && st.smsItems.length===0 && !st.six && !editor.textContent && !st.finalCodePending);
       undoBtn.disabled=!st.lastSnapshot;
 
       if(st.numQueue.length){
         statusLeft.textContent = `Prioridade: Colar número`;
-      }else if(st.smsItems.length){
+      }else if(st.smsItems.length || (key==='renov' && st.finalCodePending)){
         if(key==='renov'){
-          statusLeft.textContent = `Copiando SMS: Nº → SMS → 6 dígitos → Código`;
+          statusLeft.textContent = `Copiando SMS: Nº → 6 dígitos (SMS) → (no final) Código`;
         }else{
           statusLeft.textContent = `Copiando SMS: Nº → 6 dígitos → Código`;
         }
@@ -740,7 +748,7 @@ h1{
         statusLeft.textContent = `Cole números ou um SMS`;
       }
 
-      const lbl = st.smsItems.length ? smsStepLabels[Math.min(st.smsStep, smsStepLabels.length-1)] : '—';
+      const lbl = (st.smsItems.length ? smsStepLabels[Math.min(st.smsStep, smsStepLabels.length-1)] : (st.finalCodePending ? 'Código' : '—'));
       statusProg.textContent = `Fila Nº: ${st.numQueue.length} · Fila SMS: ${st.smsItems.length} (${lbl})`;
 
       fill.style.width='0%';
@@ -754,6 +762,7 @@ h1{
         numQueue:st.numQueue,
         smsItems:st.smsItems,
         smsStep:st.smsStep,
+        finalCodePending:st.finalCodePending,
         editorText:editor.textContent,
         customLimit:(defLim==='custom'?customLimit.value:null)
       });
@@ -782,17 +791,43 @@ h1{
     pasteSmsBtn.addEventListener('click', async ()=>{
       snapshot();
       const t=await getClipOrPrompt('Cole o SMS completo.');
+
       const phones=parseManyPhones(t);
       if(!phones.length){toastOK('Não encontrei número válido no SMS.'); restore(); return;}
+
+      // Renovação: SMS contém Nº (11 dígitos) + 6 dígitos do código (números).
+      if(key === 'renov'){
+        const codes6 = (String(t||'').match(/\b\d{6}\b/g) || []).map(x=>x.trim()).filter(Boolean);
+
+        // Pareia por ordem: phone[i] com code[i] quando existir, senão tenta achar o primeiro.
+        const max = Math.max(phones.length, codes6.length);
+        const items=[];
+        for(let i=0;i<max;i++){
+          const phone = phones[i] || phones[phones.length-1];
+          const smsCode6 = codes6[i] || codes6[0] || '';
+          if(phone){
+            items.push({phone, smsText:'', raw:String(t||''), smsCode6});
+          }
+        }
+        st.smsItems.push(...items);
+        st.finalCodePending = true; // após terminar todos os SMS (nº+6), copia "Colar Código" uma vez
+        editor.textContent=t.trim();
+        toastOK(`SMS salvo: ${items.length} registro(s).`);
+        updateUI();
+        return;
+      }
+
+      // Outros: mantém o comportamento antigo (Nº -> 6 dígitos -> Código)
       const phone = phones[phones.length-1];
       const smsText = extractSmsMessage(t);
-      st.smsItems.push({phone, smsText, raw: String(t||'')});
+      st.smsItems.push({phone, smsText, raw: String(t||''), smsCode6:''});
       editor.textContent=t.trim();
       toastOK('SMS salvo: Nº + SMS.');
       updateUI();
     });
 
     copyBtn.addEventListener('click', async ()=>{
+      // Prioridade: Colar número
       if(st.numQueue.length){
         const num = st.numQueue.shift();
         const ok = await copyClip(num);
@@ -802,81 +837,95 @@ h1{
         return;
       }
 
+      // Renovação: se acabou SMS, ainda falta o "Colar Código" final
+      if(key === 'renov' && !st.smsItems.length && st.finalCodePending){
+        if(!st.six || st.six.length!==6){
+          toastOK('Faltou Colar Código (6 caracteres).');
+          return;
+        }
+        const ok = await copyClip(st.six);
+        if(ok){
+          toastOK('Código (final) copiado!');
+          buzz(25);
+          st.count++;
+          st.finalCodePending = false;
+        }else{
+          toastOK('Falha ao copiar.');
+        }
+        updateUI();
+        return;
+      }
+
       if(!st.smsItems.length){
         toastOK('Cole números ou um SMS primeiro.');
         return;
       }
 
-      const cur = st.smsItems[0];
-      let payload = '';
-      let label = '';
-
+      // Renovação: por SMS -> Nº, depois 6 dígitos do SMS. Depois que a fila acabar, copia o Colar Código uma única vez.
       if(key === 'renov'){
-        // Renovação: Nº -> SMS -> 6 dígitos -> Código
+        const cur = st.smsItems[0];
+        let payload = '';
+        let label = '';
+
         if(st.smsStep===0){
           payload = cur.phone;
           label = 'Número (SMS)';
           st.smsStep = 1;
-
-        }else if(st.smsStep===1){
-          payload = String(cur.smsText||'').trim();
-          if(!payload){
-            toastOK('SMS vazio. Cole novamente.');
-            return;
-          }
-          label = 'SMS';
-          st.smsStep = 2;
-
-        }else if(st.smsStep===2){
-          const raw = String(cur.raw||'');
-          const digits6 = (raw.match(/\b\d{6}\b/)||[])[0] || (raw.match(/\d{6}/)||[])[0] || '';
-          if(!digits6){
-            toastOK('Não achei 6 dígitos no SMS. Cole novamente.');
-            return;
-          }
-          payload = digits6;
-          label = 'SMS (6 dígitos)';
-          st.smsStep = 3;
-
         }else{
-          if(!st.six || st.six.length!==6){
-            toastOK('Faltou Colar Código (6 caracteres).');
-            return;
-          }
-          payload = st.six;
-          label = 'Código';
-          st.smsItems.shift();
-          st.smsStep = 0;
-        }
-
-      }else{
-        // Outros: Nº -> 6 dígitos -> Código
-        if(st.smsStep===0){
-          payload = cur.phone;
-          label = 'Número (SMS)';
-          st.smsStep = 1;
-
-        }else if(st.smsStep===1){
-          const raw = String(cur.raw||cur.smsText||'');
-          const digits6 = (raw.match(/\b\d{6}\b/)||[])[0] || (raw.match(/\d{6}/)||[])[0] || '';
-          if(!digits6){
+          const digits6 = (cur.smsCode6 || '').trim();
+          if(!digits6 || digits6.length!==6){
             toastOK('Não achei 6 dígitos no SMS. Cole o SMS novamente.');
             return;
           }
           payload = digits6;
-          label = 'SMS (6 dígitos)';
-          st.smsStep = 2;
-
-        }else{
-          if(!st.six || st.six.length!==6){
-            toastOK('Faltou Colar Código (6 caracteres).');
-            return;
-          }
-          payload = st.six;
-          label = 'Código';
+          label = 'Código (6 dígitos do SMS)';
           st.smsItems.shift();
           st.smsStep = 0;
+          // se acabou a fila, o próximo copy será o "Colar Código" final (se estiver pendente)
         }
+
+        const ok = await copyClip(payload);
+        if(ok){
+          toastOK(`${label} copiado!`);
+          buzz(25);
+          st.count++;
+        }else{
+          toastOK('Falha ao copiar.');
+        }
+        updateUI();
+        return;
+      }
+
+      // Outros: Nº -> 6 dígitos -> Código (Colar Código)
+      const cur = st.smsItems[0];
+      let payload = '';
+      let label = '';
+
+      if(st.smsStep===0){
+        payload = cur.phone;
+        label = 'Número (SMS)';
+        st.smsStep = 1;
+
+      }else if(st.smsStep===1){
+        const raw = String(cur.raw||cur.smsText||'');
+        const digits6 = (raw.match(/\b\d{6}\b/)||[])[0] || (raw.match(/\d{6}/)||[])[0] || '';
+        if(!digits6){
+          toastOK('Não achei 6 dígitos no SMS. Cole o SMS novamente.');
+          return;
+        }
+        payload = digits6;
+        label = 'SMS (6 dígitos)';
+        st.smsStep = 2;
+
+      }else{
+        if(!st.six || st.six.length!==6){
+          toastOK('Faltou Colar Código (6 caracteres).');
+          return;
+        }
+        payload = st.six;
+        label = 'Código';
+        st.smsItems.shift();
+        st.smsStep = 0;
       }
 
       const ok = await copyClip(payload);
@@ -895,6 +944,7 @@ h1{
       st.numQueue=[];
       st.smsItems=[];
       st.smsStep=0;
+      st.finalCodePending=false;
       st.six='';
       st.count=0;
       editor.textContent='';
@@ -921,12 +971,12 @@ h1{
     updateUI();
   });
 
-  /* ===== E-mails ===== */
+  /* ===== E-mails (mantido igual) ===== */
   document.querySelectorAll('.block[data-seq="emails"]').forEach(block=>{
     const editor=block.querySelector('.editor');
     const pasteEmailBtn=block.querySelector('[data-role="paste-email"]'); // gmail alias
     const genBtn=block.querySelector('[data-role="gen-email"]'); // gerar 3 emails
-    const pasteLoginBtn=block.querySelector('[data-role="paste-login"]'); // novo email:senha
+    const pasteLoginBtn=block.querySelector('[data-role="paste-login"]'); // email:senha
     const pasteCodeBtn=block.querySelector('[data-role="paste-code"]');
     const copyBtn=block.querySelector('.copy');
     const resetBtn=block.querySelector('.reset');
