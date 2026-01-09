@@ -428,6 +428,7 @@ h1{
       <div class="controls">
         <button class="btn paste" data-role="paste-email">Gerar aliás</button>
         <button class="btn paste" data-role="gen-email">Gerar e-mail</button>
+        <button class="btn paste" data-role="paste-login">Colar e-mail</button>
         <button class="btn paste" data-role="paste-code">Colar Código</button>
         <button class="btn copy copy">Copiar <span class="muted">(restantes: 0)</span></button>
         <button class="btn reset reset" data-role="reset">Zerar</button>
@@ -511,8 +512,8 @@ h1{
   </div>
 
   <div class="footer small">
-    <div><b>Versão:</b> v3.9.19</div>
-    <div><b>Changelog:</b> E-mail: aliás volta a copiar com <b>@gmail.com</b>; na Fase 1, o <b>1º e-mail do “Gerar e-mail”</b> agora copia com <b>@outlook.com</b> (só ele).</div>
+    <div><b>Versão:</b> v3.9.21</div>
+    <div><b>Changelog:</b> Renovação: Colar SMS agora copia em 4 passos (<b>Nº 11 dígitos</b> → <b>SMS</b> → <b>6 dígitos</b> → <b>Colar Código</b>).</div>
   </div>
 </div>
 
@@ -669,8 +670,8 @@ h1{
       count:0,
       six:'',
       numQueue:[],
-      smsItems:[],
-      smsStep:0,
+      smsItems:[], // [{phone, smsText, raw}]
+      smsStep:0,   // renov: 0..3 | outros: 0..2
       lastSnapshot:null
     };
 
@@ -689,6 +690,11 @@ h1{
       }catch(e){}
     }
 
+    const stepsPerSms = (key === 'renov') ? 4 : 3;
+    const smsStepLabels = (key === 'renov')
+      ? ['Nº','SMS','6 dígitos','Código']
+      : ['Nº','6 dígitos','Código'];
+
     function snapshot(){ st.lastSnapshot=JSON.parse(JSON.stringify(st)); }
     function restore(){
       if(!st.lastSnapshot)return;
@@ -699,7 +705,8 @@ h1{
 
     function smsRemaining(){
       if(!st.smsItems.length) return 0;
-      return (st.smsItems.length*3) - Math.min(Math.max(st.smsStep,0),2);
+      const doneInCurrent = Math.min(Math.max(st.smsStep,0), stepsPerSms);
+      return (st.smsItems.length * stepsPerSms) - doneInCurrent;
     }
 
     function updateUI(){
@@ -711,7 +718,7 @@ h1{
       }
 
       counter.textContent=String(st.count);
-      detEl.textContent = st.numQueue.length ? 'Nº (Colar número)' : (st.smsItems.length ? 'SMS (Nº→6 dígitos→Código)' : 'Nº');
+      detEl.textContent = st.numQueue.length ? 'Nº (Colar número)' : (st.smsItems.length ? 'SMS (Nº→...)' : 'Nº');
       codePill.textContent=st.six||'—';
 
       const remain = st.numQueue.length + smsRemaining();
@@ -721,11 +728,20 @@ h1{
       resetBtn.disabled=(st.count===0 && st.numQueue.length===0 && st.smsItems.length===0 && !st.six && !editor.textContent);
       undoBtn.disabled=!st.lastSnapshot;
 
-      statusLeft.textContent = st.numQueue.length
-        ? `Prioridade: Colar número`
-        : (st.smsItems.length ? `Copiando SMS: Nº → 6 dígitos → Código` : `Cole números ou um SMS`);
+      if(st.numQueue.length){
+        statusLeft.textContent = `Prioridade: Colar número`;
+      }else if(st.smsItems.length){
+        if(key==='renov'){
+          statusLeft.textContent = `Copiando SMS: Nº → SMS → 6 dígitos → Código`;
+        }else{
+          statusLeft.textContent = `Copiando SMS: Nº → 6 dígitos → Código`;
+        }
+      }else{
+        statusLeft.textContent = `Cole números ou um SMS`;
+      }
 
-      statusProg.textContent = `Fila Nº: ${st.numQueue.length} · Fila SMS: ${st.smsItems.length} (${st.smsItems.length?['Nº','6 dígitos','Código'][st.smsStep]:'—'})`;
+      const lbl = st.smsItems.length ? smsStepLabels[Math.min(st.smsStep, smsStepLabels.length-1)] : '—';
+      statusProg.textContent = `Fila Nº: ${st.numQueue.length} · Fila SMS: ${st.smsItems.length} (${lbl})`;
 
       fill.style.width='0%';
       bar.classList.remove('complete');
@@ -770,7 +786,7 @@ h1{
       if(!phones.length){toastOK('Não encontrei número válido no SMS.'); restore(); return;}
       const phone = phones[phones.length-1];
       const smsText = extractSmsMessage(t);
-      st.smsItems.push({phone, smsText});
+      st.smsItems.push({phone, smsText, raw: String(t||'')});
       editor.textContent=t.trim();
       toastOK('SMS salvo: Nº + SMS.');
       updateUI();
@@ -795,30 +811,72 @@ h1{
       let payload = '';
       let label = '';
 
-      if(st.smsStep===0){
-        payload = cur.phone;
-        label = 'Número (SMS)';
-        st.smsStep = 1;
+      if(key === 'renov'){
+        // Renovação: Nº -> SMS -> 6 dígitos -> Código
+        if(st.smsStep===0){
+          payload = cur.phone;
+          label = 'Número (SMS)';
+          st.smsStep = 1;
 
-      }else if(st.smsStep===1){
-        const digits6 = (String(cur.smsText||'').match(/\b\d{6}\b/)||[])[0] || (String(cur.smsText||'').match(/\d{6}/)||[])[0] || '';
-        if(!digits6){
-          toastOK('Não achei 6 dígitos no SMS. Cole o SMS novamente.');
-          return;
+        }else if(st.smsStep===1){
+          payload = String(cur.smsText||'').trim();
+          if(!payload){
+            toastOK('SMS vazio. Cole novamente.');
+            return;
+          }
+          label = 'SMS';
+          st.smsStep = 2;
+
+        }else if(st.smsStep===2){
+          const raw = String(cur.raw||'');
+          const digits6 = (raw.match(/\b\d{6}\b/)||[])[0] || (raw.match(/\d{6}/)||[])[0] || '';
+          if(!digits6){
+            toastOK('Não achei 6 dígitos no SMS. Cole novamente.');
+            return;
+          }
+          payload = digits6;
+          label = 'SMS (6 dígitos)';
+          st.smsStep = 3;
+
+        }else{
+          if(!st.six || st.six.length!==6){
+            toastOK('Faltou Colar Código (6 caracteres).');
+            return;
+          }
+          payload = st.six;
+          label = 'Código';
+          st.smsItems.shift();
+          st.smsStep = 0;
         }
-        payload = digits6;
-        label = 'SMS (6 dígitos)';
-        st.smsStep = 2;
 
       }else{
-        if(!st.six || st.six.length!==6){
-          toastOK('Faltou Colar Código (6 caracteres).');
-          return;
+        // Outros: Nº -> 6 dígitos -> Código
+        if(st.smsStep===0){
+          payload = cur.phone;
+          label = 'Número (SMS)';
+          st.smsStep = 1;
+
+        }else if(st.smsStep===1){
+          const raw = String(cur.raw||cur.smsText||'');
+          const digits6 = (raw.match(/\b\d{6}\b/)||[])[0] || (raw.match(/\d{6}/)||[])[0] || '';
+          if(!digits6){
+            toastOK('Não achei 6 dígitos no SMS. Cole o SMS novamente.');
+            return;
+          }
+          payload = digits6;
+          label = 'SMS (6 dígitos)';
+          st.smsStep = 2;
+
+        }else{
+          if(!st.six || st.six.length!==6){
+            toastOK('Faltou Colar Código (6 caracteres).');
+            return;
+          }
+          payload = st.six;
+          label = 'Código';
+          st.smsItems.shift();
+          st.smsStep = 0;
         }
-        payload = st.six;
-        label = 'Código';
-        st.smsItems.shift();
-        st.smsStep = 0;
       }
 
       const ok = await copyClip(payload);
@@ -866,8 +924,9 @@ h1{
   /* ===== E-mails ===== */
   document.querySelectorAll('.block[data-seq="emails"]').forEach(block=>{
     const editor=block.querySelector('.editor');
-    const pasteEmailBtn=block.querySelector('[data-role="paste-email"]');
-    const genBtn=block.querySelector('[data-role="gen-email"]');
+    const pasteEmailBtn=block.querySelector('[data-role="paste-email"]'); // gmail alias
+    const genBtn=block.querySelector('[data-role="gen-email"]'); // gerar 3 emails
+    const pasteLoginBtn=block.querySelector('[data-role="paste-login"]'); // novo email:senha
     const pasteCodeBtn=block.querySelector('[data-role="paste-code"]');
     const copyBtn=block.querySelector('.copy');
     const resetBtn=block.querySelector('.reset');
@@ -881,10 +940,15 @@ h1{
     const copiesEl=block.querySelector('.email-copies');
 
     const st={
-      queue:[],qIndex:0,locals:[],code:'',codeCopies:0,clicks:0,phase:0,idx:0,sub:0,
-      useAliasNext:false,
+      queue:[],qIndex:0,locals:[],
+      code:'',codeCopies:0,clicks:0,
+      phase:0,idx:0,sub:0,
       aliasInCycle:false,
-      aliasCopied:false
+      aliasCopied:false,
+      loginQueue:[],
+      loginIndex:0,
+      loginStep:0,
+      loginPhase2Done:false
     };
 
     const _psKey='emails_state';
@@ -900,9 +964,12 @@ h1{
         if(typeof _saved.phase==='number') st.phase=_saved.phase;
         if(typeof _saved.idx==='number') st.idx=_saved.idx;
         if(typeof _saved.sub==='number') st.sub=_saved.sub;
-        if(typeof _saved.useAliasNext==='boolean') st.useAliasNext=_saved.useAliasNext;
         if(typeof _saved.aliasInCycle==='boolean') st.aliasInCycle=_saved.aliasInCycle;
         if(typeof _saved.aliasCopied==='boolean') st.aliasCopied=_saved.aliasCopied;
+        if(Array.isArray(_saved.loginQueue)) st.loginQueue=_saved.loginQueue;
+        if(typeof _saved.loginIndex==='number') st.loginIndex=_saved.loginIndex;
+        if(typeof _saved.loginStep==='number') st.loginStep=_saved.loginStep;
+        if(typeof _saved.loginPhase2Done==='boolean') st.loginPhase2Done=_saved.loginPhase2Done;
         if(typeof _saved.editorText==='string') editor.textContent=_saved.editorText;
       }catch(e){}
     }
@@ -919,7 +986,6 @@ h1{
       }
       return Math.floor(Math.random()*max);
     }
-
     function gcd(a,b){ while(b){ const t=a%b; a=b; b=t; } return Math.abs(a); }
 
     function nextUnique5(){
@@ -928,12 +994,9 @@ h1{
       let step, last;
       if(!s || typeof s.step!=='number' || typeof s.last!=='number'){
         last = randInt(100000);
-        do{
-          step = randInt(99999) + 1;
-        }while(gcd(step,100000)!==1);
+        do{ step = randInt(99999) + 1; }while(gcd(step,100000)!==1);
       }else{
-        step = s.step;
-        last = s.last;
+        step = s.step; last = s.last;
         if(gcd(step,100000)!==1) step = 1;
       }
       last = (last + step) % 100000;
@@ -966,12 +1029,10 @@ h1{
         step = s.step;
         lastMask = s.lastMask;
       }
-
       lastMask = (lastMask + step) & (MOD - 1);
       if(lastMask === 0){
         lastMask = (lastMask + step) & (MOD - 1);
       }
-
       setStore(key, {step, lastMask});
       return applyDotMask(BASE_GMAIL_LOCAL, lastMask);
     }
@@ -1001,17 +1062,16 @@ h1{
     const regenLocals=()=>{
       st.locals=[makeEmail(),makeEmail(),makeEmail()];
       st.phase=0; st.idx=0; st.sub=0; st.clicks=0;
-      if(st.aliasInCycle) st.aliasCopied=false;
+      st.aliasCopied=false;
       updateUI();
     };
 
-    const aliasActive = ()=> (st.aliasInCycle === true) && (st.qIndex < st.queue.length);
-    const aliasNext = ()=> aliasActive() && (st.aliasCopied === false);
+    const hasLogin = ()=> (st.loginQueue && st.loginQueue.length && st.loginIndex < st.loginQueue.length);
+    const curLogin = ()=> hasLogin() ? st.loginQueue[st.loginIndex] : null;
 
-    // Aliás sempre Gmail
+    const aliasActive = ()=> (st.aliasInCycle === true) && (st.qIndex < st.queue.length);
     const currentAliasGmail = ()=> aliasActive() ? (st.queue[st.qIndex]+'@gmail.com') : '';
 
-    // Na Fase 1: 1º email gerado vem com @outlook.com (só ele)
     const phase1Generated = (gIdx)=>{
       if(gIdx===0) return st.locals[0] + '@outlook.com';
       return st.locals[gIdx];
@@ -1019,34 +1079,91 @@ h1{
 
     const totalClicks=()=>{
       const base = st.locals.length;
-      if(!base) return 0;
-      return (aliasActive()?1:0) + base + base*2;
-    };
-
-    const nextLabel=()=>{
-      if(!st.locals.length) return 'Gerar e-mails';
-      if(st.phase===0){
-        if(aliasNext() && st.idx===0) return currentAliasGmail();
-        const gIdx = aliasActive()?Math.max(st.idx-1,0):st.idx;
-        if(gIdx===0) return phase1Generated(0);
-        return st.locals[Math.min(gIdx, st.locals.length-1)];
-      }
-      if(st.phase===1){
-        return (st.sub===0 ? st.locals[Math.min(st.idx,st.locals.length-1)] : 'Código');
-      }
-      return 'Concluído';
+      const loginSteps = hasLogin() ? 2 : 0;
+      const aliasSteps = aliasActive() ? 1 : 0;
+      if(!base) return loginSteps + aliasSteps;
+      const phase1 = loginSteps + aliasSteps + base;
+      const phase2 = (hasLogin()?1:0) + (base*2);
+      return phase1 + phase2;
     };
 
     const persist=()=>{
       setStore(_psKey,{
         queue:st.queue,qIndex:st.qIndex,locals:st.locals,code:st.code,
         codeCopies:st.codeCopies,clicks:st.clicks,phase:st.phase,idx:st.idx,sub:st.sub,
-        useAliasNext:st.useAliasNext,
         aliasInCycle:st.aliasInCycle,
         aliasCopied:st.aliasCopied,
+        loginQueue:st.loginQueue,
+        loginIndex:st.loginIndex,
+        loginStep:st.loginStep,
+        loginPhase2Done:st.loginPhase2Done,
         editorText:editor.textContent
       });
     };
+
+    function buildEditorText(){
+      const lines=[];
+      if(hasLogin()){
+        const c=curLogin();
+        lines.push('LOGIN (Colar e-mail):');
+        lines.push(`- Email: ${c.email}`);
+        lines.push(`- Senha: ${c.pass}`);
+        lines.push('');
+      }else{
+        lines.push('LOGIN (Colar e-mail): —');
+        lines.push('');
+      }
+      if(aliasActive()){
+        lines.push('ALIÁS (Gmail):');
+        lines.push(`- ${currentAliasGmail()}`);
+        lines.push('');
+      }
+      if(st.locals.length){
+        lines.push('GERADOS (Gerar e-mail):');
+        lines.push(`1) ${st.locals[0]}  (Fase 1 copia como: ${st.locals[0]}@outlook.com)`);
+        lines.push(`2) ${st.locals[1]}`);
+        lines.push(`3) ${st.locals[2]}`);
+        lines.push('');
+      }else{
+        lines.push('GERADOS (Gerar e-mail): —');
+        lines.push('');
+      }
+      if(st.code){
+        lines.push(`CÓDIGO (Colar Código): ${st.code}`);
+      }else{
+        lines.push('CÓDIGO (Colar Código): —');
+      }
+      return lines.join('\n');
+    }
+
+    function nextLabel(){
+      const total = totalClicks();
+      const nextIndex = Math.min(st.clicks, total);
+
+      const steps=[];
+      if(hasLogin()){
+        steps.push('Login: Email');
+        steps.push('Login: Senha');
+      }
+      if(aliasActive()){
+        steps.push('Aliás: Gmail');
+      }
+      if(st.locals.length){
+        steps.push('Gerado: 1º (Outlook)');
+        steps.push('Gerado: 2º');
+        steps.push('Gerado: 3º');
+        if(hasLogin()) steps.push('Fase 2: Email colado');
+        steps.push('Fase 2: Email 1');
+        steps.push('Fase 2: Código');
+        steps.push('Fase 2: Email 2');
+        steps.push('Fase 2: Código');
+        steps.push('Fase 2: Email 3');
+        steps.push('Fase 2: Código');
+      }
+
+      if(nextIndex >= steps.length) return 'Concluído';
+      return steps[nextIndex];
+    }
 
     function updateUI(){
       counter.textContent=String(st.locals.length);
@@ -1055,31 +1172,35 @@ h1{
       copiesEl.textContent=String(st.codeCopies);
 
       const total=totalClicks();
-      if(!st.locals.length){
-        statusLeft.textContent='Gere 3 e-mails para começar.';
+      if(!editor.textContent) editor.textContent = buildEditorText();
+
+      if(total===0){
+        statusLeft.textContent='Fase 0 de 2 · Próximo: Gerar e-mails';
         statusProg.textContent='Fase 0 / 2 · 0/0 cliques';
         fill.style.width='0%';
         bar.classList.remove('complete');
         copyBtn.disabled=true;
-        resetBtn.disabled=(!st.queue.length && !st.code && !st.codeCopies && !st.clicks);
+        resetBtn.disabled=(!st.queue.length && !st.code && !st.codeCopies && !st.clicks && !st.loginQueue.length);
         toggle.textContent='Ver e-mails';
         persist();
         badge('emails',{count:0,limit:1,isDone:false});
         return;
       }
 
-      const faseTxt=(st.phase===0?1:2);
-      statusLeft.textContent=`Fase ${faseTxt} de 2 · Próximo: ${nextLabel()}`;
-      const p = total?Math.min(st.clicks/total,1)*100:0;
-      statusProg.textContent=`Fase ${faseTxt} / 2 · ${Math.min(st.clicks,total)}/${total} cliques`;
+      const p= total ? Math.min(st.clicks/total,1)*100 : 0;
       fill.style.width=p+'%';
       bar.classList.toggle('complete', st.clicks>=total);
 
       const remain=Math.max(total-st.clicks,0);
       copyBtn.innerHTML=`Copiar <span class="muted">(restantes: ${remain})</span>`;
       copyBtn.disabled=(remain===0);
-      resetBtn.disabled=(!st.queue.length && !st.code && !st.locals.length && !st.codeCopies && !st.clicks);
+
+      resetBtn.disabled=(!st.queue.length && !st.code && !st.locals.length && !st.codeCopies && !st.clicks && !st.loginQueue.length);
       toggle.textContent=editor.classList.contains('show')?'Ocultar e-mails':`Ver e-mails (${st.locals.length})`;
+
+      const faseTxt = st.locals.length ? (st.clicks < ( (hasLogin()?2:0) + (aliasActive()?1:0) + 3 ) ? 1 : 2) : 1;
+      statusLeft.textContent=`Fase ${faseTxt} de 2 · Próximo: ${nextLabel()}`;
+      statusProg.textContent=`Fase ${faseTxt} / 2 · ${Math.min(st.clicks,total)}/${total} cliques`;
 
       badge('emails',{count:(st.clicks>=total?1:0),limit:1,isDone:(st.clicks>=total)});
       persist();
@@ -1088,26 +1209,39 @@ h1{
     pasteEmailBtn && pasteEmailBtn.addEventListener('click',()=>{
       const aliasLocal = nextDotAliasLocal();
       const clean = sanitizeLocal(aliasLocal);
-
       st.queue.push(clean);
       st.qIndex = st.queue.length - 1;
-
-      st.useAliasNext = true;
       st.aliasInCycle = true;
       st.aliasCopied = false;
-
-      st.phase = 0;
-      st.idx   = 0;
-      st.sub   = 0;
-      st.clicks = 0;
-
       toastOK(`Aliás: ${clean}@gmail.com`);
+      editor.textContent = buildEditorText();
       updateUI();
     });
 
     genBtn.addEventListener('click',()=>{
       regenLocals();
       toastOK('3 e-mails gerados.');
+      editor.textContent = buildEditorText();
+      updateUI();
+    });
+
+    pasteLoginBtn && pasteLoginBtn.addEventListener('click', async ()=>{
+      const t = await getClipOrPrompt('Cole no formato email:senha (pode colar vários, um por linha).');
+      const lines = String(t||'').replace(/\r/g,'\n').split('\n').map(x=>x.trim()).filter(Boolean);
+      const added=[];
+      for(const line of lines){
+        const parts=line.split(':');
+        if(parts.length<2) continue;
+        const email=parts[0].trim();
+        const pass=parts.slice(1).join(':').trim();
+        if(!email || !pass) continue;
+        added.push({email, pass});
+      }
+      if(!added.length){ toastOK('Nada válido. Use: email:senha'); return; }
+      st.loginQueue.push(...added);
+      toastOK(`Login(s) adicionado(s): ${added.length}`);
+      editor.textContent = buildEditorText();
+      updateUI();
     });
 
     pasteCodeBtn.addEventListener('click',async ()=>{
@@ -1116,74 +1250,86 @@ h1{
       if(val.length!==6){toastOK('Código inválido (precisa ter 6 caracteres).');return;}
       st.code=val;
       toastOK('Código salvo.');
+      editor.textContent = buildEditorText();
       updateUI();
     });
 
+    function advanceToNextLogin(){
+      if(hasLogin()){
+        st.loginIndex++;
+        st.loginStep=0;
+        st.loginPhase2Done=false;
+      }
+      if(!hasLogin()){
+        st.loginIndex = 0;
+        st.loginStep = 0;
+        st.loginPhase2Done = false;
+      }
+    }
+
     copyBtn.addEventListener('click',async ()=>{
       const total=totalClicks();
-      if(!total){toastOK('Gere e-mails primeiro.');return;}
+      if(!total){toastOK('Nada para copiar.');return;}
 
-      let text='',label='';
-      if(st.phase===0){
-        if(aliasNext() && st.idx===0){
-          text=currentAliasGmail();
-          label='E-mail (Gmail)';
-          st.aliasCopied = true;
-          st.idx = 1;
-        }else{
-          const gIdx = aliasActive()?st.idx-1:st.idx;
-
-          if(gIdx===0){
-            text = phase1Generated(0);
-            label='E-mail (Outlook)';
-          }else{
-            text = st.locals[Math.min(gIdx, st.locals.length-1)];
-            label='E-mail (Gerado)';
-          }
-
-          st.idx++;
-
-          const endF1 = aliasActive()? (st.idx>st.locals.length) : (st.idx>=st.locals.length);
-          if(endF1){
-            st.phase=1; st.idx=0; st.sub=0;
-          }
+      const steps=[];
+      if(hasLogin()){
+        const c=curLogin();
+        steps.push({label:'Login (Email)', get:()=>c.email});
+        steps.push({label:'Login (Senha)', get:()=>c.pass});
+      }
+      if(st.aliasInCycle && st.qIndex < st.queue.length){
+        steps.push({label:'Aliás (Gmail)', get:()=>currentAliasGmail()});
+      }
+      if(st.locals.length){
+        steps.push({label:'E-mail (Outlook)', get:()=>phase1Generated(0)});
+        steps.push({label:'E-mail (Gerado)', get:()=>st.locals[1]});
+        steps.push({label:'E-mail (Gerado)', get:()=>st.locals[2]});
+        if(hasLogin()){
+          const c=curLogin();
+          steps.push({label:'Fase 2 (Email colado)', get:()=>c.email});
         }
-      }else{
-        if(!st.code){toastOK('Defina o código em "Colar Código" antes da Fase 2.');return;}
-        if(st.sub===0){
-          text=st.locals[Math.min(st.idx,st.locals.length-1)];
-          label='E-mail (Gerado)';
-          st.sub=1;
-        }else{
-          text=st.code;
-          label='Código';
-          st.sub=0;
-          st.codeCopies++;
-          st.idx++;
-          if(st.idx>=st.locals.length){
-            if(st.qIndex < st.queue.length) st.qIndex=Math.min(st.qIndex+1, st.queue.length);
-            st.phase=0; st.idx=0; st.sub=0;
-            st.aliasInCycle=false;
-            st.aliasCopied=false;
-            st.useAliasNext=false;
-          }
-        }
+        steps.push({label:'Fase 2 (Email 1)', get:()=>st.locals[0]});
+        steps.push({label:'Fase 2 (Código)', get:()=>st.code});
+        steps.push({label:'Fase 2 (Email 2)', get:()=>st.locals[1]});
+        steps.push({label:'Fase 2 (Código)', get:()=>st.code});
+        steps.push({label:'Fase 2 (Email 3)', get:()=>st.locals[2]});
+        steps.push({label:'Fase 2 (Código)', get:()=>st.code});
       }
 
+      const step = steps[Math.min(st.clicks, steps.length-1)];
+      if(!step){ toastOK('Concluído.'); updateUI(); return; }
+
+      if(/c[oó]digo/i.test(step.label) && (!st.code || st.code.length!==6)){
+        toastOK('Faltou Colar Código (6 caracteres).');
+        return;
+      }
+
+      const text = step.get();
       const ok=await copyClip(text);
       if(ok){
         st.clicks++;
-        toastOK(`${label} copiado!`);
+        toastOK(`${step.label} copiado!`);
         buzz(25);
+
+        if(st.clicks >= steps.length){
+          st.clicks = 0;
+          st.aliasInCycle = false;
+          st.aliasCopied = false;
+          advanceToNextLogin();
+        }
       }else{
         toastOK('Não consegui copiar automaticamente.');
       }
+
+      editor.textContent = buildEditorText();
       updateUI();
     });
 
     resetBtn.addEventListener('click',()=>{
-      st.queue=[]; st.qIndex=0; st.locals=[]; st.code=''; st.codeCopies=0; st.clicks=0; st.phase=0; st.idx=0; st.sub=0;
-      st.useAliasNext=false; st.aliasInCycle=false; st.aliasCopied=false;
+      st.queue=[]; st.qIndex=0; st.locals=[]; st.code=''; st.codeCopies=0; st.clicks=0;
+      st.phase=0; st.idx=0; st.sub=0;
+      st.aliasInCycle=false; st.aliasCopied=false;
+      st.loginQueue=[]; st.loginIndex=0; st.loginStep=0; st.loginPhase2Done=false;
       editor.textContent=''; editor.classList.remove('show');
       setStore('gmail_alias_gen', null);
       updateUI();
@@ -1191,6 +1337,7 @@ h1{
 
     toggle.addEventListener('click',()=>{
       editor.classList.toggle('show');
+      if(!editor.textContent) editor.textContent = buildEditorText();
       updateUI();
     });
 
