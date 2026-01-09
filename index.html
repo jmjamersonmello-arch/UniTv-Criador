@@ -512,8 +512,8 @@ h1{
   </div>
 
   <div class="footer small">
-    <div><b>Versão:</b> v3.9.22</div>
-    <div><b>Changelog:</b> Renovação: Colar SMS agora copia em 3 passos (<b>Nº 11 dígitos</b> → <b>6 dígitos do SMS</b> → <b>Colar Código</b> no final).</div>
+    <div><b>Versão:</b> v3.9.23</div>
+    <div><b>Changelog:</b> Renovação: Colar SMS agora copia em 3 passos (<b>Número sem DDI</b> → <b>Código de verificação (6)</b> → <b>Colar Código</b> no final), lendo exatamente o formato do SMS.</div>
   </div>
 </div>
 
@@ -600,25 +600,28 @@ h1{
     return out;
   }
 
-  function extractSmsMessage(text){
-    const t=String(text||'').replace(/\r/g,'\n');
-    const lines=t.split('\n').map(l=>l.trim()).filter(Boolean);
-
-    const idx = lines.findIndex(l=>/sms\s*recebido/i.test(l));
-    if(idx>=0){
-      const same = lines[idx].split(':').slice(1).join(':').trim();
-      if(same) return same;
-      for(let i=idx+1;i<lines.length;i++){
-        const l=lines[i];
-        if(l) return l;
-      }
+  // === NOVO (v3.9.23): lê exatamente o formato do SMS do provedor ===
+  function extractNumeroSemDDI(text){
+    const t=String(text||'');
+    // Ex.: "Número sem DDI:** 21920257001"
+    const m = t.match(/N[úu]mero\s*sem\s*DDI[^0-9]*([0-9]{10,13})/i);
+    if(m && m[1]){
+      const p=cleanPhone(m[1]);
+      return (p && p.length===11) ? p : '';
     }
+    // fallback: usa o último 11 dígitos do texto
+    const phones=parseManyPhones(t);
+    return phones.length ? phones[phones.length-1] : '';
+  }
 
-    const codeLine = lines.find(l=>/c[oó]digo/i.test(l) && /verifica/i.test(l));
-    if(codeLine) return codeLine;
-
-    const letterLine = lines.find(l=>/[A-Za-zÀ-ÿ]/.test(l));
-    return letterLine || (lines[0]||'');
+  function extractCodigoVerificacao6(text){
+    const t=String(text||'');
+    // Ex.: "Código de verificação: 957315"
+    let m = t.match(/C[oó]digo\s*de\s*verifica[cç][aã]o[^0-9]*([0-9]{6})/i);
+    if(m && m[1]) return m[1];
+    // fallback: primeiro 6 dígitos puro
+    m = t.match(/\b\d{6}\b/);
+    return m ? m[0] : '';
   }
 
   async function getClipOrPrompt(label){
@@ -670,9 +673,9 @@ h1{
       count:0,
       six:'',
       numQueue:[],
-      smsItems:[],     // [{phone, smsText, raw, smsCode6}]
+      smsItems:[],     // Renovação: [{phone11, smsCode6}]
       smsStep:0,
-      finalCodePending:false, // Renovação: depois de copiar todos os SMS (nº + 6 dígitos), copia o "Colar Código" uma única vez
+      finalCodePending:false,
       lastSnapshot:null
     };
 
@@ -692,10 +695,9 @@ h1{
       }catch(e){}
     }
 
-    // Renovação: 2 passos por SMS (Nº -> 6 dígitos do SMS) + 1 passo final (Colar Código)
     const stepsPerSms = (key === 'renov') ? 2 : 3;
     const smsStepLabels = (key === 'renov')
-      ? ['Nº','6 dígitos do SMS']
+      ? ['Número sem DDI','Código de verificação (6)']
       : ['Nº','6 dígitos','Código'];
 
     function snapshot(){ st.lastSnapshot=JSON.parse(JSON.stringify(st)); }
@@ -740,7 +742,7 @@ h1{
         statusLeft.textContent = `Prioridade: Colar número`;
       }else if(st.smsItems.length || (key==='renov' && st.finalCodePending)){
         if(key==='renov'){
-          statusLeft.textContent = `Copiando SMS: Nº → 6 dígitos (SMS) → (no final) Código`;
+          statusLeft.textContent = `Copiando SMS: Número sem DDI → Código de verificação (6) → (no final) Colar Código`;
         }else{
           statusLeft.textContent = `Copiando SMS: Nº → 6 dígitos → Código`;
         }
@@ -748,7 +750,7 @@ h1{
         statusLeft.textContent = `Cole números ou um SMS`;
       }
 
-      const lbl = (st.smsItems.length ? smsStepLabels[Math.min(st.smsStep, smsStepLabels.length-1)] : (st.finalCodePending ? 'Código' : '—'));
+      const lbl = (st.smsItems.length ? smsStepLabels[Math.min(st.smsStep, smsStepLabels.length-1)] : (st.finalCodePending ? 'Colar Código' : '—'));
       statusProg.textContent = `Fila Nº: ${st.numQueue.length} · Fila SMS: ${st.smsItems.length} (${lbl})`;
 
       fill.style.width='0%';
@@ -792,37 +794,34 @@ h1{
       snapshot();
       const t=await getClipOrPrompt('Cole o SMS completo.');
 
-      const phones=parseManyPhones(t);
-      if(!phones.length){toastOK('Não encontrei número válido no SMS.'); restore(); return;}
-
-      // Renovação: SMS contém Nº (11 dígitos) + 6 dígitos do código (números).
       if(key === 'renov'){
-        const codes6 = (String(t||'').match(/\b\d{6}\b/g) || []).map(x=>x.trim()).filter(Boolean);
+        const phone11 = extractNumeroSemDDI(t);
+        const code6 = extractCodigoVerificacao6(t);
 
-        // Pareia por ordem: phone[i] com code[i] quando existir, senão tenta achar o primeiro.
-        const max = Math.max(phones.length, codes6.length);
-        const items=[];
-        for(let i=0;i<max;i++){
-          const phone = phones[i] || phones[phones.length-1];
-          const smsCode6 = codes6[i] || codes6[0] || '';
-          if(phone){
-            items.push({phone, smsText:'', raw:String(t||''), smsCode6});
-          }
+        if(!phone11 || phone11.length!==11){
+          toastOK('Não achei "Número sem DDI" (11 dígitos).');
+          restore(); return;
         }
-        st.smsItems.push(...items);
-        st.finalCodePending = true; // após terminar todos os SMS (nº+6), copia "Colar Código" uma vez
+        if(!code6 || code6.length!==6){
+          toastOK('Não achei "Código de verificação" (6 dígitos).');
+          restore(); return;
+        }
+
+        st.smsItems.push({phone11, code6});
+        st.finalCodePending = true; // depois que acabar a fila (nº+6), copia o "Colar Código" uma vez
         editor.textContent=t.trim();
-        toastOK(`SMS salvo: ${items.length} registro(s).`);
+        toastOK('SMS salvo (Renovação).');
         updateUI();
         return;
       }
 
-      // Outros: mantém o comportamento antigo (Nº -> 6 dígitos -> Código)
+      // comportamento padrão fora Renovação (mantido)
+      const phones=parseManyPhones(t);
+      if(!phones.length){toastOK('Não encontrei número válido no SMS.'); restore(); return;}
       const phone = phones[phones.length-1];
-      const smsText = extractSmsMessage(t);
-      st.smsItems.push({phone, smsText, raw: String(t||''), smsCode6:''});
+      st.smsItems.push({phone11:phone, code6:''});
       editor.textContent=t.trim();
-      toastOK('SMS salvo: Nº + SMS.');
+      toastOK('SMS salvo.');
       updateUI();
     });
 
@@ -845,7 +844,7 @@ h1{
         }
         const ok = await copyClip(st.six);
         if(ok){
-          toastOK('Código (final) copiado!');
+          toastOK('Colar Código (final) copiado!');
           buzz(25);
           st.count++;
           st.finalCodePending = false;
@@ -861,27 +860,21 @@ h1{
         return;
       }
 
-      // Renovação: por SMS -> Nº, depois 6 dígitos do SMS. Depois que a fila acabar, copia o Colar Código uma única vez.
+      // Renovação: por SMS -> Número sem DDI, depois Código verificação (6). Depois que a fila acabar, copia Colar Código.
       if(key === 'renov'){
         const cur = st.smsItems[0];
         let payload = '';
         let label = '';
 
         if(st.smsStep===0){
-          payload = cur.phone;
-          label = 'Número (SMS)';
+          payload = cur.phone11;
+          label = 'Número sem DDI';
           st.smsStep = 1;
         }else{
-          const digits6 = (cur.smsCode6 || '').trim();
-          if(!digits6 || digits6.length!==6){
-            toastOK('Não achei 6 dígitos no SMS. Cole o SMS novamente.');
-            return;
-          }
-          payload = digits6;
-          label = 'Código (6 dígitos do SMS)';
+          payload = cur.code6;
+          label = 'Código de verificação (6)';
           st.smsItems.shift();
           st.smsStep = 0;
-          // se acabou a fila, o próximo copy será o "Colar Código" final (se estiver pendente)
         }
 
         const ok = await copyClip(payload);
@@ -896,18 +889,17 @@ h1{
         return;
       }
 
-      // Outros: Nº -> 6 dígitos -> Código (Colar Código)
+      // Outros modos: mantém simples (Nº -> 6 dígitos -> Colar Código) com extração livre
       const cur = st.smsItems[0];
       let payload = '';
       let label = '';
 
       if(st.smsStep===0){
-        payload = cur.phone;
+        payload = cur.phone11;
         label = 'Número (SMS)';
         st.smsStep = 1;
-
       }else if(st.smsStep===1){
-        const raw = String(cur.raw||cur.smsText||'');
+        const raw = String(editor.textContent||'');
         const digits6 = (raw.match(/\b\d{6}\b/)||[])[0] || (raw.match(/\d{6}/)||[])[0] || '';
         if(!digits6){
           toastOK('Não achei 6 dígitos no SMS. Cole o SMS novamente.');
@@ -916,7 +908,6 @@ h1{
         payload = digits6;
         label = 'SMS (6 dígitos)';
         st.smsStep = 2;
-
       }else{
         if(!st.six || st.six.length!==6){
           toastOK('Faltou Colar Código (6 caracteres).');
@@ -971,7 +962,7 @@ h1{
     updateUI();
   });
 
-  /* ===== E-mails (mantido igual) ===== */
+  /* ===== E-mails (mantido) ===== */
   document.querySelectorAll('.block[data-seq="emails"]').forEach(block=>{
     const editor=block.querySelector('.editor');
     const pasteEmailBtn=block.querySelector('[data-role="paste-email"]'); // gmail alias
