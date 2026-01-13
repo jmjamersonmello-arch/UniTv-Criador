@@ -512,8 +512,8 @@ h1{
   </div>
 
   <div class="footer small">
-    <div><b>Versão:</b> v3.9.23</div>
-    <div><b>Changelog:</b> Renovação: Colar SMS agora copia em 3 passos (<b>Número sem DDI</b> → <b>Código de verificação (6)</b> → <b>Colar Código</b> no final), lendo exatamente o formato do SMS.</div>
+    <div><b>Versão:</b> v1.0.5</div>
+    <div><b>Changelog:</b> Agora o <b>Colar SMS</b> aceita <b>vários SMS colados de uma vez</b> e coloca todos na fila (não só o primeiro). Também passei a guardar o <b>código 6 dígitos do SMS</b> por item (pra não depender do texto do editor).</div>
   </div>
 </div>
 
@@ -588,47 +588,94 @@ h1{
     return m ? m[0] : '';
   }
 
+  // ✅ evita duplicar +55 e “sem DDI”
   function parseManyPhones(text){
     const tokens=String(text||'').split(/[^0-9]+/g).filter(Boolean);
     const out=[];
+    const seen=new Set();
     for(const tok of tokens){
       if(tok.length>=10){
         const p=cleanPhone(tok);
-        if(p && p.length===11) out.push(p);
+        if(p && p.length===11 && !seen.has(p)){
+          seen.add(p);
+          out.push(p);
+        }
       }
     }
     return out;
   }
 
-  // === NOVO (v3.9.23): lê exatamente o formato do SMS do provedor ===
   function extractNumeroSemDDI(text){
     const t=String(text||'');
-    // Ex.: "Número sem DDI:** 21920257001"
     const m = t.match(/N[úu]mero\s*sem\s*DDI[^0-9]*([0-9]{10,13})/i);
     if(m && m[1]){
       const p=cleanPhone(m[1]);
       return (p && p.length===11) ? p : '';
     }
-    // fallback: usa o último 11 dígitos do texto
     const phones=parseManyPhones(t);
     return phones.length ? phones[phones.length-1] : '';
   }
 
   function extractCodigoVerificacao6(text){
     const t=String(text||'');
-    // Ex.: "Código de verificação: 957315"
     let m = t.match(/C[oó]digo\s*de\s*verifica[cç][aã]o[^0-9]*([0-9]{6})/i);
     if(m && m[1]) return m[1];
-    // fallback: primeiro 6 dígitos puro
     m = t.match(/\b\d{6}\b/);
     return m ? m[0] : '';
   }
 
-  async function getClipOrPrompt(label){
-    let t='';
-    try{ t=await navigator.clipboard.readText(); }catch(e){}
-    if(t && t.trim()) return t.trim();
-    return prompt(label,'')||'';
+  // ✅ NOVO: split de vários SMS colados juntos
+  function splitSmsChunks(text){
+    const t=String(text||'').trim();
+    if(!t) return [];
+
+    // 1) se vier com “SMS recebido com sucesso.” repetido
+    const marker = 'SMS recebido com sucesso';
+    const idxs=[];
+    let i=0;
+    while(true){
+      const p=t.toLowerCase().indexOf(marker.toLowerCase(), i);
+      if(p===-1) break;
+      idxs.push(p);
+      i=p+marker.length;
+    }
+    if(idxs.length>=2){
+      const chunks=[];
+      for(let k=0;k<idxs.length;k++){
+        const start=idxs[k];
+        const end=(k+1<idxs.length)?idxs[k+1]:t.length;
+        const c=t.slice(start,end).trim();
+        if(c) chunks.push(c);
+      }
+      return chunks;
+    }
+
+    // 2) se vier com “Número sem DDI” repetido
+    const marker2='Número sem DDI';
+    const idx2=[];
+    i=0;
+    while(true){
+      const p=t.toLowerCase().indexOf(marker2.toLowerCase(), i);
+      if(p===-1) break;
+      idx2.push(p);
+      i=p+marker2.length;
+    }
+    if(idx2.length>=2){
+      const chunks=[];
+      for(let k=0;k<idx2.length;k++){
+        const start=idx2[k];
+        const end=(k+1<idx2.length)?idx2[k+1]:t.length;
+        const c=t.slice(start,end).trim();
+        if(c) chunks.push(c);
+      }
+      return chunks;
+    }
+
+    // 3) fallback: tenta dividir por linhas grandes vazias (quando colam vários blocos)
+    const parts=t.split(/\n{3,}/g).map(x=>x.trim()).filter(Boolean);
+    if(parts.length>=2) return parts;
+
+    return [t];
   }
 
   function badge(key,{count,limit,isDone}){
@@ -641,6 +688,13 @@ h1{
       el.textContent=`${count}/${limit}`;
     }
     dot.classList.toggle('on', !!isDone);
+  }
+
+  async function getClipOrPrompt(label){
+    let t='';
+    try{ t=await navigator.clipboard.readText(); }catch(e){}
+    if(t && t.trim()) return t.trim();
+    return prompt(label,'')||'';
   }
 
   document.querySelectorAll('.block[data-seq="triple"]').forEach(block=>{
@@ -673,7 +727,7 @@ h1{
       count:0,
       six:'',
       numQueue:[],
-      smsItems:[],     // Renovação: [{phone11, smsCode6}]
+      smsItems:[],     // agora: [{phone11, code6}]
       smsStep:0,
       finalCodePending:false,
       lastSnapshot:null
@@ -687,7 +741,10 @@ h1{
         if(typeof _saved.count==='number') st.count=_saved.count;
         if(typeof _saved.six==='string') st.six=_saved.six;
         if(Array.isArray(_saved.numQueue)) st.numQueue=_saved.numQueue;
-        if(Array.isArray(_saved.smsItems)) st.smsItems=_saved.smsItems;
+        if(Array.isArray(_saved.smsItems)) st.smsItems=_saved.smsItems.map(x=>{
+          if(typeof x==='string') return {phone11:x, code6:''};
+          return {phone11:String(x.phone11||''), code6:String(x.code6||'')};
+        });
         if(typeof _saved.smsStep==='number') st.smsStep=_saved.smsStep;
         if(typeof _saved.finalCodePending==='boolean') st.finalCodePending=_saved.finalCodePending;
         if(typeof _saved.editorText==='string') editor.textContent=_saved.editorText;
@@ -698,7 +755,7 @@ h1{
     const stepsPerSms = (key === 'renov') ? 2 : 3;
     const smsStepLabels = (key === 'renov')
       ? ['Número sem DDI','Código de verificação (6)']
-      : ['Nº','6 dígitos','Código'];
+      : ['Nº','SMS (6 dígitos)','Código'];
 
     function snapshot(){ st.lastSnapshot=JSON.parse(JSON.stringify(st)); }
     function restore(){
@@ -744,10 +801,10 @@ h1{
         if(key==='renov'){
           statusLeft.textContent = `Copiando SMS: Número sem DDI → Código de verificação (6) → (no final) Colar Código`;
         }else{
-          statusLeft.textContent = `Copiando SMS: Nº → 6 dígitos → Código`;
+          statusLeft.textContent = `Copiando SMS: Nº → SMS (6 dígitos) → Código`;
         }
       }else{
-        statusLeft.textContent = `Cole números ou um SMS`;
+        statusLeft.textContent = `Cole números ou SMS`;
       }
 
       const lbl = (st.smsItems.length ? smsStepLabels[Math.min(st.smsStep, smsStepLabels.length-1)] : (st.finalCodePending ? 'Colar Código' : '—'));
@@ -790,43 +847,63 @@ h1{
       updateUI();
     });
 
+    // ✅ AQUI: agora aceita vários SMS colados juntos (fila)
     pasteSmsBtn.addEventListener('click', async ()=>{
       snapshot();
-      const t=await getClipOrPrompt('Cole o SMS completo.');
+      const t=await getClipOrPrompt('Cole o SMS completo (pode colar vários juntos).');
+      const chunks = splitSmsChunks(t);
+      if(!chunks.length){ toastOK('SMS vazio.'); restore(); return; }
+
+      let added=0;
+      const invalid=[];
 
       if(key === 'renov'){
-        const phone11 = extractNumeroSemDDI(t);
-        const code6 = extractCodigoVerificacao6(t);
+        for(const chunk of chunks){
+          const phone11 = extractNumeroSemDDI(chunk);
+          const code6 = extractCodigoVerificacao6(chunk);
+          if(!phone11 || phone11.length!==11 || !code6 || code6.length!==6){
+            invalid.push(chunk);
+            continue;
+          }
+          st.smsItems.push({phone11, code6});
+          added++;
+        }
 
-        if(!phone11 || phone11.length!==11){
-          toastOK('Não achei "Número sem DDI" (11 dígitos).');
+        if(!added){
+          toastOK('Não consegui ler nenhum SMS válido (precisa ter Número sem DDI + código 6).');
           restore(); return;
         }
-        if(!code6 || code6.length!==6){
-          toastOK('Não achei "Código de verificação" (6 dígitos).');
-          restore(); return;
-        }
 
-        st.smsItems.push({phone11, code6});
-        st.finalCodePending = true; // depois que acabar a fila (nº+6), copia o "Colar Código" uma vez
-        editor.textContent=t.trim();
-        toastOK('SMS salvo (Renovação).');
+        st.finalCodePending = true;
+        editor.textContent = String(t||'').trim(); // mostra tudo colado, mas a fila tá certa
+        toastOK(`SMS na fila: ${added}`);
         updateUI();
         return;
       }
 
-      // comportamento padrão fora Renovação (mantido)
-      const phones=parseManyPhones(t);
-      if(!phones.length){toastOK('Não encontrei número válido no SMS.'); restore(); return;}
-      const phone = phones[phones.length-1];
-      st.smsItems.push({phone11:phone, code6:''});
-      editor.textContent=t.trim();
-      toastOK('SMS salvo.');
+      // Conta Nova / Personalizado: pega número + 6 dígitos do SMS (só números)
+      for(const chunk of chunks){
+        const phone11 = extractNumeroSemDDI(chunk) || (parseManyPhones(chunk)[0]||'');
+        const code6 = extractCodigoVerificacao6(chunk); // numérico 6 (preferência)
+        if(!phone11 || phone11.length!==11 || !code6 || code6.length!==6){
+          invalid.push(chunk);
+          continue;
+        }
+        st.smsItems.push({phone11, code6});
+        added++;
+      }
+
+      if(!added){
+        toastOK('Não encontrei SMS válido (precisa ter número 11 e código 6).');
+        restore(); return;
+      }
+
+      editor.textContent = String(t||'').trim();
+      toastOK(`SMS na fila: ${added}`);
       updateUI();
     });
 
     copyBtn.addEventListener('click', async ()=>{
-      // Prioridade: Colar número
       if(st.numQueue.length){
         const num = st.numQueue.shift();
         const ok = await copyClip(num);
@@ -836,7 +913,6 @@ h1{
         return;
       }
 
-      // Renovação: se acabou SMS, ainda falta o "Colar Código" final
       if(key === 'renov' && !st.smsItems.length && st.finalCodePending){
         if(!st.six || st.six.length!==6){
           toastOK('Faltou Colar Código (6 caracteres).');
@@ -856,11 +932,10 @@ h1{
       }
 
       if(!st.smsItems.length){
-        toastOK('Cole números ou um SMS primeiro.');
+        toastOK('Cole números ou SMS primeiro.');
         return;
       }
 
-      // Renovação: por SMS -> Número sem DDI, depois Código verificação (6). Depois que a fila acabar, copia Colar Código.
       if(key === 'renov'){
         const cur = st.smsItems[0];
         let payload = '';
@@ -889,7 +964,7 @@ h1{
         return;
       }
 
-      // Outros modos: mantém simples (Nº -> 6 dígitos -> Colar Código) com extração livre
+      // Conta Nova / Personalizado: Nº -> SMS (6) -> Código (colar código)
       const cur = st.smsItems[0];
       let payload = '';
       let label = '';
@@ -899,13 +974,11 @@ h1{
         label = 'Número (SMS)';
         st.smsStep = 1;
       }else if(st.smsStep===1){
-        const raw = String(editor.textContent||'');
-        const digits6 = (raw.match(/\b\d{6}\b/)||[])[0] || (raw.match(/\d{6}/)||[])[0] || '';
-        if(!digits6){
-          toastOK('Não achei 6 dígitos no SMS. Cole o SMS novamente.');
+        if(!cur.code6 || cur.code6.length!==6){
+          toastOK('Esse SMS da fila não tem código 6. Cole novamente.');
           return;
         }
-        payload = digits6;
+        payload = cur.code6;
         label = 'SMS (6 dígitos)';
         st.smsStep = 2;
       }else{
@@ -962,12 +1035,12 @@ h1{
     updateUI();
   });
 
-  /* ===== E-mails (mantido) ===== */
+  /* ===== E-mails (mantido como estava) ===== */
   document.querySelectorAll('.block[data-seq="emails"]').forEach(block=>{
     const editor=block.querySelector('.editor');
-    const pasteEmailBtn=block.querySelector('[data-role="paste-email"]'); // gmail alias
-    const genBtn=block.querySelector('[data-role="gen-email"]'); // gerar 3 emails
-    const pasteLoginBtn=block.querySelector('[data-role="paste-login"]'); // email:senha
+    const pasteEmailBtn=block.querySelector('[data-role="paste-email"]');
+    const genBtn=block.querySelector('[data-role="gen-email"]');
+    const pasteLoginBtn=block.querySelector('[data-role="paste-login"]');
     const pasteCodeBtn=block.querySelector('[data-role="paste-code"]');
     const copyBtn=block.querySelector('.copy');
     const resetBtn=block.querySelector('.reset');
@@ -1385,7 +1458,7 @@ h1{
     updateUI();
   });
 
-  /* ===== Conta formatada ===== */
+  /* ===== Conta formatada (mantido) ===== */
   document.querySelectorAll('.block[data-seq="account"]').forEach(block=>{
     const editor=block.querySelector('.editor');
     const pasteSmsBtn=block.querySelector('[data-role="paste-sms"]');
@@ -1399,72 +1472,123 @@ h1{
     const statusProg=block.querySelector('.status .progress');
     const codePill=block.querySelector('.code-pill');
 
-    const st={rows:[], index:0, clicks:0};
+    const st={row:null, clicks:0};
 
-    const _psKey='account_state';
+    const _psKey='account_state_v2';
     const _saved=getStore(_psKey,null);
     if(_saved){
       try{
-        if(Array.isArray(_saved.rows)) st.rows=_saved.rows;
-        if(typeof _saved.index==='number') st.index=_saved.index;
+        if(_saved.row) st.row=_saved.row;
         if(typeof _saved.clicks==='number') st.clicks=_saved.clicks;
         if(typeof _saved.editorText==='string') editor.textContent=_saved.editorText;
       }catch(e){}
     }
 
-    function parseAccount(text){
-      const phone=cleanPhone(text);
-      const code=sanitizeCode6(text);
-      const pass=(text.match(/Senha:\s*([A-Za-z0-9]{4,})/i)||[])[1]||'';
-      if(phone && (pass||code)){
-        return {phone, pass, code};
-      }
-      return null;
+    function extractFirstDateDDMMYYYY(text){
+      const t=String(text||'');
+      const m=t.match(/\b(\d{2})\/(\d{2})\/(\d{4})\b/);
+      if(!m) return null;
+      return {dd:Number(m[1]), mm:Number(m[2]), yyyy:Number(m[3])};
+    }
+    function daysInMonth(y,m){ return new Date(y, m, 0).getDate(); }
+    function addOneMonthClamped(dd,mm,yyyy){
+      let ny=yyyy, nm=mm+1;
+      if(nm===13){ nm=1; ny++; }
+      const dim=daysInMonth(ny,nm);
+      const nd=Math.min(dd,dim);
+      return {dd:nd, mm:nm, yyyy:ny};
+    }
+    function pad2(n){ return String(n).padStart(2,'0'); }
+    function fmtDate(o){ return `${pad2(o.dd)}/${pad2(o.mm)}/${o.yyyy}`; }
+    function formatBRPhone11(p11){
+      const p=String(p11||'');
+      if(p.length!==11) return p;
+      return `${p.slice(0,2)} ${p.slice(2,7)}-${p.slice(7)}`;
+    }
+
+    function parseAccountSms(text){
+      const t=String(text||'');
+      const phone11 = extractNumeroSemDDI(t) || (parseManyPhones(t)[0]||'');
+      const code6 = extractCodigoVerificacao6(t);
+      const dt = extractFirstDateDDMMYYYY(t);
+      if(!phone11 || phone11.length!==11) return null;
+      if(!code6 || code6.length!==6) return null;
+      if(!dt) return null;
+
+      const venc = addOneMonthClamped(dt.dd, dt.mm, dt.yyyy);
+
+      return {
+        phone11,
+        code6,
+        dt_sms: fmtDate(dt),
+        venc: fmtDate(venc),
+        raw: t.trim()
+      };
+    }
+
+    function buildMessage(row){
+      const contaFmt = formatBRPhone11(row.phone11);
+      return [
+        'UNITV',
+        '',
+        '📱 Conta UniTv',
+        '',
+        `Conta: ${contaFmt}`,
+        `Senha: ${row.code6}`,
+        '',
+        `📅 Vencimento: ${row.venc}`,
+        '',
+        '🔑 Vá em Perfil > Entrar com outras contas > Telefone e insira os dados acima.',
+        '💡 (É um número de telefone criado como conta pro UniTv)',
+        '',
+        '🎁 Ganhe 7 dias grátis ao indicar um amigo!'
+      ].join('\n');
     }
 
     function updateUI(){
-      counter.textContent=String(st.rows.length);
-      detEl.textContent=(st.rows.length? 'Nº' : 'Nº');
-      toggle.textContent=editor.classList.contains('show')?'Ocultar SMS':`Ver SMS (${st.rows.length})`;
-      codePill.textContent=st.rows.length? (st.rows[st.index]?.phone || '—') : '—';
+      counter.textContent = st.row ? '1' : '0';
+      detEl.textContent = st.row ? 'OK' : '—';
+      toggle.textContent = editor.classList.contains('show') ? 'Ocultar SMS' : `Ver SMS (${st.row?1:0})`;
+      codePill.textContent = st.row ? formatBRPhone11(st.row.phone11) : '—';
 
-      const p=st.rows.length?Math.min((st.index)/(st.rows.length),1)*100:0;
-      fill.style.width=p+'%';
-      bar.classList.toggle('complete', st.rows.length>0 && st.index>=st.rows.length);
+      const p = st.row ? 100 : 0;
+      fill.style.width = p+'%';
+      bar.classList.toggle('complete', !!st.row);
 
-      statusLeft.textContent=st.rows.length?'Pronto para copiar.':'Cole um SMS.';
-      statusProg.textContent=st.rows.length?`${st.index}/${st.rows.length}`:'0';
+      statusLeft.textContent = st.row ? 'Pronto para copiar (modelo UNITV).' : 'Cole um SMS.';
+      statusProg.textContent = st.row ? `Vencimento: ${st.row.venc}` : '0';
 
-      copyBtn.disabled=!st.rows.length;
-      resetBtn.disabled=(!st.rows.length && !editor.textContent);
+      copyBtn.disabled = !st.row;
+      resetBtn.disabled = (!st.row && !editor.textContent);
 
-      badge('account',{count:st.rows.length?1:0,limit:1,isDone:st.rows.length?true:false});
-      setStore('account_state',{rows:st.rows,index:st.index,clicks:st.clicks,editorText:editor.textContent});
+      badge('account',{count:st.row?1:0,limit:1,isDone:!!st.row});
+      setStore(_psKey,{row:st.row,clicks:st.clicks,editorText:editor.textContent});
     }
 
     pasteSmsBtn.addEventListener('click', async ()=>{
-      const t=await getClipOrPrompt('Cole o SMS completo.');
-      const row=parseAccount(t);
-      if(!row){toastOK('SMS inválido.'); return;}
-      st.rows=[row];
-      st.index=0;
-      editor.textContent=t.trim();
-      toastOK('SMS lido.');
+      const t=await getClipOrPrompt('Cole o SMS completo (com número sem DDI, código e data).');
+      const row=parseAccountSms(t);
+      if(!row){
+        toastOK('SMS inválido: precisa ter Número sem DDI (11), código 6 dígitos e uma data (dd/mm/aaaa).');
+        return;
+      }
+      st.row=row;
+      editor.textContent=row.raw;
+      toastOK('SMS lido (Conta formatada).');
       updateUI();
     });
 
     copyBtn.addEventListener('click', async ()=>{
-      if(!st.rows.length) return;
-      const row=st.rows[0];
-      const senha = row.code ? row.code : '';
-      const conta=`Conta: ${row.phone}\nSenha: ${senha}${row.pass?(' '+row.pass):''}`;
-      const ok=await copyClip(conta);
+      if(!st.row) return;
+      const msg = buildMessage(st.row);
+      const ok=await copyClip(msg);
       if(ok){toastOK('Conta copiada!'); buzz(25); st.clicks++; }
+      else { toastOK('Falha ao copiar.'); }
       updateUI();
     });
 
     resetBtn.addEventListener('click', ()=>{
-      st.rows=[]; st.index=0; st.clicks=0;
+      st.row=null; st.clicks=0;
       editor.textContent=''; editor.classList.remove('show');
       toastOK('Zerado.');
       updateUI();
@@ -1478,7 +1602,7 @@ h1{
     updateUI();
   });
 
-  /* ===== Site ===== */
+  /* ===== Site (mantido) ===== */
   document.querySelectorAll('.block[data-seq="site"]').forEach(block=>{
     const editor=block.querySelector('.editor');
     const pasteNumBtn=block.querySelector('[data-role="paste-number"]');
@@ -1550,12 +1674,21 @@ h1{
 
     pasteSmsBtn.addEventListener('click', async ()=>{
       snapshot();
-      const t=await getClipOrPrompt('Cole o SMS completo.');
-      const phones=parseManyPhones(t);
-      if(!phones.length){toastOK('Não encontrei número válido no SMS.'); restore(); return;}
-      st.smsNumQueue.push(...phones);
-      editor.textContent=t.trim();
-      toastOK(`SMS lido: ${phones.length} número(s) salvo(s).`);
+      const t=await getClipOrPrompt('Cole o SMS completo (pode colar vários juntos).');
+      const chunks=splitSmsChunks(t);
+      if(!chunks.length){toastOK('SMS vazio.'); restore(); return;}
+      let added=0;
+      for(const chunk of chunks){
+        const phones=parseManyPhones(chunk);
+        if(!phones.length) continue;
+        for(const ph of phones){
+          st.smsNumQueue.push(ph);
+          added++;
+        }
+      }
+      if(!added){toastOK('Não encontrei número válido no SMS.'); restore(); return;}
+      editor.textContent=String(t||'').trim();
+      toastOK(`Nº na fila (SMS): ${added}`);
       updateUI();
     });
 
