@@ -512,8 +512,8 @@ h1{
   </div>
 
   <div class="footer small">
-    <div><b>Versão:</b> v1.0.6</div>
-    <div><b>Changelog:</b> Ajustei a ordem do <b>Copiar</b> para SMS em <b>todas</b> as abas que usam SMS: <b>Número → Código do SMS (6 dígitos) → Código do botão Colar Código</b> (por SMS, repetindo para cada item da fila).</div>
+    <div><b>Versão:</b> v1.0.7</div>
+    <div><b>Changelog:</b> Consertei a leitura de <b>múltiplos SMS colados de uma vez</b>. Agora ele monta uma fila real e aplica a ordem <b>para cada SMS</b>: <b>Número → Código (6 do SMS) → Código do botão Colar Código</b>, repetindo até acabar (100, 1000, etc.).</div>
   </div>
 </div>
 
@@ -604,6 +604,40 @@ h1{
     return out;
   }
 
+  // ✅ NOVO: parser robusto de "muitos SMS colados" (não depende de separação por blocos)
+  // Ele extrai todos os "Número sem DDI" e todos os "Código de verificação: 123456" e pareia por ordem.
+  function parseSmsBatchItems(text){
+    const t=String(text||'');
+    const phones=[];
+    const rePhone=/N[úu]mero\s*sem\s*DDI[^0-9]*([0-9]{10,13})/gi;
+    let m;
+    while((m=rePhone.exec(t))!==null){
+      const p=cleanPhone(m[1]);
+      if(p && p.length===11) phones.push(p);
+    }
+
+    const codes=[];
+    const reCode=/C[oó]digo\s*de\s*verifica[cç][aã]o[^0-9]*([0-9]{6})/gi;
+    while((m=reCode.exec(t))!==null){
+      codes.push(m[1]);
+    }
+
+    // fallback (se algum SMS vier sem "Código de verificação:" mas tiver um 6 dígitos no texto)
+    if(!codes.length){
+      const re6=/\b\d{6}\b/g;
+      while((m=re6.exec(t))!==null){
+        codes.push(m[0]);
+      }
+    }
+
+    const n=Math.min(phones.length, codes.length);
+    const out=[];
+    for(let i=0;i<n;i++){
+      out.push({phone11:phones[i], code6:codes[i]});
+    }
+    return out;
+  }
+
   function extractNumeroSemDDI(text){
     const t=String(text||'');
     const m = t.match(/N[úu]mero\s*sem\s*DDI[^0-9]*([0-9]{10,13})/i);
@@ -621,52 +655,6 @@ h1{
     if(m && m[1]) return m[1];
     m = t.match(/\b\d{6}\b/);
     return m ? m[0] : '';
-  }
-
-  function splitSmsChunks(text){
-    const t=String(text||'').trim();
-    if(!t) return [];
-    const marker = 'SMS recebido com sucesso';
-    const idxs=[];
-    let i=0;
-    while(true){
-      const p=t.toLowerCase().indexOf(marker.toLowerCase(), i);
-      if(p===-1) break;
-      idxs.push(p);
-      i=p+marker.length;
-    }
-    if(idxs.length>=2){
-      const chunks=[];
-      for(let k=0;k<idxs.length;k++){
-        const start=idxs[k];
-        const end=(k+1<idxs.length)?idxs[k+1]:t.length;
-        const c=t.slice(start,end).trim();
-        if(c) chunks.push(c);
-      }
-      return chunks;
-    }
-    const marker2='Número sem DDI';
-    const idx2=[];
-    i=0;
-    while(true){
-      const p=t.toLowerCase().indexOf(marker2.toLowerCase(), i);
-      if(p===-1) break;
-      idx2.push(p);
-      i=p+marker2.length;
-    }
-    if(idx2.length>=2){
-      const chunks=[];
-      for(let k=0;k<idx2.length;k++){
-        const start=idx2[k];
-        const end=(k+1<idx2.length)?idx2[k+1]:t.length;
-        const c=t.slice(start,end).trim();
-        if(c) chunks.push(c);
-      }
-      return chunks;
-    }
-    const parts=t.split(/\n{3,}/g).map(x=>x.trim()).filter(Boolean);
-    if(parts.length>=2) return parts;
-    return [t];
   }
 
   function badge(key,{count,limit,isDone}){
@@ -741,7 +729,7 @@ h1{
       }catch(e){}
     }
 
-    // ✅ ORDEM UNIFICADA PARA SMS: Número → Código do SMS (6) → Código do botão Colar Código
+    // ✅ ORDEM POR SMS: Número → Código do SMS (6) → Código do botão Colar Código
     const stepsPerSms = 3;
     const smsStepLabels = ['Número','Código (SMS 6)','Código (Colar Código)'];
 
@@ -828,27 +816,25 @@ h1{
     pasteSmsBtn.addEventListener('click', async ()=>{
       snapshot();
       const t=await getClipOrPrompt('Cole o SMS completo (pode colar vários juntos).');
-      const chunks = splitSmsChunks(t);
-      if(!chunks.length){ toastOK('SMS vazio.'); restore(); return; }
 
-      let added=0;
-
-      for(const chunk of chunks){
-        const phone11 = extractNumeroSemDDI(chunk) || (parseManyPhones(chunk)[0]||'');
-        const code6 = extractCodigoVerificacao6(chunk);
-        if(!phone11 || phone11.length!==11) continue;
-        if(!code6 || code6.length!==6) continue;
-        st.smsItems.push({phone11, code6});
-        added++;
-      }
-
-      if(!added){
-        toastOK('Não consegui ler nenhum SMS válido (precisa ter número 11 e código 6).');
+      // ✅ aqui é o fix: pega TODOS os SMS do bloco colado
+      const items = parseSmsBatchItems(t);
+      if(!items.length){
+        toastOK('Não consegui ler o lote (precisa ter "Número sem DDI" e "Código de verificação" em cada SMS).');
         restore(); return;
       }
 
+      st.smsItems.push(...items);
       editor.textContent = String(t||'').trim();
-      toastOK(`SMS na fila: ${added}`);
+
+      // opcional: se você colou um lote novo, garante que o próximo clique comece por "Número"
+      // (sem isso, se você colar no meio do fluxo, ele continuaria o passo atual)
+      // Como você quer 100/1000 sempre por SMS, isso deixa previsível:
+      if(st.smsStep !== 0 && st.smsItems.length === items.length){
+        st.smsStep = 0;
+      }
+
+      toastOK(`SMS na fila: ${items.length}`);
       updateUI();
     });
 
@@ -888,7 +874,7 @@ h1{
         }
         payload = st.six;
         label = 'Código (Colar Código)';
-        st.smsItems.shift();
+        st.smsItems.shift();     // ✅ só aqui ele passa pro próximo SMS
         st.smsStep = 0;
       }
 
@@ -1574,20 +1560,12 @@ h1{
     pasteSmsBtn.addEventListener('click', async ()=>{
       snapshot();
       const t=await getClipOrPrompt('Cole o SMS completo (pode colar vários juntos).');
-      const chunks=splitSmsChunks(t);
-      if(!chunks.length){toastOK('SMS vazio.'); restore(); return;}
-      let added=0;
-      for(const chunk of chunks){
-        const phones=parseManyPhones(chunk);
-        if(!phones.length) continue;
-        for(const ph of phones){
-          st.smsNumQueue.push(ph);
-          added++;
-        }
-      }
-      if(!added){toastOK('Não encontrei número válido no SMS.'); restore(); return;}
+      // Mantive igual: aqui "site" é só número, não entra na regra do SMS→código→código final
+      const items=parseSmsBatchItems(t);
+      if(!items.length){toastOK('Não encontrei número sem DDI no lote.'); restore(); return;}
+      for(const it of items) st.smsNumQueue.push(it.phone11);
       editor.textContent=String(t||'').trim();
-      toastOK(`Nº na fila (SMS): ${added}`);
+      toastOK(`Nº na fila (SMS): ${items.length}`);
       updateUI();
     });
 
