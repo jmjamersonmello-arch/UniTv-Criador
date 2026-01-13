@@ -512,8 +512,8 @@ h1{
   </div>
 
   <div class="footer small">
-    <div><b>Versão:</b> v1.0.7</div>
-    <div><b>Changelog:</b> Consertei a leitura de <b>múltiplos SMS colados de uma vez</b>. Agora ele monta uma fila real e aplica a ordem <b>para cada SMS</b>: <b>Número → Código (6 do SMS) → Código do botão Colar Código</b>, repetindo até acabar (100, 1000, etc.).</div>
+    <div><b>Versão:</b> v1.0.9</div>
+    <div><b>Changelog:</b> “<b>Registros</b>” (Conta Nova/Renovação/Personalizado) agora conta <b>somente</b> quantas vezes você copiou o <b>código do botão Colar Código</b> (não conta número nem código do SMS). Mantido bloqueio do Colar Código + confirmação no Zerar.</div>
   </div>
 </div>
 
@@ -555,6 +555,14 @@ h1{
   }
   function buzz(ms=20){
     try{ navigator.vibrate && navigator.vibrate(ms); }catch(e){}
+  }
+
+  function confirmReset(){
+    try{
+      return confirm('Tem certeza que deseja zerar? Isso apaga os dados salvos desta aba.');
+    }catch(e){
+      return true;
+    }
   }
 
   async function copyClip(text){
@@ -604,8 +612,6 @@ h1{
     return out;
   }
 
-  // ✅ NOVO: parser robusto de "muitos SMS colados" (não depende de separação por blocos)
-  // Ele extrai todos os "Número sem DDI" e todos os "Código de verificação: 123456" e pareia por ordem.
   function parseSmsBatchItems(text){
     const t=String(text||'');
     const phones=[];
@@ -622,7 +628,6 @@ h1{
       codes.push(m[1]);
     }
 
-    // fallback (se algum SMS vier sem "Código de verificação:" mas tiver um 6 dígitos no texto)
     if(!codes.length){
       const re6=/\b\d{6}\b/g;
       while((m=re6.exec(t))!==null){
@@ -703,6 +708,7 @@ h1{
     const st={
       baseLimit: baseLimit,
       limit: baseLimit,
+      // ✅ REGISTROS AGORA = QUANTAS VEZES COPIOU O CÓDIGO DO "COLAR CÓDIGO"
       count:0,
       six:'',
       numQueue:[],
@@ -729,7 +735,6 @@ h1{
       }catch(e){}
     }
 
-    // ✅ ORDEM POR SMS: Número → Código do SMS (6) → Código do botão Colar Código
     const stepsPerSms = 3;
     const smsStepLabels = ['Número','Código (SMS 6)','Código (Colar Código)'];
 
@@ -758,6 +763,11 @@ h1{
       counter.textContent=String(st.count);
       detEl.textContent = st.numQueue.length ? 'Nº (Colar número)' : (st.smsItems.length ? 'SMS (Nº→Código→Colar Código)' : 'Nº');
       codePill.textContent=st.six||'—';
+
+      // ✅ bloqueio do botão "Colar Código" após colar um código válido
+      if(pasteCodeBtn){
+        pasteCodeBtn.disabled = !!(st.six && st.six.length===6);
+      }
 
       const remain = st.numQueue.length + smsRemaining();
       copyBtn.innerHTML=`Copiar <span class="muted">(restantes: ${remain})</span>`;
@@ -804,6 +814,10 @@ h1{
     });
 
     pasteCodeBtn.addEventListener('click', async ()=>{
+      if(st.six && st.six.length===6){
+        toastOK('Código já colado. Zere para colar outro.');
+        return;
+      }
       snapshot();
       const t=await getClipOrPrompt('Cole o código (6 caracteres).');
       const c=sanitizeCode6(t);
@@ -817,7 +831,6 @@ h1{
       snapshot();
       const t=await getClipOrPrompt('Cole o SMS completo (pode colar vários juntos).');
 
-      // ✅ aqui é o fix: pega TODOS os SMS do bloco colado
       const items = parseSmsBatchItems(t);
       if(!items.length){
         toastOK('Não consegui ler o lote (precisa ter "Número sem DDI" e "Código de verificação" em cada SMS).');
@@ -827,9 +840,6 @@ h1{
       st.smsItems.push(...items);
       editor.textContent = String(t||'').trim();
 
-      // opcional: se você colou um lote novo, garante que o próximo clique comece por "Número"
-      // (sem isso, se você colar no meio do fluxo, ele continuaria o passo atual)
-      // Como você quer 100/1000 sempre por SMS, isso deixa previsível:
       if(st.smsStep !== 0 && st.smsItems.length === items.length){
         st.smsStep = 0;
       }
@@ -839,25 +849,26 @@ h1{
     });
 
     copyBtn.addEventListener('click', async ()=>{
-      // prioridade: Colar número
+      // 1) PRIORIDADE NÚMERO: copia número, mas NÃO CONTA em "Registros"
       if(st.numQueue.length){
         const num = st.numQueue.shift();
         const ok = await copyClip(num);
-        if(ok){ toastOK('Número copiado!'); buzz(25); st.count++; }
+        if(ok){ toastOK('Número copiado!'); buzz(25); }
         else { toastOK('Falha ao copiar.'); }
         updateUI();
         return;
       }
 
+      // 2) SMS: ordem Número -> Código SMS -> Código Colar Código
       if(!st.smsItems.length){
         toastOK('Cole números ou SMS primeiro.');
         return;
       }
 
-      // ✅ SMS: Número → Código do SMS → Código do botão Colar Código (por item)
       const cur = st.smsItems[0];
       let payload = '';
       let label = '';
+      let isColarCodigoCopy = false;
 
       if(st.smsStep===0){
         payload = cur.phone11;
@@ -874,7 +885,8 @@ h1{
         }
         payload = st.six;
         label = 'Código (Colar Código)';
-        st.smsItems.shift();     // ✅ só aqui ele passa pro próximo SMS
+        isColarCodigoCopy = true;
+        st.smsItems.shift();
         st.smsStep = 0;
       }
 
@@ -882,7 +894,8 @@ h1{
       if(ok){
         toastOK(`${label} copiado!`);
         buzz(25);
-        st.count++;
+        // ✅ AGORA "REGISTROS" SÓ CONTA QUANDO COPIA O CÓDIGO DO COLAR CÓDIGO
+        if(isColarCodigoCopy) st.count++;
       }else{
         toastOK('Falha ao copiar.');
       }
@@ -890,6 +903,10 @@ h1{
     });
 
     resetBtn.addEventListener('click', ()=>{
+      if(!confirmReset()){
+        toastOK('Cancelado.');
+        return;
+      }
       snapshot();
       st.numQueue=[];
       st.smsItems=[];
@@ -920,7 +937,7 @@ h1{
     updateUI();
   });
 
-  /* ===== E-mails (sem mudanças aqui) ===== */
+  /* ===== E-mails ===== */
   document.querySelectorAll('.block[data-seq="emails"]').forEach(block=>{
     const editor=block.querySelector('.editor');
     const pasteEmailBtn=block.querySelector('[data-role="paste-email"]');
@@ -1170,6 +1187,10 @@ h1{
       codePill.textContent=st.code||'—';
       copiesEl.textContent=String(st.codeCopies);
 
+      if(pasteCodeBtn){
+        pasteCodeBtn.disabled = !!(st.code && st.code.length===6);
+      }
+
       const total=totalClicks();
       if(!editor.textContent) editor.textContent = buildEditorText();
 
@@ -1244,6 +1265,10 @@ h1{
     });
 
     pasteCodeBtn.addEventListener('click',async ()=>{
+      if(st.code && st.code.length===6){
+        toastOK('Código já colado. Zere para colar outro.');
+        return;
+      }
       const text=await getClipOrPrompt('Cole o código (6 caracteres).');
       const val=(String(text||'').match(/[A-Za-z0-9]{6}/)||[''])[0];
       if(val.length!==6){toastOK('Código inválido (precisa ter 6 caracteres).');return;}
@@ -1325,6 +1350,10 @@ h1{
     });
 
     resetBtn.addEventListener('click',()=>{
+      if(!confirmReset()){
+        toastOK('Cancelado.');
+        return;
+      }
       st.queue=[]; st.qIndex=0; st.locals=[]; st.code=''; st.codeCopies=0; st.clicks=0;
       st.phase=0; st.idx=0; st.sub=0;
       st.aliasInCycle=false; st.aliasCopied=false;
@@ -1332,6 +1361,7 @@ h1{
       editor.textContent=''; editor.classList.remove('show');
       setStore('gmail_alias_gen', null);
       updateUI();
+      toastOK('Zerado.');
     });
 
     toggle.addEventListener('click',()=>{
@@ -1343,7 +1373,7 @@ h1{
     updateUI();
   });
 
-  /* ===== Conta formatada (sem mudanças) ===== */
+  /* ===== Conta formatada ===== */
   document.querySelectorAll('.block[data-seq="account"]').forEach(block=>{
     const editor=block.querySelector('.editor');
     const pasteSmsBtn=block.querySelector('[data-role="paste-sms"]');
@@ -1473,6 +1503,10 @@ h1{
     });
 
     resetBtn.addEventListener('click', ()=>{
+      if(!confirmReset()){
+        toastOK('Cancelado.');
+        return;
+      }
       st.row=null; st.clicks=0;
       editor.textContent=''; editor.classList.remove('show');
       toastOK('Zerado.');
@@ -1487,7 +1521,7 @@ h1{
     updateUI();
   });
 
-  /* ===== Site (sem mudanças) ===== */
+  /* ===== Site ===== */
   document.querySelectorAll('.block[data-seq="site"]').forEach(block=>{
     const editor=block.querySelector('.editor');
     const pasteNumBtn=block.querySelector('[data-role="paste-number"]');
@@ -1560,7 +1594,6 @@ h1{
     pasteSmsBtn.addEventListener('click', async ()=>{
       snapshot();
       const t=await getClipOrPrompt('Cole o SMS completo (pode colar vários juntos).');
-      // Mantive igual: aqui "site" é só número, não entra na regra do SMS→código→código final
       const items=parseSmsBatchItems(t);
       if(!items.length){toastOK('Não encontrei número sem DDI no lote.'); restore(); return;}
       for(const it of items) st.smsNumQueue.push(it.phone11);
@@ -1581,6 +1614,10 @@ h1{
     });
 
     resetBtn.addEventListener('click', ()=>{
+      if(!confirmReset()){
+        toastOK('Cancelado.');
+        return;
+      }
       snapshot();
       st.numQueue=[];
       st.smsNumQueue=[];
