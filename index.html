@@ -512,8 +512,8 @@ h1{
   </div>
 
   <div class="footer small">
-    <div><b>Versão:</b> v1.0.9</div>
-    <div><b>Changelog:</b> “<b>Registros</b>” (Conta Nova/Renovação/Personalizado) agora conta <b>somente</b> quantas vezes você copiou o <b>código do botão Colar Código</b> (não conta número nem código do SMS). Mantido bloqueio do Colar Código + confirmação no Zerar.</div>
+    <div><b>Versão:</b> v1.1.0</div>
+    <div><b>Changelog:</b> (Somente E-mail) “Colar Código” ficou <b>livre</b> e agora exige <b>confirmação</b> para colar/substituir. As demais abas mantêm bloqueio + confirmação no Zerar. Registros (Nova/Renov/Personalizado) seguem contando apenas cópias do código do Colar Código.</div>
   </div>
 </div>
 
@@ -708,11 +708,10 @@ h1{
     const st={
       baseLimit: baseLimit,
       limit: baseLimit,
-      // ✅ REGISTROS AGORA = QUANTAS VEZES COPIOU O CÓDIGO DO "COLAR CÓDIGO"
       count:0,
       six:'',
       numQueue:[],
-      smsItems:[],     // [{phone11, code6}]
+      smsItems:[],
       smsStep:0,
       lastSnapshot:null
     };
@@ -764,7 +763,6 @@ h1{
       detEl.textContent = st.numQueue.length ? 'Nº (Colar número)' : (st.smsItems.length ? 'SMS (Nº→Código→Colar Código)' : 'Nº');
       codePill.textContent=st.six||'—';
 
-      // ✅ bloqueio do botão "Colar Código" após colar um código válido
       if(pasteCodeBtn){
         pasteCodeBtn.disabled = !!(st.six && st.six.length===6);
       }
@@ -849,7 +847,6 @@ h1{
     });
 
     copyBtn.addEventListener('click', async ()=>{
-      // 1) PRIORIDADE NÚMERO: copia número, mas NÃO CONTA em "Registros"
       if(st.numQueue.length){
         const num = st.numQueue.shift();
         const ok = await copyClip(num);
@@ -859,7 +856,6 @@ h1{
         return;
       }
 
-      // 2) SMS: ordem Número -> Código SMS -> Código Colar Código
       if(!st.smsItems.length){
         toastOK('Cole números ou SMS primeiro.');
         return;
@@ -894,7 +890,6 @@ h1{
       if(ok){
         toastOK(`${label} copiado!`);
         buzz(25);
-        // ✅ AGORA "REGISTROS" SÓ CONTA QUANDO COPIA O CÓDIGO DO COLAR CÓDIGO
         if(isColarCodigoCopy) st.count++;
       }else{
         toastOK('Falha ao copiar.');
@@ -1187,8 +1182,9 @@ h1{
       codePill.textContent=st.code||'—';
       copiesEl.textContent=String(st.codeCopies);
 
+      // ✅ (v1.1.0) NO E-MAIL: NÃO BLOQUEIA MAIS O BOTÃO "COLAR CÓDIGO"
       if(pasteCodeBtn){
-        pasteCodeBtn.disabled = !!(st.code && st.code.length===6);
+        pasteCodeBtn.disabled = false;
       }
 
       const total=totalClicks();
@@ -1264,11 +1260,19 @@ h1{
       updateUI();
     });
 
+    // ✅ (v1.1.0) NO E-MAIL: COLAR CÓDIGO SEMPRE LIVRE, MAS EXIGE CONFIRMAÇÃO
     pasteCodeBtn.addEventListener('click',async ()=>{
-      if(st.code && st.code.length===6){
-        toastOK('Código já colado. Zere para colar outro.');
+      let okConfirm=false;
+      try{
+        okConfirm = confirm(st.code ? 'Confirmar substituir o código atual do E-mail?' : 'Confirmar colar o código no E-mail?');
+      }catch(e){
+        okConfirm = true;
+      }
+      if(!okConfirm){
+        toastOK('Cancelado.');
         return;
       }
+
       const text=await getClipOrPrompt('Cole o código (6 caracteres).');
       const val=(String(text||'').match(/[A-Za-z0-9]{6}/)||[''])[0];
       if(val.length!==6){toastOK('Código inválido (precisa ter 6 caracteres).');return;}
@@ -1279,12 +1283,12 @@ h1{
     });
 
     function advanceToNextLogin(){
-      if(hasLogin()){
+      if(st.loginQueue && st.loginQueue.length && st.loginIndex < st.loginQueue.length){
         st.loginIndex++;
         st.loginStep=0;
         st.loginPhase2Done=false;
       }
-      if(!hasLogin()){
+      if(!(st.loginQueue && st.loginQueue.length && st.loginIndex < st.loginQueue.length)){
         st.loginIndex = 0;
         st.loginStep = 0;
         st.loginPhase2Done = false;
@@ -1296,8 +1300,8 @@ h1{
       if(!total){toastOK('Nada para copiar.');return;}
 
       const steps=[];
-      if(hasLogin()){
-        const c=curLogin();
+      if(st.loginQueue && st.loginQueue.length && st.loginIndex < st.loginQueue.length){
+        const c=st.loginQueue[st.loginIndex];
         steps.push({label:'Login (Email)', get:()=>c.email});
         steps.push({label:'Login (Senha)', get:()=>c.pass});
       }
@@ -1308,8 +1312,8 @@ h1{
         steps.push({label:'E-mail (Outlook)', get:()=>phase1Generated(0)});
         steps.push({label:'E-mail (Gerado)', get:()=>st.locals[1]});
         steps.push({label:'E-mail (Gerado)', get:()=>st.locals[2]});
-        if(hasLogin()){
-          const c=curLogin();
+        if(st.loginQueue && st.loginQueue.length && st.loginIndex < st.loginQueue.length){
+          const c=st.loginQueue[st.loginIndex];
           steps.push({label:'Fase 2 (Email colado)', get:()=>c.email});
         }
         steps.push({label:'Fase 2 (Email 1)', get:()=>st.locals[0]});
