@@ -512,8 +512,8 @@ h1{
   </div>
 
   <div class="footer small">
-    <div><b>Versão:</b> v1.1.0</div>
-    <div><b>Changelog:</b> (Somente E-mail) “Colar Código” ficou <b>livre</b> e agora exige <b>confirmação</b> para colar/substituir. As demais abas mantêm bloqueio + confirmação no Zerar. Registros (Nova/Renov/Personalizado) seguem contando apenas cópias do código do Colar Código.</div>
+    <div><b>Versão:</b> v1.1.1</div>
+    <div><b>Changelog:</b> (Somente E-mail) Se usar <b>Gerar aliás + Gerar e-mail</b>, o Gerar e-mail cria <b>2 e-mails</b> e <b>sem @outlook.com</b>. Se usar <b>apenas Gerar e-mail</b>, mantém o modo antigo (<b>3 e-mails</b> e o primeiro na fase 1 vai como <b>@outlook.com</b>).</div>
   </div>
 </div>
 
@@ -1070,20 +1070,19 @@ h1{
       return w + n;
     }
 
-    const regenLocals=()=>{
-      st.locals=[makeEmail(),makeEmail(),makeEmail()];
-      st.phase=0; st.idx=0; st.sub=0; st.clicks=0;
-      st.aliasCopied=false;
-      updateUI();
-    };
-
     const hasLogin = ()=> (st.loginQueue && st.loginQueue.length && st.loginIndex < st.loginQueue.length);
     const curLogin = ()=> hasLogin() ? st.loginQueue[st.loginIndex] : null;
 
     const aliasActive = ()=> (st.aliasInCycle === true) && (st.qIndex < st.queue.length);
     const currentAliasGmail = ()=> aliasActive() ? (st.queue[st.qIndex]+'@gmail.com') : '';
 
+    // v1.1.1: se tiver aliás ativo, gerar email vira modo 2 emails e SEM @outlook.com
+    const emailModeIsCombo = ()=> !!aliasActive();
+
     const phase1Generated = (gIdx)=>{
+      if(emailModeIsCombo()){
+        return st.locals[gIdx]; // sem @outlook.com
+      }
       if(gIdx===0) return st.locals[0] + '@outlook.com';
       return st.locals[gIdx];
     };
@@ -1131,9 +1130,13 @@ h1{
       }
       if(st.locals.length){
         lines.push('GERADOS (Gerar e-mail):');
-        lines.push(`1) ${st.locals[0]}  (Fase 1 copia como: ${st.locals[0]}@outlook.com)`);
-        lines.push(`2) ${st.locals[1]}`);
-        lines.push(`3) ${st.locals[2]}`);
+        for(let i=0;i<st.locals.length;i++){
+          if(i===0 && !emailModeIsCombo()){
+            lines.push(`1) ${st.locals[0]}  (Fase 1 copia como: ${st.locals[0]}@outlook.com)`);
+          }else{
+            lines.push(`${i+1}) ${st.locals[i]}`);
+          }
+        }
         lines.push('');
       }else{
         lines.push('GERADOS (Gerar e-mail): —');
@@ -1148,9 +1151,6 @@ h1{
     }
 
     function nextLabel(){
-      const total = totalClicks();
-      const nextIndex = Math.min(st.clicks, total);
-
       const steps=[];
       if(hasLogin()){
         steps.push('Login: Email');
@@ -1160,20 +1160,18 @@ h1{
         steps.push('Aliás: Gmail');
       }
       if(st.locals.length){
-        steps.push('Gerado: 1º (Outlook)');
-        steps.push('Gerado: 2º');
-        steps.push('Gerado: 3º');
+        for(let i=0;i<st.locals.length;i++){
+          if(i===0 && !emailModeIsCombo()) steps.push('Gerado: 1º (Outlook)');
+          else steps.push(`Gerado: ${i+1}º`);
+        }
         if(hasLogin()) steps.push('Fase 2: Email colado');
-        steps.push('Fase 2: Email 1');
-        steps.push('Fase 2: Código');
-        steps.push('Fase 2: Email 2');
-        steps.push('Fase 2: Código');
-        steps.push('Fase 2: Email 3');
-        steps.push('Fase 2: Código');
+        for(let i=0;i<st.locals.length;i++){
+          steps.push(`Fase 2: Email ${i+1}`);
+          steps.push('Fase 2: Código');
+        }
       }
-
-      if(nextIndex >= steps.length) return 'Concluído';
-      return steps[nextIndex];
+      if(st.clicks >= steps.length) return 'Concluído';
+      return steps[st.clicks] || 'Concluído';
     }
 
     function updateUI(){
@@ -1182,14 +1180,13 @@ h1{
       codePill.textContent=st.code||'—';
       copiesEl.textContent=String(st.codeCopies);
 
-      // ✅ (v1.1.0) NO E-MAIL: NÃO BLOQUEIA MAIS O BOTÃO "COLAR CÓDIGO"
       if(pasteCodeBtn){
-        pasteCodeBtn.disabled = false;
+        pasteCodeBtn.disabled = false; // sempre livre no e-mail
       }
 
-      const total=totalClicks();
       if(!editor.textContent) editor.textContent = buildEditorText();
 
+      const total=totalClicks();
       if(total===0){
         statusLeft.textContent='Fase 0 de 2 · Próximo: Gerar e-mails';
         statusProg.textContent='Fase 0 / 2 · 0/0 cliques';
@@ -1214,12 +1211,22 @@ h1{
       resetBtn.disabled=(!st.queue.length && !st.code && !st.locals.length && !st.codeCopies && !st.clicks && !st.loginQueue.length);
       toggle.textContent=editor.classList.contains('show')?'Ocultar e-mails':`Ver e-mails (${st.locals.length})`;
 
-      const faseTxt = st.locals.length ? (st.clicks < ( (hasLogin()?2:0) + (aliasActive()?1:0) + 3 ) ? 1 : 2) : 1;
-      statusLeft.textContent=`Fase ${faseTxt} de 2 · Próximo: ${nextLabel()}`;
-      statusProg.textContent=`Fase ${faseTxt} / 2 · ${Math.min(st.clicks,total)}/${total} cliques`;
+      const statusPhase = st.locals.length ? (st.clicks < ((hasLogin()?2:0) + (aliasActive()?1:0) + st.locals.length) ? 1 : 2) : 1;
+      statusLeft.textContent=`Fase ${statusPhase} de 2 · Próximo: ${nextLabel()}`;
+      statusProg.textContent=`Fase ${statusPhase} / 2 · ${Math.min(st.clicks,total)}/${total} cliques`;
 
       badge('emails',{count:(st.clicks>=total?1:0),limit:1,isDone:(st.clicks>=total)});
       persist();
+    }
+
+    function regenLocals(){
+      const count = emailModeIsCombo() ? 2 : 3; // v1.1.1
+      st.locals = Array.from({length: count}, () => makeEmail());
+      st.phase=0; st.idx=0; st.sub=0; st.clicks=0;
+      st.aliasCopied=false;
+      editor.textContent = buildEditorText();
+      updateUI();
+      return count;
     }
 
     pasteEmailBtn && pasteEmailBtn.addEventListener('click',()=>{
@@ -1235,8 +1242,12 @@ h1{
     });
 
     genBtn.addEventListener('click',()=>{
-      regenLocals();
-      toastOK('3 e-mails gerados.');
+      const n = regenLocals();
+      if(emailModeIsCombo()){
+        toastOK(`2 e-mails gerados (com aliás).`);
+      }else{
+        toastOK(`3 e-mails gerados.`);
+      }
       editor.textContent = buildEditorText();
       updateUI();
     });
@@ -1260,7 +1271,6 @@ h1{
       updateUI();
     });
 
-    // ✅ (v1.1.0) NO E-MAIL: COLAR CÓDIGO SEMPRE LIVRE, MAS EXIGE CONFIRMAÇÃO
     pasteCodeBtn.addEventListener('click',async ()=>{
       let okConfirm=false;
       try{
@@ -1300,28 +1310,30 @@ h1{
       if(!total){toastOK('Nada para copiar.');return;}
 
       const steps=[];
-      if(st.loginQueue && st.loginQueue.length && st.loginIndex < st.loginQueue.length){
-        const c=st.loginQueue[st.loginIndex];
+      if(hasLogin()){
+        const c=curLogin();
         steps.push({label:'Login (Email)', get:()=>c.email});
         steps.push({label:'Login (Senha)', get:()=>c.pass});
       }
-      if(st.aliasInCycle && st.qIndex < st.queue.length){
+      if(aliasActive()){
         steps.push({label:'Aliás (Gmail)', get:()=>currentAliasGmail()});
       }
       if(st.locals.length){
-        steps.push({label:'E-mail (Outlook)', get:()=>phase1Generated(0)});
-        steps.push({label:'E-mail (Gerado)', get:()=>st.locals[1]});
-        steps.push({label:'E-mail (Gerado)', get:()=>st.locals[2]});
-        if(st.loginQueue && st.loginQueue.length && st.loginIndex < st.loginQueue.length){
-          const c=st.loginQueue[st.loginIndex];
+        for(let i=0;i<st.locals.length;i++){
+          if(i===0 && !emailModeIsCombo()){
+            steps.push({label:'E-mail (Outlook)', get:()=>phase1Generated(0)});
+          }else{
+            steps.push({label:`E-mail (Gerado ${i+1})`, get:()=>st.locals[i]});
+          }
+        }
+        if(hasLogin()){
+          const c=curLogin();
           steps.push({label:'Fase 2 (Email colado)', get:()=>c.email});
         }
-        steps.push({label:'Fase 2 (Email 1)', get:()=>st.locals[0]});
-        steps.push({label:'Fase 2 (Código)', get:()=>st.code});
-        steps.push({label:'Fase 2 (Email 2)', get:()=>st.locals[1]});
-        steps.push({label:'Fase 2 (Código)', get:()=>st.code});
-        steps.push({label:'Fase 2 (Email 3)', get:()=>st.locals[2]});
-        steps.push({label:'Fase 2 (Código)', get:()=>st.code});
+        for(let i=0;i<st.locals.length;i++){
+          steps.push({label:`Fase 2 (Email ${i+1})`, get:()=>st.locals[i]});
+          steps.push({label:'Fase 2 (Código)', get:()=>st.code});
+        }
       }
 
       const step = steps[Math.min(st.clicks, steps.length-1)];
@@ -1338,6 +1350,10 @@ h1{
         st.clicks++;
         toastOK(`${step.label} copiado!`);
         buzz(25);
+
+        if(/Fase 2 \(Código\)/.test(step.label)){
+          st.codeCopies++;
+        }
 
         if(st.clicks >= steps.length){
           st.clicks = 0;
