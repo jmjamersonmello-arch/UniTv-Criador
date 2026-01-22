@@ -512,8 +512,8 @@ h1{
   </div>
 
   <div class="footer small">
-    <div><b>Versão:</b> v1.1.1</div>
-    <div><b>Changelog:</b> (Somente E-mail) Se usar <b>Gerar aliás + Gerar e-mail</b>, o Gerar e-mail cria <b>2 e-mails</b> e <b>sem @outlook.com</b>. Se usar <b>apenas Gerar e-mail</b>, mantém o modo antigo (<b>3 e-mails</b> e o primeiro na fase 1 vai como <b>@outlook.com</b>).</div>
+    <div><b>Versão:</b> v1.1.2</div>
+    <div><b>Changelog:</b> Colar SMS agora aceita também o formato <b>NÚMERO: +55...</b> e <b>📨 Código: 123456</b> em lote, removendo o DDI automaticamente.</div>
   </div>
 </div>
 
@@ -612,31 +612,64 @@ h1{
     return out;
   }
 
+  /* ====== ATUALIZAÇÃO v1.1.2: suportar SMS:
+     NÚMERO: +5521...
+     📨 Código: 123456
+     E também manter suporte ao formato antigo com "Número sem DDI" e "Código de verificação".
+  ====== */
   function parseSmsBatchItems(text){
     const t=String(text||'');
-    const phones=[];
-    const rePhone=/N[úu]mero\s*sem\s*DDI[^0-9]*([0-9]{10,13})/gi;
+    if(!t.trim()) return [];
+
+    // 1) Pegadores com posição (para parear número -> próximo código)
+    const numberHits=[];
+    const codeHits=[];
+
+    // Formato antigo: "Número sem DDI: 219..."
+    const reOldPhone=/N[úu]mero\s*sem\s*DDI[^0-9]*([0-9]{10,13})/gi;
+    // Formato novo: "NÚMERO: +5521..."
+    const reNewPhone=/N[ÚU]MERO\s*:\s*\+?([0-9]{10,15})/gi;
+
+    // Código (antigo): "Código de verificação: 957315"
+    const reOldCode=/C[oó]digo\s*de\s*verifica[cç][aã]o[^0-9]*([0-9]{6})/gi;
+    // Código (novo): "Código: 276334" (com emoji ou não)
+    const reNewCode=/C[oó]digo[^0-9]*[:：]\s*([0-9]{6})/gi;
+
     let m;
-    while((m=rePhone.exec(t))!==null){
-      const p=cleanPhone(m[1]);
-      if(p && p.length===11) phones.push(p);
+    while((m=reOldPhone.exec(t))!==null){
+      numberHits.push({pos:m.index, phone11:cleanPhone(m[1])});
+    }
+    while((m=reNewPhone.exec(t))!==null){
+      numberHits.push({pos:m.index, phone11:cleanPhone(m[1])});
+    }
+    while((m=reOldCode.exec(t))!==null){
+      codeHits.push({pos:m.index, code6:m[1]});
+    }
+    while((m=reNewCode.exec(t))!==null){
+      codeHits.push({pos:m.index, code6:m[1]});
     }
 
-    const codes=[];
-    const reCode=/C[oó]digo\s*de\s*verifica[cç][aã]o[^0-9]*([0-9]{6})/gi;
-    while((m=reCode.exec(t))!==null){
-      codes.push(m[1]);
-    }
+    numberHits.sort((a,b)=>a.pos-b.pos);
+    codeHits.sort((a,b)=>a.pos-b.pos);
 
-    if(!codes.length){
-      const re6=/\b\d{6}\b/g;
-      while((m=re6.exec(t))!==null){
-        codes.push(m[0]);
-      }
-    }
-
-    const n=Math.min(phones.length, codes.length);
+    // 2) Pareamento: para cada número, pega o primeiro código depois dele e antes do próximo número.
     const out=[];
+    if(numberHits.length && codeHits.length){
+      for(let i=0;i<numberHits.length;i++){
+        const curN=numberHits[i];
+        const nextNpos=(i<numberHits.length-1)?numberHits[i+1].pos:Infinity;
+        const code = codeHits.find(c=>c.pos>curN.pos && c.pos<nextNpos);
+        if(curN.phone11 && curN.phone11.length===11 && code && code.code6){
+          out.push({phone11:curN.phone11, code6:code.code6});
+        }
+      }
+      if(out.length) return out;
+    }
+
+    // 3) Fallback: se não deu pareamento, tenta extrair listas e casar por ordem
+    const phones=parseManyPhones(t);
+    const codes=[...t.matchAll(/\b\d{6}\b/g)].map(x=>x[0]);
+    const n=Math.min(phones.length, codes.length);
     for(let i=0;i<n;i++){
       out.push({phone11:phones[i], code6:codes[i]});
     }
@@ -645,19 +678,36 @@ h1{
 
   function extractNumeroSemDDI(text){
     const t=String(text||'');
-    const m = t.match(/N[úu]mero\s*sem\s*DDI[^0-9]*([0-9]{10,13})/i);
+
+    // Antigo
+    let m = t.match(/N[úu]mero\s*sem\s*DDI[^0-9]*([0-9]{10,13})/i);
     if(m && m[1]){
       const p=cleanPhone(m[1]);
-      return (p && p.length===11) ? p : '';
+      if(p && p.length===11) return p;
     }
+
+    // Novo
+    m = t.match(/N[ÚU]MERO\s*:\s*\+?([0-9]{10,15})/i);
+    if(m && m[1]){
+      const p=cleanPhone(m[1]);
+      if(p && p.length===11) return p;
+    }
+
     const phones=parseManyPhones(t);
     return phones.length ? phones[phones.length-1] : '';
   }
 
   function extractCodigoVerificacao6(text){
     const t=String(text||'');
+
+    // Antigo
     let m = t.match(/C[oó]digo\s*de\s*verifica[cç][aã]o[^0-9]*([0-9]{6})/i);
     if(m && m[1]) return m[1];
+
+    // Novo
+    m = t.match(/C[oó]digo[^0-9]*[:：]\s*([0-9]{6})/i);
+    if(m && m[1]) return m[1];
+
     m = t.match(/\b\d{6}\b/);
     return m ? m[0] : '';
   }
@@ -831,7 +881,7 @@ h1{
 
       const items = parseSmsBatchItems(t);
       if(!items.length){
-        toastOK('Não consegui ler o lote (precisa ter "Número sem DDI" e "Código de verificação" em cada SMS).');
+        toastOK('Não consegui ler o lote (precisa ter NÚMERO e CÓDIGO em cada SMS).');
         restore(); return;
       }
 
@@ -932,7 +982,7 @@ h1{
     updateUI();
   });
 
-  /* ===== E-mails ===== */
+  /* ===== E-mails (mantido igual da v1.1.1) ===== */
   document.querySelectorAll('.block[data-seq="emails"]').forEach(block=>{
     const editor=block.querySelector('.editor');
     const pasteEmailBtn=block.querySelector('[data-role="paste-email"]');
@@ -1076,12 +1126,11 @@ h1{
     const aliasActive = ()=> (st.aliasInCycle === true) && (st.qIndex < st.queue.length);
     const currentAliasGmail = ()=> aliasActive() ? (st.queue[st.qIndex]+'@gmail.com') : '';
 
-    // v1.1.1: se tiver aliás ativo, gerar email vira modo 2 emails e SEM @outlook.com
     const emailModeIsCombo = ()=> !!aliasActive();
 
     const phase1Generated = (gIdx)=>{
       if(emailModeIsCombo()){
-        return st.locals[gIdx]; // sem @outlook.com
+        return st.locals[gIdx];
       }
       if(gIdx===0) return st.locals[0] + '@outlook.com';
       return st.locals[gIdx];
@@ -1181,7 +1230,7 @@ h1{
       copiesEl.textContent=String(st.codeCopies);
 
       if(pasteCodeBtn){
-        pasteCodeBtn.disabled = false; // sempre livre no e-mail
+        pasteCodeBtn.disabled = false;
       }
 
       if(!editor.textContent) editor.textContent = buildEditorText();
@@ -1220,7 +1269,7 @@ h1{
     }
 
     function regenLocals(){
-      const count = emailModeIsCombo() ? 2 : 3; // v1.1.1
+      const count = emailModeIsCombo() ? 2 : 3;
       st.locals = Array.from({length: count}, () => makeEmail());
       st.phase=0; st.idx=0; st.sub=0; st.clicks=0;
       st.aliasCopied=false;
@@ -1242,12 +1291,8 @@ h1{
     });
 
     genBtn.addEventListener('click',()=>{
-      const n = regenLocals();
-      if(emailModeIsCombo()){
-        toastOK(`2 e-mails gerados (com aliás).`);
-      }else{
-        toastOK(`3 e-mails gerados.`);
-      }
+      regenLocals();
+      toastOK(emailModeIsCombo() ? `2 e-mails gerados (com aliás).` : `3 e-mails gerados.`);
       editor.textContent = buildEditorText();
       updateUI();
     });
@@ -1393,7 +1438,7 @@ h1{
     updateUI();
   });
 
-  /* ===== Conta formatada ===== */
+  /* ===== Conta formatada (mantido) ===== */
   document.querySelectorAll('.block[data-seq="account"]').forEach(block=>{
     const editor=block.querySelector('.editor');
     const pasteSmsBtn=block.querySelector('[data-role="paste-sms"]');
@@ -1501,10 +1546,10 @@ h1{
     }
 
     pasteSmsBtn.addEventListener('click', async ()=>{
-      const t=await getClipOrPrompt('Cole o SMS completo (com número sem DDI, código e data).');
+      const t=await getClipOrPrompt('Cole o SMS completo (com número, código e data).');
       const row=parseAccountSms(t);
       if(!row){
-        toastOK('SMS inválido: precisa ter Número sem DDI (11), código 6 dígitos e uma data (dd/mm/aaaa).');
+        toastOK('SMS inválido: precisa ter número (11), código 6 dígitos e uma data (dd/mm/aaaa).');
         return;
       }
       st.row=row;
@@ -1541,7 +1586,7 @@ h1{
     updateUI();
   });
 
-  /* ===== Site ===== */
+  /* ===== Site (mantido) ===== */
   document.querySelectorAll('.block[data-seq="site"]').forEach(block=>{
     const editor=block.querySelector('.editor');
     const pasteNumBtn=block.querySelector('[data-role="paste-number"]');
@@ -1615,7 +1660,7 @@ h1{
       snapshot();
       const t=await getClipOrPrompt('Cole o SMS completo (pode colar vários juntos).');
       const items=parseSmsBatchItems(t);
-      if(!items.length){toastOK('Não encontrei número sem DDI no lote.'); restore(); return;}
+      if(!items.length){toastOK('Não encontrei números/códigos no lote.'); restore(); return;}
       for(const it of items) st.smsNumQueue.push(it.phone11);
       editor.textContent=String(t||'').trim();
       toastOK(`Nº na fila (SMS): ${items.length}`);
