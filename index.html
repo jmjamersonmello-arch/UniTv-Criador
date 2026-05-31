@@ -17,7 +17,7 @@
 
 <div class="wrap">
   <div class="header app-top">
-    <div class="app-brand"><div><h1>JamesUni</h1><div class="app-subtitle">Caixa, criação UniTV e gastos pessoais em um só lugar.</div></div><span class="pill"><strong>v2.7</strong></span></div>
+    <div class="app-brand"><div><h1>JamesUni</h1><div class="app-subtitle">Caixa, criação UniTV e gastos pessoais em um só lugar.</div></div><span class="pill"><strong>v2.9</strong></span></div>
     <div class="main-nav">
       <button type="button" class="main-tab active" data-main-tab="caixa">Caixa</button>
       <button type="button" class="main-tab" data-main-tab="unitv">UniTV</button>
@@ -62,6 +62,7 @@
         <div class="quick-grid">
           <button type="button" class="btn green" data-sale="22.90|1|1 mês">1 mês — R$ 22,90</button>
           <button type="button" class="btn green" data-sale="19.90|1|1 mês antigo">1 mês antigo — R$ 19,90</button>
+          <button type="button" class="btn green" data-sale="9.00|1|1 unidade custo">1 unidade custo — R$ 9,00</button>
           <button type="button" class="btn green" data-sale="43.90|2|2 meses">2 meses — R$ 43,90</button>
           <button type="button" class="btn green" data-sale="64.90|3|3 meses">3 meses — R$ 64,90</button>
           <button type="button" class="btn green" data-sale="124.90|6|6 meses">6 meses — R$ 124,90</button>
@@ -107,9 +108,10 @@
 
       <div class="action-sheet" data-cash-sheet="settings">
         <div class="sheet-title">Configuração do caixa</div>
+        <p class="muted-line">O estoque informado aqui é a base inicial do mês. A cada venda, o sistema baixa automaticamente os créditos.</p>
         <div class="form-grid">
           <div class="field"><label>Caixa atual</label><input id="setCash" type="number" step="0.01"></div>
-          <div class="field"><label>Estoque atual</label><input id="setStock" type="number" step="1"></div>
+          <div class="field"><label>Estoque inicial do mês</label><input id="setStock" type="number" step="1"></div>
           <div class="field"><label>Meta mensal</label><input id="setTarget" type="number" step="0.01"></div>
           <div class="field"><label>Teto gastos convencionais</label><input id="setExpenseLimit" type="number" step="0.01"></div>
           <div class="field"><label>Custo histórico por crédito</label><input id="setUnitCost" type="number" step="0.01"></div>
@@ -373,9 +375,9 @@ document.querySelectorAll('.block[data-seq="site"]').forEach(initSite);
   showMain(localStorage.getItem(MAIN_KEY)||'caixa');
 
   // Caixa JamesUni
-  const CASH_KEY='jamesuni.cash.v27';
-  const OLD_CASH_KEYS=['jamesuni.cash.v2'];
-  const CASH_MONTH_KEY='jamesuni.cash.month.v27';
+  const CASH_KEY='jamesuni.cash.v28';
+  const OLD_CASH_KEYS=['jamesuni.cash.v27','jamesuni.cash.v2'];
+  const CASH_MONTH_KEY='jamesuni.cash.month.v28';
   const defaultCash = {
     settings:{target:1893, expenseLimit:400, unitCost:9.33, supplier:'Xavier Bruno Lima Gomes'},
     months:{},
@@ -383,14 +385,24 @@ document.querySelectorAll('.block[data-seq="site"]').forEach(initSite);
   };
   function setText(sel, val){ const el = typeof sel==='string'?$(sel):sel; if(el) el.textContent = val; }
   function makeCashMonth(seed={}){
+    const transactions = Array.isArray(seed.transactions)?seed.transactions:[];
     return {
       cash:Number(seed.cash||0),
-      stock:Number(seed.stock||0),
-      transactions:Array.isArray(seed.transactions)?seed.transactions:[],
+      // baseStock = estoque que existia no começo do mês.
+      // O estoque atual é sempre calculado por: base + compras - vendas.
+      baseStock:Number(seed.baseStock ?? seed.stock ?? 0),
+      stock:Number(seed.stock ?? seed.baseStock ?? 0),
+      transactions,
       closings:Array.isArray(seed.closings)?seed.closings:[],
       closed:!!seed.closed,
       closedAt:seed.closedAt||''
     };
+  }
+  function currentStock(month){
+    const list = Array.isArray(month.transactions)?month.transactions:[];
+    const bought = list.filter(t=>t.type==='stock').reduce((a,t)=>a+Number(t.credits||0),0);
+    const sold = list.filter(t=>t.type==='sale').reduce((a,t)=>a+Number(t.credits||0),0);
+    return Math.max(0, Math.floor(Number(month.baseStock ?? month.stock ?? 0) + bought - sold));
   }
   function normalizeCashState(raw){
     const out={settings:Object.assign({}, defaultCash.settings, raw?.settings||{}), months:{}, monthClosings:Array.isArray(raw?.monthClosings)?raw.monthClosings:[]};
@@ -456,11 +468,12 @@ document.querySelectorAll('.block[data-seq="site"]').forEach(initSite);
   }
   function renderCash(){
     const month=currentCashMonth();
+    month.stock = currentStock(month);
     const m = cashSums(cashTxMonth()), d = cashSums(cashTxToday());
     const missing = Math.max(cashState.settings.target - month.cash, 0);
     const available = cashState.settings.expenseLimit - m.expenses;
     setText('[data-cash="cash"]', fmt(month.cash));
-    setText('[data-cash="stock"]', `${Number(month.stock||0)} créditos`);
+    setText('[data-cash="stock"]', `${currentStock(month)} créditos`);
     setText('[data-cash="target"]', fmt(cashState.settings.target));
     setText('[data-cash="targetMissing"]', fmt(missing));
     setText('[data-cash="salesToday"]', fmt(d.sales));
@@ -477,10 +490,10 @@ document.querySelectorAll('.block[data-seq="site"]').forEach(initSite);
       if(month.closed){ alert.className='alert-box ok'; alert.textContent=`Mês ${selectedCashMonth()} finalizado. Se quiser recomeçar, use Limpar mês.`; }
       if(ratio >= 1){ alert.className = 'alert-box danger'; alert.textContent = 'Alerta forte: os gastos convencionais passaram do teto mensal.'; }
       else if(ratio >= .75){ alert.className = 'alert-box'; alert.textContent = 'Atenção: os gastos convencionais já passaram de 75% do limite mensal.'; }
-      if(month.stock <= 3 && (month.cash || month.transactions.length)){ alert.className = ratio>=1?'alert-box danger':'alert-box'; alert.textContent += ' Estoque baixo: avalie comprar créditos.'; }
+      if(currentStock(month) <= 3 && (month.cash || month.transactions.length)){ alert.className = ratio>=1?'alert-box danger':'alert-box'; alert.textContent += ' Estoque baixo: avalie comprar créditos.'; }
     }
     $('#setCash').value = Number(month.cash||0).toFixed(2);
-    $('#setStock').value = Number(month.stock||0);
+    $('#setStock').value = Number(month.baseStock ?? month.stock ?? 0);
     $('#setTarget').value = Number(cashState.settings.target||0).toFixed(2);
     $('#setExpenseLimit').value = Number(cashState.settings.expenseLimit||0).toFixed(2);
     $('#setUnitCost').value = Number(cashState.settings.unitCost||0).toFixed(2);
@@ -489,7 +502,7 @@ document.querySelectorAll('.block[data-seq="site"]').forEach(initSite);
     if(report){
       const beat = month.cash >= cashState.settings.target ? 'Sim' : 'Não';
       report.innerHTML = [
-        ['Mês selecionado',selectedCashMonth()],['Caixa atual',fmt(month.cash)],['Estoque atual',`${month.stock||0} créditos`],['Créditos vendidos no mês',m.creditsSold],['Vendas totais',fmt(m.sales)],['Compras de estoque',fmt(m.stockBuys)],['Gastos convencionais',fmt(m.expenses)],['Retiradas',fmt(m.withdrawals)],['Recuperação de estoque',fmt(m.recovery)],['Lucro real estimado',fmt(m.realProfit)],['Falta para meta',fmt(missing)],['Meta batida?',beat]
+        ['Mês selecionado',selectedCashMonth()],['Caixa atual',fmt(month.cash)],['Estoque inicial',`${Number(month.baseStock ?? 0)} créditos`],['Estoque atual',`${currentStock(month)} créditos`],['Créditos vendidos no mês',m.creditsSold],['Vendas totais',fmt(m.sales)],['Compras de estoque',fmt(m.stockBuys)],['Gastos convencionais',fmt(m.expenses)],['Retiradas',fmt(m.withdrawals)],['Recuperação de estoque',fmt(m.recovery)],['Lucro real estimado',fmt(m.realProfit)],['Falta para meta',fmt(missing)],['Meta batida?',beat]
       ].map(([a,b])=>`<div class="report-line"><span>${a}</span><strong>${b}</strong></div>`).join('');
     }
     const hist = $('#cashHistory');
@@ -520,11 +533,10 @@ document.querySelectorAll('.block[data-seq="site"]').forEach(initSite);
     const month=currentCashMonth();
     amount = num(amount); credits = Math.max(0, Math.floor(num(credits)));
     if(!amount || !credits){ appToast('Informe valor e créditos.'); return; }
-    if(month.stock < credits && !confirm('Estoque menor que a venda. Registrar mesmo assim?')) return;
+    if(currentStock(month) < credits && !confirm('Estoque menor que a venda. Registrar mesmo assim?')) return;
     const recoveredCost = +(credits * Number(cashState.settings.unitCost||0)).toFixed(2);
     const realProfit = +(amount - recoveredCost).toFixed(2);
     month.cash = +(Number(month.cash||0) + amount).toFixed(2);
-    month.stock = Number(month.stock||0) - credits;
     addCashTx({type:'sale', amount, credits, plan, recoveredCost, realProfit});
     $('#saleManualAmount').value='';
     $('#saleManualCredits').value='';
@@ -537,7 +549,6 @@ document.querySelectorAll('.block[data-seq="site"]').forEach(initSite);
     const month=currentCashMonth();
     qty=Math.max(0,Math.floor(num(qty))); amount=num(amount); if(!qty||!amount){appToast('Informe quantidade e valor.');return;}
     month.cash = +(Number(month.cash||0) - amount).toFixed(2);
-    month.stock = Number(month.stock||0) + qty;
     const unitCost = +(amount/qty).toFixed(2);
     cashState.settings.unitCost = unitCost;
     addCashTx({type:'stock', amount, credits:qty, supplier:supplier||cashState.settings.supplier, unitCost});
@@ -562,18 +573,18 @@ document.querySelectorAll('.block[data-seq="site"]').forEach(initSite);
   });
   $('#saveCashSettingsBtn').addEventListener('click',()=>{
     const month=currentCashMonth();
-    month.cash=num($('#setCash').value); month.stock=Math.floor(num($('#setStock').value)); month.closed=false;
+    month.cash=num($('#setCash').value); month.baseStock=Math.floor(num($('#setStock').value)); month.stock=currentStock(month); month.closed=false;
     cashState.settings.target=num($('#setTarget').value)||1893; cashState.settings.expenseLimit=num($('#setExpenseLimit').value)||400; cashState.settings.unitCost=num($('#setUnitCost').value)||9.33; cashState.settings.supplier=$('#setSupplier').value.trim()||'Xavier Bruno Lima Gomes';
     saveCash(); renderCash(); closeCashSheets(); appToast('Configuração salva para este mês.');
   });
   $('#closeDayBtn').addEventListener('click',()=>{
     const month=currentCashMonth();
     const s=cashSums(cashTxToday());
-    const closing={id:uid(),date:selectedCashDate(),month:selectedCashMonth(),cash:month.cash,stock:month.stock,sums:s,createdAt:new Date().toISOString()};
+    const closing={id:uid(),date:selectedCashDate(),month:selectedCashMonth(),cash:month.cash,stock:currentStock(month),sums:s,createdAt:new Date().toISOString()};
     month.closings.unshift(closing); saveCash();
     $('#closeDayBox').style.display='block';
     $('#closeDayReport').innerHTML = [
-      ['Vendas do dia',fmt(s.sales)],['Créditos vendidos',s.creditsSold],['Compras de estoque',fmt(s.stockBuys)],['Gastos convencionais',fmt(s.expenses)],['Retiradas',fmt(s.withdrawals)],['Caixa final',fmt(month.cash)],['Estoque final',`${month.stock} créditos`]
+      ['Vendas do dia',fmt(s.sales)],['Créditos vendidos',s.creditsSold],['Compras de estoque',fmt(s.stockBuys)],['Gastos convencionais',fmt(s.expenses)],['Retiradas',fmt(s.withdrawals)],['Caixa final',fmt(month.cash)],['Estoque final',`${currentStock(month)} créditos`]
     ].map(([a,b])=>`<div class="report-line"><span>${a}</span><strong>${b}</strong></div>`).join('');
     appToast('Dia fechado e salvo.');
   });
@@ -590,7 +601,7 @@ document.querySelectorAll('.block[data-seq="site"]').forEach(initSite);
     const s=cashSums(cashTxMonth());
     if(!confirm(`Finalizar ${key} e abrir o próximo mês limpo? O resumo será salvo no backup interno.`)) return;
     month.closed=true; month.closedAt=new Date().toISOString();
-    cashState.monthClosings.unshift({id:uid(),month:key,closedAt:month.closedAt,cash:month.cash,stock:month.stock,sums:s});
+    cashState.monthClosings.unshift({id:uid(),month:key,closedAt:month.closedAt,cash:month.cash,stock:currentStock(month),sums:s});
     const next=nextMonthKey(key);
     if(!cashState.months[next]) cashState.months[next]=makeCashMonth();
     $('#cashMonth').value=next;
