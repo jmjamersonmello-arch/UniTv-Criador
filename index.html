@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>JamesUni — Caixa e UniTV</title>
+<title>JamesUni — Caixa, UniTV e Pessoal</title>
 <style>
 :root{--bg1:#070a1a;--bg2:#0b1030;--line:rgba(255,255,255,.08);--txt:#eaf0ff;--mut:rgba(234,240,255,.65);--shadow:0 18px 40px rgba(0,0,0,.45);--r2:22px}
 *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;color:var(--txt);background:radial-gradient(1000px 600px at 30% -10%,rgba(124,58,237,.35),transparent 60%),radial-gradient(900px 520px at 80% 10%,rgba(34,211,238,.25),transparent 55%),linear-gradient(180deg,var(--bg2),var(--bg1));min-height:100vh;display:flex;justify-content:center}.wrap{width:min(480px,100%);padding:16px 12px 30px}.header,.block{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid var(--line);box-shadow:var(--shadow)}.header{padding:16px 16px 8px;border-radius:var(--r2)}h1{margin:0;font-weight:850;font-size:30px}.tabs{margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:10px}.tab{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid var(--line);border-radius:14px;padding:10px;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:space-between;gap:8px;color:var(--txt);box-shadow:0 10px 22px rgba(0,0,0,.25);cursor:pointer;user-select:none}.tab.active{border-color:rgba(99,102,241,.65);box-shadow:0 0 0 2px rgba(99,102,241,.25),0 10px 22px rgba(0,0,0,.25)}.badge{font-size:12px;color:var(--mut);font-weight:900;display:flex;align-items:center;gap:7px}.dot{width:9px;height:9px;border-radius:99px;background:rgba(255,255,255,.12);border:1px solid var(--line)}.dot.on{background:rgba(124,58,237,.8);border-color:rgba(124,58,237,.8);box-shadow:0 0 0 3px rgba(124,58,237,.18)}.panel{margin-top:12px;display:none}.panel.active{display:block}.block{border-radius:var(--r2);padding:14px;position:relative}.block-title{font-weight:850;font-size:26px;margin:0 0 10px}.counter-line{display:flex;justify-content:space-between;align-items:center;margin:0 0 10px;color:var(--mut);font-weight:800}.controls,.secondary{display:grid;grid-template-columns:1fr 1fr;gap:10px}.secondary{margin-top:10px}.btn{border:0;border-radius:14px;padding:11px 10px;font-weight:900;font-size:15px;cursor:pointer;color:#071021;box-shadow:0 14px 26px rgba(0,0,0,.22);user-select:none}.btn:active{transform:translateY(1px)}.btn:disabled{opacity:.45;cursor:not-allowed}.btn.paste{background:linear-gradient(135deg,rgba(96,165,250,1),rgba(34,211,238,1))}.btn.sms{background:linear-gradient(135deg,rgba(52,211,153,1),rgba(34,197,94,1))}.btn.copy{background:linear-gradient(135deg,rgba(167,139,250,1),rgba(236,72,153,1));color:#0a0b16}.btn.reset{background:linear-gradient(135deg,rgba(244,63,94,.22),rgba(124,58,237,.18));color:rgba(234,240,255,.65);border:1px solid rgba(255,255,255,.08)}.btn.sub{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));color:var(--txt);border:1px solid var(--line)}.inline{margin-top:10px;display:flex;justify-content:space-between;align-items:center;color:var(--mut);font-weight:800}.inline a{color:var(--txt);text-decoration:underline;font-weight:900}.editor{display:none;margin-top:10px;background:rgba(0,0,0,.18);border:1px solid var(--line);border-radius:16px;padding:12px;color:rgba(234,240,255,.82);font-size:14px;line-height:1.35;max-height:240px;overflow:auto;white-space:pre-wrap}.editor.show{display:block}.status{margin-top:10px;display:flex;justify-content:space-between;align-items:center;gap:10px;color:var(--mut);font-weight:850}.progress{font-weight:900;color:rgba(234,240,255,.78)}.bar{margin-top:10px;height:10px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.06);border-radius:999px;overflow:hidden}.fill{height:100%;width:0%;background:linear-gradient(90deg,rgba(124,58,237,1),rgba(34,211,238,1));border-radius:999px;transition:width .22s ease}.bar.complete .fill{background:linear-gradient(90deg,rgba(52,211,153,1),rgba(34,197,94,1))}.toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:rgba(10,15,36,.92);border:1px solid rgba(255,255,255,.10);color:rgba(234,240,255,.92);padding:10px 12px;border-radius:14px;box-shadow:0 18px 40px rgba(0,0,0,.4);font-weight:850;display:none;z-index:50}.toast.show{display:block}.footer{margin-top:14px;color:rgba(234,240,255,.55);font-weight:850;line-height:1.55;padding:10px 2px 0}.small{font-size:14px}.pill{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.10);background:rgba(0,0,0,.14);color:rgba(234,240,255,.75);font-weight:900}.pill strong{color:rgba(234,240,255,.92)}.muted{color:rgba(234,240,255,.55);font-weight:850}
 
 /* ===== JamesUni v2.0 - menu principal, caixa e pessoal ===== */
-.app-top{margin-bottom:12px;padding-bottom:14px}.app-brand{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}.app-brand h1{font-size:30px}.app-subtitle{margin-top:4px;color:var(--mut);font-weight:850;font-size:13px}.main-nav{margin-top:14px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px}.main-tab{border:1px solid var(--line);border-radius:16px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));color:var(--txt);padding:12px 8px;font-weight:950;font-size:14px;box-shadow:0 10px 22px rgba(0,0,0,.25);cursor:pointer}.main-tab.active{border-color:rgba(34,211,238,.7);box-shadow:0 0 0 2px rgba(34,211,238,.18),0 10px 22px rgba(0,0,0,.25)}.main-panel{display:none}.main-panel.active{display:block}.unitv-shell .header{margin-bottom:12px}.unitv-shell .header h1{font-size:26px}.finance{margin-top:12px}.section-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}.section-head h2{margin:0;font-size:26px;letter-spacing:-.02em}.section-head p{margin:4px 0 0;color:var(--mut);font-weight:800;font-size:13px;line-height:1.35}.month-filter{display:flex;gap:8px;align-items:center;justify-content:flex-end;flex-wrap:wrap}.month-filter label{font-size:12px;font-weight:900;color:var(--mut)}.hero-card,.finance-card,.mini-card,.action-sheet{border:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.025));border-radius:20px;box-shadow:0 12px 28px rgba(0,0,0,.25)}.hero-card{padding:14px;margin-bottom:12px}.hero-title{font-weight:950;font-size:21px;margin-bottom:10px;color:#fff}.hero-row{display:flex;justify-content:space-between;gap:14px;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.07);font-weight:850;color:var(--mut)}.hero-row:last-child{border-bottom:0}.hero-row strong{color:var(--txt);font-size:17px;text-align:right}.hero-row.big strong{font-size:21px}.hero-row .positive{color:#86efac}.hero-row .danger{color:#fda4af}.hero-row .warn{color:#fdba74}.finance-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}.mini-card{padding:12px}.mini-label{font-size:12px;color:var(--mut);font-weight:900}.mini-value{margin-top:5px;font-size:20px;font-weight:950}.mini-value.small{font-size:15px;line-height:1.3}.action-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}.btn.green{background:linear-gradient(135deg,rgba(52,211,153,1),rgba(34,197,94,1))}.btn.blue{background:linear-gradient(135deg,rgba(96,165,250,1),rgba(34,211,238,1))}.btn.orange{background:linear-gradient(135deg,rgba(251,146,60,1),rgba(244,63,94,1));color:#13070a}.btn.purple{background:linear-gradient(135deg,rgba(167,139,250,1),rgba(124,58,237,1));color:#080713}.btn.dark{background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.03));color:var(--txt);border:1px solid var(--line)}.action-sheet{display:none;padding:12px;margin:10px 0}.action-sheet.show{display:block}.sheet-title{font-size:18px;font-weight:950;margin:0 0 10px}.quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.quick-grid .btn{font-size:14px;padding:12px 8px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.form-grid .full{grid-column:1/-1}.field label{display:block;color:var(--mut);font-weight:900;font-size:12px;margin-bottom:5px}.field input,.field select,.field textarea,.month-filter input{width:100%;border:1px solid rgba(255,255,255,.1);background:rgba(0,0,0,.22);color:var(--txt);border-radius:13px;padding:11px 10px;font-weight:850;outline:none}.field textarea{min-height:72px;resize:vertical}.field input:focus,.field select:focus,.field textarea:focus,.month-filter input:focus{border-color:rgba(34,211,238,.55);box-shadow:0 0 0 3px rgba(34,211,238,.12)}.field select option{background:#0b1030;color:#eaf0ff}.finance-card{padding:13px;margin-top:12px}.finance-card h3{margin:0 0 10px;font-size:19px}.report-grid{display:grid;gap:8px}.report-line{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.07);color:var(--mut);font-weight:850}.report-line:last-child{border-bottom:0}.report-line strong{color:var(--txt);text-align:right}.history-list{display:grid;gap:8px;max-height:320px;overflow:auto}.history-item{border:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.16);border-radius:15px;padding:10px}.history-top{display:flex;justify-content:space-between;gap:10px;font-weight:950}.history-meta{margin-top:4px;color:var(--mut);font-weight:800;font-size:12px;line-height:1.35}.alert-box{border:1px solid rgba(251,146,60,.35);background:rgba(251,146,60,.10);color:#fed7aa;border-radius:16px;padding:10px 12px;font-weight:900;line-height:1.35}.alert-box.danger{border-color:rgba(244,63,94,.42);background:rgba(244,63,94,.12);color:#fecdd3}.alert-box.ok{border-color:rgba(34,197,94,.38);background:rgba(34,197,94,.11);color:#bbf7d0}.inline-actions{display:flex;gap:8px;flex-wrap:wrap}.inline-actions .btn{flex:1;min-width:120px}.personal-list{display:grid;gap:8px}.expense-row{border:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.16);border-radius:16px;padding:10px}.expense-main{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.expense-name{font-weight:950}.expense-note{font-size:12px;color:var(--mut);font-weight:800;margin-top:2px}.expense-source{margin-top:5px;font-size:12px;color:#bfdbfe;font-weight:950}.expense-status{font-size:12px;font-weight:950;border-radius:999px;padding:5px 9px;white-space:nowrap}.expense-status.pago{background:rgba(34,197,94,.18);color:#86efac}.expense-status.pendente{background:rgba(244,63,94,.18);color:#fda4af}.expense-status.parcial{background:rgba(251,146,60,.18);color:#fdba74}.expense-controls{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.danger-text{color:#fda4af}.ok-text{color:#86efac}.muted-line{color:var(--mut);font-weight:850;font-size:13px;line-height:1.4}.backup-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.file-input{display:none}@media (max-width:380px){.quick-grid,.action-grid,.finance-grid,.form-grid,.expense-controls,.backup-row{grid-template-columns:1fr}.main-tab{font-size:13px;padding:11px 6px}.section-head{display:block}.month-filter{justify-content:flex-start;margin-top:10px}}
+.app-top{margin-bottom:12px;padding-bottom:14px}.app-brand{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}.app-brand h1{font-size:30px}.app-subtitle{margin-top:4px;color:var(--mut);font-weight:850;font-size:13px}.main-nav{margin-top:14px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px}.main-tab{border:1px solid var(--line);border-radius:16px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));color:var(--txt);padding:12px 8px;font-weight:950;font-size:14px;box-shadow:0 10px 22px rgba(0,0,0,.25);cursor:pointer}.main-tab.active{border-color:rgba(34,211,238,.7);box-shadow:0 0 0 2px rgba(34,211,238,.18),0 10px 22px rgba(0,0,0,.25)}.main-panel{display:none}.main-panel.active{display:block}.unitv-shell .header{margin-bottom:12px}.unitv-shell .header h1{font-size:26px}.finance{margin-top:12px}.section-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}.section-head h2{margin:0;font-size:26px;letter-spacing:-.02em}.section-head p{margin:4px 0 0;color:var(--mut);font-weight:800;font-size:13px;line-height:1.35}.month-filter{display:flex;gap:8px;align-items:center;justify-content:flex-end;flex-wrap:wrap}.month-filter label{font-size:12px;font-weight:900;color:var(--mut)}.hero-card,.finance-card,.mini-card,.action-sheet{border:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.025));border-radius:20px;box-shadow:0 12px 28px rgba(0,0,0,.25)}.hero-card{padding:14px;margin-bottom:12px}.hero-title{font-weight:950;font-size:21px;margin-bottom:10px;color:#fff}.hero-row{display:flex;justify-content:space-between;gap:14px;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.07);font-weight:850;color:var(--mut)}.hero-row:last-child{border-bottom:0}.hero-row strong{color:var(--txt);font-size:17px;text-align:right}.hero-row.big strong{font-size:21px}.hero-row .positive{color:#86efac}.hero-row .danger{color:#fda4af}.hero-row .warn{color:#fdba74}.finance-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}.mini-card{padding:12px}.mini-label{font-size:12px;color:var(--mut);font-weight:900}.mini-value{margin-top:5px;font-size:20px;font-weight:950}.mini-value.small{font-size:15px;line-height:1.3}.action-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}.btn.green{background:linear-gradient(135deg,rgba(52,211,153,1),rgba(34,197,94,1))}.btn.blue{background:linear-gradient(135deg,rgba(96,165,250,1),rgba(34,211,238,1))}.btn.orange{background:linear-gradient(135deg,rgba(251,146,60,1),rgba(244,63,94,1));color:#13070a}.btn.purple{background:linear-gradient(135deg,rgba(167,139,250,1),rgba(124,58,237,1));color:#080713}.btn.dark{background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.03));color:var(--txt);border:1px solid var(--line)}.action-sheet{display:none;padding:12px;margin:10px 0}.action-sheet.show{display:block}.action-grid .action-sheet{grid-column:1/-1;margin:0 0 6px}.sheet-title{font-size:18px;font-weight:950;margin:0 0 10px}.quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.quick-grid .btn{font-size:14px;padding:12px 8px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.form-grid .full{grid-column:1/-1}.field label{display:block;color:var(--mut);font-weight:900;font-size:12px;margin-bottom:5px}.field input,.field select,.field textarea,.month-filter input{width:100%;border:1px solid rgba(255,255,255,.1);background:rgba(0,0,0,.22);color:var(--txt);border-radius:13px;padding:11px 10px;font-weight:850;outline:none}.field textarea{min-height:72px;resize:vertical}.field input:focus,.field select:focus,.field textarea:focus,.month-filter input:focus{border-color:rgba(34,211,238,.55);box-shadow:0 0 0 3px rgba(34,211,238,.12)}.field select option{background:#0b1030;color:#eaf0ff}.finance-card{padding:13px;margin-top:12px}.finance-card h3{margin:0 0 10px;font-size:19px}.report-grid{display:grid;gap:8px}.report-line{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.07);color:var(--mut);font-weight:850}.report-line:last-child{border-bottom:0}.report-line strong{color:var(--txt);text-align:right}.history-list{display:grid;gap:8px;max-height:320px;overflow:auto}.history-item{border:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.16);border-radius:15px;padding:10px}.history-top{display:flex;justify-content:space-between;gap:10px;font-weight:950}.history-meta{margin-top:4px;color:var(--mut);font-weight:800;font-size:12px;line-height:1.35}.alert-box{border:1px solid rgba(251,146,60,.35);background:rgba(251,146,60,.10);color:#fed7aa;border-radius:16px;padding:10px 12px;font-weight:900;line-height:1.35}.alert-box.danger{border-color:rgba(244,63,94,.42);background:rgba(244,63,94,.12);color:#fecdd3}.alert-box.ok{border-color:rgba(34,197,94,.38);background:rgba(34,197,94,.11);color:#bbf7d0}.inline-actions{display:flex;gap:8px;flex-wrap:wrap}.inline-actions .btn{flex:1;min-width:120px}.personal-list{display:grid;gap:8px}.expense-row{border:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.16);border-radius:16px;padding:10px}.expense-main{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.expense-name{font-weight:950}.expense-note{font-size:12px;color:var(--mut);font-weight:800;margin-top:2px}.expense-source{margin-top:5px;font-size:12px;color:#bfdbfe;font-weight:950}.expense-status{font-size:12px;font-weight:950;border-radius:999px;padding:5px 9px;white-space:nowrap}.expense-status.pago{background:rgba(34,197,94,.18);color:#86efac}.expense-status.pendente{background:rgba(244,63,94,.18);color:#fda4af}.expense-status.parcial{background:rgba(251,146,60,.18);color:#fdba74}.expense-controls{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.danger-text{color:#fda4af}.ok-text{color:#86efac}.muted-line{color:var(--mut);font-weight:850;font-size:13px;line-height:1.4}.backup-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.file-input{display:none}.action-sheet[data-cash-sheet="stock"] > button.btn.blue{display:block;width:100%;margin:0 0 12px}.history-cost{margin-top:6px;padding:7px 9px;border-radius:12px;background:rgba(34,211,238,.08);border:1px solid rgba(34,211,238,.14);color:rgba(234,240,255,.9);font-weight:900;font-size:12px;line-height:1.35}.wallet-grid{display:grid;gap:8px}.wallet-line{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.07);font-weight:850;color:var(--mut)}.wallet-line:last-child{border-bottom:0}.wallet-line strong{color:var(--txt);text-align:right}.wallet-line .wallet-note{display:block;font-size:11px;color:rgba(234,240,255,.48);font-weight:800;margin-top:2px}.wallet-line.negative strong{color:#fda4af}.wallet-line.free strong{color:#86efac}@media (max-width:380px){.quick-grid,.action-grid,.finance-grid,.form-grid,.expense-controls,.backup-row{grid-template-columns:1fr}.main-tab{font-size:13px;padding:11px 6px}.section-head{display:block}.month-filter{justify-content:flex-start;margin-top:10px}}
 
 </style>
 </head>
@@ -17,7 +17,7 @@
 
 <div class="wrap">
   <div class="header app-top">
-    <div class="app-brand"><div><h1>JamesUni</h1><div class="app-subtitle">Caixa, criação UniTV e gastos pessoais em um só lugar.</div></div><span class="pill"><strong>v2.9</strong></span></div>
+    <div class="app-brand"><div><h1>JamesUni</h1><div class="app-subtitle">Caixa, criação UniTV e gastos pessoais em um só lugar.</div></div><span class="pill"><strong>v2.11</strong></span></div>
     <div class="main-nav">
       <button type="button" class="main-tab active" data-main-tab="caixa">Caixa</button>
       <button type="button" class="main-tab" data-main-tab="unitv">UniTV</button>
@@ -77,6 +77,7 @@
 
       <div class="action-sheet" data-cash-sheet="stock">
         <div class="sheet-title">Comprar créditos</div>
+        <button type="button" class="btn blue" id="buy20Btn">Comprar 20 créditos — R$ 190,00</button>
         <button type="button" class="btn blue" id="buy30Btn">Comprar 30 créditos — R$ 280,00</button>
         <p class="muted-line">Fornecedor padrão: Xavier Bruno Lima Gomes. Essa compra entra como estoque, não como gasto convencional.</p>
         <div class="form-grid">
@@ -114,7 +115,7 @@
           <div class="field"><label>Estoque inicial do mês</label><input id="setStock" type="number" step="1"></div>
           <div class="field"><label>Meta mensal</label><input id="setTarget" type="number" step="0.01"></div>
           <div class="field"><label>Teto gastos convencionais</label><input id="setExpenseLimit" type="number" step="0.01"></div>
-          <div class="field"><label>Custo histórico por crédito</label><input id="setUnitCost" type="number" step="0.01"></div>
+          <div class="field"><label>Custo do estoque inicial por crédito</label><input id="setUnitCost" type="number" step="0.01"></div>
           <div class="field"><label>Fornecedor padrão</label><input id="setSupplier" type="text"></div>
           <div class="field full"><button type="button" class="btn blue" id="saveCashSettingsBtn">Salvar configuração</button></div>
         </div>
@@ -149,14 +150,14 @@
 
   <div class="panel" data-panel="site"><section class="block" data-key="site" data-limit="0" data-seq="site"><div class="counter-line"><div class="block-title">Site</div><div class="pill"><span>Registros:</span><strong class="counter">0</strong><span class="muted">• Próximo: <span class="det">Nº</span></span></div></div><div class="controls"><button class="btn paste" data-role="paste-number">Colar número</button><button class="btn sms" data-role="paste-sms">Colar SMS</button><button class="btn copy copy">Copiar</button><button class="btn reset reset" data-role="reset">Zerar</button></div><div class="secondary"><button class="btn sub undo" data-role="undo">⟲ Desfazer</button><button class="btn sub skip" data-role="skip">» Pular</button></div><div class="inline"><span>Código: <strong class="code-pill">—</strong></span><a class="toggle-sms" href="javascript:void(0)">Ver dados</a></div><div class="editor"></div><div class="status"><div class="left">Pronto.</div><div class="progress">0</div></div><div class="bar"><div class="fill"></div></div></section></div>
 
-  <div class="footer small"><div><b>Versão:</b> v1.2.2</div><div><b>Changelog:</b> Ajustado espaçamento da mensagem final da Conta UniTv para deixar duas linhas após a senha.</div></div>
+  <div class="footer small"><div><b>Versão:</b> v2.19</div><div><b>Changelog:</b> Óleo corrigido para PicPay. Gastos que não são contas ficam no PicPay; Nubank fica para contas/boletos e suplementos.</div></div>
 
   </section>
 
   <section class="main-panel" data-main-panel="pessoal">
     <section class="block finance">
       <div class="section-head">
-        <div><h2>Gastos Pessoais</h2><p>Controle do salário, contas, dívida, reserva, cartões/contas e gastos de fim de semana.</p></div>
+        <div><h2>Gastos Pessoais</h2><p>Controle do salário por destino: Nubank, Next, PicPay, carteira eletrônica, dívida e reserva.</p></div>
         <div class="month-filter"><label for="personalMonth">Mês</label><input type="month" id="personalMonth"/></div>
       </div>
 
@@ -167,6 +168,8 @@
         <div class="hero-row"><span>Já saiu / reservado</span><strong data-personal="paid">R$ 0,00</strong></div>
         <div class="hero-row"><span>Guardado no Nubank</span><strong data-personal="saved">R$ 0,00</strong></div>
         <div class="hero-row"><span>Contas pendentes</span><strong data-personal="pending">R$ 0,00</strong></div>
+        <div class="hero-row"><span>Extras PicPay</span><strong data-personal="nubankVar">R$ 0,00</strong></div>
+        <div class="hero-row"><span>Variáveis restantes</span><strong data-personal="variableLeft">R$ 0,00</strong></div>
         <div class="hero-row"><span>Dívida mãe restante</span><strong data-personal="debtLeft">R$ 4.100,00</strong></div>
         <div class="hero-row"><span>Disponível agora</span><strong data-personal="available">R$ 0,00</strong></div>
         <div class="hero-row"><span>Sobra após pendências</span><strong data-personal="afterPending">R$ 0,00</strong></div>
@@ -175,19 +178,48 @@
       <div id="personalAlert" class="alert-box">Digite o salário e registre apenas o que saiu neste mês.</div>
 
       <div class="finance-card">
+        <button type="button" class="btn blue" id="toggleMoneyPanelBtn" style="width:100%">Onde está o dinheiro / distribuir salário</button>
+        <div id="moneyPanel" style="display:none;margin-top:12px">
+          <h3>Onde está o dinheiro</h3>
+          <p class="muted-line">Abra este menu para ver onde cada parte do salário deve ficar. Use o cálculo automático como guia e edite os valores se, na prática, você deixou dinheiro diferente em alguma conta.</p>
+          <div class="wallet-grid" id="personalWalletReport"></div>
+
+          <div class="finance-card" style="box-shadow:none;margin-top:12px;background:rgba(0,0,0,.12)">
+            <h3>Distribuição automática</h3>
+            <p class="muted-line">Os valores abaixo são preenchidos automaticamente pela tabela de custos do mês. Use ajuste manual só se, na prática, algum valor ficar diferente.</p>
+            <div class="form-grid">
+              <div class="field"><label>PicPay</label><input id="distPicpay" type="number" step="0.01" placeholder="0,00"></div>
+              <div class="field"><label>Next</label><input id="distNext" type="number" step="0.01" placeholder="0,00"></div>
+              <div class="field"><label>Nubank contas/boletos</label><input id="distNubankBills" type="number" step="0.01" placeholder="0,00"></div>
+              <div class="field"><label>Carteira eletrônica</label><input id="distCarteira" type="number" step="0.01" placeholder="0,00"></div>
+              <div class="field"><label>Guardado no Nubank</label><input id="distSaved" type="number" step="0.01" placeholder="0,00"></div>
+              <div class="field"><label>Nubank livre</label><input id="distNubankFree" type="number" step="0.01" placeholder="0,00"></div>
+              <div class="field full inline-actions">
+                <button type="button" class="btn purple" id="saveDistributionBtn">Salvar ajuste manual</button>
+                <button type="button" class="btn dark" id="autoDistributeSalaryBtn">Usar automático</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="wallet-grid" id="salaryDistributionBox" style="margin-top:12px"></div>
+        </div>
+      </div>
+
+      <div class="finance-card">
         <h3>Controle mensal</h3>
         <p class="muted-line">Cada mês agora fica separado. Ao trocar para junho, julho ou outro mês, o painel abre limpo para controlar só aquele mês.</p>
         <div class="form-grid">
           <div class="field full inline-actions">
             <button type="button" class="btn reset" id="resetPersonalMonthBtn">Limpar mês atual</button>
             <button type="button" class="btn dark" id="closePersonalMonthBtn">Finalizar mês e abrir próximo</button>
+            <button type="button" class="btn reset" id="resetBrowserFinanceBtn">Restaurar dados originais</button>
           </div>
         </div>
       </div>
 
       <div class="finance-card">
         <h3>Salário do mês</h3>
-        <p class="muted-line">Digite o salário. Depois marque como pago só o que realmente saiu e registre aqui o dinheiro guardado/investido no Nubank.</p>
+        <p class="muted-line">Digite o salário. O pagamento da mãe sai direto da conta salário; registre o pagamento quando fizer. Separe Nubank, Next, PicPay e entretenimento. Só depois registre dinheiro guardado/investido no Nubank.</p>
         <div class="form-grid">
           <div class="field full"><label>Salário recebido</label><input id="personalSalary" type="number" step="0.01" placeholder="Ex: 2297,00"></div>
           <div class="field full"><button type="button" class="btn blue" id="savePersonalBaseBtn">Salvar salário</button></div>
@@ -204,9 +236,31 @@
           <div class="report-line"><span>Restante</span><strong data-personal="debtLeft2">R$ 4.100,00</strong></div>
         </div>
         <div class="form-grid" style="margin-top:10px">
-          <div class="field full"><label>Novo pagamento</label><input id="debtPayment" type="number" step="0.01" placeholder="Ex: 500,00"></div>
-          <div class="field full"><button type="button" class="btn purple" id="addDebtPaymentBtn">Registrar pagamento</button></div>
+          <div class="field full"><p class="muted-line">Pagamento da mãe sai direto da conta salário. Ao registrar aqui, o valor subtrai do salário disponível e reduz a dívida restante.</p></div>
+          <div class="field full"><label>Pagamento feito pela conta salário</label><input id="debtPayment" type="number" step="0.01" placeholder="Ex: 500,00"></div>
+          <div class="field full"><button type="button" class="btn purple" id="addDebtPaymentBtn">Registrar pagamento da mãe</button></div>
         </div>
+      </div>
+
+      <div class="finance-card">
+        <h3>Gastos extras do PicPay</h3>
+        <p class="muted-line">Use aqui para gasto extra que não seja conta/boleto, como óleo extra ou outro gasto do PicPay. Suplementos continuam na lista normal do Nubank e podem ter valor ajustado ao marcar como pago.</p>
+        <div class="form-grid">
+          <div class="field"><label>Tipo</label><select id="nubankVarType"><option value="outro" selected>Outro PicPay</option><option value="oleo">Óleo extra</option></select></div>
+          <div class="field"><label>Status</label><select id="nubankVarStatus"><option value="pago" selected>Pago/reservado</option><option value="pendente">Pendente/separar</option></select></div>
+          <div class="field full"><label>Nome / descrição</label><input id="nubankVarName" type="text" placeholder="Ex: óleo extra, farmácia, lanche..."></div>
+          <div class="field"><label>Quantidade</label><input id="nubankVarQty" type="number" step="1" placeholder="Ex: 2"></div>
+          <div class="field"><label>Valor unitário</label><input id="nubankVarUnit" type="number" step="0.01" placeholder="Ex: 45,00"></div>
+          <div class="field"><label>Valor total</label><input id="nubankVarTotal" type="number" step="0.01" placeholder="Ex: 90,00"></div>
+          <div class="field"><label>Observação numérica</label><input id="nubankVarDuration" type="number" step="1" placeholder="opcional"></div>
+          <div class="field full"><button type="button" class="btn blue" id="addNubankVarBtn">Adicionar gasto extra PicPay</button></div>
+        </div>
+        <div class="report-grid" style="margin-top:10px">
+          <div class="report-line"><span>Total extra PicPay</span><strong data-personal="nubankVarTotal">R$ 0,00</strong></div>
+          <div class="report-line"><span>Pago/reservado</span><strong data-personal="nubankVarPaid">R$ 0,00</strong></div>
+          <div class="report-line"><span>Pendente/separar</span><strong data-personal="nubankVarPending">R$ 0,00</strong></div>
+        </div>
+        <div class="personal-list" id="nubankVariableList" style="margin-top:10px"></div>
       </div>
 
       <div class="finance-card">
@@ -220,7 +274,7 @@
           <div class="field"><label>Nome</label><input id="newExpenseName" type="text" placeholder="Ex: remédio, mercado..."></div>
           <div class="field"><label>Valor</label><input id="newExpenseAmount" type="number" step="0.01"></div>
           <div class="field"><label>Tipo</label><select id="newExpenseType"><option>mensal</option><option>eventual</option><option>variável</option></select></div>
-          <div class="field"><label>Pagar por</label><select id="newExpenseAccount"><option value="nubank" selected>Nubank</option><option value="picpay">PicPay</option><option value="carteira">Carteira eletrônica</option></select></div>
+          <div class="field"><label>Pagar por</label><select id="newExpenseAccount"><option value="nubank" selected>Nubank</option><option value="next">Next</option><option value="picpay">PicPay</option><option value="carteira">Carteira eletrônica</option></select></div>
           <div class="field full"><label>Observação</label><textarea id="newExpenseNote"></textarea></div>
           <div class="field full"><button type="button" class="btn blue" id="addPersonalExpenseBtn">Adicionar</button></div>
         </div>
@@ -375,9 +429,9 @@ document.querySelectorAll('.block[data-seq="site"]').forEach(initSite);
   showMain(localStorage.getItem(MAIN_KEY)||'caixa');
 
   // Caixa JamesUni
-  const CASH_KEY='jamesuni.cash.v28';
-  const OLD_CASH_KEYS=['jamesuni.cash.v27','jamesuni.cash.v2'];
-  const CASH_MONTH_KEY='jamesuni.cash.month.v28';
+  const CASH_KEY='jamesuni.cash.v29';
+  const OLD_CASH_KEYS=['jamesuni.cash.v28','jamesuni.cash.v27','jamesuni.cash.v2'];
+  const CASH_MONTH_KEY='jamesuni.cash.month.v29';
   const defaultCash = {
     settings:{target:1893, expenseLimit:400, unitCost:9.33, supplier:'Xavier Bruno Lima Gomes'},
     months:{},
@@ -386,11 +440,25 @@ document.querySelectorAll('.block[data-seq="site"]').forEach(initSite);
   function setText(sel, val){ const el = typeof sel==='string'?$(sel):sel; if(el) el.textContent = val; }
   function makeCashMonth(seed={}){
     const transactions = Array.isArray(seed.transactions)?seed.transactions:[];
+    const baseStock = Number(seed.baseStock ?? seed.stock ?? 0);
+    const baseUnitCost = Number(seed.baseUnitCost ?? seed.unitCost ?? defaultCash.settings.unitCost);
+    let baseLots = Array.isArray(seed.baseLots) ? seed.baseLots.map((l,i)=>({
+      id:l.id || ('base-'+i),
+      label:l.label || 'Estoque inicial',
+      date:l.date || '',
+      qty:Number(l.qty ?? l.credits ?? l.remaining ?? 0),
+      unitCost:Number(l.unitCost ?? baseUnitCost)
+    })).filter(l=>l.qty>0) : [];
+    if(!baseLots.length && baseStock>0){
+      baseLots=[{id:'base-inicial',label:'Estoque inicial',date:'',qty:baseStock,unitCost:baseUnitCost}];
+    }
     return {
       cash:Number(seed.cash||0),
-      // baseStock = estoque que existia no começo do mês.
-      // O estoque atual é sempre calculado por: base + compras - vendas.
-      baseStock:Number(seed.baseStock ?? seed.stock ?? 0),
+      // baseStock/baseLots = estoque que existia no começo do mês.
+      // Vendas usam FIFO: primeiro consome o lote mais antigo, sem alterar vendas antigas.
+      baseStock,
+      baseUnitCost,
+      baseLots,
       stock:Number(seed.stock ?? seed.baseStock ?? 0),
       transactions,
       closings:Array.isArray(seed.closings)?seed.closings:[],
@@ -398,11 +466,63 @@ document.querySelectorAll('.block[data-seq="site"]').forEach(initSite);
       closedAt:seed.closedAt||''
     };
   }
+  function chronologicalTx(month){
+    return (Array.isArray(month.transactions)?month.transactions:[]).slice().sort((a,b)=>String(a.createdAt||a.id||'').localeCompare(String(b.createdAt||b.id||'')));
+  }
+  function inventoryLots(month){
+    const lots=(Array.isArray(month.baseLots)?month.baseLots:[]).map((l,i)=>({
+      id:l.id || ('base-'+i),
+      label:l.label || 'Estoque inicial',
+      date:l.date || '',
+      qty:Number(l.qty ?? l.credits ?? 0),
+      remaining:Number(l.qty ?? l.credits ?? 0),
+      unitCost:Number(l.unitCost ?? month.baseUnitCost ?? defaultCash.settings.unitCost)
+    })).filter(l=>l.remaining>0);
+    chronologicalTx(month).forEach(t=>{
+      if(t.type==='stock'){
+        const q=Number(t.credits||0);
+        const uc=Number(t.unitCost || (q?Number(t.amount||0)/q:0) || cashState.settings.unitCost || defaultCash.settings.unitCost);
+        if(q>0) lots.push({id:t.id,label:`Compra ${q} crédito(s)`,date:t.date||'',qty:q,remaining:q,unitCost:uc});
+      } else if(t.type==='sale'){
+        let need=Number(t.credits||0);
+        for(const lot of lots){
+          if(need<=0) break;
+          const take=Math.min(lot.remaining, need);
+          lot.remaining=+(lot.remaining-take).toFixed(6);
+          need=+(need-take).toFixed(6);
+        }
+      }
+    });
+    return lots.filter(l=>l.remaining>0.000001);
+  }
   function currentStock(month){
-    const list = Array.isArray(month.transactions)?month.transactions:[];
-    const bought = list.filter(t=>t.type==='stock').reduce((a,t)=>a+Number(t.credits||0),0);
-    const sold = list.filter(t=>t.type==='sale').reduce((a,t)=>a+Number(t.credits||0),0);
-    return Math.max(0, Math.floor(Number(month.baseStock ?? month.stock ?? 0) + bought - sold));
+    return Math.max(0, Math.floor(inventoryLots(month).reduce((a,l)=>a+Number(l.remaining||0),0)));
+  }
+  function nextUnitCost(month){
+    const lot=inventoryLots(month)[0];
+    return Number(lot?.unitCost ?? month.baseUnitCost ?? cashState.settings.unitCost ?? defaultCash.settings.unitCost);
+  }
+  function consumeCostPreview(month, credits){
+    let need=Math.max(0, Math.floor(Number(credits||0)));
+    const used=[];
+    let total=0;
+    for(const lot of inventoryLots(month)){
+      if(need<=0) break;
+      const take=Math.min(Number(lot.remaining||0), need);
+      if(take>0){
+        const cost=+(take*Number(lot.unitCost||0)).toFixed(2);
+        used.push({lotId:lot.id,label:lot.label,date:lot.date,qty:take,unitCost:Number(lot.unitCost||0),cost});
+        total += cost;
+        need -= take;
+      }
+    }
+    if(need>0){
+      const uc=nextUnitCost(month) || cashState.settings.unitCost || defaultCash.settings.unitCost;
+      const cost=+(need*uc).toFixed(2);
+      used.push({lotId:'sem-estoque',label:'Sem estoque suficiente',date:'',qty:need,unitCost:uc,cost});
+      total += cost;
+    }
+    return {usedLots:used,totalCost:+total.toFixed(2),shortage:need};
   }
   function normalizeCashState(raw){
     const out={settings:Object.assign({}, defaultCash.settings, raw?.settings||{}), months:{}, monthClosings:Array.isArray(raw?.monthClosings)?raw.monthClosings:[]};
@@ -424,7 +544,7 @@ document.querySelectorAll('.block[data-seq="site"]').forEach(initSite);
   cashState.settings = Object.assign({}, defaultCash.settings, cashState.settings||{});
   cashState.months ||= {};
   cashState.monthClosings ||= [];
-  $('#cashMonth').value = localStorage.getItem(CASH_MONTH_KEY) || monthISO();
+  $('#cashMonth').value = localStorage.getItem(CASH_MONTH_KEY) || localStorage.getItem('jamesuni.cash.month.v28') || monthISO();
   const selectedCashMonth = () => $('#cashMonth').value || monthISO();
   function selectedCashDate(){
     const key=selectedCashMonth();
@@ -496,13 +616,13 @@ document.querySelectorAll('.block[data-seq="site"]').forEach(initSite);
     $('#setStock').value = Number(month.baseStock ?? month.stock ?? 0);
     $('#setTarget').value = Number(cashState.settings.target||0).toFixed(2);
     $('#setExpenseLimit').value = Number(cashState.settings.expenseLimit||0).toFixed(2);
-    $('#setUnitCost').value = Number(cashState.settings.unitCost||0).toFixed(2);
+    $('#setUnitCost').value = Number(month.baseUnitCost || cashState.settings.unitCost || 0).toFixed(2);
     $('#setSupplier').value = cashState.settings.supplier||'';
     const report = $('#cashMonthReport');
     if(report){
       const beat = month.cash >= cashState.settings.target ? 'Sim' : 'Não';
       report.innerHTML = [
-        ['Mês selecionado',selectedCashMonth()],['Caixa atual',fmt(month.cash)],['Estoque inicial',`${Number(month.baseStock ?? 0)} créditos`],['Estoque atual',`${currentStock(month)} créditos`],['Créditos vendidos no mês',m.creditsSold],['Vendas totais',fmt(m.sales)],['Compras de estoque',fmt(m.stockBuys)],['Gastos convencionais',fmt(m.expenses)],['Retiradas',fmt(m.withdrawals)],['Recuperação de estoque',fmt(m.recovery)],['Lucro real estimado',fmt(m.realProfit)],['Falta para meta',fmt(missing)],['Meta batida?',beat]
+        ['Mês selecionado',selectedCashMonth()],['Caixa atual',fmt(month.cash)],['Estoque inicial',`${Number(month.baseStock ?? 0)} créditos`],['Estoque atual',`${currentStock(month)} créditos`],['Custo do próximo crédito',fmt(nextUnitCost(month))],['Créditos vendidos no mês',m.creditsSold],['Vendas totais',fmt(m.sales)],['Compras de estoque',fmt(m.stockBuys)],['Gastos convencionais',fmt(m.expenses)],['Retiradas',fmt(m.withdrawals)],['Recuperação de estoque',fmt(m.recovery)],['Lucro real estimado',fmt(m.realProfit)],['Falta para meta',fmt(missing)],['Meta batida?',beat]
       ].map(([a,b])=>`<div class="report-line"><span>${a}</span><strong>${b}</strong></div>`).join('');
     }
     const hist = $('#cashHistory');
@@ -512,7 +632,14 @@ document.querySelectorAll('.block[data-seq="site"]').forEach(initSite);
         const label = t.type==='sale'?'Venda':t.type==='stock'?'Compra de estoque':t.type==='expense'?'Gasto':t.type==='withdrawal'?'Retirada':'Movimento';
         const sign = t.type==='sale'?'+':'-';
         const meta = [t.plan, t.category, t.reason, t.supplier, t.note].filter(Boolean).join(' · ');
-        return `<div class="history-item"><div class="history-top"><span>${label}</span><strong>${sign}${fmt(t.amount)}</strong></div><div class="history-meta">${t.date} ${t.credits?`· ${t.credits} crédito(s)`:''}${meta?` · ${meta}`:''}</div></div>`;
+        let costLine='';
+        if(t.type==='sale'){
+          const cost=Number(t.recoveredCost||0);
+          const profit=Number(t.realProfit ?? (Number(t.amount||0)-cost));
+          const avg=Number(t.credits||0) ? cost/Number(t.credits||1) : 0;
+          costLine=`<div class="history-cost">Custo usado: ${fmt(cost)}${avg?` · Média: ${fmt(avg)}/crédito`:''}<br>Lucro real estimado: ${fmt(profit)}</div>`;
+        }
+        return `<div class="history-item"><div class="history-top"><span>${label}</span><strong>${sign}${fmt(t.amount)}</strong></div>${costLine}<div class="history-meta">${t.date} ${t.credits?`· ${t.credits} crédito(s)`:''}${meta?` · ${meta}`:''}</div></div>`;
       }).join('') : '<div class="muted-line">Nenhum movimento neste mês.</div>';
     }
   }
@@ -522,9 +649,18 @@ document.querySelectorAll('.block[data-seq="site"]').forEach(initSite);
     renderCash();
     appToast('Mês do caixa alterado.');
   });
+  function openCashSheetNearButton(key, btn){
+    const sheet = document.querySelector(`[data-cash-sheet="${key}"]`);
+    if(!sheet) return;
+    const wasOpen = sheet.classList.contains('show');
+    $$('[data-cash-sheet]').forEach(s=>s.classList.remove('show'));
+    if(wasOpen) return;
+    btn.insertAdjacentElement('afterend', sheet);
+    sheet.classList.add('show');
+    try{ sheet.scrollIntoView({behavior:'smooth', block:'nearest'}); }catch(e){}
+  }
   $$('[data-cash-open]').forEach(btn=>btn.addEventListener('click',()=>{
-    const key=btn.dataset.cashOpen;
-    $$('[data-cash-sheet]').forEach(s=>s.classList.toggle('show', s.dataset.cashSheet===key && !s.classList.contains('show')));
+    openCashSheetNearButton(btn.dataset.cashOpen, btn);
   }));
   function closeCashSheets(){
     $$('[data-cash-sheet]').forEach(s=>s.classList.remove('show'));
@@ -534,10 +670,11 @@ document.querySelectorAll('.block[data-seq="site"]').forEach(initSite);
     amount = num(amount); credits = Math.max(0, Math.floor(num(credits)));
     if(!amount || !credits){ appToast('Informe valor e créditos.'); return; }
     if(currentStock(month) < credits && !confirm('Estoque menor que a venda. Registrar mesmo assim?')) return;
-    const recoveredCost = +(credits * Number(cashState.settings.unitCost||0)).toFixed(2);
+    const costPreview = consumeCostPreview(month, credits);
+    const recoveredCost = +Number(costPreview.totalCost||0).toFixed(2);
     const realProfit = +(amount - recoveredCost).toFixed(2);
     month.cash = +(Number(month.cash||0) + amount).toFixed(2);
-    addCashTx({type:'sale', amount, credits, plan, recoveredCost, realProfit});
+    addCashTx({type:'sale', amount, credits, plan, recoveredCost, realProfit, usedLots:costPreview.usedLots});
     $('#saleManualAmount').value='';
     $('#saleManualCredits').value='';
     closeCashSheets();
@@ -550,11 +687,11 @@ document.querySelectorAll('.block[data-seq="site"]').forEach(initSite);
     qty=Math.max(0,Math.floor(num(qty))); amount=num(amount); if(!qty||!amount){appToast('Informe quantidade e valor.');return;}
     month.cash = +(Number(month.cash||0) - amount).toFixed(2);
     const unitCost = +(amount/qty).toFixed(2);
-    cashState.settings.unitCost = unitCost;
     addCashTx({type:'stock', amount, credits:qty, supplier:supplier||cashState.settings.supplier, unitCost});
     $('#stockQty').value=''; $('#stockAmount').value=''; closeCashSheets();
-    appToast('Compra de créditos registrada.');
+    appToast(`Compra registrada. Novo lote: ${qty} crédito(s) a ${fmt(unitCost)} cada.`);
   }
+  $('#buy20Btn').addEventListener('click',()=>registerStock(20,190,cashState.settings.supplier));
   $('#buy30Btn').addEventListener('click',()=>registerStock(30,280,cashState.settings.supplier));
   $('#manualStockBtn').addEventListener('click',()=>registerStock($('#stockQty').value,$('#stockAmount').value,cashState.settings.supplier));
   $('#saveExpenseBtn').addEventListener('click',()=>{
@@ -573,8 +710,10 @@ document.querySelectorAll('.block[data-seq="site"]').forEach(initSite);
   });
   $('#saveCashSettingsBtn').addEventListener('click',()=>{
     const month=currentCashMonth();
-    month.cash=num($('#setCash').value); month.baseStock=Math.floor(num($('#setStock').value)); month.stock=currentStock(month); month.closed=false;
-    cashState.settings.target=num($('#setTarget').value)||1893; cashState.settings.expenseLimit=num($('#setExpenseLimit').value)||400; cashState.settings.unitCost=num($('#setUnitCost').value)||9.33; cashState.settings.supplier=$('#setSupplier').value.trim()||'Xavier Bruno Lima Gomes';
+    const baseStockVal=Math.floor(num($('#setStock').value));
+    const baseUnitCostVal=num($('#setUnitCost').value)||9.33;
+    month.cash=num($('#setCash').value); month.baseStock=baseStockVal; month.baseUnitCost=baseUnitCostVal; month.baseLots=baseStockVal>0?[{id:'base-'+selectedCashMonth(),label:'Estoque inicial',date:selectedCashDate(),qty:baseStockVal,unitCost:baseUnitCostVal}]:[]; month.stock=currentStock(month); month.closed=false;
+    cashState.settings.target=num($('#setTarget').value)||1893; cashState.settings.expenseLimit=num($('#setExpenseLimit').value)||400; cashState.settings.unitCost=baseUnitCostVal; cashState.settings.supplier=$('#setSupplier').value.trim()||'Xavier Bruno Lima Gomes';
     saveCash(); renderCash(); closeCashSheets(); appToast('Configuração salva para este mês.');
   });
   $('#closeDayBtn').addEventListener('click',()=>{
@@ -611,17 +750,17 @@ document.querySelectorAll('.block[data-seq="site"]').forEach(initSite);
   });
 
   // Gastos pessoais
-  const PERSONAL_KEY='jamesuni.personal.v3';
-  const PERSONAL_MONTH_KEY='jamesuni.personal.month.v3';
+  const PERSONAL_KEY='jamesuni.personal.v6';
+  const PERSONAL_MONTH_KEY='jamesuni.personal.month.v6';
   const defaultPersonalExpenses = [
     {id:'internet',name:'Internet',amount:105,status:'pendente',type:'mensal',account:'nubank',note:'1x por mês'},
     {id:'academia',name:'Academia',amount:100,status:'pendente',type:'mensal',account:'nubank',note:'1x por mês'},
-    {id:'chatgpt',name:'ChatGPT',amount:5,status:'pendente',type:'mensal',account:'nubank',note:'1x por mês'},
-    {id:'suplementos',name:'Creatina 500g + 3x Albumina Uevo',amount:129,status:'pendente',type:'mensal',account:'nubank',note:'R$ 258 para 2 meses; ajustar se consumir diferente'},
+    {id:'suplementos',name:'Suplementos',amount:129,status:'pendente',type:'mensal',account:'nubank',note:'Base mensal: creatina 500g + 3x Albumina Uevo = R$ 258 por 2 meses. Se vier outro valor, ajuste ao marcar como pago.'},
+    {id:'oleo',name:'Óleo 10w30 Moto',amount:45,status:'pendente',type:'variavel',account:'picpay',note:'Base: R$ 45. Se comprar 2 ou mais no mês, ajuste o valor ao marcar como pago. Sai do PicPay.'},
+    {id:'chatgpt',name:'ChatGPT',amount:5,status:'pendente',type:'mensal',account:'picpay',note:'1x por mês; sai do PicPay'},
     {id:'corte',name:'Corte de cabelo',amount:60,status:'pendente',type:'mensal',account:'picpay',note:'R$ 30 por corte; só fica pago no 2º corte do mês',unitAmount:30,totalCount:2,paidCount:0},
     {id:'anticoncepcional',name:'Anticoncepcional',amount:10,status:'pendente',type:'mensal',account:'picpay',note:'1x por mês'},
-    {id:'seguro',name:'Seguro',amount:109,status:'pendente',type:'mensal',account:'nubank',note:'Vence dia 01; até novembro'},
-    {id:'oleo',name:'Óleo 10w30 Moto',amount:90,status:'pendente',type:'mensal',account:'nubank',note:'R$ 90 por mês'}
+    {id:'seguro',name:'Seguro',amount:109,status:'pendente',type:'mensal',account:'next',note:'Vence dia 01; até novembro; sai do Next'}
   ];
   function deepClone(obj){ return JSON.parse(JSON.stringify(obj)); }
   function makePersonalMonth(){
@@ -631,12 +770,15 @@ document.querySelectorAll('.block[data-seq="site"]').forEach(initSite);
       entertainment:{limit:600, used:0, account:'carteira'},
       gas:{limit:180, used:0, account:'picpay'},
       expenses:deepClone(defaultPersonalExpenses),
+      nubankVariables:[],
       history:[],
       closed:false,
-      closedAt:null
+      closedAt:null,
+      moneyPanelOpen:false,
+      walletManual:{enabled:false}
     };
   }
-  const oldPersonalV2 = load('jamesuni.personal.v2', null);
+  const oldPersonalV2 = null;
   let personal = load(PERSONAL_KEY, null);
   if(!personal || !personal.months){
     personal = {
@@ -655,9 +797,10 @@ document.querySelectorAll('.block[data-seq="site"]').forEach(initSite);
     m.saved = Number(m.saved||0);
     m.entertainment = Object.assign({limit:600, used:0, account:'carteira'}, m.entertainment||{});
     m.gas = Object.assign({limit:180, used:0, account:'picpay'}, m.gas||{});
-    m.expenses = (m.expenses && m.expenses.length ? m.expenses : deepClone(defaultPersonalExpenses)).filter(e=>e.id!=='gasbase');
+    m.expenses = (m.expenses && m.expenses.length ? m.expenses : deepClone(defaultPersonalExpenses)).filter(e=>!['gasbase'].includes(e.id));
+    m.nubankVariables = Array.isArray(m.nubankVariables) ? m.nubankVariables : [];
     const defaultsById = Object.fromEntries(defaultPersonalExpenses.map(e=>[e.id,e]));
-    const accountDefaults = {internet:'nubank',academia:'nubank',chatgpt:'nubank',suplementos:'nubank',corte:'picpay',anticoncepcional:'picpay',seguro:'nubank',oleo:'nubank'};
+    const accountDefaults = {internet:'nubank',academia:'nubank',suplementos:'nubank',oleo:'picpay',chatgpt:'picpay',corte:'picpay',anticoncepcional:'picpay',seguro:'next'};
     const existingIds = new Set(m.expenses.map(e=>e.id));
     defaultPersonalExpenses.forEach(def=>{ if(!existingIds.has(def.id)) m.expenses.push(deepClone(def)); });
     m.expenses.forEach(e=>{
@@ -670,14 +813,18 @@ document.querySelectorAll('.block[data-seq="site"]').forEach(initSite);
         if(typeof e.paidCount !== 'number') e.paidCount = e.status==='pago' ? 2 : 0;
         if(e.paidCount>=2) e.status='pago'; else if(e.paidCount===1) e.status='parcial'; else e.status='pendente';
       }
-      if(e.id==='oleo'){
-        e.amount=90; e.type='mensal'; e.account='nubank'; e.note='R$ 90 por mês';
-      }
+      if(e.id==='suplementos'){ e.account='nubank'; if(!e.amount) e.amount=129; e.note='Base mensal: creatina 500g + 3x Albumina Uevo = R$ 258 por 2 meses. Se vier outro valor, ajuste ao marcar como pago.'; }
+      if(e.id==='oleo'){ e.account='picpay'; if(!e.amount) e.amount=45; e.note='Base: R$ 45. Se comprar 2 ou mais no mês, ajuste o valor ao marcar como pago. Sai do PicPay.'; }
+      if(e.id==='chatgpt'){ e.account='picpay'; e.note='1x por mês; sai do PicPay'; }
+      if(e.id==='seguro'){ e.account='next'; e.note='Vence dia 01; até novembro; sai do Next'; }
       if(def.name && !e.name) e.name=def.name;
       if(!e.type) e.type=def.type||'mensal';
       if(!e.note && def.note) e.note=def.note;
     });
+    m.nubankVariables = m.nubankVariables.map(v=>Object.assign({id:uid(),category:'outro',name:'Gasto extra PicPay',amount:0,status:'pago',qty:1,unitAmount:0,duration:0,date:todayISO(),note:''}, v)).filter(v=>Number(v.amount||0)>0);
     m.history ||= [];
+    m.moneyPanelOpen = !!m.moneyPanelOpen;
+    m.walletManual = Object.assign({enabled:false}, m.walletManual||{});
     m.closed = !!m.closed;
     return m;
   }
@@ -688,7 +835,7 @@ document.querySelectorAll('.block[data-seq="site"]').forEach(initSite);
     return personal.months[key];
   }
   function savePersonal(){ localStorage.setItem(PERSONAL_MONTH_KEY, selectedPersonalMonth()); save(PERSONAL_KEY, personal); }
-  function accountName(k){ return {salario:'Conta salário',vendas:'Conta vendas / UniTV',nubank:'Nubank',picpay:'PicPay',carteira:'Carteira eletrônica'}[k]||k; }
+  function accountName(k){ return {salario:'Conta salário',vendas:'Conta vendas / UniTV',nubank:'Nubank',next:'Next',picpay:'PicPay',carteira:'Carteira eletrônica'}[k]||k; }
   function addPersonalHistory(text, amount, kind='outflow'){
     const month=currentPersonalMonth();
     month.history.unshift({id:uid(),date:todayISO(),month:selectedPersonalMonth(),text,amount:Number(amount||0),kind});
@@ -698,6 +845,9 @@ document.querySelectorAll('.block[data-seq="site"]').forEach(initSite);
     return e.status==='pago' ? Number(e.amount||0) : 0;
   }
   function expensePendingAmount(e){ return Math.max(Number(e.amount||0) - expensePaidAmount(e), 0); }
+  function nubankVarPaidAmount(v){ return v.status==='pago' ? Number(v.amount||0) : 0; }
+  function nubankVarPendingAmount(v){ return v.status==='pendente' ? Number(v.amount||0) : 0; }
+  function nubankVarLabel(v){ return {oleo:'Óleo 10w30',suplemento:'Suplemento',outro:'Outro PicPay'}[v.category] || 'PicPay'; }
   function expenseStatusLabel(e){
     if(e.id==='corte'){
       const paid = Math.min(Number(e.paidCount||0), Number(e.totalCount||2));
@@ -710,29 +860,100 @@ document.querySelectorAll('.block[data-seq="site"]').forEach(initSite);
   function renderPersonal(){
     const month=currentPersonalMonth();
     const activeExpenses = month.expenses.filter(e=>e.status!=='cancelado');
-    const plannedExpenses = activeExpenses.reduce((a,e)=>a+Number(e.amount||0),0) + Number(month.entertainment.limit||0) + Number(month.gas.limit||0);
+    const nubankVars = Array.isArray(month.nubankVariables) ? month.nubankVariables : [];
+    const nubankVarTotal = nubankVars.reduce((a,v)=>a+Number(v.amount||0),0);
+    const nubankVarPaid = nubankVars.reduce((a,v)=>a+nubankVarPaidAmount(v),0);
+    const nubankVarPending = nubankVars.reduce((a,v)=>a+nubankVarPendingAmount(v),0);
+    const plannedExpenses = activeExpenses.reduce((a,e)=>a+Number(e.amount||0),0) + nubankVarTotal + Number(month.entertainment.limit||0) + Number(month.gas.limit||0);
     const paidBills = activeExpenses.reduce((a,e)=>a+expensePaidAmount(e),0);
     const debtPaidThisMonth = month.history.filter(h=>h.kind==='debt').reduce((a,h)=>a+Number(h.amount||0),0);
-    const paidExpenses = paidBills + Number(month.entertainment.used||0) + Number(month.gas.used||0) + debtPaidThisMonth + Number(month.saved||0);
-    const pending = activeExpenses.reduce((a,e)=>a+expensePendingAmount(e),0);
+    const entLeft = Math.max(Number(month.entertainment.limit||0)-Number(month.entertainment.used||0),0);
+    const gasLeft = Math.max(Number(month.gas.limit||0)-Number(month.gas.used||0),0);
+    const variableLeft = entLeft + gasLeft;
+    const paidExpenses = paidBills + nubankVarPaid + Number(month.entertainment.used||0) + Number(month.gas.used||0) + debtPaidThisMonth + Number(month.saved||0);
+    const pendingBills = activeExpenses.reduce((a,e)=>a+expensePendingAmount(e),0) + nubankVarPending;
+    const totalPending = pendingBills + variableLeft;
     const debtLeft = Math.max(Number(personal.debt.total||0)-Number(personal.debt.paid||0),0);
     const available = Number(month.salary||0) - paidExpenses;
-    const afterPending = available - pending;
-    setText('[data-personal="salary"]', fmt(month.salary)); setText('[data-personal="saved"]', fmt(month.saved)); setText('[data-personal="planned"]', fmt(plannedExpenses)); setText('[data-personal="paid"]', fmt(paidExpenses)); setText('[data-personal="pending"]', fmt(pending)); setText('[data-personal="debtLeft"]', fmt(debtLeft)); setText('[data-personal="available"]', fmt(available)); setText('[data-personal="afterPending"]', fmt(afterPending));
+    const afterPending = available - totalPending;
+    const pendingByAccount = {nubank:0,next:0,picpay:0,carteira:0};
+    activeExpenses.forEach(e=>{ pendingByAccount[e.account||'nubank'] = (pendingByAccount[e.account||'nubank']||0) + expensePendingAmount(e); });
+    pendingByAccount.picpay = (pendingByAccount.picpay||0) + nubankVarPending;
+    const autoWallet = {
+      nubankBills: (pendingByAccount.nubank || 0),
+      next: pendingByAccount.next || 0,
+      picpay: (pendingByAccount.picpay || 0) + gasLeft,
+      carteira: entLeft,
+      saved: Number(month.saved||0),
+      nubankFree: afterPending
+    };
+    const manualWallet = month.walletManual && month.walletManual.enabled ? month.walletManual : null;
+    const wallet = manualWallet ? {
+      nubankBills: Number(manualWallet.nubankBills ?? autoWallet.nubankBills),
+      next: Number(manualWallet.next ?? autoWallet.next),
+      picpay: Number(manualWallet.picpay ?? autoWallet.picpay),
+      carteira: Number(manualWallet.carteira ?? autoWallet.carteira),
+      saved: Number(manualWallet.saved ?? autoWallet.saved),
+      nubankFree: Number(manualWallet.nubankFree ?? autoWallet.nubankFree)
+    } : autoWallet;
+    setText('[data-personal="salary"]', fmt(month.salary)); setText('[data-personal="saved"]', fmt(month.saved)); setText('[data-personal="planned"]', fmt(plannedExpenses)); setText('[data-personal="paid"]', fmt(paidExpenses)); setText('[data-personal="pending"]', fmt(pendingBills)); setText('[data-personal="variableLeft"]', fmt(variableLeft)); setText('[data-personal="debtLeft"]', fmt(debtLeft)); setText('[data-personal="available"]', fmt(available)); setText('[data-personal="afterPending"]', fmt(afterPending));
     setText('[data-personal="debtTotal"]', fmt(personal.debt.total)); setText('[data-personal="debtPaid"]', fmt(personal.debt.paid)); setText('[data-personal="debtLeft2"]', fmt(debtLeft));
-    setText('[data-personal="entLimit"]', fmt(month.entertainment.limit)); setText('[data-personal="entUsed"]', fmt(month.entertainment.used)); setText('[data-personal="entLeft"]', fmt(Math.max(month.entertainment.limit-month.entertainment.used,0)));
-    setText('[data-personal="gasUsed"]', fmt(month.gas.used)); setText('[data-personal="gasLeft"]', fmt(Math.max(month.gas.limit-month.gas.used,0)));
+    setText('[data-personal="entLimit"]', fmt(month.entertainment.limit)); setText('[data-personal="entUsed"]', fmt(month.entertainment.used)); setText('[data-personal="entLeft"]', fmt(entLeft));
+    setText('[data-personal="gasUsed"]', fmt(month.gas.used)); setText('[data-personal="gasLeft"]', fmt(gasLeft));
+    setText('[data-personal="nubankVar"]', fmt(nubankVarTotal)); setText('[data-personal="nubankVarTotal"]', fmt(nubankVarTotal)); setText('[data-personal="nubankVarPaid"]', fmt(nubankVarPaid)); setText('[data-personal="nubankVarPending"]', fmt(nubankVarPending));
     $('#personalSalary').value = Number(month.salary||0).toFixed(2);
+    const moneyPanel=$('#moneyPanel');
+    if(moneyPanel) moneyPanel.style.display = month.moneyPanelOpen ? 'block' : 'none';
+    const toggleMoneyPanelBtn=$('#toggleMoneyPanelBtn');
+    if(toggleMoneyPanelBtn) toggleMoneyPanelBtn.textContent = month.moneyPanelOpen ? 'Ocultar onde está o dinheiro' : 'Onde está o dinheiro / distribuir salário';
+    const walletBox=$('#personalWalletReport');
+    if(walletBox){
+      const rows=[
+        ['Nubank — contas/boletos', wallet.nubankBills, 'Internet, academia, suplementos e boletos/contas pendentes', ''],
+        ['Next — seguro', wallet.next, 'Dinheiro separado para o seguro', ''],
+        ['PicPay', wallet.picpay, 'Gasolina, corte, anticoncepcional, ChatGPT, óleo e gastos extras', ''],
+        ['Carteira eletrônica', wallet.carteira, 'Entretenimento/fim de semana restante', ''],
+        ['Guardado no Nubank', wallet.saved, 'Reserva/investimento; conta como dinheiro separado', ''],
+        ['Nubank livre', wallet.nubankFree, 'Sobra depois de separar pendências, variáveis e reserva', wallet.nubankFree < 0 ? 'negative' : 'free']
+      ];
+      walletBox.innerHTML=rows.map(([label,value,note,cls])=>`<div class="wallet-line ${cls||''}"><span>${label}<span class="wallet-note">${note}</span></span><strong>${fmt(value)}</strong></div>`).join('');
+    }
+    const setDistInput=(id,val)=>{ const el=$(id); if(el) el.value = Number(val||0).toFixed(2); };
+    setDistInput('#distPicpay', wallet.picpay);
+    setDistInput('#distNext', wallet.next);
+    setDistInput('#distNubankBills', wallet.nubankBills);
+    setDistInput('#distCarteira', wallet.carteira);
+    setDistInput('#distSaved', wallet.saved);
+    setDistInput('#distNubankFree', wallet.nubankFree);
+    const distributionBox=$('#salaryDistributionBox');
+    if(distributionBox){
+      const distributionRows=[
+        ['Enviar/manter no PicPay', wallet.picpay, 'Gasolina, corte de cabelo, anticoncepcional, ChatGPT, óleo e gastos extras'],
+        ['Enviar/manter no Next', wallet.next, 'Seguro do mês'],
+        ['Deixar no Nubank para contas', wallet.nubankBills, 'Internet, academia, suplementos e boletos/contas pendentes'],
+        ['Separar na carteira eletrônica', wallet.carteira, 'Entretenimento/fim de semana ainda disponível'],
+        ['Guardar/investir no Nubank', wallet.saved, 'Valor separado como reserva; não é dinheiro livre'],
+        ['Nubank livre', wallet.nubankFree, 'Sobra real depois de separar tudo']
+      ];
+      const separatedTotal = wallet.picpay + wallet.next + wallet.nubankBills + wallet.carteira + wallet.saved;
+      const checkTotal = separatedTotal + wallet.nubankFree;
+      distributionBox.innerHTML = [
+        `<div class="alert-box ${manualWallet?'warn':'ok'}" style="margin-bottom:4px">${manualWallet?'Distribuição manual salva':'Distribuição automática calculada'} para ${selectedPersonalMonth()}. Use isso como guia para deixar cada dinheiro na conta certa.</div>`,
+        ...distributionRows.map(([label,value,note])=>`<div class="wallet-line ${value<0?'negative':''}"><span>${label}<span class="wallet-note">${note}</span></span><strong>${fmt(value)}</strong></div>`),
+        `<div class="wallet-line"><span>Total separado<span class="wallet-note">PicPay + Next + Nubank contas + carteira + reserva</span></span><strong>${fmt(separatedTotal)}</strong></div>`,
+        `<div class="wallet-line"><span>Conferência<span class="wallet-note">Total separado + Nubank livre</span></span><strong>${fmt(checkTotal)}</strong></div>`
+      ].join('');
+    }
     const alert=$('#personalAlert');
     if(alert){
       alert.className='alert-box';
-      alert.textContent=`Mês ${selectedPersonalMonth()} ativo. Dinheiro guardado no Nubank conta como despesa/reserva e sai do disponível.`;
+      alert.textContent=`Mês ${selectedPersonalMonth()} ativo. Separe Nubank, Next, PicPay e carteira; pagamento da mãe sai direto do salário quando você registrar.`;
       if(month.closed){ alert.className='alert-box ok'; alert.textContent=`Mês ${selectedPersonalMonth()} finalizado. Para editar, altere valores normalmente ou limpe o mês.`; }
       else if(available<0){ alert.className='alert-box danger'; alert.textContent='Alerta: os gastos pagos/reservados já passaram do salário informado.'; }
-      else if(afterPending<0){ alert.className='alert-box warn'; alert.textContent='Atenção: se pagar todas as pendências, o salário não cobre tudo.'; }
-      else if(available>0){ alert.className='alert-box ok'; alert.textContent='Painel em ordem. Disponível agora desconta contas pagas, gasolina, entretenimento, dívida e dinheiro guardado.'; }
+      else if(afterPending<0){ alert.className='alert-box warn'; alert.textContent='Atenção: depois de separar contas, variáveis, mãe registrada e reserva, não sobra dinheiro livre.'; }
+      else if(available>0){ alert.className='alert-box ok'; alert.textContent='Painel em ordem. A distribuição automática usa sua tabela de custos do mês.'; }
     }
-    renderPersonalExpenses(); renderPersonalHistory(); savePersonal();
+    renderPersonalExpenses(); renderNubankVariables(); renderPersonalHistory(); savePersonal();
   }
   function renderPersonalExpenses(){
     const box=$('#personalExpenseList'); if(!box) return;
@@ -743,6 +964,18 @@ document.querySelectorAll('.block[data-seq="site"]').forEach(initSite);
       const paidInfo = e.id==='corte' ? `<div class="expense-note">Pago: ${fmt(expensePaidAmount(e))} de ${fmt(e.amount)}</div>` : '';
       return `<div class="expense-row" data-expense-id="${e.id}"><div class="expense-main"><div><div class="expense-name">${e.name} — ${fmt(e.amount)}</div><div class="expense-note">${e.note||''}</div>${paidInfo}<div class="expense-source">Pagamento: ${accountName(e.account)}</div></div><span class="expense-status ${e.status}">${statusLabel}</span></div><div class="expense-controls"><button type="button" class="btn ${e.status==='pago'?'dark':'green'}" data-exp-pay>${payLabel}</button><button type="button" class="btn dark" data-exp-edit>Editar</button><button type="button" class="btn reset" data-exp-del>Excluir</button></div></div>`;
     }).join('');
+  }
+  function renderNubankVariables(){
+    const box=$('#nubankVariableList'); if(!box) return;
+    const month=currentPersonalMonth();
+    const items = Array.isArray(month.nubankVariables) ? month.nubankVariables : [];
+    box.innerHTML = items.map(v=>{
+      const statusLabel = v.status==='pago' ? 'pago/reservado' : 'pendente';
+      const payLabel = v.status==='pago' ? 'Desmarcar' : 'Pagar';
+      const unitInfo = v.qty && v.unitAmount ? `${Number(v.qty)} x ${fmt(v.unitAmount)}` : '';
+      const durationInfo = v.duration ? ` • duração estimada: ${v.duration} mês(es) • custo mensal: ${fmt(Number(v.amount||0)/Number(v.duration||1))}` : '';
+      return `<div class="expense-row" data-nubank-var-id="${v.id}"><div class="expense-main"><div><div class="expense-name">${v.name || nubankVarLabel(v)} — ${fmt(v.amount)}</div><div class="expense-note">${nubankVarLabel(v)}${unitInfo ? ' • '+unitInfo : ''}${durationInfo}</div><div class="expense-source">Pagamento: PicPay</div></div><span class="expense-status ${v.status==='pago'?'pago':'pendente'}">${statusLabel}</span></div><div class="expense-controls"><button type="button" class="btn ${v.status==='pago'?'dark':'green'}" data-var-pay>${payLabel}</button><button type="button" class="btn dark" data-var-edit>Editar</button><button type="button" class="btn reset" data-var-del>Excluir</button></div></div>`;
+    }).join('') || '<div class="muted-line">Nenhum gasto extra do PicPay neste mês. Adicione óleo extra ou outro gasto que não seja conta/boleto.</div>';
   }
   function renderPersonalHistory(){
     const box=$('#personalHistory'); if(!box) return;
@@ -761,6 +994,17 @@ document.querySelectorAll('.block[data-seq="site"]').forEach(initSite);
     personal.months[key]=makePersonalMonth();
     savePersonal(); renderPersonal(); appToast('Mês limpo.');
   });
+  $('#resetBrowserFinanceBtn').addEventListener('click',()=>{
+    if(!confirm('Restaurar dados originais? Isso apaga os testes financeiros salvos neste navegador: caixa, pessoal, salários, gastos e histórico. A aba operacional UniTV não será apagada.')) return;
+    [CASH_KEY,CASH_MONTH_KEY,'jamesuni.cash.v29','jamesuni.cash.month.v29','jamesuni.cash.v28','jamesuni.cash.month.v28','jamesuni.cash.v27','jamesuni.cash.v2',PERSONAL_KEY,PERSONAL_MONTH_KEY,'jamesuni.personal.v3','jamesuni.personal.month.v3','jamesuni.personal.v2','jamesuni.personal.month.v2'].forEach(k=>{try{localStorage.removeItem(k)}catch(e){}});
+    cashState=JSON.parse(JSON.stringify(defaultCash));
+    personal={debt:{total:4600, paid:500}, months:{}, monthClosings:[]};
+    $('#cashMonth').value=monthISO();
+    $('#personalMonth').value=monthISO();
+    save(CASH_KEY,cashState); save(PERSONAL_KEY,personal);
+    localStorage.setItem(CASH_MONTH_KEY, monthISO()); localStorage.setItem(PERSONAL_MONTH_KEY, monthISO());
+    renderCash(); renderPersonal(); appToast('Dados financeiros restaurados para o original.');
+  });
   $('#closePersonalMonthBtn').addEventListener('click',()=>{
     const key=selectedPersonalMonth();
     const month=currentPersonalMonth();
@@ -773,7 +1017,73 @@ document.querySelectorAll('.block[data-seq="site"]').forEach(initSite);
     savePersonal(); renderPersonal(); appToast('Mês finalizado. Novo mês aberto limpo.');
   });
   $('#savePersonalBaseBtn').addEventListener('click',()=>{ const month=currentPersonalMonth(); month.salary=num($('#personalSalary').value); month.closed=false; savePersonal(); renderPersonal(); appToast('Salário salvo.'); });
+  $('#toggleMoneyPanelBtn').addEventListener('click',()=>{
+    const month=currentPersonalMonth();
+    month.moneyPanelOpen = !month.moneyPanelOpen;
+    savePersonal(); renderPersonal();
+    if(month.moneyPanelOpen){ const panel=$('#moneyPanel'); try{ panel&&panel.scrollIntoView({behavior:'smooth',block:'center'}); }catch(e){} }
+  });
+  $('#autoDistributeSalaryBtn').addEventListener('click',()=>{
+    const month=currentPersonalMonth();
+    month.walletManual={enabled:false};
+    month.moneyPanelOpen=true;
+    savePersonal(); renderPersonal();
+    appToast('Distribuição automática preenchida.');
+  });
+  $('#saveDistributionBtn').addEventListener('click',()=>{
+    const month=currentPersonalMonth();
+    month.walletManual={
+      enabled:true,
+      picpay:num($('#distPicpay').value),
+      next:num($('#distNext').value),
+      nubankBills:num($('#distNubankBills').value),
+      carteira:num($('#distCarteira').value),
+      saved:num($('#distSaved').value),
+      nubankFree:num($('#distNubankFree').value)
+    };
+    month.moneyPanelOpen=true;
+    month.closed=false;
+    savePersonal(); renderPersonal();
+    appToast('Ajuste manual salvo.');
+  });
   $('#addSavedBtn').addEventListener('click',()=>{ const amount=num($('#personalSavedAmount').value); if(!amount){appToast('Informe o valor guardado.');return;} const month=currentPersonalMonth(); month.saved=+(Number(month.saved||0)+amount).toFixed(2); month.closed=false; addPersonalHistory('Dinheiro guardado / investimento no Nubank', amount, 'saved'); $('#personalSavedAmount').value=''; savePersonal(); renderPersonal(); appToast('Valor guardado registrado como despesa/reserva.'); });
+  $('#addNubankVarBtn').addEventListener('click',()=>{
+    const month=currentPersonalMonth();
+    const category=$('#nubankVarType').value || 'outro';
+    const qty=Math.max(num($('#nubankVarQty').value), 0);
+    const unit=num($('#nubankVarUnit').value);
+    let amount=num($('#nubankVarTotal').value);
+    if(!amount && qty && unit) amount=+(qty*unit).toFixed(2);
+    if(!amount){ appToast('Informe o valor total ou quantidade x valor unitário.'); return; }
+    const labelDefault = category==='oleo' ? 'Óleo 10w30 Moto' : 'Gasto extra PicPay';
+    const name=($('#nubankVarName').value.trim() || labelDefault);
+    const status=$('#nubankVarStatus').value || 'pago';
+    const item={id:uid(),category,name,amount,status,qty:qty||0,unitAmount:unit||0,duration:num($('#nubankVarDuration').value)||0,date:todayISO(),note:''};
+    month.nubankVariables.unshift(item);
+    month.closed=false;
+    if(status==='pago') addPersonalHistory(`${name} (PicPay)`, amount, 'picpayVar');
+    $('#nubankVarName').value=''; $('#nubankVarQty').value=''; $('#nubankVarUnit').value=''; $('#nubankVarTotal').value=''; $('#nubankVarDuration').value=''; $('#nubankVarStatus').value='pago';
+    savePersonal(); renderPersonal(); appToast(status==='pago' ? 'Gasto extra PicPay registrado.' : 'Gasto extra PicPay adicionado como pendente.');
+  });
+  $('#nubankVariableList').addEventListener('click',e=>{
+    const row=e.target.closest('[data-nubank-var-id]'); if(!row) return;
+    const month=currentPersonalMonth();
+    const item=(month.nubankVariables||[]).find(x=>x.id===row.dataset.nubankVarId); if(!item) return;
+    if(e.target.matches('[data-var-pay]')){
+      month.closed=false;
+      if(item.status==='pago'){
+        item.status='pendente'; addPersonalHistory(`Desmarcou gasto extra PicPay: ${item.name}`, item.amount, 'undo');
+      } else {
+        item.status='pago'; addPersonalHistory(`${item.name} (PicPay)`, item.amount, 'picpayVar');
+      }
+      savePersonal(); renderPersonal(); appToast('Gasto extra PicPay atualizado.');
+    }
+    if(e.target.matches('[data-var-edit]')){
+      const nv=prompt('Novo valor total:', item.amount);
+      if(nv!==null){ item.amount=num(nv); item.name=prompt('Nome/descrição:', item.name||'')||item.name; const st=prompt('Status: pago ou pendente', item.status||'pago'); if(st==='pago'||st==='pendente') item.status=st; month.closed=false; savePersonal(); renderPersonal(); }
+    }
+    if(e.target.matches('[data-var-del]')){ if(confirm('Excluir este gasto extra do mês?')){ month.nubankVariables=(month.nubankVariables||[]).filter(x=>x.id!==item.id); month.closed=false; savePersonal(); renderPersonal(); } }
+  });
   $('#personalExpenseList').addEventListener('click',e=>{
     const row=e.target.closest('[data-expense-id]'); if(!row) return; const month=currentPersonalMonth(); const item=month.expenses.find(x=>x.id===row.dataset.expenseId); if(!item) return;
     if(e.target.matches('[data-exp-pay]')){
@@ -789,6 +1099,15 @@ document.querySelectorAll('.block[data-seq="site"]').forEach(initSite);
       } else if(item.status==='pago'){
         item.status='pendente'; addPersonalHistory(`Desmarcou pagamento: ${item.name}`, item.amount, 'undo');
       } else {
+        if(['suplementos','oleo'].includes(item.id)){
+          const label = item.id==='suplementos' ? 'Valor pago/previsto dos suplementos neste mês:' : 'Valor pago/previsto do óleo neste mês:';
+          const nv = prompt(label, Number(item.amount||0).toFixed(2));
+          if(nv===null) return;
+          const adjusted = num(nv);
+          if(adjusted>0) item.amount = adjusted;
+          if(item.id==='oleo') item.note = 'Valor ajustado ao marcar como pago. Se comprar mais no mês, edite ou adicione gasto extra PicPay.';
+          if(item.id==='suplementos') item.note = 'Valor ajustado ao marcar como pago. Base anterior: R$ 129/mês.';
+        }
         item.status='pago'; addPersonalHistory(`Pagou: ${item.name} (${accountName(item.account)})`, item.amount, 'bill');
       }
       savePersonal(); renderPersonal(); appToast('Conta atualizada.');
@@ -797,7 +1116,7 @@ document.querySelectorAll('.block[data-seq="site"]').forEach(initSite);
     if(e.target.matches('[data-exp-del]')){ if(confirm('Excluir este gasto do mês selecionado?')){ month.expenses=month.expenses.filter(x=>x.id!==item.id); month.closed=false; savePersonal(); renderPersonal(); } }
   });
   $('#addPersonalExpenseBtn').addEventListener('click',()=>{ const name=$('#newExpenseName').value.trim(); const amount=num($('#newExpenseAmount').value); if(!name||!amount){appToast('Informe nome e valor.');return;} const month=currentPersonalMonth(); month.expenses.push({id:uid(),name,amount,status:'pendente',type:$('#newExpenseType').value,account:$('#newExpenseAccount').value||'nubank',note:$('#newExpenseNote').value.trim()}); month.closed=false; $('#newExpenseName').value=''; $('#newExpenseAmount').value=''; $('#newExpenseAccount').value='nubank'; $('#newExpenseNote').value=''; savePersonal(); renderPersonal(); appToast('Gasto adicionado ao mês.'); });
-  $('#addDebtPaymentBtn').addEventListener('click',()=>{ const amount=num($('#debtPayment').value); if(!amount){appToast('Informe o valor.');return;} const month=currentPersonalMonth(); personal.debt.paid=+(Number(personal.debt.paid||0)+amount).toFixed(2); month.closed=false; addPersonalHistory('Pagamento dívida mãe (Nubank)', amount, 'debt'); $('#debtPayment').value=''; savePersonal(); renderPersonal(); appToast('Pagamento da dívida registrado.'); });
+  $('#addDebtPaymentBtn').addEventListener('click',()=>{ const amount=num($('#debtPayment').value); if(!amount){appToast('Informe o valor.');return;} const month=currentPersonalMonth(); const remaining=Math.max(Number(personal.debt.total||0)-Number(personal.debt.paid||0),0); const real=remaining>0?Math.min(amount,remaining):amount; personal.debt.paid=+(Number(personal.debt.paid||0)+real).toFixed(2); month.closed=false; addPersonalHistory('Pagamento dívida mãe (conta salário)', real, 'debt'); $('#debtPayment').value=''; savePersonal(); renderPersonal(); appToast('Pagamento da mãe registrado e descontado do salário.'); });
   $$('[data-ent]').forEach(btn=>btn.addEventListener('click',()=>registerEntertainment(num(btn.dataset.ent))));
   $('#addEntManualBtn').addEventListener('click',()=>registerEntertainment($('#entManual').value));
   function registerEntertainment(value){ const amount=num(value); if(!amount){appToast('Informe o valor.');return;} const month=currentPersonalMonth(); month.entertainment.used=+(Number(month.entertainment.used||0)+amount).toFixed(2); month.closed=false; addPersonalHistory('Entretenimento / fim de semana (Carteira eletrônica)', amount, 'entertainment'); $('#entManual').value=''; savePersonal(); renderPersonal(); appToast('Entretenimento registrado.'); }
