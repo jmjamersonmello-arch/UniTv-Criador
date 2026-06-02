@@ -17,7 +17,7 @@
 
 <div class="wrap">
   <div class="header app-top">
-    <div class="app-brand"><div><h1>JamesUni</h1><div class="app-subtitle">Caixa, criação UniTV e gastos pessoais em um só lugar.</div></div><span class="pill"><strong>v2.20</strong></span></div>
+    <div class="app-brand"><div><h1>JamesUni</h1><div class="app-subtitle">Caixa, criação UniTV e gastos pessoais em um só lugar.</div></div><span class="pill"><strong>v2.21</strong></span></div>
     <div class="main-nav">
       <button type="button" class="main-tab active" data-main-tab="caixa">Caixa</button>
       <button type="button" class="main-tab" data-main-tab="unitv">UniTV</button>
@@ -150,7 +150,7 @@
 
   <div class="panel" data-panel="site"><section class="block" data-key="site" data-limit="0" data-seq="site"><div class="counter-line"><div class="block-title">Site</div><div class="pill"><span>Registros:</span><strong class="counter">0</strong><span class="muted">• Próximo: <span class="det">Nº</span></span></div></div><div class="controls"><button class="btn paste" data-role="paste-number">Colar número</button><button class="btn sms" data-role="paste-sms">Colar SMS</button><button class="btn copy copy">Copiar</button><button class="btn reset reset" data-role="reset">Zerar</button></div><div class="secondary"><button class="btn sub undo" data-role="undo">⟲ Desfazer</button><button class="btn sub skip" data-role="skip">» Pular</button></div><div class="inline"><span>Código: <strong class="code-pill">—</strong></span><a class="toggle-sms" href="javascript:void(0)">Ver dados</a></div><div class="editor"></div><div class="status"><div class="left">Pronto.</div><div class="progress">0</div></div><div class="bar"><div class="fill"></div></div></section></div>
 
-  <div class="footer small"><div><b>Versão:</b> v2.20</div><div><b>Changelog:</b> Gastos pessoais mais inteligentes: menus recolhíveis, resumo por conta, PicPay ocultável, dívida corrigida para R$ 4.500,00 e diagnóstico automático.</div></div>
+  <div class="footer small"><div><b>Versão:</b> v2.21</div><div><b>Changelog:</b> Pessoal reorganizado: salário e dívida em botões recolhíveis no topo, óleo em 2x de R$ 45, controle mensal no final e explicação de Nubank livre.</div></div>
 
   </section>
 
@@ -165,23 +165,58 @@
         <div class="hero-title">Resumo pessoal</div>
         <div class="hero-row big"><span>Salário do mês</span><strong data-personal="salary">R$ 0,00</strong></div>
         <div class="hero-row"><span>Gastos previstos</span><strong data-personal="planned">R$ 0,00</strong></div>
-        <div class="hero-row"><span>Já saiu / reservado</span><strong data-personal="paid">R$ 0,00</strong></div>
+        <div class="hero-row"><span>Pago / reservado</span><strong data-personal="paid">R$ 0,00</strong></div>
         <div class="hero-row"><span>Guardado no Nubank</span><strong data-personal="saved">R$ 0,00</strong></div>
         <div class="hero-row"><span>Contas pendentes</span><strong data-personal="pending">R$ 0,00</strong></div>
         <div class="hero-row"><span>Extras PicPay</span><strong data-personal="nubankVar">R$ 0,00</strong></div>
         <div class="hero-row"><span>Variáveis restantes</span><strong data-personal="variableLeft">R$ 0,00</strong></div>
         <div class="hero-row"><span>Dívida mãe restante</span><strong data-personal="debtLeft">R$ 4.000,00</strong></div>
-        <div class="hero-row"><span>Disponível agora</span><strong data-personal="available">R$ 0,00</strong></div>
+        <div class="hero-row"><span>Sobra geral estimada</span><strong data-personal="available">R$ 0,00</strong></div>
         <div class="hero-row"><span>Sobra após pendências</span><strong data-personal="afterPending">R$ 0,00</strong></div>
+        <div class="muted-line" style="margin-top:10px">A sobra geral é só uma conferência. O controle principal é por conta: Nubank, PicPay, Next, carteira e conta salário.</div>
       </div>
 
       <div id="personalAlert" class="alert-box">Digite o salário e registre apenas o que saiu neste mês.</div>
 
       <div class="finance-card">
+        <button type="button" class="btn blue" id="toggleSalaryPanelBtn" style="width:100%">Salário do mês</button>
+        <div id="salaryPanel" class="collapse-panel">
+          <h3>Salário do mês</h3>
+          <p class="muted-line">Digite o salário recebido. Ao salvar, este menu fecha para deixar a tela limpa.</p>
+          <div class="form-grid">
+            <div class="field full"><label>Salário recebido</label><input id="personalSalary" type="number" step="0.01" placeholder="Ex: 2297,00"></div>
+            <div class="field full"><button type="button" class="btn blue" id="savePersonalBaseBtn">Confirmar salário</button></div>
+            <div class="field full"><label>Adicionar dinheiro guardado / investimento no Nubank</label><input id="personalSavedAmount" type="number" step="0.01" placeholder="Ex: 200,00"></div>
+            <div class="field full"><button type="button" class="btn purple" id="addSavedBtn">Guardar no Nubank</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="finance-card">
+        <button type="button" class="btn purple" id="toggleDebtPanelBtn" style="width:100%">Dívida com mãe</button>
+        <div id="debtPanel" class="collapse-panel">
+          <h3>Dívida com mãe</h3>
+          <div class="report-grid">
+            <div class="report-line"><span>Total da dívida</span><strong data-personal="debtTotal">R$ 4.500,00</strong></div>
+            <div class="report-line"><span>Já pago</span><strong data-personal="debtPaid">R$ 500,00</strong></div>
+            <div class="report-line"><span>Restante</span><strong data-personal="debtLeft2">R$ 4.000,00</strong></div>
+          </div>
+          <div class="form-grid" style="margin-top:10px">
+            <div class="field full"><p class="muted-line">Pagamento da mãe sai direto da conta salário. Ao registrar aqui, o valor subtrai do salário e reduz a dívida restante.</p></div>
+            <div class="field full"><label>Pagamento feito pela conta salário</label><input id="debtPayment" type="number" step="0.01" placeholder="Ex: 500,00"></div>
+            <div class="field full"><button type="button" class="btn purple" id="addDebtPaymentBtn">Registrar pagamento da mãe</button></div>
+            <div class="field"><label>Ajustar total da dívida</label><input id="debtTotalEdit" type="number" step="0.01" placeholder="Ex: 4500,00"></div>
+            <div class="field"><label>Ajustar já pago</label><input id="debtPaidEdit" type="number" step="0.01" placeholder="Ex: 500,00"></div>
+            <div class="field full"><button type="button" class="btn dark" id="saveDebtAdjustBtn">Salvar ajuste da dívida</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="finance-card">
         <button type="button" class="btn blue" id="toggleMoneyPanelBtn" style="width:100%">Onde está o dinheiro / distribuir salário</button>
         <div id="moneyPanel" style="display:none;margin-top:12px">
           <h3>Onde está o dinheiro</h3>
-          <p class="muted-line">Abra este menu para ver onde cada parte do salário deve ficar. Use o cálculo automático como guia e edite os valores se, na prática, você deixou dinheiro diferente em alguma conta.</p>
+          <p class="muted-line">Abra este menu para ver onde cada parte do salário deve ficar. Nubank livre é a sobra que fica no Nubank depois de separar PicPay, Next, carteira, contas e reserva; não é dinheiro de conta já marcada.</p>
           <div class="wallet-grid" id="personalWalletReport"></div>
 
           <div class="finance-card" style="box-shadow:none;margin-top:12px;background:rgba(0,0,0,.12)">
@@ -219,46 +254,6 @@
         <div id="smartPanel" class="collapse-panel">
           <h3>Diagnóstico inteligente</h3>
           <div id="smartPersonalBox" class="smart-grid"></div>
-        </div>
-      </div>
-
-      <div class="finance-card">
-        <h3>Controle mensal</h3>
-        <p class="muted-line">Cada mês agora fica separado. Ao trocar para junho, julho ou outro mês, o painel abre limpo para controlar só aquele mês.</p>
-        <div class="form-grid">
-          <div class="field full inline-actions">
-            <button type="button" class="btn reset" id="resetPersonalMonthBtn">Limpar mês atual</button>
-            <button type="button" class="btn dark" id="closePersonalMonthBtn">Finalizar mês e abrir próximo</button>
-            <button type="button" class="btn reset" id="resetBrowserFinanceBtn">Restaurar dados originais</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="finance-card">
-        <h3>Salário do mês</h3>
-        <p class="muted-line">Digite o salário. O pagamento da mãe sai direto da conta salário; registre o pagamento quando fizer. Separe Nubank, Next, PicPay e entretenimento. Só depois registre dinheiro guardado/investido no Nubank.</p>
-        <div class="form-grid">
-          <div class="field full"><label>Salário recebido</label><input id="personalSalary" type="number" step="0.01" placeholder="Ex: 2297,00"></div>
-          <div class="field full"><button type="button" class="btn blue" id="savePersonalBaseBtn">Salvar salário</button></div>
-          <div class="field full"><label>Adicionar dinheiro guardado / investimento no Nubank</label><input id="personalSavedAmount" type="number" step="0.01" placeholder="Ex: 200,00"></div>
-          <div class="field full"><button type="button" class="btn purple" id="addSavedBtn">Guardar no Nubank</button></div>
-        </div>
-      </div>
-
-      <div class="finance-card">
-        <h3>Dívida com mãe</h3>
-        <div class="report-grid">
-          <div class="report-line"><span>Total da dívida</span><strong data-personal="debtTotal">R$ 4.500,00</strong></div>
-          <div class="report-line"><span>Já pago</span><strong data-personal="debtPaid">R$ 500,00</strong></div>
-          <div class="report-line"><span>Restante</span><strong data-personal="debtLeft2">R$ 4.000,00</strong></div>
-        </div>
-        <div class="form-grid" style="margin-top:10px">
-          <div class="field full"><p class="muted-line">Pagamento da mãe sai direto da conta salário. Ao registrar aqui, o valor subtrai do salário disponível e reduz a dívida restante.</p></div>
-          <div class="field full"><label>Pagamento feito pela conta salário</label><input id="debtPayment" type="number" step="0.01" placeholder="Ex: 500,00"></div>
-          <div class="field full"><button type="button" class="btn purple" id="addDebtPaymentBtn">Registrar pagamento da mãe</button></div>
-          <div class="field"><label>Ajustar total da dívida</label><input id="debtTotalEdit" type="number" step="0.01" placeholder="Ex: 4500,00"></div>
-          <div class="field"><label>Ajustar já pago</label><input id="debtPaidEdit" type="number" step="0.01" placeholder="Ex: 500,00"></div>
-          <div class="field full"><button type="button" class="btn dark" id="saveDebtAdjustBtn">Salvar ajuste da dívida</button></div>
         </div>
       </div>
 
@@ -332,6 +327,19 @@
       </div>
 
       <div class="finance-card"><h3>Histórico pessoal</h3><div class="history-list" id="personalHistory"></div></div>
+
+      <div class="finance-card">
+        <h3>Controle mensal</h3>
+        <p class="muted-line">Cada mês agora fica separado. Ao trocar para junho, julho ou outro mês, o painel abre limpo para controlar só aquele mês.</p>
+        <div class="form-grid">
+          <div class="field full inline-actions">
+            <button type="button" class="btn reset" id="resetPersonalMonthBtn">Limpar mês atual</button>
+            <button type="button" class="btn dark" id="closePersonalMonthBtn">Finalizar mês e abrir próximo</button>
+            <button type="button" class="btn reset" id="resetBrowserFinanceBtn">Restaurar dados originais</button>
+          </div>
+        </div>
+      </div>
+
     </section>
   </section>
 
@@ -773,13 +781,13 @@ document.querySelectorAll('.block[data-seq="site"]').forEach(initSite);
   });
 
   // Gastos pessoais
-  const PERSONAL_KEY='jamesuni.personal.v7';
-  const PERSONAL_MONTH_KEY='jamesuni.personal.month.v7';
+  const PERSONAL_KEY='jamesuni.personal.v8';
+  const PERSONAL_MONTH_KEY='jamesuni.personal.month.v8';
   const defaultPersonalExpenses = [
     {id:'internet',name:'Internet',amount:105,status:'pendente',type:'mensal',account:'nubank',note:'1x por mês'},
     {id:'academia',name:'Academia',amount:100,status:'pendente',type:'mensal',account:'nubank',note:'1x por mês'},
     {id:'suplementos',name:'Suplementos',amount:129,status:'pendente',type:'mensal',account:'nubank',note:'Base mensal: creatina 500g + 3x Albumina Uevo = R$ 258 por 2 meses. Se vier outro valor, ajuste ao marcar como pago.'},
-    {id:'oleo',name:'Óleo 10w30 Moto',amount:45,status:'pendente',type:'variavel',account:'picpay',note:'Base: R$ 45. Se comprar 2 ou mais no mês, ajuste o valor ao marcar como pago. Sai do PicPay.'},
+    {id:'oleo',name:'Óleo 10w30 Moto',amount:90,status:'pendente',type:'variavel',account:'picpay',note:'R$ 45 por óleo; base 2 óleos no mês. Se comprar só 1, fica parcial 1/2.',unitAmount:45,totalCount:2,paidCount:0},
     {id:'chatgpt',name:'ChatGPT',amount:5,status:'pendente',type:'mensal',account:'picpay',note:'1x por mês; sai do PicPay'},
     {id:'corte',name:'Corte de cabelo',amount:60,status:'pendente',type:'mensal',account:'picpay',note:'R$ 30 por corte; só fica pago no 2º corte do mês',unitAmount:30,totalCount:2,paidCount:0},
     {id:'anticoncepcional',name:'Anticoncepcional',amount:10,status:'pendente',type:'mensal',account:'picpay',note:'1x por mês'},
@@ -801,6 +809,8 @@ document.querySelectorAll('.block[data-seq="site"]').forEach(initSite);
       accountsPanelOpen:false,
       smartPanelOpen:false,
       picpayExtraOpen:false,
+      salaryPanelOpen:false,
+      debtPanelOpen:false,
       walletManual:{enabled:false}
     };
   }
@@ -840,7 +850,12 @@ document.querySelectorAll('.block[data-seq="site"]').forEach(initSite);
         if(e.paidCount>=2) e.status='pago'; else if(e.paidCount===1) e.status='parcial'; else e.status='pendente';
       }
       if(e.id==='suplementos'){ e.account='nubank'; if(!e.amount) e.amount=129; e.note='Base mensal: creatina 500g + 3x Albumina Uevo = R$ 258 por 2 meses. Se vier outro valor, ajuste ao marcar como pago.'; }
-      if(e.id==='oleo'){ e.account='picpay'; if(!e.amount) e.amount=45; e.note='Base: R$ 45. Se comprar 2 ou mais no mês, ajuste o valor ao marcar como pago. Sai do PicPay.'; }
+      if(e.id==='oleo'){
+        e.amount=90; e.unitAmount=45; e.totalCount=2; e.account='picpay';
+        e.note='R$ 45 por óleo; base 2 óleos no mês. Se comprar só 1, fica parcial 1/2.';
+        if(typeof e.paidCount !== 'number') e.paidCount = e.status==='pago' ? 2 : 0;
+        if(e.paidCount>=2) e.status='pago'; else if(e.paidCount===1) e.status='parcial'; else e.status='pendente';
+      }
       if(e.id==='chatgpt'){ e.account='picpay'; e.note='1x por mês; sai do PicPay'; }
       if(e.id==='seguro'){ e.account='next'; e.note='Vence dia 01; até novembro; sai do Next'; }
       if(def.name && !e.name) e.name=def.name;
@@ -853,6 +868,8 @@ document.querySelectorAll('.block[data-seq="site"]').forEach(initSite);
     m.accountsPanelOpen = !!m.accountsPanelOpen;
     m.smartPanelOpen = !!m.smartPanelOpen;
     m.picpayExtraOpen = !!m.picpayExtraOpen;
+    m.salaryPanelOpen = !!m.salaryPanelOpen;
+    m.debtPanelOpen = !!m.debtPanelOpen;
     m.walletManual = Object.assign({enabled:false}, m.walletManual||{});
     m.closed = !!m.closed;
     return m;
@@ -870,7 +887,7 @@ document.querySelectorAll('.block[data-seq="site"]').forEach(initSite);
     month.history.unshift({id:uid(),date:todayISO(),month:selectedPersonalMonth(),text,amount:Number(amount||0),kind});
   }
   function expensePaidAmount(e){
-    if(e.id==='corte') return Math.min(Number(e.paidCount||0), Number(e.totalCount||2)) * Number(e.unitAmount||30);
+    if(e.id==='corte' || e.id==='oleo') return Math.min(Number(e.paidCount||0), Number(e.totalCount||2)) * Number(e.unitAmount||30);
     return e.status==='pago' ? Number(e.amount||0) : 0;
   }
   function expensePendingAmount(e){ return Math.max(Number(e.amount||0) - expensePaidAmount(e), 0); }
@@ -878,9 +895,9 @@ document.querySelectorAll('.block[data-seq="site"]').forEach(initSite);
   function nubankVarPendingAmount(v){ return v.status==='pendente' ? Number(v.amount||0) : 0; }
   function nubankVarLabel(v){ return {oleo:'Óleo 10w30',suplemento:'Suplemento',outro:'Outro PicPay'}[v.category] || 'PicPay'; }
   function expenseStatusLabel(e){
-    if(e.id==='corte'){
+    if(e.id==='corte' || e.id==='oleo'){
       const paid = Math.min(Number(e.paidCount||0), Number(e.totalCount||2));
-      if(paid>=Number(e.totalCount||2)) return 'pago 2/2';
+      if(paid>=Number(e.totalCount||2)) return `pago ${Number(e.totalCount||2)}/${Number(e.totalCount||2)}`;
       if(paid>0) return `parcial ${paid}/${Number(e.totalCount||2)}`;
       return 'pendente';
     }
@@ -901,7 +918,7 @@ document.querySelectorAll('.block[data-seq="site"]').forEach(initSite);
       picpay:{title:'PicPay',note:'Gastos que não são contas/boletos',items:[],now:wallet.picpay},
       carteira:{title:'Carteira eletrônica',note:'Entretenimento/fim de semana',items:[],now:wallet.carteira},
       guardado:{title:'Guardado no Nubank',note:'Reserva/investimento separado; não é dinheiro livre',items:[],now:wallet.saved},
-      livre:{title:'Nubank livre',note:'Sobra depois de separar todos os destinos',items:[],now:wallet.nubankFree}
+      livre:{title:'Nubank livre',note:'Sobra no Nubank após separar todos os destinos',items:[],now:wallet.nubankFree}
     };
     const addItem=(acc,name,amount,status,note='')=>{
       if(!groups[acc]) return;
@@ -1026,7 +1043,7 @@ document.querySelectorAll('.block[data-seq="site"]').forEach(initSite);
         ['Deixar no Nubank para contas', wallet.nubankBills, 'Internet, academia, suplementos e boletos/contas pendentes'],
         ['Separar na carteira eletrônica', wallet.carteira, 'Entretenimento/fim de semana ainda disponível'],
         ['Guardar/investir no Nubank', wallet.saved, 'Valor separado como reserva; não é dinheiro livre'],
-        ['Nubank livre', wallet.nubankFree, 'Sobra real depois de separar tudo']
+        ['Nubank livre', wallet.nubankFree, 'Dinheiro que sobra no Nubank depois de separar PicPay, Next, carteira, contas e reserva. Não é conta, não é dívida e não é investimento.']
       ];
       const separatedTotal = wallet.picpay + wallet.next + wallet.nubankBills + wallet.carteira + wallet.saved;
       const checkTotal = separatedTotal + wallet.nubankFree;
@@ -1042,6 +1059,12 @@ document.querySelectorAll('.block[data-seq="site"]').forEach(initSite);
     const picpayPanel=$('#picpayExtraPanel'); const picpayBtn=$('#togglePicpayExtraBtn');
     if(picpayPanel) picpayPanel.classList.toggle('show', !!month.picpayExtraOpen);
     if(picpayBtn) picpayBtn.textContent = month.picpayExtraOpen ? 'Ocultar gastos extras do PicPay' : 'Gastos extras do PicPay';
+    const salaryPanel=$('#salaryPanel'); const salaryBtn=$('#toggleSalaryPanelBtn');
+    if(salaryPanel) salaryPanel.classList.toggle('show', !!month.salaryPanelOpen);
+    if(salaryBtn) salaryBtn.textContent = month.salaryPanelOpen ? 'Ocultar salário do mês' : 'Salário do mês';
+    const debtPanel=$('#debtPanel'); const debtBtn=$('#toggleDebtPanelBtn');
+    if(debtPanel) debtPanel.classList.toggle('show', !!month.debtPanelOpen);
+    if(debtBtn) debtBtn.textContent = month.debtPanelOpen ? 'Ocultar dívida com mãe' : 'Dívida com mãe';
     const alert=$('#personalAlert');
     if(alert){
       alert.className='alert-box';
@@ -1058,8 +1081,10 @@ document.querySelectorAll('.block[data-seq="site"]').forEach(initSite);
     const month=currentPersonalMonth();
     box.innerHTML = month.expenses.map(e=>{
       const statusLabel = expenseStatusLabel(e);
-      const payLabel = e.id==='corte' && e.status!=='pago' ? `Pagar corte ${Math.min(Number(e.paidCount||0)+1, Number(e.totalCount||2))}/${Number(e.totalCount||2)}` : (e.status==='pago'?'Desmarcar':'Pagar');
-      const paidInfo = e.id==='corte' ? `<div class="expense-note">Pago: ${fmt(expensePaidAmount(e))} de ${fmt(e.amount)}</div>` : '';
+      const isMulti = e.id==='corte' || e.id==='oleo';
+      const partName = e.id==='oleo' ? 'óleo' : 'corte';
+      const payLabel = isMulti && e.status!=='pago' ? `Pagar ${partName} ${Math.min(Number(e.paidCount||0)+1, Number(e.totalCount||2))}/${Number(e.totalCount||2)}` : (e.status==='pago'?'Desmarcar':'Pagar');
+      const paidInfo = isMulti ? `<div class="expense-note">Pago: ${fmt(expensePaidAmount(e))} de ${fmt(e.amount)}</div>` : '';
       return `<div class="expense-row" data-expense-id="${e.id}"><div class="expense-main"><div><div class="expense-name">${e.name} — ${fmt(e.amount)}</div><div class="expense-note">${e.note||''}</div>${paidInfo}<div class="expense-source">Pagamento: ${accountName(e.account)}</div></div><span class="expense-status ${e.status}">${statusLabel}</span></div><div class="expense-controls"><button type="button" class="btn ${e.status==='pago'?'dark':'green'}" data-exp-pay>${payLabel}</button><button type="button" class="btn dark" data-exp-edit>Editar</button><button type="button" class="btn reset" data-exp-del>Excluir</button></div></div>`;
     }).join('');
   }
@@ -1094,7 +1119,7 @@ document.querySelectorAll('.block[data-seq="site"]').forEach(initSite);
   });
   $('#resetBrowserFinanceBtn').addEventListener('click',()=>{
     if(!confirm('Restaurar dados originais? Isso apaga os testes financeiros salvos neste navegador: caixa, pessoal, salários, gastos e histórico. A aba operacional UniTV não será apagada.')) return;
-    [CASH_KEY,CASH_MONTH_KEY,'jamesuni.cash.v29','jamesuni.cash.month.v29','jamesuni.cash.v28','jamesuni.cash.month.v28','jamesuni.cash.v27','jamesuni.cash.v2',PERSONAL_KEY,PERSONAL_MONTH_KEY,'jamesuni.personal.v6','jamesuni.personal.month.v6','jamesuni.personal.v3','jamesuni.personal.month.v3','jamesuni.personal.v2','jamesuni.personal.month.v2'].forEach(k=>{try{localStorage.removeItem(k)}catch(e){}});
+    [CASH_KEY,CASH_MONTH_KEY,'jamesuni.cash.v29','jamesuni.cash.month.v29','jamesuni.cash.v28','jamesuni.cash.month.v28','jamesuni.cash.v27','jamesuni.cash.v2',PERSONAL_KEY,PERSONAL_MONTH_KEY,'jamesuni.personal.v7','jamesuni.personal.month.v7','jamesuni.personal.v6','jamesuni.personal.month.v6','jamesuni.personal.v3','jamesuni.personal.month.v3','jamesuni.personal.v2','jamesuni.personal.month.v2'].forEach(k=>{try{localStorage.removeItem(k)}catch(e){}});
     cashState=JSON.parse(JSON.stringify(defaultCash));
     personal={debt:{total:4500, paid:500}, months:{}, monthClosings:[]};
     $('#cashMonth').value=monthISO();
@@ -1114,7 +1139,9 @@ document.querySelectorAll('.block[data-seq="site"]').forEach(initSite);
     currentPersonalMonth();
     savePersonal(); renderPersonal(); appToast('Mês finalizado. Novo mês aberto limpo.');
   });
-  $('#savePersonalBaseBtn').addEventListener('click',()=>{ const month=currentPersonalMonth(); month.salary=num($('#personalSalary').value); month.closed=false; savePersonal(); renderPersonal(); appToast('Salário salvo.'); });
+  $('#toggleSalaryPanelBtn').addEventListener('click',()=>{ const month=currentPersonalMonth(); month.salaryPanelOpen = !month.salaryPanelOpen; savePersonal(); renderPersonal(); });
+  $('#toggleDebtPanelBtn').addEventListener('click',()=>{ const month=currentPersonalMonth(); month.debtPanelOpen = !month.debtPanelOpen; savePersonal(); renderPersonal(); });
+  $('#savePersonalBaseBtn').addEventListener('click',()=>{ const month=currentPersonalMonth(); month.salary=num($('#personalSalary').value); month.salaryPanelOpen=false; month.closed=false; savePersonal(); renderPersonal(); appToast('Salário salvo.'); });
   $('#toggleMoneyPanelBtn').addEventListener('click',()=>{
     const month=currentPersonalMonth();
     month.moneyPanelOpen = !month.moneyPanelOpen;
@@ -1168,6 +1195,7 @@ document.querySelectorAll('.block[data-seq="site"]').forEach(initSite);
     if(!total){ appToast('Informe o total da dívida.'); return; }
     personal.debt.total=total;
     personal.debt.paid=Math.min(Math.max(paid,0), total);
+    currentPersonalMonth().debtPanelOpen=false;
     savePersonal(); renderPersonal(); appToast('Dívida ajustada.');
   });
   $('#addSavedBtn').addEventListener('click',()=>{ const amount=num($('#personalSavedAmount').value); if(!amount){appToast('Informe o valor guardado.');return;} const month=currentPersonalMonth(); month.saved=+(Number(month.saved||0)+amount).toFixed(2); month.closed=false; addPersonalHistory('Dinheiro guardado / investimento no Nubank', amount, 'saved'); $('#personalSavedAmount').value=''; savePersonal(); renderPersonal(); appToast('Valor guardado registrado como despesa/reserva.'); });
@@ -1212,35 +1240,34 @@ document.querySelectorAll('.block[data-seq="site"]').forEach(initSite);
     const row=e.target.closest('[data-expense-id]'); if(!row) return; const month=currentPersonalMonth(); const item=month.expenses.find(x=>x.id===row.dataset.expenseId); if(!item) return;
     if(e.target.matches('[data-exp-pay]')){
       month.closed=false;
-      if(item.id==='corte'){
+      if(item.id==='corte' || item.id==='oleo'){
+        const partName = item.id==='oleo' ? 'óleo da moto' : 'corte de cabelo';
         if(item.status==='pago'){
-          item.paidCount=0; item.status='pendente'; addPersonalHistory('Desmarcou corte de cabelo', item.amount, 'undo');
+          item.paidCount=0; item.status='pendente'; addPersonalHistory(`Desmarcou ${partName}`, item.amount, 'undo');
         } else {
           item.paidCount = Math.min(Number(item.totalCount||2), Number(item.paidCount||0)+1);
           item.status = item.paidCount >= Number(item.totalCount||2) ? 'pago' : 'parcial';
-          addPersonalHistory(`Pagou corte de cabelo ${item.paidCount}/${Number(item.totalCount||2)} (${accountName(item.account)})`, Number(item.unitAmount||30), 'bill');
+          addPersonalHistory(`Pagou ${partName} ${item.paidCount}/${Number(item.totalCount||2)} (${accountName(item.account)})`, Number(item.unitAmount||30), 'bill');
         }
       } else if(item.status==='pago'){
         item.status='pendente'; addPersonalHistory(`Desmarcou pagamento: ${item.name}`, item.amount, 'undo');
       } else {
-        if(['suplementos','oleo'].includes(item.id)){
-          const label = item.id==='suplementos' ? 'Valor pago/previsto dos suplementos neste mês:' : 'Valor pago/previsto do óleo neste mês:';
-          const nv = prompt(label, Number(item.amount||0).toFixed(2));
+        if(item.id==='suplementos'){
+          const nv = prompt('Valor pago/previsto dos suplementos neste mês:', Number(item.amount||0).toFixed(2));
           if(nv===null) return;
           const adjusted = num(nv);
           if(adjusted>0) item.amount = adjusted;
-          if(item.id==='oleo') item.note = 'Valor ajustado ao marcar como pago. Se comprar mais no mês, edite ou adicione gasto extra PicPay.';
-          if(item.id==='suplementos') item.note = 'Valor ajustado ao marcar como pago. Base anterior: R$ 129/mês.';
+          item.note = 'Valor ajustado ao marcar como pago. Base anterior: R$ 129/mês.';
         }
         item.status='pago'; addPersonalHistory(`Pagou: ${item.name} (${accountName(item.account)})`, item.amount, 'bill');
       }
       savePersonal(); renderPersonal(); appToast('Conta atualizada.');
     }
-    if(e.target.matches('[data-exp-edit]')){ const nv=prompt('Novo valor:', item.amount); if(nv!==null){ item.amount=num(nv); if(item.id==='corte'){ item.totalCount=2; item.unitAmount=+(item.amount/2).toFixed(2); } item.note=prompt('Observação:', item.note||'')||item.note; month.closed=false; savePersonal(); renderPersonal(); } }
+    if(e.target.matches('[data-exp-edit]')){ const nv=prompt('Novo valor:', item.amount); if(nv!==null){ item.amount=num(nv); if(item.id==='corte'||item.id==='oleo'){ item.totalCount=2; item.unitAmount=+(item.amount/2).toFixed(2); } item.note=prompt('Observação:', item.note||'')||item.note; month.closed=false; savePersonal(); renderPersonal(); } }
     if(e.target.matches('[data-exp-del]')){ if(confirm('Excluir este gasto do mês selecionado?')){ month.expenses=month.expenses.filter(x=>x.id!==item.id); month.closed=false; savePersonal(); renderPersonal(); } }
   });
   $('#addPersonalExpenseBtn').addEventListener('click',()=>{ const name=$('#newExpenseName').value.trim(); const amount=num($('#newExpenseAmount').value); if(!name||!amount){appToast('Informe nome e valor.');return;} const month=currentPersonalMonth(); month.expenses.push({id:uid(),name,amount,status:'pendente',type:$('#newExpenseType').value,account:$('#newExpenseAccount').value||'nubank',note:$('#newExpenseNote').value.trim()}); month.closed=false; $('#newExpenseName').value=''; $('#newExpenseAmount').value=''; $('#newExpenseAccount').value='picpay'; $('#newExpenseNote').value=''; savePersonal(); renderPersonal(); appToast('Gasto adicionado ao mês.'); });
-  $('#addDebtPaymentBtn').addEventListener('click',()=>{ const amount=num($('#debtPayment').value); if(!amount){appToast('Informe o valor.');return;} const month=currentPersonalMonth(); const remaining=Math.max(Number(personal.debt.total||0)-Number(personal.debt.paid||0),0); const real=remaining>0?Math.min(amount,remaining):amount; personal.debt.paid=+(Number(personal.debt.paid||0)+real).toFixed(2); month.closed=false; addPersonalHistory('Pagamento dívida mãe (conta salário)', real, 'debt'); $('#debtPayment').value=''; savePersonal(); renderPersonal(); appToast('Pagamento da mãe registrado e descontado do salário.'); });
+  $('#addDebtPaymentBtn').addEventListener('click',()=>{ const amount=num($('#debtPayment').value); if(!amount){appToast('Informe o valor.');return;} const month=currentPersonalMonth(); const remaining=Math.max(Number(personal.debt.total||0)-Number(personal.debt.paid||0),0); const real=remaining>0?Math.min(amount,remaining):amount; personal.debt.paid=+(Number(personal.debt.paid||0)+real).toFixed(2); month.debtPanelOpen=false; month.closed=false; addPersonalHistory('Pagamento dívida mãe (conta salário)', real, 'debt'); $('#debtPayment').value=''; savePersonal(); renderPersonal(); appToast('Pagamento da mãe registrado e descontado do salário.'); });
   $$('[data-ent]').forEach(btn=>btn.addEventListener('click',()=>registerEntertainment(num(btn.dataset.ent))));
   $('#addEntManualBtn').addEventListener('click',()=>registerEntertainment($('#entManual').value));
   function registerEntertainment(value){ const amount=num(value); if(!amount){appToast('Informe o valor.');return;} const month=currentPersonalMonth(); month.entertainment.used=+(Number(month.entertainment.used||0)+amount).toFixed(2); month.closed=false; addPersonalHistory('Entretenimento / fim de semana (Carteira eletrônica)', amount, 'entertainment'); $('#entManual').value=''; savePersonal(); renderPersonal(); appToast('Entretenimento registrado.'); }
