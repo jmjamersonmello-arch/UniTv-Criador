@@ -133,7 +133,7 @@
 <div class="panel" data-panel="emails" role="tabpanel"><section class="block" data-key="emails" data-limit="1" data-seq="emails"><div class="counter-line"><div class="block-title">E-mail</div><div class="pill"><span>Gerados:</span><strong class="counter">0</strong><span class="muted">• Guardados: <span class="det">0</span></span></div></div><div class="controls"><button class="btn paste" data-role="paste-email" type="button">Gerar aliás</button><button class="btn paste" data-role="gen-email" type="button">Gerar e-mail</button><button class="btn paste" data-role="paste-login" type="button">Colar e-mail</button><button class="btn paste" data-role="paste-code" type="button">Colar Código</button><button class="btn copy copy" type="button">Copiar <span class="muted">(restantes: 0)</span></button><button class="btn reset reset" data-role="reset" type="button">Zerar</button></div><div class="inline"><span>Código: <strong class="email-code-pill">—</strong> <span class="muted">• Cópias: <strong class="email-copies">0</strong></span></span><button class="toggle-sms" type="button">Ver e-mails</button></div><div class="editor"></div><div class="status"><div class="left">Fase 0 de 2 · Próximo: Gerar e-mails</div><div class="progress">0/0</div></div><div class="bar"><div class="fill"></div></div></section></div>
 <div class="panel" data-panel="account" role="tabpanel"><section class="block" data-key="account" data-limit="0" data-seq="account"><div class="counter-line"><div class="block-title">Conta formatada</div><div class="pill"><span>Contas:</span><strong class="counter">0</strong><span class="muted">• Próximo: <span class="det">Colar conta</span></span></div></div><div class="controls"><button class="btn paste" data-role="account-action" type="button">Colar conta</button><button class="btn sms" data-role="code-action" type="button">Colar códigos</button><button class="btn reset reset" data-role="reset" type="button" style="grid-column:1/-1">Limpar conta</button></div><div class="inline"><span>Atual: <strong class="code-pill">—</strong></span><button class="toggle-sms" type="button">Ver dados</button></div><div class="editor"></div><div class="status"><div class="left">Cole uma ou várias contas do cliente.</div><div class="progress">0 contas · 0 códigos</div></div><div class="bar"><div class="fill"></div></div></section></div>
 <div class="panel" data-panel="site" role="tabpanel"><section class="block" data-key="site" data-limit="8" data-seq="site-create-account"><div class="counter-line"><div class="block-title">Site</div><div class="pill"><span>Etapas:</span><strong class="counter">0</strong><span class="muted">• Próximo: <span class="det">—</span></span></div></div><div class="controls"><button class="btn paste" data-role="gen-copy" type="button">Gerar e copiar</button><button class="btn reset reset" data-role="reset" type="button">Limpar</button></div><div class="inline"><span>Senha padrão: <strong class="pass-pill">554090q</strong></span><button class="toggle-sms" type="button">Ver dados</button></div><div class="editor"></div><div class="status"><div class="left">Clique em Gerar e copiar para criar tudo e copiar o Gmail temporário.</div><div class="progress">0/8</div></div><div class="bar"><div class="fill"></div></div></section></div>
-<div class="footer small"><div><b>Versão:</b> v2.60</div><div><b>Changelog:</b> Conta completa por número: telefone exibido com espaços para melhor leitura, mantendo a cópia operacional sem formatação.</div></div>
+<div class="footer small"><div><b>Versão:</b> v2.61</div><div><b>Changelog:</b> Fluxo por número: após copiar a última conta completa disponível, o lote é zerado automaticamente e volta para Colar número.</div></div>
 </section>
 <section class="main-panel" data-main-panel="pessoal">
 <section class="block finance">
@@ -583,7 +583,24 @@ async function copyNumberStep(step){
   else if(step.kind==='sms-number')step.item.tripletStage=1;
   else if(step.kind==='code')step.item.tripletStage=2;
   else if(step.kind==='password'){step.item.tripletStage=3;step.item.tripletDone=true}
-  else if(step.kind==='account'){step.item.accountDone=true;st.completedAccounts=st.numItems.filter(x=>x.accountDone).length}
+  else if(step.kind==='account'){
+    step.item.accountDone=true;
+    st.completedAccounts=st.numItems.filter(x=>x.accountDone).length;
+    // Se não restar nenhuma conta pronta/etapa de SMS para concluir, encerra todo o lote.
+    // Números que ainda estavam apenas aguardando SMS são descartados para o próximo ciclo
+    // começar limpo em "Colar número".
+    if(!tripletPendingItems().length&&!accountPendingItems().length){
+      st.numItems=[];
+      st.completedAccounts=0;
+      st.nextSmsOrder=0;
+      editor.textContent='';
+      editor.classList.remove('show');
+      toastOK('Conta completa copiada! Ciclo zerado.');
+      buzz();
+      update();
+      return;
+    }
+  }
   toastOK(`${step.label} copiado!`);buzz();update();
 }
 async function numberFlow(){
