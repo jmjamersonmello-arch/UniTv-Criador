@@ -10,16 +10,328 @@
 *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;color:var(--txt);background:radial-gradient(1000px 600px at 30% -10%,rgba(124,58,237,.35),transparent 60%),radial-gradient(900px 520px at 80% 10%,rgba(34,211,238,.25),transparent 55%),linear-gradient(180deg,var(--bg2),var(--bg1));min-height:100vh;display:flex;justify-content:center}.wrap{width:min(480px,100%);padding:16px 12px 30px}.header,.block{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid var(--line);box-shadow:var(--shadow)}.header{padding:16px 16px 8px;border-radius:var(--r2)}h1{margin:0;font-weight:850;font-size:30px}.tabs{margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:10px}.tab{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid var(--line);border-radius:14px;padding:10px;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:space-between;gap:8px;color:var(--txt);box-shadow:0 10px 22px rgba(0,0,0,.25);cursor:pointer;user-select:none}.tab.active{border-color:rgba(99,102,241,.65);box-shadow:0 0 0 2px rgba(99,102,241,.25),0 10px 22px rgba(0,0,0,.25)}.badge{font-size:12px;color:var(--mut);font-weight:900;display:flex;align-items:center;gap:7px}.dot{width:9px;height:9px;border-radius:99px;background:rgba(255,255,255,.12);border:1px solid var(--line)}.dot.on{background:rgba(124,58,237,.8);border-color:rgba(124,58,237,.8);box-shadow:0 0 0 3px rgba(124,58,237,.18)}.panel{margin-top:12px;display:none}.panel.active{display:block}.block{border-radius:var(--r2);padding:14px;position:relative}.block-title{font-weight:850;font-size:26px;margin:0 0 10px}.counter-line{display:flex;justify-content:space-between;align-items:center;margin:0 0 10px;color:var(--mut);font-weight:800}.controls,.secondary{display:grid;grid-template-columns:1fr 1fr;gap:10px}.secondary{margin-top:10px}.btn{border:0;border-radius:14px;padding:11px 10px;font-weight:900;font-size:15px;cursor:pointer;color:#071021;box-shadow:0 14px 26px rgba(0,0,0,.22);user-select:none}.btn:active{transform:translateY(1px)}.btn:disabled{opacity:.45;cursor:not-allowed}.btn.paste{background:linear-gradient(135deg,rgba(96,165,250,1),rgba(34,211,238,1))}.btn.sms{background:linear-gradient(135deg,rgba(52,211,153,1),rgba(34,197,94,1))}.btn.copy{background:linear-gradient(135deg,rgba(167,139,250,1),rgba(236,72,153,1));color:#0a0b16}.btn.reset{background:linear-gradient(135deg,rgba(244,63,94,.22),rgba(124,58,237,.18));color:rgba(234,240,255,.65);border:1px solid rgba(255,255,255,.08)}.btn.sub{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));color:var(--txt);border:1px solid var(--line)}.inline{margin-top:10px;display:flex;justify-content:space-between;align-items:center;color:var(--mut);font-weight:800}.inline a{color:var(--txt);text-decoration:underline;font-weight:900}.editor{display:none;margin-top:10px;background:rgba(0,0,0,.18);border:1px solid var(--line);border-radius:16px;padding:12px;color:rgba(234,240,255,.82);font-size:14px;line-height:1.35;max-height:240px;overflow:auto;white-space:pre-wrap}.editor.show{display:block}.status{margin-top:10px;display:flex;justify-content:space-between;align-items:center;gap:10px;color:var(--mut);font-weight:850}.progress{font-weight:900;color:rgba(234,240,255,.78)}.bar{margin-top:10px;height:10px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.06);border-radius:999px;overflow:hidden}.fill{height:100%;width:0%;background:linear-gradient(90deg,rgba(124,58,237,1),rgba(34,211,238,1));border-radius:999px;transition:width .22s ease}.bar.complete .fill{background:linear-gradient(90deg,rgba(52,211,153,1),rgba(34,197,94,1))}.toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:rgba(10,15,36,.92);border:1px solid rgba(255,255,255,.10);color:rgba(234,240,255,.92);padding:10px 12px;border-radius:14px;box-shadow:0 18px 40px rgba(0,0,0,.4);font-weight:850;display:none;z-index:50}.toast.show{display:block}.footer{margin-top:14px;color:rgba(234,240,255,.55);font-weight:850;line-height:1.55;padding:10px 2px 0}.small{font-size:14px}.pill{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.10);background:rgba(0,0,0,.14);color:rgba(234,240,255,.75);font-weight:900}.pill strong{color:rgba(234,240,255,.92)}.muted{color:rgba(234,240,255,.55);font-weight:850}
 
 /* ===== JamesUni v2.0 - menu principal, caixa e pessoal ===== */
-.app-top{margin-bottom:12px;padding-bottom:14px}.app-brand{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}.app-brand h1{font-size:30px}.app-subtitle{margin-top:4px;color:var(--mut);font-weight:850;font-size:13px}.main-nav{margin-top:14px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px}.main-tab{border:1px solid var(--line);border-radius:16px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));color:var(--txt);padding:12px 8px;font-weight:950;font-size:14px;box-shadow:0 10px 22px rgba(0,0,0,.25);cursor:pointer}.main-tab.active{border-color:rgba(34,211,238,.7);box-shadow:0 0 0 2px rgba(34,211,238,.18),0 10px 22px rgba(0,0,0,.25)}.main-panel{display:none}.main-panel.active{display:block}.unitv-shell .header{margin-bottom:12px}.unitv-shell .header h1{font-size:26px}.finance{margin-top:12px}.section-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}.section-head h2{margin:0;font-size:26px;letter-spacing:-.02em}.section-head p{margin:4px 0 0;color:var(--mut);font-weight:800;font-size:13px;line-height:1.35}.month-filter{display:flex;gap:8px;align-items:center;justify-content:flex-end;flex-wrap:wrap}.month-filter label{font-size:12px;font-weight:900;color:var(--mut)}.hero-card,.finance-card,.mini-card,.action-sheet{border:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.025));border-radius:20px;box-shadow:0 12px 28px rgba(0,0,0,.25)}.hero-card{padding:14px;margin-bottom:12px}.hero-title{font-weight:950;font-size:21px;margin-bottom:10px;color:#fff}.hero-row{display:flex;justify-content:space-between;gap:14px;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.07);font-weight:850;color:var(--mut)}.hero-row:last-child{border-bottom:0}.hero-row strong{color:var(--txt);font-size:17px;text-align:right}.hero-row.big strong{font-size:21px}.hero-row .positive{color:#86efac}.hero-row .danger{color:#fda4af}.hero-row .warn{color:#fdba74}.finance-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}.mini-card{padding:12px}.mini-label{font-size:12px;color:var(--mut);font-weight:900}.mini-value{margin-top:5px;font-size:20px;font-weight:950}.mini-value.small{font-size:15px;line-height:1.3}.action-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}.btn.green{background:linear-gradient(135deg,rgba(52,211,153,1),rgba(34,197,94,1))}.btn.blue{background:linear-gradient(135deg,rgba(96,165,250,1),rgba(34,211,238,1))}.btn.orange{background:linear-gradient(135deg,rgba(251,146,60,1),rgba(244,63,94,1));color:#13070a}.btn.purple{background:linear-gradient(135deg,rgba(167,139,250,1),rgba(124,58,237,1));color:#080713}.btn.dark{background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.03));color:var(--txt);border:1px solid var(--line)}.action-sheet{display:none;padding:12px;margin:10px 0}.action-sheet.show{display:block}.action-grid .action-sheet{grid-column:1/-1;margin:0 0 6px}.sheet-title{font-size:18px;font-weight:950;margin:0 0 10px}.quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.quick-grid .btn{font-size:14px;padding:12px 8px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.form-grid .full{grid-column:1/-1}.field label{display:block;color:var(--mut);font-weight:900;font-size:12px;margin-bottom:5px}.field input,.field select,.field textarea,.month-filter input{width:100%;border:1px solid rgba(255,255,255,.1);background:rgba(0,0,0,.22);color:var(--txt);border-radius:13px;padding:11px 10px;font-weight:850;outline:none}.field textarea{min-height:72px;resize:vertical}.field input:focus,.field select:focus,.field textarea:focus,.month-filter input:focus{border-color:rgba(34,211,238,.55);box-shadow:0 0 0 3px rgba(34,211,238,.12)}.field select option{background:#0b1030;color:#eaf0ff}.finance-card{padding:13px;margin-top:12px}.finance-card h3{margin:0 0 10px;font-size:19px}.report-grid{display:grid;gap:8px}.report-line{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.07);color:var(--mut);font-weight:850}.report-line:last-child{border-bottom:0}.report-line strong{color:var(--txt);text-align:right}.history-list{display:grid;gap:8px;max-height:320px;overflow:auto}.history-item{border:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.16);border-radius:15px;padding:10px}.history-top{display:flex;justify-content:space-between;gap:10px;font-weight:950}.history-meta{margin-top:4px;color:var(--mut);font-weight:800;font-size:12px;line-height:1.35}.alert-box{border:1px solid rgba(251,146,60,.35);background:rgba(251,146,60,.10);color:#fed7aa;border-radius:16px;padding:10px 12px;font-weight:900;line-height:1.35}.alert-box.danger{border-color:rgba(244,63,94,.42);background:rgba(244,63,94,.12);color:#fecdd3}.alert-box.ok{border-color:rgba(34,197,94,.38);background:rgba(34,197,94,.11);color:#bbf7d0}.inline-actions{display:flex;gap:8px;flex-wrap:wrap}.inline-actions .btn{flex:1;min-width:120px}.personal-list{display:grid;gap:8px}.expense-row{border:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.16);border-radius:16px;padding:10px}.expense-main{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.expense-name{font-weight:950}.expense-note{font-size:12px;color:var(--mut);font-weight:800;margin-top:2px}.expense-source{margin-top:5px;font-size:12px;color:#bfdbfe;font-weight:950}.expense-status{font-size:12px;font-weight:950;border-radius:999px;padding:5px 9px;white-space:nowrap}.expense-status.pago{background:rgba(34,197,94,.18);color:#86efac}.expense-status.pendente{background:rgba(244,63,94,.18);color:#fda4af}.expense-status.parcial{background:rgba(251,146,60,.18);color:#fdba74}.expense-controls{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.danger-text{color:#fda4af}.ok-text{color:#86efac}.muted-line{color:var(--mut);font-weight:850;font-size:13px;line-height:1.4}.action-sheet[data-cash-sheet="stock"] > button.btn.blue{display:block;width:100%;margin:0 0 12px}.history-cost{margin-top:6px;padding:7px 9px;border-radius:12px;background:rgba(34,211,238,.08);border:1px solid rgba(34,211,238,.14);color:rgba(234,240,255,.9);font-weight:900;font-size:12px;line-height:1.35}.wallet-grid{display:grid;gap:8px}.wallet-line{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.07);font-weight:850;color:var(--mut)}.wallet-line:last-child{border-bottom:0}.wallet-line strong{color:var(--txt);text-align:right}.wallet-line .wallet-note{display:block;font-size:11px;color:rgba(234,240,255,.48);font-weight:800;margin-top:2px}.wallet-line.negative strong{color:#fda4af}.wallet-line.free strong{color:#86efac}.smart-grid{display:grid;gap:8px}.smart-item{border:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.14);border-radius:15px;padding:10px}.smart-title{font-weight:950;color:var(--txt)}.smart-text{margin-top:3px;color:var(--mut);font-weight:800;font-size:12px;line-height:1.35}.account-box{border:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.14);border-radius:16px;padding:10px;margin-bottom:10px}.account-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;font-weight:950}.account-head small{display:block;color:var(--mut);font-weight:800;font-size:11px;margin-top:3px}.account-total{font-size:16px;color:var(--txt);text-align:right}.account-items{margin-top:8px;display:grid;gap:6px}.account-item{display:flex;justify-content:space-between;gap:10px;color:var(--mut);font-weight:800;font-size:12px}.account-item strong{color:var(--txt);font-size:12px;text-align:right}.account-item .wallet-note{display:block;font-size:11px;color:rgba(234,240,255,.48);font-weight:800;margin-top:2px}.account-item.pago strong{color:#86efac}.account-item.pendente strong{color:#fda4af}.account-item.parcial strong{color:#fdba74}.collapse-panel{display:none;margin-top:12px}.collapse-panel.show{display:block}@media (max-width:380px){.quick-grid,.action-grid,.finance-grid,.form-grid,.expense-controls{grid-template-columns:1fr}.main-tab{font-size:13px;padding:11px 6px}.section-head{display:block}.month-filter{justify-content:flex-start;margin-top:10px}}
+.app-top{margin-bottom:12px;padding-bottom:14px}.app-brand{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}.app-brand h1{font-size:30px}.app-subtitle{margin-top:4px;color:var(--mut);font-weight:850;font-size:13px}.main-nav{margin-top:14px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px}.main-tab{border:1px solid var(--line);border-radius:16px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));color:var(--txt);padding:12px 8px;font-weight:950;font-size:14px;box-shadow:0 10px 22px rgba(0,0,0,.25);cursor:pointer}.main-tab.active{border-color:rgba(34,211,238,.7);box-shadow:0 0 0 2px rgba(34,211,238,.18),0 10px 22px rgba(0,0,0,.25)}.main-panel{display:none}.main-panel.active{display:block}.unitv-shell .header{margin-bottom:12px}.unitv-shell .header h1{font-size:26px}.finance{margin-top:12px}.section-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}.section-head h2{margin:0;font-size:26px;letter-spacing:-.02em}.section-head p{margin:4px 0 0;color:var(--mut);font-weight:800;font-size:13px;line-height:1.35}.month-filter{display:flex;gap:8px;align-items:center;justify-content:flex-end;flex-wrap:wrap}.month-filter label{font-size:12px;font-weight:900;color:var(--mut)}.hero-card,.finance-card,.mini-card,.action-sheet{border:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.025));border-radius:20px;box-shadow:0 12px 28px rgba(0,0,0,.25)}.hero-card{padding:14px;margin-bottom:12px}.hero-title{font-weight:950;font-size:21px;margin-bottom:10px;color:#fff}.hero-row{display:flex;justify-content:space-between;gap:14px;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.07);font-weight:850;color:var(--mut)}.hero-row:last-child{border-bottom:0}.hero-row strong{color:var(--txt);font-size:17px;text-align:right}.hero-row.big strong{font-size:21px}.hero-row .positive{color:#86efac}.hero-row .danger{color:#fda4af}.hero-row .warn{color:#fdba74}.finance-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}.mini-card{padding:12px}.mini-label{font-size:12px;color:var(--mut);font-weight:900}.mini-value{margin-top:5px;font-size:20px;font-weight:950}.mini-value.small{font-size:15px;line-height:1.3}.action-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}.btn.green{background:linear-gradient(135deg,rgba(52,211,153,1),rgba(34,197,94,1))}.btn.blue{background:linear-gradient(135deg,rgba(96,165,250,1),rgba(34,211,238,1))}.btn.orange{background:linear-gradient(135deg,rgba(251,146,60,1),rgba(244,63,94,1));color:#13070a}.btn.purple{background:linear-gradient(135deg,rgba(167,139,250,1),rgba(124,58,237,1));color:#080713}.btn.dark{background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.03));color:var(--txt);border:1px solid var(--line)}.action-sheet{display:none;padding:12px;margin:10px 0}.action-sheet.show{display:block}.action-grid .action-sheet{grid-column:1/-1;margin:0 0 6px}.sheet-title{font-size:18px;font-weight:950;margin:0 0 10px}.quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.quick-grid .btn{font-size:14px;padding:12px 8px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.form-grid .full{grid-column:1/-1}.field label{display:block;color:var(--mut);font-weight:900;font-size:12px;margin-bottom:5px}.field input,.field select,.field textarea,.month-filter input{width:100%;border:1px solid rgba(255,255,255,.1);background:rgba(0,0,0,.22);color:var(--txt);border-radius:13px;padding:11px 10px;font-weight:850;outline:none}.field textarea{min-height:72px;resize:vertical}.field input:focus,.field select:focus,.field textarea:focus,.month-filter input:focus{border-color:rgba(34,211,238,.55);box-shadow:0 0 0 3px rgba(34,211,238,.12)}.field select option{background:#0b1030;color:#eaf0ff}.finance-card{padding:13px;margin-top:12px}.finance-card h3{margin:0 0 10px;font-size:19px}.report-grid{display:grid;gap:8px}.report-line{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.07);color:var(--mut);font-weight:850}.report-line:last-child{border-bottom:0}.report-line strong{color:var(--txt);text-align:right}.history-list{display:grid;gap:8px;max-height:320px;overflow:auto}.history-item{border:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.16);border-radius:15px;padding:10px}.history-top{display:flex;justify-content:space-between;gap:10px;font-weight:950}.history-meta{margin-top:4px;color:var(--mut);font-weight:800;font-size:12px;line-height:1.35}.alert-box{border:1px solid rgba(251,146,60,.35);background:rgba(251,146,60,.10);color:#fed7aa;border-radius:16px;padding:10px 12px;font-weight:900;line-height:1.35}.alert-box.danger{border-color:rgba(244,63,94,.42);background:rgba(244,63,94,.12);color:#fecdd3}.alert-box.ok{border-color:rgba(34,197,94,.38);background:rgba(34,197,94,.11);color:#bbf7d0}.inline-actions{display:flex;gap:8px;flex-wrap:wrap}.inline-actions .btn{flex:1;min-width:120px}.personal-list{display:grid;gap:8px}.expense-row{border:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.16);border-radius:16px;padding:10px}.expense-main{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.expense-name{font-weight:950}.expense-note{font-size:12px;color:var(--mut);font-weight:800;margin-top:2px}.expense-source{margin-top:5px;font-size:12px;color:#bfdbfe;font-weight:950}.expense-status{font-size:12px;font-weight:950;border-radius:999px;padding:5px 9px;white-space:nowrap}.expense-status.pago{background:rgba(34,197,94,.18);color:#86efac}.expense-status.pendente{background:rgba(244,63,94,.18);color:#fda4af}.expense-status.parcial{background:rgba(251,146,60,.18);color:#fdba74}.expense-controls{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.danger-text{color:#fda4af}.ok-text{color:#86efac}.muted-line{color:var(--mut);font-weight:850;font-size:13px;line-height:1.4}.action-sheet[data-cash-sheet="stock"] > button.btn.blue{display:block;width:100%;margin:0 0 12px}.history-cost{margin-top:6px;padding:7px 9px;border-radius:12px;background:rgba(34,211,238,.08);border:1px solid rgba(34,211,238,.14);color:rgba(234,240,255,.9);font-weight:900;font-size:12px;line-height:1.35}.wallet-grid{display:grid;gap:8px}.wallet-line{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.07);font-weight:850;color:var(--mut)}.wallet-line:last-child{border-bottom:0}.wallet-line strong{color:var(--txt);text-align:right}.wallet-line .wallet-note{display:block;font-size:11px;color:rgba(234,240,255,.48);font-weight:800;margin-top:2px}.wallet-line.negative strong{color:#fda4af}.wallet-line.free strong{color:#86efac}.smart-grid{display:grid;gap:8px}.smart-item{border:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.14);border-radius:15px;padding:10px}.smart-title{font-weight:950;color:var(--txt)}.smart-text{margin-top:3px;color:var(--mut);font-weight:800;font-size:12px;line-height:1.35}.account-box{border:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.14);border-radius:16px;padding:10px;margin-bottom:10px}.account-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;font-weight:950}.account-head small{display:block;color:var(--mut);font-weight:800;font-size:11px;margin-top:3px}.account-total{font-size:16px;color:var(--txt);text-align:right}.account-items{margin-top:8px;display:grid;gap:6px}.account-item{display:flex;justify-content:space-between;gap:10px;color:var(--mut);font-weight:800;font-size:12px}.account-item strong{color:var(--txt);font-size:12px;text-align:right}.account-item .wallet-note{display:block;font-size:11px;color:rgba(234,240,255,.48);font-weight:800;margin-top:2px}.account-item.pago strong{color:#86efac}.account-item.pendente strong{color:#fda4af}.account-item.parcial strong{color:#fdba74}.collapse-panel{display:none;margin-top:12px}.collapse-panel.show{display:block}
+.compact-metrics{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.compact-metrics>.hero-title,.compact-metrics>.muted-line{grid-column:1/-1}
+.compact-metrics>.hero-row{display:block;border:1px solid rgba(255,255,255,.07);background:rgba(0,0,0,.12);border-radius:14px;padding:9px 10px;min-width:0}
+.compact-metrics>.hero-row span{display:block;font-size:11px;line-height:1.2;margin-bottom:4px}
+.compact-metrics>.hero-row strong,.compact-metrics>.hero-row.big strong{display:block;font-size:16px;text-align:left;overflow-wrap:anywhere}
+.compact-details{margin-top:12px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.02));border-radius:18px;box-shadow:0 10px 24px rgba(0,0,0,.20);overflow:hidden}
+.compact-details>summary{cursor:pointer;list-style:none;padding:13px 14px;font-weight:950;color:var(--txt);display:flex;align-items:center;justify-content:space-between;gap:10px}
+.compact-details>summary::-webkit-details-marker{display:none}
+.compact-details>summary::after{content:'+';font-size:22px;line-height:1;color:var(--mut)}
+.compact-details[open]>summary::after{content:'–'}
+.compact-details[open]>summary{border-bottom:1px solid rgba(255,255,255,.07)}
+.compact-details-body{padding:12px 13px 13px}
+.compact-details-body>.finance-card{margin-top:0;box-shadow:none}
+.compact-actions{margin:0}
+.expense-section-title{font-size:13px;font-weight:950;letter-spacing:.02em;text-transform:uppercase;color:rgba(234,240,255,.72);padding:9px 4px 2px;margin-top:4px}
+.expense-section-title.variable{margin-top:10px;color:#c4b5fd}
+.expense-row{scroll-margin-top:12px}
+@media (max-width:380px){.quick-grid,.action-grid,.finance-grid,.form-grid,.expense-controls{grid-template-columns:1fr}.main-tab{font-size:13px;padding:11px 6px}.section-head{display:block}.month-filter{justify-content:flex-start;margin-top:10px}}
 
 
+/* ===== JamesUni v2.68 · UniTV no tamanho original ===== */
+.finance.block{padding:10px;border-radius:20px;overflow:visible}
+.finance .section-head{margin-bottom:8px;align-items:center;gap:8px}
+.finance .section-head h2{font-size:22px;line-height:1.05}
+.finance .section-head p{font-size:11px;line-height:1.25;max-width:255px;margin-top:3px}
+.finance .month-filter{gap:4px;flex:0 0 auto}
+.finance .month-filter label{display:none}
+.finance .month-filter input{padding:8px 7px;border-radius:11px;font-size:12px;max-width:130px}
+.dashboard-overview{border:1px solid rgba(255,255,255,.085);background:linear-gradient(145deg,rgba(34,211,238,.075),rgba(124,58,237,.06) 55%,rgba(0,0,0,.12));border-radius:16px;padding:9px;margin-bottom:7px;box-shadow:0 8px 20px rgba(0,0,0,.17)}
+.dashboard-overview-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:7px}
+.dashboard-overview-title{font-size:11px;font-weight:950;color:rgba(234,240,255,.7);text-transform:uppercase;letter-spacing:.06em}
+.dashboard-overview-note{font-size:10px;font-weight:850;color:var(--mut)}
+.metric-grid-v264{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.metric-v264{min-width:0;padding:8px 9px;border:1px solid rgba(255,255,255,.065);background:rgba(4,8,24,.26);border-radius:12px}
+.metric-v264 span{display:block;color:rgba(234,240,255,.55);font-size:10px;font-weight:900;line-height:1.12;margin-bottom:3px}
+.metric-v264 strong{display:block;color:var(--txt);font-size:15px;font-weight:950;line-height:1.12;overflow-wrap:anywhere}
+.metric-v264.primary strong{font-size:18px}
+.metric-v264.good strong{color:#86efac}.metric-v264.warn strong{color:#fdba74}.metric-v264.bad strong{color:#fda4af}
+#personalAlert,#cashAlert{padding:7px 9px;border-radius:12px;font-size:10.8px;margin:6px 0;box-shadow:none}
+
+/* Caixa */
+.quick-actions-v264{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:7px 0 0}
+.quick-actions-v264 .btn{padding:10px 3px;border-radius:11px;font-size:11.5px;line-height:1.1;box-shadow:0 6px 14px rgba(0,0,0,.16);min-width:0}
+.cash-sheet-host-v265{grid-column:1/-1;min-width:0}
+.cash-sheet-parking-v265{display:none!important}
+.cash-sheet-host-v265>.action-sheet{width:100%;margin:7px 0 0}
+.action-sheet{padding:10px;border-radius:14px;box-shadow:0 8px 18px rgba(0,0,0,.16)}
+.sheet-title{font-size:15px;margin-bottom:7px}
+.action-sheet .quick-grid{grid-template-columns:1fr 1fr;gap:6px}
+.action-sheet .quick-grid .btn{font-size:11.5px;padding:9px 6px;border-radius:10px;line-height:1.2;box-shadow:none}
+.action-sheet .form-grid{gap:7px;margin-top:7px!important}
+.action-sheet .field label{font-size:10px;margin-bottom:3px}
+.action-sheet .field input,.action-sheet .field select,.action-sheet .field textarea{padding:8px 9px;font-size:12px;border-radius:10px;min-height:0}
+.action-sheet .field textarea{min-height:58px}
+.action-sheet[data-cash-sheet="stock"]>button.btn.blue{margin-bottom:6px;padding:9px;font-size:12px;box-shadow:none}
+
+/* Blocos recolhíveis */
+.compact-details{margin-top:7px;border-radius:13px;box-shadow:0 5px 14px rgba(0,0,0,.13);border-color:rgba(255,255,255,.07)}
+.compact-details>summary{padding:9px 10px;font-size:12px}
+.compact-details>summary::after{font-size:17px}
+.compact-details-body{padding:8px 9px 9px}
+.compact-details-body .report-line{padding:5px 0;font-size:11px}
+.compact-actions{gap:6px;margin:0}.compact-actions .btn{font-size:11px;padding:8px 5px;box-shadow:none}
+.finance .history-list{max-height:220px}
+.finance-card{margin-top:7px;padding:9px;border-radius:14px;box-shadow:0 6px 15px rgba(0,0,0,.13)}
+
+/* Pessoal */
+.personal-shortcuts{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:7px 0}
+.personal-shortcuts .btn{padding:9px 6px;border-radius:11px;font-size:11.5px;box-shadow:none;min-width:0}
+.compact-panel-v264{margin:6px 0 8px;padding:9px;border:1px solid var(--line);background:rgba(0,0,0,.14);border-radius:13px}
+.compact-panel-v264 h3{font-size:15px;margin:0 0 7px}
+.compact-panel-v264 .form-grid{gap:7px}
+.compact-panel-v264 .field label{font-size:10px}.compact-panel-v264 .field input{padding:8px 9px;font-size:12px;border-radius:10px}
+.cost-hub-v265{display:grid;gap:7px;margin-top:8px}
+.cost-section-v265{border:1px solid rgba(255,255,255,.075);background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.015));border-radius:15px;padding:8px;box-shadow:0 7px 16px rgba(0,0,0,.13)}
+.cost-section-head-v265{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:1px 1px 7px}
+.cost-section-head-v265 h3{margin:0;font-size:14px;line-height:1.15}
+.cost-section-meta-v265{font-size:10px;color:var(--mut);font-weight:850}
+.mini-add-v265{border:1px solid rgba(34,211,238,.22);background:rgba(34,211,238,.075);color:#cffafe;border-radius:9px;padding:6px 8px;font-size:10.5px;font-weight:950;cursor:pointer;white-space:nowrap}
+.inline-variable-form-v265{display:none;margin:0 0 7px;padding:8px;border:1px solid rgba(34,211,238,.16);background:rgba(34,211,238,.045);border-radius:11px}
+.inline-variable-form-v265.show{display:block}
+.variable-form-grid-v265{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.variable-form-grid-v265 .full{grid-column:1/-1}
+.variable-form-grid-v265 label{display:block;color:var(--mut);font-size:9.8px;font-weight:900;margin-bottom:3px}
+.variable-form-grid-v265 input,.variable-form-grid-v265 select{width:100%;border:1px solid rgba(255,255,255,.09);background:rgba(0,0,0,.2);color:var(--txt);border-radius:9px;padding:8px;font-size:11.5px;font-weight:850;outline:none}
+.variable-form-actions-v265{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:7px}.variable-form-actions-v265 .btn{font-size:11px;padding:8px;box-shadow:none;border-radius:9px}
+.personal-list{display:grid;gap:5px}
+.expense-row{padding:8px 9px;border-radius:11px;background:rgba(0,0,0,.12);border-color:rgba(255,255,255,.065)}
+.expense-main{align-items:flex-start;gap:8px}
+.expense-name{font-size:13px;line-height:1.2}
+.expense-note{font-size:10px;line-height:1.25;margin-top:2px}
+.expense-source{font-size:9.8px;margin-top:3px}
+.expense-status{font-size:9.5px;padding:3px 6px}
+.expense-controls{display:flex;gap:5px;margin-top:6px;flex-wrap:wrap}
+.expense-controls .btn{flex:1 1 80px;min-width:0;padding:7px 6px;border-radius:9px;font-size:10.5px;line-height:1.1;box-shadow:none}
+.empty-cost-v265{padding:8px 4px;color:var(--mut);font-size:10.5px;font-weight:800;line-height:1.3}
+#expensePayPanel{margin:7px 0 0!important}
+#expensePayPanel .muted-line{font-size:10px;line-height:1.3;margin:0 0 7px}
+#expensePayPanel .form-grid{grid-template-columns:1fr 1fr;gap:6px}
+#expensePayPanel .inline-actions{grid-column:1/-1}
+.add-other-v265 .form-grid{gap:7px}.add-other-v265 .field label{font-size:10px}.add-other-v265 .field input,.add-other-v265 .field select,.add-other-v265 .field textarea{padding:8px 9px;font-size:11.5px;border-radius:10px}.add-other-v265 .field textarea{min-height:55px}
+.budget-pair-v264{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.budget-box-v264{border:1px solid rgba(255,255,255,.065);background:rgba(0,0,0,.1);border-radius:11px;padding:8px}
+.budget-box-v264 h4{margin:0 0 6px;font-size:12px}.budget-box-v264 .report-line{font-size:10px;padding:4px 0}.budget-box-v264 .field label{font-size:9.5px}.budget-box-v264 .field input{padding:7px 8px;font-size:11px}.budget-box-v264 .btn{font-size:10px;padding:7px 5px;box-shadow:none}
+
+/* Acabamento geral */
+.finance .btn{transition:transform .08s ease,filter .15s ease}.finance .btn:active{transform:scale(.985)}
+.finance .field input:focus,.finance .field select:focus,.finance .field textarea:focus{border-color:rgba(34,211,238,.45);box-shadow:0 0 0 2px rgba(34,211,238,.08)}
+@media (max-width:380px){
+  .quick-actions-v264{grid-template-columns:1fr 1fr}
+  .metric-v264 strong{font-size:14px}.metric-v264.primary strong{font-size:17px}
+  .budget-pair-v264{grid-template-columns:1fr}
+  .finance .section-head{display:flex}.finance .month-filter{justify-content:flex-end;margin-top:0}
+  .variable-form-grid-v265{grid-template-columns:1fr 1fr}
+}
+/* v2.68 · mais 10% de legibilidade sobre a v2.66 */
+body{font-size:18.48px}
+h1,.app-brand h1{font-size:33px}
+.block-title{font-size:28.6px}
+.unitv-shell .header h1{font-size:28.6px}
+.finance .section-head h2{font-size:24.2px}
+.finance .section-head p{font-size:12.1px;line-height:1.32}
+.btn{font-size:17.33px;padding:12.7px 11.55px;min-height:44px}
+.tab,.main-tab{font-size:16.17px}
+.main-tab{padding:13.86px 9.24px}
+.badge{font-size:13.2px}
+.app-subtitle{font-size:15.02px}
+.small,.editor{font-size:15.4px}
+.hero-title{font-size:23.1px}
+.hero-row strong{font-size:18.7px}.hero-row.big strong{font-size:23.1px}
+.mini-label{font-size:13.2px}.mini-value{font-size:22px}.mini-value.small{font-size:16.5px}
+.field label{font-size:13.2px}
+.field input,.field select,.field textarea,.month-filter input{font-size:14.3px;padding:12.1px 11px}
+.history-meta,.expense-note,.expense-source,.muted-line{font-size:13.2px}
+.finance .month-filter input{padding:8.8px 7.7px;font-size:13.2px;max-width:143px}
+.dashboard-overview-title{font-size:12.1px}
+.dashboard-overview-note{font-size:11px}
+.metric-v264 span{font-size:11px}
+.metric-v264 strong{font-size:16.5px}
+.metric-v264.primary strong{font-size:19.8px}
+#personalAlert,#cashAlert{padding:7.7px 9.9px;font-size:11.88px}
+.quick-actions-v264 .btn{font-size:13.31px;padding:11.55px 3.52px;min-height:43px}
+.action-sheet .quick-grid .btn{font-size:13.31px;padding:10.45px 6.93px}
+.action-sheet .field label{font-size:11.55px}
+.action-sheet .field input,.action-sheet .field select,.action-sheet .field textarea{font-size:13.86px;padding:9.24px 10.4px}
+.action-sheet[data-cash-sheet="stock"]>button.btn.blue{font-size:13.86px;padding:10.4px}
+.sheet-title{font-size:16.5px}
+.compact-details>summary{font-size:13.86px;padding:10.4px 11.55px}
+.compact-details-body .report-line{font-size:12.71px}
+.compact-actions .btn{font-size:12.71px;padding:9.24px 5.78px}
+.personal-shortcuts .btn{font-size:13.31px;padding:10.4px 6.93px}
+.compact-panel-v264 h3{font-size:17.33px}
+.compact-panel-v264 .field label{font-size:11.55px}
+.compact-panel-v264 .field input{font-size:13.86px;padding:9.24px 10.4px}
+.cost-section-head-v265 h3{font-size:16.17px}
+.cost-section-meta-v265{font-size:11.55px}
+.mini-add-v265{font-size:12.1px;padding:6.93px 9.24px;min-height:38px}
+.variable-form-grid-v265 label{font-size:11.33px}
+.variable-form-grid-v265 input,.variable-form-grid-v265 select{font-size:13.31px;padding:9.24px}
+.variable-form-actions-v265 .btn{font-size:12.71px;padding:9.24px}
+.expense-section-title{font-size:14.3px}
+.expense-name{font-size:15.02px}
+.expense-note{font-size:11.55px}
+.expense-source{font-size:11.33px}
+.expense-status{font-size:11px;padding:3.47px 6.93px}
+.expense-controls .btn{font-size:12.1px;padding:8.09px 6.93px;min-height:38px}
+.empty-cost-v265{font-size:12.1px}
+#expensePayPanel .muted-line{font-size:11.55px}
+.add-other-v265 .field label{font-size:11.55px}
+.add-other-v265 .field input,.add-other-v265 .field select,.add-other-v265 .field textarea{font-size:13.31px;padding:9.24px 10.4px}
+.budget-box-v264 h4{font-size:13.86px}
+.budget-box-v264 .report-line{font-size:11.55px}
+.budget-box-v264 .field label{font-size:11px}
+.budget-box-v264 .field input{font-size:12.71px}
+.budget-box-v264 .btn{font-size:11.55px;padding:8.09px 5.78px}
+
+/* v2.68 · UniTV restaurada ao tamanho original */
+.main-panel[data-main-panel="unitv"]{font-size:16px}
+.main-panel[data-main-panel="unitv"] .header h1{font-size:26px}
+.main-panel[data-main-panel="unitv"] .block-title{font-size:26px}
+.main-panel[data-main-panel="unitv"] .tab{font-size:14px;padding:10px}
+.main-panel[data-main-panel="unitv"] .btn{font-size:15px;padding:11px 10px;min-height:0}
+.main-panel[data-main-panel="unitv"] .badge{font-size:12px}
+.main-panel[data-main-panel="unitv"] .small,
+.main-panel[data-main-panel="unitv"] .editor{font-size:14px}
+.main-panel[data-main-panel="unitv"] .pill{font-size:16px}
+.main-panel[data-main-panel="unitv"] .status,
+.main-panel[data-main-panel="unitv"] .counter-line,
+.main-panel[data-main-panel="unitv"] .inline{font-size:16px}
+
+
+/* ===== JamesUni v2.69 · cabeçalho compacto + UniTV -15% ===== */
+.app-top{
+  padding:14.28px 14.28px 7.14px;
+  padding-bottom:12.5px;
+  margin-bottom:10.71px;
+  border-radius:19.64px;
+}
+.app-brand{gap:10.71px}
+.app-brand h1{font-size:26.78px}
+.app-subtitle{font-size:11.6px;margin-top:3.57px;line-height:1.28}
+.app-brand>.pill{font-size:14.28px;padding:5.36px 8.93px}
+.main-nav{margin-top:12.5px;gap:8.03px}
+.main-tab{
+  font-size:14.43px;
+  padding:12.37px 8.24px;
+  border-radius:14.28px;
+}
+
+.main-panel[data-main-panel="unitv"]{font-size:14.28px}
+.main-panel[data-main-panel="unitv"] .header{
+  padding:14.28px 14.28px 7.14px;
+  border-radius:19.64px;
+  margin-bottom:10.71px;
+}
+.main-panel[data-main-panel="unitv"] .header h1{font-size:23.21px}
+.main-panel[data-main-panel="unitv"] .tabs{margin-top:10.71px;gap:8.93px}
+.main-panel[data-main-panel="unitv"] .tab{
+  font-size:12.5px;
+  padding:8.93px;
+  border-radius:12.5px;
+  gap:7.14px;
+}
+.main-panel[data-main-panel="unitv"] .badge{font-size:10.71px;gap:6.25px}
+.main-panel[data-main-panel="unitv"] .dot{width:8.03px;height:8.03px}
+.main-panel[data-main-panel="unitv"] .panel{margin-top:10.71px}
+.main-panel[data-main-panel="unitv"] .block{
+  padding:11.9px;
+  border-radius:19.64px;
+}
+.main-panel[data-main-panel="unitv"] .block-title{font-size:23.21px;margin-bottom:8.93px}
+.main-panel[data-main-panel="unitv"] .counter-line{font-size:14.28px;margin-bottom:8.93px}
+.main-panel[data-main-panel="unitv"] .controls,
+.main-panel[data-main-panel="unitv"] .secondary{gap:8.93px}
+.main-panel[data-main-panel="unitv"] .secondary{margin-top:8.93px}
+.main-panel[data-main-panel="unitv"] .btn{
+  font-size:13.39px;
+  padding:9.82px 8.93px;
+  border-radius:12.5px;
+  min-height:0;
+}
+.main-panel[data-main-panel="unitv"] .inline{font-size:14.28px;margin-top:8.93px}
+.main-panel[data-main-panel="unitv"] .editor{
+  font-size:12.5px;
+  margin-top:8.93px;
+  padding:10.71px;
+  border-radius:14.28px;
+  max-height:214.2px;
+}
+.main-panel[data-main-panel="unitv"] .status{font-size:14.28px;margin-top:8.93px;gap:8.93px}
+.main-panel[data-main-panel="unitv"] .progress{font-size:14.28px}
+.main-panel[data-main-panel="unitv"] .bar{margin-top:8.93px;height:8.93px}
+.main-panel[data-main-panel="unitv"] .pill{font-size:14.28px;padding:5.36px 8.93px;gap:5.36px}
+.main-panel[data-main-panel="unitv"] .small{font-size:12.5px}
+.main-panel[data-main-panel="unitv"] .footer{
+  margin-top:12.5px;
+  padding-top:8.93px;
+  line-height:1.45;
+}
+
+/* ===== JamesUni v2.71 · UniTV +5% sobre v2.70 ===== */
+.main-panel[data-main-panel="unitv"]{font-size:14.99px}
+.main-panel[data-main-panel="unitv"] .header{
+  padding:15px 15px 7.5px;
+  border-radius:20.62px;
+  margin-bottom:11.25px;
+}
+.main-panel[data-main-panel="unitv"] .header h1{font-size:24.37px}
+.main-panel[data-main-panel="unitv"] .tabs{margin-top:11.25px;gap:9.38px}
+.main-panel[data-main-panel="unitv"] .tab{
+  font-size:13.13px;
+  padding:9.38px;
+  border-radius:13.13px;
+  gap:7.5px;
+}
+.main-panel[data-main-panel="unitv"] .badge{font-size:11.25px;gap:6.56px}
+.main-panel[data-main-panel="unitv"] .dot{width:8.43px;height:8.43px}
+.main-panel[data-main-panel="unitv"] .panel{margin-top:11.25px}
+.main-panel[data-main-panel="unitv"] .block{
+  padding:13.13px;
+  border-radius:20.62px;
+}
+.main-panel[data-main-panel="unitv"] .block-title{font-size:24.37px;margin-bottom:9.38px}
+.main-panel[data-main-panel="unitv"] .counter-line{font-size:14.99px;margin-bottom:9.38px}
+.main-panel[data-main-panel="unitv"] .controls,
+.main-panel[data-main-panel="unitv"] .secondary{gap:9.38px}
+.main-panel[data-main-panel="unitv"] .secondary{margin-top:9.38px}
+.main-panel[data-main-panel="unitv"] .btn{
+  font-size:14.06px;
+  padding:10.31px 9.38px;
+  border-radius:13.13px;
+}
+.main-panel[data-main-panel="unitv"] .inline{font-size:14.99px;margin-top:9.38px}
+.main-panel[data-main-panel="unitv"] .editor{
+  font-size:13.13px;
+  margin-top:9.38px;
+  padding:11.25px;
+  border-radius:15px;
+  max-height:225px;
+}
+.main-panel[data-main-panel="unitv"] .status{font-size:14.99px;margin-top:9.38px;gap:9.38px}
+.main-panel[data-main-panel="unitv"] .progress{font-size:14.99px}
+.main-panel[data-main-panel="unitv"] .bar{margin-top:9.38px;height:9.38px}
+.main-panel[data-main-panel="unitv"] .pill{
+  font-size:14.99px;
+  padding:5.63px 9.38px;
+  gap:5.63px;
+}
+.main-panel[data-main-panel="unitv"] .small{font-size:13.13px}
+.main-panel[data-main-panel="unitv"] .footer{
+  margin-top:13.13px;
+  padding-top:9.38px;
+  line-height:1.45;
+}
 .tab{font-family:inherit;width:100%}.inline .toggle-sms{font:inherit;color:var(--txt);text-decoration:underline;font-weight:900;background:none;border:0;padding:0;cursor:pointer}
 </style>
 </head>
 <body>
 <div class="wrap">
 <div class="header app-top">
-<div class="app-brand"><div><h1>JamesUni</h1><div class="app-subtitle">Caixa, criação UniTV e gastos pessoais em um só lugar.</div></div><span class="pill"><strong>v2.62</strong></span></div>
+<div class="app-brand"><div><h1>JamesUni</h1><div class="app-subtitle">Caixa, criação UniTV e gastos pessoais em um só lugar.</div></div><span class="pill"><strong>v2.71</strong></span></div>
 <div class="main-nav" role="tablist">
 <button aria-pressed="true" class="main-tab active" data-main-tab="caixa" role="tab" type="button">Caixa</button>
 <button aria-pressed="false" class="main-tab" data-main-tab="unitv" role="tab" type="button">UniTV</button>
@@ -29,37 +341,47 @@
 <section class="main-panel active" data-main-panel="caixa">
 <section class="block finance">
 <div class="section-head">
-<div><h2>Caixa JamesUni</h2><p>Painel financeiro + controle diário de vendas, estoque, gastos e retiradas.</p></div>
+<div><h2>Caixa JamesUni</h2><p>Vendas, estoque, gastos e retiradas do mês.</p></div>
 <div class="month-filter"><label for="cashMonth">Mês</label><input id="cashMonth" type="month"/></div>
 </div>
-<div class="hero-card">
-<div class="hero-title">-JamesUni-</div>
-<div class="hero-row big"><span>Caixa atual</span><strong data-cash="cash">R$ 0,00</strong></div>
-<div class="hero-row"><span>Estoque</span><strong data-cash="stock">0 créditos</strong></div>
-<div class="hero-row"><span>Meta do mês</span><strong data-cash="target">R$ 1.893,00</strong></div>
-<div class="hero-row"><span>Falta para meta</span><strong data-cash="targetMissing">R$ 0,00</strong></div>
-<div class="hero-row"><span>Vendas hoje</span><strong data-cash="salesToday">R$ 0,00</strong></div>
-<div class="hero-row"><span>Créditos vendidos hoje</span><strong data-cash="creditsToday">0</strong></div>
-<div class="hero-row"><span>Gastos convencionais</span><strong data-cash="expensesLimit">R$ 0,00 / R$ 400,00</strong></div>
-<div class="hero-row"><span>Disponível para gastos</span><strong data-cash="expenseAvailable">R$ 400,00</strong></div>
+<div class="dashboard-overview">
+<div class="dashboard-overview-head"><div class="dashboard-overview-title">Caixa agora</div><div class="dashboard-overview-note">visão rápida</div></div>
+<div class="metric-grid-v264">
+<div class="metric-v264 primary"><span>Caixa atual</span><strong data-cash="cash">R$ 0,00</strong></div>
+<div class="metric-v264 primary"><span>Estoque</span><strong data-cash="stock">0 créditos</strong></div>
+<div class="metric-v264 good"><span>Vendas hoje</span><strong data-cash="salesToday">R$ 0,00</strong></div>
+<div class="metric-v264 warn"><span>Falta para meta</span><strong data-cash="targetMissing">R$ 0,00</strong></div>
+</div>
 </div>
 <div class="alert-box ok" id="cashAlert">Tudo pronto. Registre vendas, gastos e compras de crédito por aqui.</div>
-<div class="action-grid">
+<div class="quick-actions-v264">
 <button class="btn green" data-cash-open="sale" type="button">+ Venda</button>
-<button class="btn blue" data-cash-open="stock" type="button">+ Comprar créditos</button>
+<button class="btn blue" data-cash-open="stock" type="button">+ Créditos</button>
 <button class="btn orange" data-cash-open="expense" type="button">+ Gasto</button>
 <button class="btn purple" data-cash-open="withdrawal" type="button">+ Retirada</button>
+<div class="cash-sheet-host-v265" id="cashSheetHost"></div>
+</div>
+<details class="compact-details"><summary>Resumo do mês</summary><div class="compact-details-body"><div class="metric-grid-v264">
+<div class="metric-v264"><span>Meta mensal</span><strong data-cash="target">R$ 1.893,00</strong></div>
+<div class="metric-v264"><span>Créditos vendidos hoje</span><strong data-cash="creditsToday">0</strong></div>
+<div class="metric-v264"><span>Gastos convencionais</span><strong data-cash="expensesLimit">R$ 0,00 / R$ 400,00</strong></div>
+<div class="metric-v264"><span>Disponível para gastos</span><strong data-cash="expenseAvailable">R$ 400,00</strong></div>
+</div></div></details>
+<details class="compact-details">
+<summary>Mais opções do caixa</summary>
+<div class="compact-details-body"><div class="action-grid compact-actions">
 <button class="btn dark" id="closeDayBtn" type="button">Fechar dia</button>
 <button class="btn dark" data-cash-open="settings" type="button">Configurar</button>
 <button class="btn dark" id="clearCashMonthBtn" type="button">Limpar mês</button>
 <button class="btn dark" id="finishCashMonthBtn" type="button">Finalizar mês</button>
-</div>
+</div></div>
+</details>
 <div class="action-sheet" data-cash-sheet="sale">
 <div class="sheet-title">Registrar venda</div>
 <div class="quick-grid">
 <button class="btn green" data-sale="22.90|1|1 mês" type="button">1 mês — R$ 22,90</button>
 <button class="btn green" data-sale="19.90|1|1 mês antigo" type="button">1 mês antigo — R$ 19,90</button>
-<button class="btn green" data-sale="9.00|1|1 unidade custo" type="button">1 unidade custo — R$ 9,00</button>
+<button class="btn green" data-sale="9.00|1|1 un. custo" type="button">1 un. custo — R$ 9,00</button>
 <button class="btn green" data-sale="43.90|2|2 meses" type="button">2 meses — R$ 43,90</button>
 <button class="btn green" data-sale="64.90|3|3 meses" type="button">3 meses — R$ 64,90</button>
 <button class="btn green" data-sale="124.90|6|6 meses" type="button">6 meses — R$ 124,90</button>
@@ -114,8 +436,8 @@
 </div>
 </div>
 <div class="finance-card" id="closeDayBox" style="display:none"><h3>Resumo do dia</h3><div class="report-grid" id="closeDayReport"></div></div>
-<div class="finance-card"><h3>Relatório mensal</h3><div class="report-grid" id="cashMonthReport"></div></div>
-<div class="finance-card"><h3>Histórico do caixa</h3><div class="history-list" id="cashHistory"></div></div>
+<details class="compact-details"><summary>Relatório mensal</summary><div class="compact-details-body"><div class="report-grid" id="cashMonthReport"></div></div></details>
+<details class="compact-details"><summary>Histórico do caixa</summary><div class="compact-details-body"><div class="history-list" id="cashHistory"></div></div></details>
 </section>
 </section>
 <section class="main-panel unitv-shell" data-main-panel="unitv">
@@ -133,151 +455,119 @@
 <div class="panel" data-panel="emails" role="tabpanel"><section class="block" data-key="emails" data-limit="1" data-seq="emails"><div class="counter-line"><div class="block-title">E-mail</div><div class="pill"><span>Gerados:</span><strong class="counter">0</strong><span class="muted">• Guardados: <span class="det">0</span></span></div></div><div class="controls"><button class="btn paste" data-role="paste-email" type="button">Gerar aliás</button><button class="btn paste" data-role="gen-email" type="button">Gerar e-mail</button><button class="btn paste" data-role="paste-login" type="button">Colar e-mail</button><button class="btn paste" data-role="paste-code" type="button">Colar Código</button><button class="btn copy copy" type="button">Copiar <span class="muted">(restantes: 0)</span></button><button class="btn reset reset" data-role="reset" type="button">Zerar</button></div><div class="inline"><span>Código: <strong class="email-code-pill">—</strong> <span class="muted">• Cópias: <strong class="email-copies">0</strong></span></span><button class="toggle-sms" type="button">Ver e-mails</button></div><div class="editor"></div><div class="status"><div class="left">Fase 0 de 2 · Próximo: Gerar e-mails</div><div class="progress">0/0</div></div><div class="bar"><div class="fill"></div></div></section></div>
 <div class="panel" data-panel="account" role="tabpanel"><section class="block" data-key="account" data-limit="0" data-seq="account"><div class="counter-line"><div class="block-title">Conta formatada</div><div class="pill"><span>Contas:</span><strong class="counter">0</strong><span class="muted">• Próximo: <span class="det">Colar conta</span></span></div></div><div class="controls"><button class="btn paste" data-role="account-action" type="button">Colar conta</button><button class="btn sms" data-role="code-action" type="button">Colar códigos</button><button class="btn reset reset" data-role="reset" type="button" style="grid-column:1/-1">Limpar conta</button></div><div class="inline"><span>Atual: <strong class="code-pill">—</strong></span><button class="toggle-sms" type="button">Ver dados</button></div><div class="editor"></div><div class="status"><div class="left">Cole uma ou várias contas do cliente.</div><div class="progress">0 contas · 0 códigos</div></div><div class="bar"><div class="fill"></div></div></section></div>
 <div class="panel" data-panel="site" role="tabpanel"><section class="block" data-key="site" data-limit="8" data-seq="site-create-account"><div class="counter-line"><div class="block-title">Site</div><div class="pill"><span>Etapas:</span><strong class="counter">0</strong><span class="muted">• Próximo: <span class="det">—</span></span></div></div><div class="controls"><button class="btn paste" data-role="gen-copy" type="button">Gerar e copiar</button><button class="btn reset reset" data-role="reset" type="button">Limpar</button></div><div class="inline"><span>Senha padrão: <strong class="pass-pill">554090q</strong></span><button class="toggle-sms" type="button">Ver dados</button></div><div class="editor"></div><div class="status"><div class="left">Clique em Gerar e copiar para criar tudo e copiar o Gmail temporário.</div><div class="progress">0/8</div></div><div class="bar"><div class="fill"></div></div></section></div>
-<div class="footer small"><div><b>Versão:</b> v2.62</div><div><b>Changelog:</b> Fluxo por número/SMS consolidado: leitura de Número sem DDI e código, senha código+q, telefone formatado na conta completa e reinício automático do lote após a última conta.</div></div>
+<div class="footer small"><div><b>Versão:</b> v2.71</div><div><b>Changelog:</b> Custos variáveis padrão sempre visíveis e sem valor inicial; quantidade e valor definidos no primeiro pagamento; pagamentos seguintes usam o último preço salvo sem reabrir formulário; histórico de preços preservado; “1 un. custo”; Caixa e Pessoal mantidos; toda a área interna da aba UniTV aumentada em mais 5% sobre a v2.70.</div></div>
 </section>
 <section class="main-panel" data-main-panel="pessoal">
 <section class="block finance">
 <div class="section-head">
-<div><h2>Gastos Pessoais</h2><p>Controle do salário por destino: Nubank, Next, carteira eletrônica, dívida, gastos variáveis e reserva.</p></div>
+<div><h2>Gastos Pessoais</h2><p>Salário, contas, gastos e reserva do mês.</p></div>
 <div class="month-filter"><label for="personalMonth">Mês</label><input id="personalMonth" type="month"/></div>
 </div>
-<div class="hero-card">
-<div class="hero-title">Resumo pessoal</div>
-<div class="hero-row big"><span>Salário do mês</span><strong data-personal="salary">R$ 0,00</strong></div>
-<div class="hero-row"><span>Gastos previstos</span><strong data-personal="planned">R$ 0,00</strong></div>
-<div class="hero-row"><span>Pago / reservado</span><strong data-personal="paid">R$ 0,00</strong></div>
-<div class="hero-row"><span>Guardado no Nubank</span><strong data-personal="saved">R$ 0,00</strong></div>
-<div class="hero-row"><span>Contas pendentes</span><strong data-personal="pending">R$ 0,00</strong></div>
-<div class="hero-row"><span>Gastos variáveis</span><strong data-personal="variableTotal">R$ 0,00</strong></div>
-<div class="hero-row"><span>Variáveis restantes</span><strong data-personal="variableLeft">R$ 0,00</strong></div>
-<div class="hero-row"><span>Dívida mãe restante</span><strong data-personal="debtLeft">R$ 4.000,00</strong></div>
-<div class="hero-row"><span>Sobra geral estimada</span><strong data-personal="available">R$ 0,00</strong></div>
-<div class="hero-row"><span>Sobra após pendências</span><strong data-personal="afterPending">R$ 0,00</strong></div>
-<div class="muted-line" style="margin-top:10px">A sobra geral é uma conferência. O controle principal considera Nubank, Next, carteira eletrônica, conta salário, reserva e gastos variáveis.</div>
+<div class="dashboard-overview">
+<div class="dashboard-overview-head"><div class="dashboard-overview-title">Seu mês</div><div class="dashboard-overview-note">o essencial primeiro</div></div>
+<div class="metric-grid-v264">
+<div class="metric-v264 primary"><span>Salário</span><strong data-personal="salary">R$ 0,00</strong></div>
+<div class="metric-v264"><span>Pago / reservado</span><strong data-personal="paid">R$ 0,00</strong></div>
+<div class="metric-v264 warn"><span>Pendências</span><strong data-personal="pending">R$ 0,00</strong></div>
+<div class="metric-v264 good"><span>Sobra após pendências</span><strong data-personal="afterPending">R$ 0,00</strong></div>
 </div>
+</div>
+<details class="compact-details"><summary>Resumo detalhado</summary><div class="compact-details-body"><div class="metric-grid-v264">
+<div class="metric-v264"><span>Gastos previstos</span><strong data-personal="planned">R$ 0,00</strong></div>
+<div class="metric-v264"><span>Guardado</span><strong data-personal="saved">R$ 0,00</strong></div>
+<div class="metric-v264"><span>Gastos variáveis</span><strong data-personal="variableTotal">R$ 0,00</strong></div>
+<div class="metric-v264"><span>Variáveis restantes</span><strong data-personal="variableLeft">R$ 0,00</strong></div>
+<div class="metric-v264"><span>Dívida mãe</span><strong data-personal="debtLeft">R$ 4.000,00</strong></div>
+<div class="metric-v264"><span>Sobra geral</span><strong data-personal="available">R$ 0,00</strong></div>
+</div></div></details>
 <div class="alert-box" id="personalAlert">Digite o salário e registre apenas o que saiu neste mês.</div>
-<div class="finance-card">
-<button class="btn blue" id="toggleSalaryPanelBtn" style="width:100%" type="button">Salário do mês</button>
-<div class="collapse-panel" id="salaryPanel">
-<h3>Salário do mês</h3>
-<p class="muted-line">Digite o salário recebido. Ao salvar, este menu fecha para deixar a tela limpa.</p>
+<div class="personal-shortcuts">
+<button class="btn blue" id="toggleSalaryPanelBtn" type="button">Salário / reserva</button>
+<button class="btn purple" id="toggleDebtPanelBtn" type="button">Dívida</button>
+</div>
+<div class="collapse-panel compact-panel-v264" id="salaryPanel">
+<h3>Salário e reserva</h3>
 <div class="form-grid">
 <div class="field full"><label for="personalSalary">Salário recebido</label><input id="personalSalary" placeholder="Ex: 2297,00" step="0.01" type="number"/></div>
-<div class="field full"><button class="btn blue" id="savePersonalBaseBtn" type="button">Confirmar salário</button></div>
-<div class="field full"><label for="personalSavedAmount">Adicionar dinheiro guardado / investimento no Nubank</label><input id="personalSavedAmount" placeholder="Ex: 200,00" step="0.01" type="number"/></div>
-<div class="field full"><button class="btn purple" id="addSavedBtn" type="button">Guardar no Nubank</button></div>
+<div class="field full"><button class="btn blue" id="savePersonalBaseBtn" type="button">Salvar salário</button></div>
+<div class="field"><label for="personalSavedAmount">Guardar no Nubank</label><input id="personalSavedAmount" placeholder="Ex: 200,00" step="0.01" type="number"/></div>
+<div class="field"><button class="btn purple" id="addSavedBtn" type="button" style="margin-top:18px;width:100%">Guardar</button></div>
 </div>
 </div>
-</div>
-<div class="finance-card">
-<button class="btn purple" id="toggleDebtPanelBtn" style="width:100%" type="button">Dívida com mãe</button>
-<div class="collapse-panel" id="debtPanel">
+<div class="collapse-panel compact-panel-v264" id="debtPanel">
 <h3>Dívida com mãe</h3>
 <div class="report-grid">
-<div class="report-line"><span>Total da dívida</span><strong data-personal="debtTotal">R$ 4.500,00</strong></div>
-<div class="report-line"><span>Já pago</span><strong data-personal="debtPaid">R$ 500,00</strong></div>
+<div class="report-line"><span>Total</span><strong data-personal="debtTotal">R$ 4.500,00</strong></div>
+<div class="report-line"><span>Pago</span><strong data-personal="debtPaid">R$ 500,00</strong></div>
 <div class="report-line"><span>Restante</span><strong data-personal="debtLeft2">R$ 4.000,00</strong></div>
 </div>
-<div class="form-grid" style="margin-top:10px">
-<div class="field full"><p class="muted-line">Pagamento da mãe sai direto da conta salário. Ao registrar aqui, o valor subtrai do salário e reduz a dívida restante.</p></div>
-<div class="field full"><label for="debtPayment">Pagamento feito pela conta salário</label><input id="debtPayment" placeholder="Ex: 500,00" step="0.01" type="number"/></div>
-<div class="field full"><button class="btn purple" id="addDebtPaymentBtn" type="button">Registrar pagamento da mãe</button></div>
-<div class="field"><label for="debtTotalEdit">Ajustar total da dívida</label><input id="debtTotalEdit" placeholder="Ex: 4500,00" step="0.01" type="number"/></div>
-<div class="field"><label for="debtPaidEdit">Ajustar já pago</label><input id="debtPaidEdit" placeholder="Ex: 500,00" step="0.01" type="number"/></div>
-<div class="field full"><button class="btn dark" id="saveDebtAdjustBtn" type="button">Salvar ajuste da dívida</button></div>
+<div class="form-grid" style="margin-top:8px">
+<div class="field"><label for="debtPayment">Pagamento</label><input id="debtPayment" placeholder="Ex: 500,00" step="0.01" type="number"/></div>
+<div class="field"><button class="btn purple" id="addDebtPaymentBtn" type="button" style="margin-top:18px;width:100%">Registrar</button></div>
+<div class="field"><label for="debtTotalEdit">Total da dívida</label><input id="debtTotalEdit" step="0.01" type="number"/></div>
+<div class="field"><label for="debtPaidEdit">Já pago</label><input id="debtPaidEdit" step="0.01" type="number"/></div>
+<div class="field full"><button class="btn dark" id="saveDebtAdjustBtn" type="button">Salvar ajuste</button></div>
 </div>
 </div>
+<button class="mini-add-v265" id="toggleSmartPanelBtn" type="button" style="width:100%;margin:0 0 7px">Ver diagnóstico financeiro</button>
+<div class="collapse-panel compact-panel-v264" id="smartPanel">
+<h3>Diagnóstico financeiro</h3><div class="smart-grid" id="smartPersonalBox"></div>
 </div>
-<div class="finance-card">
-<button class="btn blue" id="toggleMoneyPanelBtn" style="width:100%" type="button">Onde está o dinheiro / distribuir salário</button>
-<div id="moneyPanel" style="display:none;margin-top:12px">
-<h3>Onde está o dinheiro</h3>
-<p class="muted-line">Abra este menu para ver onde cada parte do salário deve ficar. Nubank livre é a sobra após separar Next, carteira, contas, gastos variáveis e reserva.</p>
-<div class="wallet-grid" id="personalWalletReport"></div>
-<div class="finance-card" style="box-shadow:none;margin-top:12px;background:rgba(0,0,0,.12)">
-<h3>Distribuição automática</h3>
-<p class="muted-line">Os valores abaixo são preenchidos automaticamente pela tabela de custos do mês. Use ajuste manual só se, na prática, algum valor ficar diferente.</p>
-<div class="form-grid">
-<div class="field"><label for="distNext">Next</label><input id="distNext" placeholder="0,00" step="0.01" type="number"/></div>
-<div class="field"><label for="distNubankBills">Nubank contas/boletos</label><input id="distNubankBills" placeholder="0,00" step="0.01" type="number"/></div>
-<div class="field"><label for="distCarteira">Carteira eletrônica</label><input id="distCarteira" placeholder="0,00" step="0.01" type="number"/></div>
-<div class="field"><label for="distSaved">Guardado no Nubank</label><input id="distSaved" placeholder="0,00" step="0.01" type="number"/></div>
-<div class="field"><label for="distNubankFree">Nubank livre</label><input id="distNubankFree" placeholder="0,00" step="0.01" type="number"/></div>
-<div class="field full inline-actions">
-<button class="btn purple" id="saveDistributionBtn" type="button">Salvar ajuste manual</button>
-<button class="btn dark" id="autoDistributeSalaryBtn" type="button">Usar automático</button>
+<div class="cost-hub-v265" id="personalExpenseList">
+<section class="cost-section-v265">
+<div class="cost-section-head-v265"><h3>Custos fixos</h3><span class="cost-section-meta-v265" id="fixedCostCount">0 itens</span></div>
+<div class="personal-list" id="fixedExpenseList"></div>
+</section>
+<section class="cost-section-v265">
+<div class="cost-section-head-v265"><div><h3>Custos variáveis</h3><span class="cost-section-meta-v265">valor definido ao pagar</span></div><button class="mini-add-v265" id="toggleVariableAddBtn" type="button">+ Adicionar</button></div>
+<div class="inline-variable-form-v265" id="variableAddPanel">
+<div class="variable-form-grid-v265">
+<div><label for="variablePresetSelect">Item</label><select id="variablePresetSelect"><option value="chatgpt">ChatGPT</option><option value="oleo">Óleo 10w30</option><option value="suplementos">Suplemento</option><option value="anticoncepcional">Anticoncepcional</option><option value="corte">Corte de cabelo</option><option value="outro">Outro</option></select></div>
+<div><label for="variableCustomName">Nome (se Outro)</label><input id="variableCustomName" placeholder="Ex: remédio" type="text"/></div>
+<div><label for="variableQty">Quantidade</label><input id="variableQty" min="1" placeholder="Ex: 3" step="1" type="number"/></div>
+<div><label for="variableUnitAmount">Valor unitário</label><input id="variableUnitAmount" min="0.01" placeholder="Ex: 50,00" step="0.01" type="number"/></div>
 </div>
+<div class="variable-form-actions-v265"><button class="btn green" id="saveVariableCostBtn" type="button">Salvar custo</button><button class="btn dark" id="cancelVariableCostBtn" type="button">Cancelar</button></div>
 </div>
-</div>
-<div class="wallet-grid" id="salaryDistributionBox" style="margin-top:12px"></div>
-</div>
-</div>
-<div class="finance-card">
-<button class="btn purple" id="toggleSmartPanelBtn" style="width:100%" type="button">Diagnóstico inteligente</button>
-<div class="collapse-panel" id="smartPanel">
-<h3>Diagnóstico inteligente</h3>
-<div class="smart-grid" id="smartPersonalBox"></div>
-</div>
-</div>
-<div class="finance-card">
-<h3>Contas e gastos do mês</h3>
-<p class="muted-line">ChatGPT, óleo, suplemento, anticoncepcional e corte de cabelo ficam sempre nesta lista. Informe a quantidade total e o valor unitário; cada pagamento registra uma unidade por vez.</p>
-<div class="personal-list" id="personalExpenseList"></div>
+<div class="personal-list" id="variableExpenseList"></div>
 <div id="expensePayPanelHome"></div>
 <div class="action-sheet" id="expensePayPanel">
-<div class="sheet-title" id="expensePayTitle">Registrar pagamento</div>
-<p class="muted-line">Informe a quantidade total e o valor unitário. Ao confirmar, somente uma unidade será marcada como paga.</p>
+<div class="sheet-title" id="expensePayTitle">Alterar custo variável</div>
+<p class="muted-line">A alteração vale somente para as próximas unidades. Valores que já foram pagos não são recalculados.</p>
 <div class="form-grid">
-<div class="field"><label for="expensePayQty">Quantidade total</label><input id="expensePayQty" min="1" placeholder="Ex: 2" step="1" type="number"/></div>
-<div class="field"><label for="expensePayAmount">Valor unitário</label><input id="expensePayAmount" min="0.01" placeholder="Ex: 45,00" step="0.01" type="number"/></div>
+<div class="field"><label for="expensePayQty">Quantidade total</label><input id="expensePayQty" min="1" placeholder="Ex: 3" step="1" type="number"/></div>
+<div class="field"><label for="expensePayAmount">Novo valor unitário</label><input id="expensePayAmount" min="0.01" placeholder="Ex: 55,00" step="0.01" type="number"/></div>
 <div class="field full"><div class="muted-line" id="expensePayUnitPreview">Total previsto: —</div></div>
-<div class="field full inline-actions">
-<button class="btn green" id="confirmExpensePayBtn" type="button">Pagar</button>
-<button class="btn dark" id="cancelExpensePayBtn" type="button">Cancelar</button>
+<div class="field full inline-actions"><button class="btn green" id="confirmExpensePayBtn" type="button">Salvar alteração</button><button class="btn dark" id="cancelExpensePayBtn" type="button">Cancelar</button></div>
 </div>
 </div>
+</section>
 </div>
-</div>
-<div class="finance-card">
-<h3>Adicionar gasto pessoal</h3>
+<details class="compact-details add-other-v265"><summary>Adicionar outro custo fixo/eventual</summary><div class="compact-details-body">
 <div class="form-grid">
 <div class="field"><label for="newExpenseName">Nome</label><input id="newExpenseName" placeholder="Ex: remédio, mercado..." type="text"/></div>
-<div class="field"><label for="newExpenseAmount">Valor</label><input id="newExpenseAmount" step="0.01" type="number"/></div>
-<div class="field"><label for="newExpenseType">Tipo</label><select id="newExpenseType"><option>mensal</option><option>eventual</option><option>variável</option></select></div>
+<div class="field"><label for="newExpenseAmount">Valor</label><input id="newExpenseAmount" placeholder="Ex: 80,00" step="0.01" type="number"/></div>
+<div class="field"><label for="newExpenseType">Tipo</label><select id="newExpenseType"><option>mensal</option><option>eventual</option></select></div>
 <div class="field"><label for="newExpenseAccount">Pagar por</label><select id="newExpenseAccount"><option selected="selected" value="nubank">Nubank</option><option value="next">Next</option><option value="carteira">Carteira eletrônica</option></select></div>
-<div class="field full"><label for="newExpenseNote">Observação</label><textarea id="newExpenseNote"></textarea></div>
-<div class="field full"><button class="btn blue" id="addPersonalExpenseBtn" type="button">Adicionar</button></div>
+<div class="field full"><label for="newExpenseNote">Observação</label><textarea id="newExpenseNote" placeholder="Opcional"></textarea></div>
+<div class="field full"><button class="btn blue" id="addPersonalExpenseBtn" type="button">Adicionar custo</button></div>
 </div>
+</div></details>
+<details class="compact-details"><summary>Entretenimento e gasolina</summary><div class="compact-details-body">
+<div class="budget-pair-v264">
+<div class="budget-box-v264"><h4>Fim de semana</h4>
+<div class="report-grid"><div class="report-line"><span>Limite</span><strong data-personal="entLimit">R$ 600,00</strong></div><div class="report-line"><span>Usado</span><strong data-personal="entUsed">R$ 0,00</strong></div><div class="report-line"><span>Restante</span><strong data-personal="entLeft">R$ 600,00</strong></div></div>
+<div class="field" style="margin-top:7px"><label for="entManual">Valor</label><input id="entManual" placeholder="150 ou 200" step="0.01" type="number"/></div>
+<div class="inline-actions" style="margin-top:6px"><button class="btn orange" data-ent="150" type="button">R$ 150</button><button class="btn orange" data-ent="200" type="button">R$ 200</button><button class="btn dark" id="addEntManualBtn" type="button">Manual</button></div>
 </div>
-<div class="finance-card">
-<h3>Entretenimento / fim de semana</h3>
-<div class="report-grid">
-<div class="report-line"><span>Limite mensal</span><strong data-personal="entLimit">R$ 600,00</strong></div>
-<div class="report-line"><span>Sai de</span><strong>Carteira eletrônica</strong></div>
-<div class="report-line"><span>Usado</span><strong data-personal="entUsed">R$ 0,00</strong></div>
-<div class="report-line"><span>Restante</span><strong data-personal="entLeft">R$ 600,00</strong></div>
+<div class="budget-box-v264"><h4>Gasolina</h4>
+<div class="report-grid"><div class="report-line"><span>Previsão</span><strong>R$ 180,00</strong></div><div class="report-line"><span>Usado</span><strong data-personal="gasUsed">R$ 0,00</strong></div><div class="report-line"><span>Restante</span><strong data-personal="gasLeft">R$ 180,00</strong></div></div>
+<div class="field" style="margin-top:7px"><label for="gasManual">Valor</label><input id="gasManual" placeholder="Ex: 45" step="0.01" type="number"/></div>
+<div class="inline-actions" style="margin-top:6px"><button class="btn orange" data-gas="45" type="button">R$ 45</button><button class="btn dark" id="addGasManualBtn" type="button">Manual</button></div>
 </div>
-<div class="form-grid" style="margin-top:10px">
-<div class="field full"><label for="entManual">Valor manual</label><input id="entManual" placeholder="150 ou 200" step="0.01" type="number"/></div>
-<div class="field full inline-actions"><button class="btn orange" data-ent="150" type="button">Retirar R$ 150</button><button class="btn orange" data-ent="200" type="button">Retirar R$ 200</button><button class="btn dark" id="addEntManualBtn" type="button">Registrar manual</button></div>
-</div>
-</div>
-<div class="finance-card">
-<h3>Gasolina moto</h3>
-<div class="report-grid">
-<div class="report-line"><span>Previsão mensal</span><strong>R$ 180,00</strong></div>
-<div class="report-line"><span>Sai de</span><strong>Nubank</strong></div>
-<div class="report-line"><span>Usado no mês</span><strong data-personal="gasUsed">R$ 0,00</strong></div>
-<div class="report-line"><span>Restante previsto</span><strong data-personal="gasLeft">R$ 180,00</strong></div>
-</div>
-<div class="form-grid" style="margin-top:10px">
-<div class="field full"><label for="gasManual">Valor manual</label><input id="gasManual" placeholder="Ex: 45" step="0.01" type="number"/></div>
-<div class="field full inline-actions"><button class="btn orange" data-gas="45" type="button">Registrar sexta R$ 45</button><button class="btn dark" id="addGasManualBtn" type="button">Registrar manual</button></div>
-</div>
-</div>
-<div class="finance-card"><h3>Histórico pessoal</h3><div class="history-list" id="personalHistory"></div></div>
-<div class="finance-card">
-<h3>Controle mensal</h3>
+</div></div></details>
+<details class="compact-details"><summary>Histórico pessoal</summary><div class="compact-details-body"><div class="history-list" id="personalHistory"></div></div></details>
+<details class="compact-details"><summary>Controle mensal</summary><div class="compact-details-body">
 <p class="muted-line">Cada mês agora fica separado. Ao trocar para junho, julho ou outro mês, o painel abre limpo para controlar só aquele mês.</p>
 <div class="form-grid">
 <div class="field full inline-actions">
@@ -286,7 +576,7 @@
 <button class="btn reset" id="resetBrowserFinanceBtn" type="button">Restaurar dados originais</button>
 </div>
 </div>
-</div>
+</div></details>
 </section>
 </section>
 </div>
@@ -1189,18 +1479,21 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     renderCash();
     appToast('Mês do caixa alterado.');
   });
-  function openCashSheetNearButton(key, button){
+  const cashSheetHost=$('#cashSheetHost');
+  const cashSheetParking=element('div','cash-sheet-parking-v265');
+  cashSheetParking.id='cashSheetParking';
+  if(cashSheetHost){ cashSheetHost.insertAdjacentElement('afterend',cashSheetParking); $$('[data-cash-sheet]').forEach(sheet=>cashSheetParking.append(sheet)); }
+  function openCashSheetNearButton(key){
     const sheet=document.querySelector(`[data-cash-sheet="${key}"]`);
-    if(!sheet) return;
+    if(!sheet||!cashSheetHost) return;
     const wasOpen=sheet.classList.contains('show');
-    $$('[data-cash-sheet]').forEach(item=>item.classList.remove('show'));
-    if(wasOpen) return;
-    button.insertAdjacentElement('afterend',sheet);
+    $$('[data-cash-sheet]').forEach(item=>{ item.classList.remove('show'); if(item!==sheet) cashSheetParking.append(item); });
+    if(wasOpen){ cashSheetParking.append(sheet); return; }
+    cashSheetHost.append(sheet);
     sheet.classList.add('show');
-    try{ sheet.scrollIntoView({behavior:'smooth',block:'nearest'}); }catch(error){}
   }
-  $$('[data-cash-open]').forEach(button=>button.addEventListener('click',()=>openCashSheetNearButton(button.dataset.cashOpen,button)));
-  const closeCashSheets=()=>$$('[data-cash-sheet]').forEach(sheet=>sheet.classList.remove('show'));
+  $$('[data-cash-open]').forEach(button=>button.addEventListener('click',()=>openCashSheetNearButton(button.dataset.cashOpen)));
+  const closeCashSheets=()=>$$('[data-cash-sheet]').forEach(sheet=>{ sheet.classList.remove('show'); if(cashSheetParking) cashSheetParking.append(sheet); });
 
   function registerSale(amountInput, creditsInput, plan){
     const month=currentCashMonth();
@@ -1377,14 +1670,14 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
   const defaultPersonalExpenses=[
     {id:'internet',name:'Internet',amount:129.90,status:'pendente',type:'mensal',account:'nubank',note:'1x por mês'},
     {id:'academia',name:'Academia',amount:100,status:'pendente',type:'mensal',account:'nubank',note:'1x por mês'},
-    {id:'chatgpt',name:'ChatGPT',amount:0,status:'pendente',type:'variável',account:'nubank',note:'Informe quantidade e valor unitário ao pagar',dynamicPayment:true,qty:0,paidQty:0,unitAmount:0,payments:[]},
     {id:'seguro',name:'Seguro',amount:109,status:'pendente',type:'mensal',account:'next',note:'Vence dia 01; até novembro'},
-    {id:'oleo',name:'Óleo 10w30 Moto',amount:0,status:'pendente',type:'variável',account:'nubank',note:'Informe quantidade e valor unitário ao pagar',dynamicPayment:true,qty:0,paidQty:0,unitAmount:0,payments:[]},
-    {id:'suplementos',name:'Suplemento',amount:0,status:'pendente',type:'variável',account:'nubank',note:'Informe quantidade e valor unitário ao pagar',dynamicPayment:true,qty:0,paidQty:0,unitAmount:0,payments:[]},
-    {id:'anticoncepcional',name:'Anticoncepcional',amount:0,status:'pendente',type:'variável',account:'nubank',note:'Informe quantidade e valor unitário ao pagar',dynamicPayment:true,qty:0,paidQty:0,unitAmount:0,payments:[]},
-    {id:'corte',name:'Corte de cabelo',amount:0,status:'pendente',type:'variável',account:'nubank',note:'Informe quantidade e valor unitário ao pagar',dynamicPayment:true,qty:0,paidQty:0,unitAmount:0,payments:[]}
+    {id:'chatgpt',name:'ChatGPT',amount:0,status:'pendente',type:'variável',account:'nubank',note:'Quantidade e valor definidos no primeiro pagamento',dynamicPayment:true,qty:0,paidQty:0,unitAmount:0,payments:[]},
+    {id:'oleo',name:'Óleo 10w30 Moto',amount:0,status:'pendente',type:'variável',account:'nubank',note:'Quantidade e valor definidos no primeiro pagamento',dynamicPayment:true,qty:0,paidQty:0,unitAmount:0,payments:[]},
+    {id:'suplementos',name:'Suplemento',amount:0,status:'pendente',type:'variável',account:'nubank',note:'Quantidade e valor definidos no primeiro pagamento',dynamicPayment:true,qty:0,paidQty:0,unitAmount:0,payments:[]},
+    {id:'anticoncepcional',name:'Anticoncepcional',amount:0,status:'pendente',type:'variável',account:'nubank',note:'Quantidade e valor definidos no primeiro pagamento',dynamicPayment:true,qty:0,paidQty:0,unitAmount:0,payments:[]},
+    {id:'corte',name:'Corte de cabelo',amount:0,status:'pendente',type:'variável',account:'nubank',note:'Quantidade e valor definidos no primeiro pagamento',dynamicPayment:true,qty:0,paidQty:0,unitAmount:0,payments:[]}
   ];
-  const variableLabels={oleo:'Óleo 10w30 Moto',suplemento:'Suplemento',anticoncepcional:'Anticoncepcional',corte:'Corte de cabelo',outro:'Outro gasto variável'};
+  const variableLabels={chatgpt:'ChatGPT',oleo:'Óleo 10w30 Moto',suplemento:'Suplemento',anticoncepcional:'Anticoncepcional',corte:'Corte de cabelo',outro:'Outro gasto variável'};
 
   function makePersonalMonth(){
     return {
@@ -1501,16 +1794,22 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     });
 
     const existingIds=new Set(month.expenses.map(expense=>expense.id));
+    const standardVariableIds=new Set(['chatgpt','oleo','suplementos','anticoncepcional','corte']);
+    month.removedDefaultIds=month.removedDefaultIds.filter(id=>!standardVariableIds.has(id));
     defaultPersonalExpenses.forEach(definition=>{
-      if(!existingIds.has(definition.id)&&!month.removedDefaultIds.includes(definition.id)){
+      if(!existingIds.has(definition.id)&&(definition.dynamicPayment||!month.removedDefaultIds.includes(definition.id))){
         month.expenses.push(normalizeFixedExpense(deepClone(definition)));
         existingIds.add(definition.id);
       }
     });
 
     knownVariables.forEach(item=>{
-      const target=month.expenses.find(expense=>expense.id===item.targetId);
-      if(!target) return;
+      let target=month.expenses.find(expense=>expense.id===item.targetId);
+      if(!target){
+        const names={oleo:'Óleo 10w30 Moto',suplementos:'Suplemento',anticoncepcional:'Anticoncepcional',corte:'Corte de cabelo'};
+        target=normalizeFixedExpense({id:item.targetId,name:names[item.targetId]||item.name||'Gasto variável',amount:0,status:'pendente',type:'variável',account:'nubank',note:'Configure quantidade e valor unitário ao pagar',dynamicPayment:true,qty:0,paidQty:0,unitAmount:0,payments:[]});
+        month.expenses.push(target);
+      }
       target.dynamicPayment=true;
       target.type='variável';
       target.account='nubank';
@@ -1642,12 +1941,12 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     const unitAmount=finiteOr($('#expensePayAmount').value,0);
     if(qty<1||unitAmount<=0){ setText('#expensePayUnitPreview','Total previsto: —'); return; }
     const item=currentPersonalMonth().expenses.find(entry=>entry.id===panel.dataset.expenseId&&entry.dynamicPayment);
-    if(panel.dataset.mode==='next'&&item){
+    if(item&&panel.dataset.mode==='edit'){
       syncDynamicExpense(item);
       const paidTotal=expensePaidAmount(item);
-      const remainingAfter=Math.max(qty-item.paidQty-1,0);
-      const estimated=roundMoney(paidTotal+unitAmount+unitAmount*remainingAfter);
-      setText('#expensePayUnitPreview',`Próxima unidade: ${fmt(unitAmount)} · Total estimado: ${fmt(estimated)}`);
+      const futureQty=Math.max(qty-item.paidQty,0);
+      const estimated=roundMoney(paidTotal+unitAmount*futureQty);
+      setText('#expensePayUnitPreview',`Já pago (não altera): ${fmt(paidTotal)} · Futuras: ${futureQty} x ${fmt(unitAmount)} · Total estimado: ${fmt(estimated)}`);
       return;
     }
     setText('#expensePayUnitPreview',`Total previsto: ${fmt(qty*unitAmount)}`);
@@ -1660,7 +1959,7 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     panel.dataset.mode=mode;
     const editing=mode==='edit';
     const nextPayment=mode==='next';
-    setText('#expensePayTitle',editing?`Alterar quantidade e valor unitário — ${expense.name}`:(nextPayment?`Pagar próxima unidade — ${expense.name}`:`Pagar primeira unidade — ${expense.name}`));
+    setText('#expensePayTitle',editing?`Alterar custo — ${expense.name}`:(nextPayment?`Pagar próxima unidade — ${expense.name}`:`Pagar primeira unidade — ${expense.name}`));
     setText('#confirmExpensePayBtn',editing?'Salvar alteração':'Pagar');
     $('#expensePayQty').value=expense.qty>0?String(expense.qty):'1';
     $('#expensePayQty').disabled=nextPayment;
@@ -1676,7 +1975,7 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     const box=$('#smartPersonalBox');
     if(!panel||!button||!box) return;
     panel.classList.toggle('show',month.smartPanelOpen);
-    button.textContent=month.smartPanelOpen?'Ocultar diagnóstico inteligente':'Diagnóstico inteligente';
+    button.textContent=month.smartPanelOpen?'Fechar diagnóstico':'Ver diagnóstico';
     const tips=[];
     const push=(title,text)=>tips.push({title,text});
     if(!month.salary) push('1. Informe o salário','Sem salário salvo, o sistema não consegue dizer se sobra ou falta dinheiro.');
@@ -1702,53 +2001,66 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     return row;
   }
   function renderPersonalExpenses(){
-    const box=$('#personalExpenseList');
-    if(!box) return;
+    const root=$('#personalExpenseList');
+    const fixedBox=$('#fixedExpenseList');
+    const variableBox=$('#variableExpenseList');
+    if(!root||!fixedBox||!variableBox) return;
     const payPanel=$('#expensePayPanel');
-    if(payPanel&&box.contains(payPanel)) closeExpensePayPanel();
+    if(payPanel&&root.contains(payPanel)) closeExpensePayPanel();
     const month=currentPersonalMonth();
-    const nodes=month.expenses.map(expense=>{
+    const normalizeType=value=>String(value||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+    const isVariableExpense=expense=>expense.dynamicPayment||normalizeType(expense.type).includes('variavel');
+    const fixed=month.expenses.filter(expense=>!isVariableExpense(expense));
+    const variable=month.expenses.filter(isVariableExpense);
+
+    const makeExpenseRow=expense=>{
       const row=element('div','expense-row');
       row.dataset.expenseId=expense.id;
       const main=element('div','expense-main');
       const details=element('div');
-      const valueText=expense.dynamicPayment&&finiteOr(expense.amount,0)<=0?'valor ao pagar':fmt(expense.amount);
-      details.append(element('div','expense-name',`${expense.name} — ${valueText}`));
+      if(expense.dynamicPayment) syncDynamicExpense(expense);
+      const isUnconfiguredVariable=expense.dynamicPayment&&expense.qty<1&&expense.paidQty<1&&expense.unitAmount<=0;
+      const titleText=isUnconfiguredVariable?expense.name:`${expense.name} · ${fmt(expense.amount)}`;
+      details.append(element('div','expense-name',titleText));
       if(expense.dynamicPayment){
-        syncDynamicExpense(expense);
-        const info=[];
-        const paidAmount=expensePaidAmount(expense);
-        const pendingAmount=expensePendingAmount(expense);
-        if(expense.qty>0) info.push(`${expense.paidQty} de ${expense.qty} pago${expense.paidQty===1?'':'s'}`);
-        if(expense.qty>0&&expense.amount>0) info.push(`unidade: ${fmt(expense.unitAmount)}`);
-        if(paidAmount>0) info.push(`pago: ${fmt(paidAmount)}`);
-        if(pendingAmount>0) info.push(`falta: ${fmt(pendingAmount)}`);
-        details.append(element('div','expense-note',info.length?info.join(' · '):'Informe quantidade e valor unitário ao tocar em Pagar.'));
+        if(isUnconfiguredVariable){
+          details.append(element('div','expense-note','Defina quantidade e valor unitário ao tocar em Pagar.'));
+        }else{
+          const info=[];
+          const paidAmount=expensePaidAmount(expense);
+          const pendingAmount=expensePendingAmount(expense);
+          info.push(`${expense.paidQty}/${expense.qty} pago${expense.paidQty===1?'':'s'}`);
+          if(expense.paidQty<expense.qty&&expense.unitAmount>0) info.push(`próximo ${fmt(expense.unitAmount)}`);
+          if(paidAmount>0) info.push(`pago ${fmt(paidAmount)}`);
+          if(pendingAmount>0) info.push(`restante ${fmt(pendingAmount)}`);
+          details.append(element('div','expense-note',info.join(' · ')));
+        }
       }else if(expense.note){
         details.append(element('div','expense-note',expense.note));
       }
-      details.append(element('div','expense-source',`Pagamento: ${accountName(expense.account)}`));
+      details.append(element('div','expense-source',accountName(expense.account)));
       main.append(details,element('span',`expense-status ${expense.status}`,expense.status));
       const controls=element('div','expense-controls');
       let payLabel='Pagar',payClass='green';
       if(expense.dynamicPayment){
-        syncDynamicExpense(expense);
-        if(expense.qty>0&&expense.paidQty<expense.qty) payLabel=expense.paidQty>0?'Pagar próxima':'Pagar primeira';
-        else if(expense.qty>0&&expense.paidQty>=expense.qty){ payLabel='Desfazer última'; payClass='dark'; }
+        if(expense.qty<1) payLabel='Pagar';
+        else if(expense.paidQty<expense.qty) payLabel=expense.paidQty>0?'Pagar próxima':'Pagar primeira';
+        else { payLabel='Desfazer última'; payClass='dark'; }
       }else if(expense.status==='pago'){ payLabel='Desmarcar'; payClass='dark'; }
-      const pay=element('button',`btn ${payClass}`,payLabel);
-      pay.type='button'; pay.dataset.expPay='';
-      const edit=element('button','btn dark',expense.dynamicPayment?'Alterar quantidade/valor unitário':'Editar');
-      edit.type='button'; edit.dataset.expEdit='';
+      const pay=element('button',`btn ${payClass}`,payLabel); pay.type='button'; pay.dataset.expPay='';
+      const edit=element('button','btn dark',expense.dynamicPayment?'Alterar':'Editar'); edit.type='button'; edit.dataset.expEdit='';
       controls.append(pay,edit);
-      if(!expense.dynamicPayment){
-        const remove=element('button','btn reset','Excluir'); remove.type='button'; remove.dataset.expDel='';
-        controls.append(remove);
+      const standardVariableIds=new Set(['chatgpt','oleo','suplementos','anticoncepcional','corte']);
+      if((!expense.dynamicPayment||!standardVariableIds.has(expense.id))&&expensePaidAmount(expense)<=0){
+        const remove=element('button','btn reset','Excluir'); remove.type='button'; remove.dataset.expDel=''; controls.append(remove);
       }
       row.append(main,controls);
       return row;
-    });
-    box.replaceChildren(...(nodes.length?nodes:[element('div','muted-line','Nenhuma conta ou gasto neste mês.') ]));
+    };
+
+    fixedBox.replaceChildren(...(fixed.length?fixed.map(makeExpenseRow):[element('div','empty-cost-v265','Nenhum custo fixo neste mês.') ]));
+    variableBox.replaceChildren(...(variable.length?variable.map(makeExpenseRow):[element('div','empty-cost-v265','Nenhum custo variável neste mês.') ]));
+    const fixedCount=$('#fixedCostCount'); if(fixedCount) fixedCount.textContent=`${fixed.length} ${fixed.length===1?'item':'itens'}`;
   }
   function renderPersonalHistory(){
     const box=$('#personalHistory');
@@ -1766,8 +2078,9 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
   function renderPersonal(){
     const month=currentPersonalMonth();
     const activeExpenses=month.expenses.filter(expense=>expense.status!=='cancelado');
-    const dynamicExpenses=activeExpenses.filter(expense=>expense.dynamicPayment);
-    const fixedExpenses=activeExpenses.filter(expense=>!expense.dynamicPayment);
+    const isVariableExpense=expense=>expense.dynamicPayment||String(expense.type||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').includes('variavel');
+    const dynamicExpenses=activeExpenses.filter(isVariableExpense);
+    const fixedExpenses=activeExpenses.filter(expense=>!isVariableExpense(expense));
     const variableTotal=dynamicExpenses.reduce((sum,item)=>sum+finiteOr(item.amount,0),0);
     const variablePaid=dynamicExpenses.reduce((sum,item)=>sum+expensePaidAmount(item),0);
     const variablePending=dynamicExpenses.reduce((sum,item)=>sum+expensePendingAmount(item),0);
@@ -1792,14 +2105,7 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
       saved:month.saved,
       nubankFree:afterPending
     };
-    const manual=month.walletManual?.enabled?month.walletManual:null;
-    const wallet=manual?{
-      nubankBills:Math.max(0,finiteOr(manual.nubankBills,automaticWallet.nubankBills)),
-      next:Math.max(0,finiteOr(manual.next,automaticWallet.next)),
-      carteira:Math.max(0,finiteOr(manual.carteira,automaticWallet.carteira)),
-      saved:Math.max(0,finiteOr(manual.saved,automaticWallet.saved)),
-      nubankFree:finiteOr(manual.nubankFree,automaticWallet.nubankFree)
-    }:automaticWallet;
+    const wallet=automaticWallet;
 
     setText('[data-personal="salary"]',fmt(month.salary));
     setText('[data-personal="saved"]',fmt(month.saved));
@@ -1823,44 +2129,12 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     $('#debtTotalEdit').value=personal.debt.total.toFixed(2);
     $('#debtPaidEdit').value=personal.debt.paid.toFixed(2);
 
-    const moneyPanel=$('#moneyPanel');
-    moneyPanel.style.display=month.moneyPanelOpen?'block':'none';
-    $('#toggleMoneyPanelBtn').textContent=month.moneyPanelOpen?'Ocultar onde está o dinheiro':'Onde está o dinheiro / distribuir salário';
-    const walletBox=$('#personalWalletReport');
-    walletBox.replaceChildren(
-      makeWalletLine('Nubank — contas e gastos',wallet.nubankBills,'Internet, academia, gasolina, variáveis e outras pendências'),
-      makeWalletLine('Next',wallet.next,'Valores marcados para o Next'),
-      makeWalletLine('Carteira eletrônica',wallet.carteira,'Entretenimento e fim de semana restante'),
-      makeWalletLine('Guardado no Nubank',wallet.saved,'Reserva ou investimento separado'),
-      makeWalletLine('Nubank livre',wallet.nubankFree,'Sobra depois de separar pendências e reserva',wallet.nubankFree<0?'negative':'free')
-    );
-    const setInput=(selector,value)=>{ const input=$(selector); if(input) input.value=finiteOr(value,0).toFixed(2); };
-    setInput('#distNext',wallet.next);
-    setInput('#distNubankBills',wallet.nubankBills);
-    setInput('#distCarteira',wallet.carteira);
-    setInput('#distSaved',wallet.saved);
-    setInput('#distNubankFree',wallet.nubankFree);
-    const distributionBox=$('#salaryDistributionBox');
-    const separatedTotal=wallet.next+wallet.nubankBills+wallet.carteira+wallet.saved;
-    const alert=element('div',`alert-box ${manual?'':'ok'}`,manual?'Distribuição manual salva para este mês.':'Distribuição automática calculada para este mês.');
-    alert.style.marginBottom='4px';
-    distributionBox.replaceChildren(
-      alert,
-      makeWalletLine('Deixar no Nubank para contas e gastos',wallet.nubankBills,'Contas, gasolina e gastos variáveis pendentes'),
-      makeWalletLine('Enviar ou manter no Next',wallet.next,'Gastos marcados para o Next'),
-      makeWalletLine('Separar na carteira eletrônica',wallet.carteira,'Entretenimento e fim de semana'),
-      makeWalletLine('Guardar ou investir no Nubank',wallet.saved,'Valor separado como reserva'),
-      makeWalletLine('Nubank livre',wallet.nubankFree,'Dinheiro que sobra após separar todos os destinos',wallet.nubankFree<0?'negative':''),
-      makeWalletLine('Total separado',separatedTotal,'Next + Nubank para gastos + carteira + reserva'),
-      makeWalletLine('Conferência',separatedTotal+wallet.nubankFree,'Total separado + Nubank livre')
-    );
-
     const salaryPanel=$('#salaryPanel');
     salaryPanel.classList.toggle('show',month.salaryPanelOpen);
-    $('#toggleSalaryPanelBtn').textContent=month.salaryPanelOpen?'Ocultar salário do mês':'Salário do mês';
+    $('#toggleSalaryPanelBtn').textContent=month.salaryPanelOpen?'Fechar salário':'Salário';
     const debtPanel=$('#debtPanel');
     debtPanel.classList.toggle('show',month.debtPanelOpen);
-    $('#toggleDebtPanelBtn').textContent=month.debtPanelOpen?'Ocultar dívida com mãe':'Dívida com mãe';
+    $('#toggleDebtPanelBtn').textContent=month.debtPanelOpen?'Fechar dívida':'Dívida';
     renderSmartPersonal(month,wallet,{afterPending,totalPending,debtLeft});
 
     const personalAlert=$('#personalAlert');
@@ -1876,7 +2150,7 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
       personalAlert.textContent='Atenção: depois de separar contas e variáveis, não sobra dinheiro livre.';
     }else if(available>0){
       personalAlert.className='alert-box ok';
-      personalAlert.textContent='Painel em ordem. A distribuição automática usa os gastos deste mês.';
+      personalAlert.textContent='Painel em ordem. Os valores consideram os gastos e pendências deste mês.';
     }
     renderPersonalExpenses();
     renderPersonalHistory();
@@ -1928,19 +2202,14 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     renderPersonal();
     appToast('Mês finalizado. Novo mês aberto limpo.');
   });
-  $('#toggleSalaryPanelBtn').addEventListener('click',()=>{ const month=currentPersonalMonth(); month.salaryPanelOpen=!month.salaryPanelOpen; savePersonal(); renderPersonal(); });
-  $('#toggleDebtPanelBtn').addEventListener('click',()=>{ const month=currentPersonalMonth(); month.debtPanelOpen=!month.debtPanelOpen; savePersonal(); renderPersonal(); });
-  $('#toggleMoneyPanelBtn').addEventListener('click',()=>{
-    const month=currentPersonalMonth();
-    month.moneyPanelOpen=!month.moneyPanelOpen;
-    savePersonal(); renderPersonal();
-    if(month.moneyPanelOpen){ try{ $('#moneyPanel').scrollIntoView({behavior:'smooth',block:'center'}); }catch(error){} }
-  });
+  $('#toggleSalaryPanelBtn').addEventListener('click',()=>{ const month=currentPersonalMonth(); const open=!month.salaryPanelOpen; month.salaryPanelOpen=open; if(open){month.debtPanelOpen=false;month.smartPanelOpen=false;} savePersonal(); renderPersonal(); });
+  $('#toggleDebtPanelBtn').addEventListener('click',()=>{ const month=currentPersonalMonth(); const open=!month.debtPanelOpen; month.debtPanelOpen=open; if(open){month.salaryPanelOpen=false;month.smartPanelOpen=false;} savePersonal(); renderPersonal(); });
   $('#toggleSmartPanelBtn').addEventListener('click',()=>{
     const month=currentPersonalMonth();
-    month.smartPanelOpen=!month.smartPanelOpen;
+    const open=!month.smartPanelOpen;
+    month.smartPanelOpen=open;
+    if(open){month.salaryPanelOpen=false;month.debtPanelOpen=false;}
     savePersonal(); renderPersonal();
-    if(month.smartPanelOpen){ try{ $('#smartPanel').scrollIntoView({behavior:'smooth',block:'center'}); }catch(error){} }
   });
   $('#savePersonalBaseBtn').addEventListener('click',()=>{
     const month=currentPersonalMonth();
@@ -1950,28 +2219,6 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     month.salary=roundMoney(salary);
     month.salaryPanelOpen=false;
     savePersonal(); renderPersonal(); appToast('Salário salvo.');
-  });
-  $('#autoDistributeSalaryBtn').addEventListener('click',()=>{
-    const month=currentPersonalMonth();
-    if(!reopenPersonalMonth(month)) return;
-    month.walletManual={enabled:false};
-    month.moneyPanelOpen=true;
-    savePersonal(); renderPersonal(); appToast('Distribuição automática preenchida.');
-  });
-  $('#saveDistributionBtn').addEventListener('click',()=>{
-    const month=currentPersonalMonth();
-    if(!reopenPersonalMonth(month)) return;
-    const values={
-      next:nonNegative($('#distNext').value),
-      nubankBills:nonNegative($('#distNubankBills').value),
-      carteira:nonNegative($('#distCarteira').value),
-      saved:nonNegative($('#distSaved').value),
-      nubankFree:parseNumber($('#distNubankFree').value)
-    };
-    if(Object.values(values).some(value=>!Number.isFinite(value))){ appToast('Preencha a distribuição com valores válidos.'); return; }
-    month.walletManual={enabled:true,...values};
-    month.moneyPanelOpen=true;
-    savePersonal(); renderPersonal(); appToast('Ajuste manual salvo.');
   });
   $('#saveDebtAdjustBtn').addEventListener('click',()=>{
     const total=positive($('#debtTotalEdit').value);
@@ -2060,7 +2307,15 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
           return;
         }
         if(item.paidQty<item.qty){
-          openExpensePayPanel(item,'next',row);
+          const unitAmount=roundMoney(Math.max(0,finiteOr(item.unitAmount,0)));
+          if(unitAmount<=0){ openExpensePayPanel(item,'edit',row); appToast('Defina o valor unitário antes de pagar.'); return; }
+          item.payments=Array.isArray(item.payments)?item.payments:[];
+          item.payments.push(unitAmount);
+          syncDynamicExpense(item);
+          addPersonalHistory(`Pagou ${item.paidQty} de ${item.qty}: ${item.name} (Nubank)`,unitAmount,'variable-payment');
+          const remaining=Math.max(item.qty-item.paidQty,0);
+          savePersonal(); renderPersonal();
+          appToast(remaining>0?`Unidade paga por ${fmt(unitAmount)}. Restam ${remaining}.`:'Todas as unidades foram pagas.');
           return;
         }
         const undoneAmount=Array.isArray(item.payments)&&item.payments.length?item.payments.pop():item.unitAmount;
@@ -2086,25 +2341,84 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
       if(note!==null) item.note=note.trim().slice(0,500);
       savePersonal(); renderPersonal(); appToast('Gasto editado.');
     }else if(event.target.matches('[data-exp-del]')){
-      if(item.dynamicPayment) return;
+      if(item.dynamicPayment&&expensePaidAmount(item)>0){ appToast('Não é possível excluir um custo que já possui pagamento.'); return; }
       if(!confirm('Excluir este gasto do mês selecionado?')) return;
       if(defaultPersonalExpenses.some(definition=>definition.id===item.id)&&!month.removedDefaultIds.includes(item.id)) month.removedDefaultIds.push(item.id);
       month.expenses=month.expenses.filter(entry=>entry.id!==item.id);
       savePersonal(); renderPersonal(); appToast('Gasto excluído deste mês.');
     }
   });
+  const variableDefinitions={
+    chatgpt:{id:'chatgpt',name:'ChatGPT'},
+    oleo:{id:'oleo',name:'Óleo 10w30 Moto'},
+    suplementos:{id:'suplementos',name:'Suplemento'},
+    anticoncepcional:{id:'anticoncepcional',name:'Anticoncepcional'},
+    corte:{id:'corte',name:'Corte de cabelo'}
+  };
+  function setVariableFormOpen(open){
+    const panel=$('#variableAddPanel');
+    if(panel) panel.classList.toggle('show',!!open);
+    const btn=$('#toggleVariableAddBtn');
+    if(btn) btn.textContent=open?'Fechar':' + Adicionar';
+  }
+  $('#toggleVariableAddBtn').addEventListener('click',()=>setVariableFormOpen(!$('#variableAddPanel').classList.contains('show')));
+  $('#cancelVariableCostBtn').addEventListener('click',()=>setVariableFormOpen(false));
+  $('#variablePresetSelect').addEventListener('change',()=>{
+    const custom=$('#variableCustomName');
+    const isOther=$('#variablePresetSelect').value==='outro';
+    custom.disabled=!isOther;
+    custom.placeholder=isOther?'Ex: remédio':'Somente para “Outro”';
+    if(!isOther) custom.value='';
+  });
+  $('#variablePresetSelect').dispatchEvent(new Event('change'));
+  $('#saveVariableCostBtn').addEventListener('click',()=>{
+    const month=currentPersonalMonth();
+    if(!reopenPersonalMonth(month)) return;
+    const preset=$('#variablePresetSelect').value;
+    const qty=Math.floor(positive($('#variableQty').value));
+    const unitAmount=positive($('#variableUnitAmount').value);
+    if(!Number.isFinite(qty)||qty<1){ appToast('Informe uma quantidade maior que zero.'); return; }
+    if(!Number.isFinite(unitAmount)){ appToast('Informe um valor unitário maior que zero.'); return; }
+    const definition=variableDefinitions[preset];
+    let id,name;
+    if(definition){ id=definition.id; name=definition.name; }
+    else{
+      name=$('#variableCustomName').value.trim();
+      if(!name){ appToast('Informe o nome do custo variável.'); return; }
+      id=uid();
+    }
+    let item=definition?month.expenses.find(entry=>entry.id===id):null;
+    if(item){
+      syncDynamicExpense(item);
+      if(qty<item.paidQty){ appToast(`A quantidade não pode ser menor que as ${item.paidQty} unidade(s) já pagas.`); return; }
+      item.qty=qty;
+      item.unitAmount=roundMoney(unitAmount);
+      item.type='variável'; item.account='nubank'; item.dynamicPayment=true;
+      item.payments=Array.isArray(item.payments)?item.payments:[];
+      item.note='Valor atual vale somente para próximas unidades';
+      syncDynamicExpense(item);
+      addPersonalHistory(`Atualizou custo variável: ${item.name} — próximas unidades a ${fmt(unitAmount)}`,expensePaidAmount(item),'variable-update');
+      appToast(`${item.name} atualizado.`);
+    }else{
+      item=normalizeFixedExpense({id,name,amount:roundMoney(qty*unitAmount),status:'pendente',type:'variável',account:'nubank',note:'Valor atual vale somente para próximas unidades',dynamicPayment:true,qty,paidQty:0,unitAmount:roundMoney(unitAmount),payments:[]});
+      month.expenses.push(item);
+      appToast(`${name} adicionado aos custos variáveis.`);
+    }
+    $('#variableQty').value=''; $('#variableUnitAmount').value=''; $('#variableCustomName').value=''; $('#variablePresetSelect').value='chatgpt'; $('#variablePresetSelect').dispatchEvent(new Event('change'));
+    setVariableFormOpen(false); savePersonal(); renderPersonal();
+  });
+
   $('#addPersonalExpenseBtn').addEventListener('click',()=>{
     const month=currentPersonalMonth();
     if(!reopenPersonalMonth(month)) return;
     const name=$('#newExpenseName').value.trim();
     const amount=positive($('#newExpenseAmount').value);
-    if(!name||!Number.isFinite(amount)){ appToast('Informe nome e valor maior que zero.'); return; }
-    month.expenses.push(normalizeFixedExpense({id:uid(),name,amount,status:'pendente',type:$('#newExpenseType').value,account:validAccount($('#newExpenseAccount').value),note:$('#newExpenseNote').value.trim()}));
-    $('#newExpenseName').value='';
-    $('#newExpenseAmount').value='';
-    $('#newExpenseAccount').value='nubank';
-    $('#newExpenseNote').value='';
-    savePersonal(); renderPersonal(); appToast('Gasto adicionado ao mês.');
+    const type=$('#newExpenseType').value;
+    if(!name){ appToast('Informe o nome do gasto.'); return; }
+    if(!Number.isFinite(amount)){ appToast('Informe um valor maior que zero.'); return; }
+    month.expenses.push(normalizeFixedExpense({id:uid(),name,amount:roundMoney(amount),status:'pendente',type,account:validAccount($('#newExpenseAccount').value),note:$('#newExpenseNote').value.trim(),dynamicPayment:false}));
+    $('#newExpenseName').value=''; $('#newExpenseAmount').value=''; $('#newExpenseAccount').value='nubank'; $('#newExpenseNote').value='';
+    savePersonal(); renderPersonal(); appToast('Custo adicionado ao mês.');
   });
   $('#addDebtPaymentBtn').addEventListener('click',()=>{
     const month=currentPersonalMonth();
