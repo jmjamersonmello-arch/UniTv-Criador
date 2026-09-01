@@ -331,7 +331,7 @@ h1,.app-brand h1{font-size:33px}
 <body>
 <div class="wrap">
 <div class="header app-top">
-<div class="app-brand"><div><h1>JamesUni</h1><div class="app-subtitle">Caixa, criação UniTV e gastos pessoais em um só lugar.</div></div><span class="pill"><strong>v2.71</strong></span></div>
+<div class="app-brand"><div><h1>JamesUni</h1><div class="app-subtitle">Caixa, criação UniTV e gastos pessoais em um só lugar.</div></div><span class="pill"><strong>v2.72</strong></span></div>
 <div class="main-nav" role="tablist">
 <button aria-pressed="true" class="main-tab active" data-main-tab="caixa" role="tab" type="button">Caixa</button>
 <button aria-pressed="false" class="main-tab" data-main-tab="unitv" role="tab" type="button">UniTV</button>
@@ -455,7 +455,7 @@ h1,.app-brand h1{font-size:33px}
 <div class="panel" data-panel="emails" role="tabpanel"><section class="block" data-key="emails" data-limit="1" data-seq="emails"><div class="counter-line"><div class="block-title">E-mail</div><div class="pill"><span>Gerados:</span><strong class="counter">0</strong><span class="muted">• Guardados: <span class="det">0</span></span></div></div><div class="controls"><button class="btn paste" data-role="paste-email" type="button">Gerar aliás</button><button class="btn paste" data-role="gen-email" type="button">Gerar e-mail</button><button class="btn paste" data-role="paste-login" type="button">Colar e-mail</button><button class="btn paste" data-role="paste-code" type="button">Colar Código</button><button class="btn copy copy" type="button">Copiar <span class="muted">(restantes: 0)</span></button><button class="btn reset reset" data-role="reset" type="button">Zerar</button></div><div class="inline"><span>Código: <strong class="email-code-pill">—</strong> <span class="muted">• Cópias: <strong class="email-copies">0</strong></span></span><button class="toggle-sms" type="button">Ver e-mails</button></div><div class="editor"></div><div class="status"><div class="left">Fase 0 de 2 · Próximo: Gerar e-mails</div><div class="progress">0/0</div></div><div class="bar"><div class="fill"></div></div></section></div>
 <div class="panel" data-panel="account" role="tabpanel"><section class="block" data-key="account" data-limit="0" data-seq="account"><div class="counter-line"><div class="block-title">Conta formatada</div><div class="pill"><span>Contas:</span><strong class="counter">0</strong><span class="muted">• Próximo: <span class="det">Colar conta</span></span></div></div><div class="controls"><button class="btn paste" data-role="account-action" type="button">Colar conta</button><button class="btn sms" data-role="code-action" type="button">Colar códigos</button><button class="btn reset reset" data-role="reset" type="button" style="grid-column:1/-1">Limpar conta</button></div><div class="inline"><span>Atual: <strong class="code-pill">—</strong></span><button class="toggle-sms" type="button">Ver dados</button></div><div class="editor"></div><div class="status"><div class="left">Cole uma ou várias contas do cliente.</div><div class="progress">0 contas · 0 códigos</div></div><div class="bar"><div class="fill"></div></div></section></div>
 <div class="panel" data-panel="site" role="tabpanel"><section class="block" data-key="site" data-limit="8" data-seq="site-create-account"><div class="counter-line"><div class="block-title">Site</div><div class="pill"><span>Etapas:</span><strong class="counter">0</strong><span class="muted">• Próximo: <span class="det">—</span></span></div></div><div class="controls"><button class="btn paste" data-role="gen-copy" type="button">Gerar e copiar</button><button class="btn reset reset" data-role="reset" type="button">Limpar</button></div><div class="inline"><span>Senha padrão: <strong class="pass-pill">554090q</strong></span><button class="toggle-sms" type="button">Ver dados</button></div><div class="editor"></div><div class="status"><div class="left">Clique em Gerar e copiar para criar tudo e copiar o Gmail temporário.</div><div class="progress">0/8</div></div><div class="bar"><div class="fill"></div></div></section></div>
-<div class="footer small"><div><b>Versão:</b> v2.71</div><div><b>Changelog:</b> Custos variáveis padrão sempre visíveis e sem valor inicial; quantidade e valor definidos no primeiro pagamento; pagamentos seguintes usam o último preço salvo sem reabrir formulário; histórico de preços preservado; “1 un. custo”; Caixa e Pessoal mantidos; toda a área interna da aba UniTV aumentada em mais 5% sobre a v2.70.</div></div>
+<div class="footer small"><div><b>Versão:</b> v2.72</div><div><b>Changelog:</b> Criar Conta por número com progresso por fase: números copiados até 100%, depois Colar SMS; SMS processados em Número → Código → Senha; ao final, todas as contas completas prontas são copiadas juntas em um único toque. Layout e demais fluxos preservados.</div></div>
 </section>
 <section class="main-panel" data-main-panel="pessoal">
 <section class="block finance">
@@ -632,7 +632,7 @@ function initCreateAccount(block){
 const q=s=>block.querySelector(s),emailBtn=q('[data-role="gen-copy"]'),numberBtn=q('[data-role="number-flow"]'),resetBtn=q('.reset'),counter=q('.counter'),det=q('.det'),toggle=q('.toggle-sms'),editor=q('.editor'),fill=q('.fill'),bar=q('.bar'),statusLeft=q('.status .left'),statusProg=q('.status .progress'),passPill=q('.pass-pill');
 const PASS='554090q';
 const WORDS=['mesa','copo','chave','porta','livro','fone','mouse','sofa','anel','bone','cafe','suco','pizza','caixa','prato','toalha','pilha','cabo','bolo','lata','tampa','papel','bola','gato','pato','leao','sol','lua','mar','rio','vento','fogo','neve','areia','nuvem','pedra','folha','casa','rua','ponte'];
-const saved=getStore('create_account_v11',getStore('create_account_v10',getStore('create_account_v9',getStore('create_account_v8',getStore('create_account_v7',getStore('create_account_v6',getStore('create_account_v5',getStore('create_account_v4',{}))))))));
+const saved=getStore('create_account_v12',getStore('create_account_v11',getStore('create_account_v10',getStore('create_account_v9',getStore('create_account_v8',getStore('create_account_v7',getStore('create_account_v6',getStore('create_account_v5',getStore('create_account_v4',{})))))))));
 const st=Object.assign({alias:'',emails:[],clicks:0,numItems:[],completedAccounts:0,lastFlow:'email',nextSmsOrder:0},saved||{});
 if(!Array.isArray(st.emails))st.emails=[];
 if(!Array.isArray(st.numItems))st.numItems=[];
@@ -779,6 +779,7 @@ function tripletPendingItems(){return st.numItems.filter(x=>!x.accountDone&&x.in
 function accountPendingItems(){return st.numItems.filter(x=>!x.accountDone&&x.tripletDone).sort((a,b)=>(a.smsOrder||999999)-(b.smsOrder||999999))}
 function formatCreatedPhone(value){const d=cleanPhone(value);if(d.length===11)return `${d.slice(0,2)} ${d.slice(2,7)} ${d.slice(7)}`;if(d.length===10)return `${d.slice(0,2)} ${d.slice(2,6)} ${d.slice(6)}`;return d||value||''}
 function completePhoneAccount(item){const password=`${item.code}q`;return ['UNITV','','📱 Conta UniTv','',`Número: ${formatCreatedPhone(item.phone)}`,`Senha: ${password}`,'',`Vencimento: ${vencimento()}`,'','','🔑 Vá em Perfil > Entrar com outras contas > Irá aparecer uma tela, abaixo clica em telefone e quando abrir outra tela de telefone, insira os dados acima somente número depois a senha para realizar o login','','🎁 Ganhe 7 dias grátis ao indicar um amigo!'].join('\n')}
+function completePhoneAccounts(items){return items.map(item=>completePhoneAccount(item)).join('\n\n━━━━━━━━━━━━━━━━━━━━\n\n')}
 function numberStep(){
   // Fase 1: depois de colar vários números, entrega TODOS os números um por um.
   const first=initialPending();
@@ -793,17 +794,38 @@ function numberStep(){
     return {kind:'password',label:'Senha',text:`${smsItem.code}q`,item:smsItem};
   }
 
-  // Só entra aqui quando todos os SMS já passaram por número/código/senha.
-  const account=accountPendingItems()[0];
-  if(account)return {kind:'account',label:'Conta completa',text:completePhoneAccount(account),item:account};
+  // Quando TODOS os SMS recebidos já passaram por número/código/senha,
+  // junta todas as contas prontas em uma única cópia.
+  const accounts=accountPendingItems();
+  if(accounts.length)return {kind:'accounts',label:accounts.length>1?'Contas completas':'Conta completa',text:completePhoneAccounts(accounts),items:accounts};
   return null;
 }
 function numberButtonLabel(){
   const step=numberStep();
-  if(step)return `Copiar ${step.label.toLowerCase()}`;
+  if(step){
+    if(step.kind==='accounts')return step.items.length>1?'Copiar contas completas':'Copiar conta completa';
+    return `Copiar ${step.label.toLowerCase()}`;
+  }
   if(!st.numItems.length||st.numItems.every(x=>x.accountDone))return 'Colar número';
   if(waitingSmsItems().length)return 'Colar SMS';
   return 'Colar número';
+}
+function numberProgressState(){
+  const totalNumbers=st.numItems.filter(x=>!x.accountDone).length;
+  if(!totalNumbers)return {value:0,done:0,total:0,label:'0/0'};
+  const initialDone=st.numItems.filter(x=>!x.accountDone&&x.initialCopied).length;
+  if(initialDone<totalNumbers){
+    return {value:initialDone/totalNumbers,done:initialDone,total:totalNumbers,label:`${initialDone}/${totalNumbers} números`};
+  }
+  const received=st.numItems.filter(x=>!x.accountDone&&x.code);
+  const pendingTriplets=received.filter(x=>!x.tripletDone);
+  if(received.length&&(pendingTriplets.length||accountPendingItems().length)){
+    const total=received.length*3;
+    const done=received.reduce((sum,x)=>sum+(x.tripletDone?3:Math.max(0,Math.min(3,Number(x.tripletStage)||0))),0);
+    return {value:total?done/total:0,done,total,label:`${done}/${total} etapas`};
+  }
+  if(waitingSmsItems().length)return {value:1,done:totalNumbers,total:totalNumbers,label:`${totalNumbers}/${totalNumbers} números`};
+  return {value:1,done:totalNumbers,total:totalNumbers,label:'Pronto'};
 }
 function numberEditorText(){
   const lines=['FLUXO POR NÚMERO:',''];
@@ -822,7 +844,7 @@ function numberEditorText(){
   });
   return lines.join('\n');
 }
-function saveState(){setStore('create_account_v11',{alias:st.alias,emails:st.emails,clicks:st.clicks,numItems:st.numItems,completedAccounts:st.completedAccounts,lastFlow:st.lastFlow,nextSmsOrder:st.nextSmsOrder,editorText:editor.textContent})}
+function saveState(){setStore('create_account_v12',{alias:st.alias,emails:st.emails,clicks:st.clicks,numItems:st.numItems,completedAccounts:st.completedAccounts,lastFlow:st.lastFlow,nextSmsOrder:st.nextSmsOrder,editorText:editor.textContent})}
 function update(){
   const emailSteps=legacySteps(),emailTotal=8,emailDone=Math.min(st.clicks,emailTotal),emailNext=emailSteps[st.clicks]?emailSteps[st.clicks].label:'Novo e-mail';
   const numStep=numberStep(),numDone=st.numItems.filter(x=>x.accountDone).length,numTotal=st.numItems.length;
@@ -837,15 +859,17 @@ function update(){
   resetBtn.disabled=!st.alias&&!st.emails.length&&!st.clicks&&!st.numItems.length&&!editor.textContent;
   toggle.textContent=editor.classList.contains('show')?'Ocultar dados':'Ver dados';
   if(st.lastFlow==='number'){
-    fill.style.width=(numDone/overallTotal*100)+'%';bar.classList.toggle('complete',numTotal>0&&numDone===numTotal);
+    const np=numberProgressState();
+    fill.style.width=(Math.max(0,Math.min(1,np.value))*100)+'%';
+    bar.classList.toggle('complete',np.value>=1);
     if(numStep){
       if(numStep.kind==='initial-number')statusLeft.textContent='Fase 1: copie todos os números armazenados.';
-      else if(numStep.kind==='account')statusLeft.textContent='Todos os SMS foram processados. Agora copie as contas completas, uma por uma.';
-      else statusLeft.textContent='Fase SMS: número → código → senha. As contas completas vêm somente depois de acabar esta fila.';
+      else if(numStep.kind==='accounts')statusLeft.textContent=numStep.items.length>1?`Tudo processado. Copie as ${numStep.items.length} contas completas de uma vez.`:'Tudo processado. Copie a conta completa.';
+      else statusLeft.textContent='Fase SMS: número → código → senha. Termine todos antes das contas completas.';
     }else if(waitingSmsItems().length){
-      statusLeft.textContent=`Fase 2: cole os SMS recebidos. Aguardando ${waitingSmsItems().length} número(s).`;
+      statusLeft.textContent=`Números finalizados. Agora cole os SMS recebidos (${waitingSmsItems().length} aguardando).`;
     }else statusLeft.textContent='Fluxo por número concluído. Toque em Colar número para iniciar outro ciclo.';
-    statusProg.textContent=`${waitingSmsItems().length} aguardando SMS · ${numDone} conta(s) concluída(s)`;
+    statusProg.textContent=np.label;
     badge('pers',{count:numDone,limit:numTotal,isDone:numTotal>0&&numDone===numTotal});
     if(editor.classList.contains('show'))editor.textContent=numberEditorText();
   }else{
@@ -873,23 +897,19 @@ async function copyNumberStep(step){
   else if(step.kind==='sms-number')step.item.tripletStage=1;
   else if(step.kind==='code')step.item.tripletStage=2;
   else if(step.kind==='password'){step.item.tripletStage=3;step.item.tripletDone=true}
-  else if(step.kind==='account'){
-    step.item.accountDone=true;
+  else if(step.kind==='accounts'){
+    const total=step.items.length;
+    step.items.forEach(item=>item.accountDone=true);
     st.completedAccounts=st.numItems.filter(x=>x.accountDone).length;
-    // Se não restar nenhuma conta pronta/etapa de SMS para concluir, encerra todo o lote.
-    // Números que ainda estavam apenas aguardando SMS são descartados para o próximo ciclo
-    // começar limpo em "Colar número".
-    if(!tripletPendingItems().length&&!accountPendingItems().length){
-      st.numItems=[];
-      st.completedAccounts=0;
-      st.nextSmsOrder=0;
-      editor.textContent='';
-      editor.classList.remove('show');
-      toastOK('Conta completa copiada! Ciclo zerado.');
-      buzz();
-      update();
-      return;
-    }
+    st.numItems=[];
+    st.completedAccounts=0;
+    st.nextSmsOrder=0;
+    editor.textContent='';
+    editor.classList.remove('show');
+    toastOK(total>1?`${total} contas completas copiadas! Ciclo zerado.`:'Conta completa copiada! Ciclo zerado.');
+    buzz();
+    update();
+    return;
   }
   toastOK(`${step.label} copiado!`);buzz();update();
 }
