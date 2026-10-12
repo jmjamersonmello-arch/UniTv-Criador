@@ -387,12 +387,31 @@ h1,.app-brand h1{font-size:33px}
 .history-item.reversed-v276{opacity:.62}.history-item.reversed-v276 .history-top{text-decoration:line-through}.history-tools-v276{margin-top:8px}.history-tools-v276 button{font-size:11px;padding:7px 11px;min-height:34px;box-shadow:none}
 #fixedExpenseEditPanel{margin:8px 0 10px}#fixedExpenseEditPanel .form-grid{gap:7px}
 @media(max-width:380px){.reserve-head-v276 .mini-add-v265{white-space:normal;max-width:135px}}
+
+/* v2.79 · Metas de vendas e sobra após reposição dos créditos */
+.goals-v279{margin:8px 0 9px;padding:11px;border:1px solid rgba(34,211,238,.24);border-radius:16px;background:linear-gradient(135deg,rgba(34,211,238,.085),rgba(124,58,237,.075));box-shadow:0 8px 18px rgba(0,0,0,.13)}
+.goals-v279-heading{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:9px}
+.goals-v279-heading>strong{font-size:15px;font-weight:950}
+.goals-v279-heading>span{font-size:10px;color:var(--mut);font-weight:800;text-align:right}
+.goals-v279-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.goal-v279{padding:10px;border-radius:12px;border:1px solid rgba(255,255,255,.08);background:rgba(4,8,24,.24);min-width:0}
+.goal-v279>span{display:block;font-size:11px;font-weight:900;color:var(--mut);margin-bottom:4px}
+.goal-v279>strong{display:block;font-size:19px;font-weight:950;line-height:1.15;overflow-wrap:anywhere}
+.goal-v279>small{display:block;color:var(--mut);font-size:10.5px;font-weight:850;margin-top:5px}
+.goal-v279>small b{color:var(--txt)}
+.goal-v279-progress{height:6px;border-radius:50px;background:rgba(255,255,255,.12);overflow:hidden;margin-top:7px}
+.goal-v279-progress>div{width:0%;height:100%;background:linear-gradient(90deg,#38bdf8,#34d399);border-radius:50px;transition:width .2s ease}
+.goal-v279-foot{display:flex;justify-content:space-between;align-items:center;gap:6px;margin-top:11px;color:var(--txt);font-weight:850;font-size:11px}
+.goal-v279-foot>span:last-child{color:var(--mut)}
+.goal-v279-note{font-size:10.5px;color:var(--mut);line-height:1.4;font-weight:750;margin:9px 0 0}
+.goal-v279-note b{color:#bbf7d0}
+@media(max-width:350px){.goals-v279-grid{grid-template-columns:1fr}.goal-v279>strong{font-size:18px}.goals-v279-foot{flex-wrap:wrap}}
 </style>
 </head>
 <body>
 <div class="wrap">
 <div class="header app-top">
-<div class="app-brand"><div><h1>JamesUni</h1><div class="app-subtitle">Caixa, criação UniTV e gastos pessoais em um só lugar.</div></div><span class="pill"><strong>v2.77</strong></span></div>
+<div class="app-brand"><div><h1>JamesUni</h1><div class="app-subtitle">Caixa, criação UniTV e gastos pessoais em um só lugar.</div></div><span class="pill"><strong>v2.81</strong></span></div>
 <div class="main-nav" role="tablist">
 <button aria-pressed="true" class="main-tab active" data-main-tab="caixa" role="tab" type="button">Caixa</button>
 <button aria-pressed="false" class="main-tab" data-main-tab="unitv" role="tab" type="button">UniTV</button>
@@ -411,8 +430,30 @@ h1,.app-brand h1{font-size:33px}
 <div class="metric-v264 primary"><span>Caixa atual</span><strong data-cash="cash">R$ 0,00</strong></div>
 <div class="metric-v264 primary"><span>Estoque</span><strong data-cash="stock">0 créditos</strong></div>
 <div class="metric-v264 good"><span id="cashSalesDayLabel">Vendas hoje</span><strong data-cash="salesToday">R$ 0,00</strong></div>
-<div class="metric-v264 warn"><span>Falta para meta de vendas</span><strong data-cash="targetMissing">R$ 0,00</strong></div>
+<div class="metric-v264 warn"><span>Falta para meta líquida</span><strong data-cash="targetMissing">R$ 0,00</strong></div>
 </div>
+</div>
+<div class="goals-v279" aria-label="Metas da UniTV neste mês">
+  <div class="goals-v279-heading"><strong>Metas do mês</strong><span>150 renovações de referência</span></div>
+  <div class="goals-v279-grid">
+    <div class="goal-v279">
+      <span>Bruta · vendas</span>
+      <strong data-cash="salesMonthGoalNow">R$ 0,00</strong>
+      <small>Meta: <b data-cash="grossTarget">R$ 3.435,00</b></small>
+      <div class="goal-v279-progress"><div data-goal-fill="gross"></div></div>
+      <small>Faltam <b data-cash="grossMissing">R$ 3.435,00</b></small>
+    </div>
+    <div class="goal-v279">
+      <span>Líquida · após compras</span>
+      <strong data-cash="cashNetNow">R$ 0,00</strong>
+      <small>Meta: <b data-cash="targetCard">R$ 2.035,00</b></small>
+      <div class="goal-v279-progress"><div data-goal-fill="net"></div></div>
+      <small>Faltam <b data-cash="targetMissingCard">R$ 2.035,00</b></small>
+    </div>
+  </div>
+  <div class="goal-v279-foot"><span>Vendas lançadas: <b data-cash="renewalCount">0</b> / <b data-cash="renewalTarget">150</b></span><span data-cash="renewalMissing">Faltam 150</span></div>
+  <div class="goal-v279-progress"><div data-goal-fill="renewal"></div></div>
+  <p class="goal-v279-note">Meta líquida = vendas − compras de créditos − gastos operacionais. <b>Retiradas pessoais não entram na meta.</b> A referência de 150 acompanha os lançamentos de vendas, não clientes únicos; uma venda de vários meses conta uma vez.</p>
 </div>
 <div class="alert-box ok" id="cashAlert">Tudo pronto. Registre vendas, gastos e compras de crédito por aqui.</div>
 <div class="quick-actions-v264">
@@ -423,14 +464,14 @@ h1,.app-brand h1{font-size:33px}
 <div class="cash-sheet-host-v265" id="cashSheetHost"></div>
 </div>
 <details class="compact-details"><summary>Resumo do mês</summary><div class="compact-details-body"><div class="metric-grid-v264">
-<div class="metric-v264"><span>Meta de vendas</span><strong data-cash="salesTarget">R$ 1.893,00</strong></div>
+<div class="metric-v264"><span>Meta líquida após compras</span><strong data-cash="target">R$ 2.035,00</strong></div>
 <div class="metric-v264"><span id="cashCreditsDayLabel">Créditos vendidos hoje</span><strong data-cash="creditsToday">0</strong></div>
-<div class="metric-v264"><span>Gastos convencionais</span><strong data-cash="expensesLimit">R$ 0,00 / R$ 400,00</strong></div>
-<div class="metric-v264"><span>Disponível para gastos</span><strong data-cash="expenseAvailable">R$ 400,00</strong></div>
+<div class="metric-v264"><span>Gastos operacionais</span><strong data-cash="expensesLimit">R$ 0,00 · sem teto</strong></div>
+<div class="metric-v264"><span>Margem no teto operacional</span><strong data-cash="expenseAvailable">Sem teto definido</strong></div>
 <div class="metric-v264"><span>Saldo inicial do mês</span><strong data-cash="cashOpening">R$ 0,00</strong></div>
-<div class="metric-v264"><span>Meta de caixa</span><strong data-cash="target">R$ 1.893,00</strong></div>
+<div class="metric-v264"><span>Faturamento do mês</span><strong data-cash="salesMonth">R$ 0,00</strong></div>
 <div class="metric-v264"><span>Lucro bruto das vendas</span><strong data-cash="grossProfit">R$ 0,00</strong></div>
-<div class="metric-v264"><span>Resultado líquido estimado</span><strong data-cash="netResult">R$ 0,00</strong></div>
+<div class="metric-v264"><span>Lucro estimado das vendas</span><strong data-cash="netResult">R$ 0,00</strong></div>
 </div></div></details>
 <details class="compact-details">
 <summary>Mais opções do caixa</summary>
@@ -489,13 +530,16 @@ h1,.app-brand h1{font-size:33px}
 </div>
 <div class="action-sheet" data-cash-sheet="settings">
 <div class="sheet-title">Configuração do caixa</div>
+<p class="muted-line">O teto de gastos é opcional (0 = sem teto) e não representa os R$ 400 de retirada pessoal. Retiradas não reduzem as metas.</p>
 <p class="muted-line">O estoque informado aqui é a base inicial do mês. A cada venda, o sistema baixa automaticamente os créditos.</p>
 <div class="form-grid">
 <div class="field"><label for="setCash">Saldo atual (ajuste fica no histórico)</label><input id="setCash" step="0.01" type="number"/></div>
 <div class="field"><label for="setStock">Estoque inicial do mês</label><input id="setStock" step="1" type="number"/></div>
-<div class="field"><label for="setTarget">Meta de saldo no caixa</label><input id="setTarget" step="0.01" type="number"/></div>
-<div class="field"><label for="setSalesTarget">Meta de faturamento em vendas</label><input id="setSalesTarget" step="0.01" type="number"/></div>
-<div class="field"><label for="setExpenseLimit">Teto gastos convencionais</label><input id="setExpenseLimit" step="0.01" type="number"/></div>
+<div class="field"><label for="setGrossTarget">Meta bruta (faturamento)</label><input id="setGrossTarget" step="0.01" min="0" type="number"/></div>
+<div class="field"><label for="setTarget">Meta líquida (após compras)</label><input id="setTarget" step="0.01" min="0" type="number"/></div>
+<div class="field full"><label for="setRenewalTarget">Meta de renovações (vendas registradas)</label><input id="setRenewalTarget" step="1" min="1" type="number"/></div>
+<div class="field full"><p class="muted-line" style="margin:0">A meta líquida acompanha o dinheiro gerado pelas vendas após <b>comprar créditos</b> e pagar despesas operacionais. Não desconta retiradas pessoais. O lucro estimado calculado pelo custo dos créditos efetivamente vendidos continua no relatório, separadamente.</p></div>
+<div class="field"><label for="setExpenseLimit">Teto operacional (0 = sem limite)</label><input id="setExpenseLimit" step="0.01" type="number"/></div>
 <div class="field"><label for="setUnitCost">Custo do estoque inicial por crédito</label><input id="setUnitCost" step="0.01" type="number"/></div>
 <div class="field"><label for="setSupplier">Fornecedor padrão</label><input id="setSupplier" type="text"/></div>
 <div class="field full"><button class="btn blue" id="saveCashSettingsBtn" type="button">Salvar configuração</button></div>
@@ -519,7 +563,7 @@ h1,.app-brand h1{font-size:33px}
 <div class="panel" data-panel="emails" role="tabpanel"><section class="block" data-key="emails" data-limit="1" data-seq="emails"><div class="counter-line"><div class="block-title">E-mail</div><div class="pill"><span>Gerados:</span><strong class="counter">0</strong><span class="muted">• Guardados: <span class="det">0</span></span></div></div><div class="controls"><button class="btn paste" data-role="paste-email" type="button">Gerar aliás</button><button class="btn paste" data-role="gen-email" type="button">Gerar e-mail</button><button class="btn paste" data-role="paste-login" type="button">Colar e-mail</button><button class="btn paste" data-role="paste-code" type="button">Colar Código</button><button class="btn copy copy" type="button">Copiar <span class="muted">(restantes: 0)</span></button><button class="btn reset reset" data-role="reset" type="button">Zerar</button></div><div class="inline"><span>Código: <strong class="email-code-pill">—</strong> <span class="muted">• Cópias: <strong class="email-copies">0</strong></span></span><button class="toggle-sms" type="button">Ver e-mails</button></div><div class="editor"></div><div class="status"><div class="left">Fase 0 de 2 · Próximo: Gerar e-mails</div><div class="progress">0/0</div></div><div class="bar"><div class="fill"></div></div></section></div>
 <div class="panel" data-panel="account" role="tabpanel"><section class="block" data-key="account" data-limit="0" data-seq="account"><div class="counter-line"><div class="block-title">Renovação Código</div><div class="pill"><span>Contas:</span><strong class="counter">0</strong><span class="muted">• Próximo: <span class="det">Colar conta</span></span></div></div><div class="controls"><button class="btn paste" data-role="account-action" type="button">Colar conta</button><button class="btn sms" data-role="code-action" type="button">Colar códigos</button><button class="btn reset reset" data-role="reset" type="button" style="grid-column:1/-1">Limpar conta</button></div><div class="inline"><span>Atual: <strong class="code-pill">—</strong></span><button class="toggle-sms" type="button">Ver dados</button></div><div class="inline"><span>Códigos copiados nesta conta: <strong class="account-code-count">0</strong> · <strong class="account-months-count">1 mês (padrão)</strong></span></div><div class="field account-code-target" hidden style="margin-top:10px"><label for="accountCodeTarget">Aplicar próximo código copiado à conta</label><select id="accountCodeTarget" aria-label="Conta que receberá o próximo código copiado"></select></div><div class="editor"></div><div class="status"><div class="left">Cole uma ou várias contas do cliente.</div><div class="progress">0 contas · 0 códigos</div></div><div class="bar"><div class="fill"></div></div></section></div>
 <div class="panel" data-panel="site" role="tabpanel"><section class="block" data-key="site" data-limit="8" data-seq="site-create-account"><div class="counter-line"><div class="block-title">Site</div><div class="pill"><span>Etapas:</span><strong class="counter">0</strong><span class="muted">• Próximo: <span class="det">—</span></span></div></div><div class="controls"><button class="btn paste" data-role="gen-copy" type="button">Gerar e copiar</button><button class="btn reset reset" data-role="reset" type="button">Limpar</button></div><div class="inline"><span>Senha padrão: <strong class="pass-pill">554090q</strong></span><button class="toggle-sms" type="button">Ver dados</button></div><div class="editor"></div><div class="status"><div class="left">Clique em Gerar e copiar para criar tudo e copiar o Gmail temporário.</div><div class="progress">0/8</div></div><div class="bar"><div class="fill"></div></div></section></div>
-<div class="footer small"><div><b>Versão:</b> v2.77</div><div><b>Changelog:</b> Caixa: saldos e lotes transportados, metas separadas, histórico de ajustes, conferência diária, lucro bruto/líquido e validação de estornos. Gestão Pessoal e UniTV preservados.</div></div>
+<div class="footer small"><div><b>Versão:</b> v2.81</div><div><b>Changelog:</b> Caixa: meta bruta de R$ 3.435, meta líquida de R$ 2.035 após compras de créditos e gastos, e referência de 150 vendas mensais. Retiradas pessoais não reduzem as metas. Mantidas as funções de UniTV e Gestão Pessoal.</div></div>
 </section>
 <section class="main-panel" data-main-panel="pessoal">
 <section class="block finance">
@@ -1360,12 +1404,17 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
   const CASH_KEY='jamesuni.cash.v30';
   const CASH_MONTH_KEY='jamesuni.cash.month.v30';
   const OLD_CASH_KEYS=['jamesuni.cash.v29','jamesuni.cash.v28','jamesuni.cash.v27','jamesuni.cash.v2'];
-  const defaultCashSettings={target:1893,salesTarget:1893,expenseLimit:400,unitCost:9.33,supplier:'Xavier Bruno Lima Gomes'};
+  // Metas de negócio: faturamento / sobra após compras / número de vendas.
+  // A meta de R$ 2.035 é a sobra após as compras e gastos operacionais,
+  // ANTES das retiradas pessoais; não é o lucro contábil/fiscal.
+  const defaultCashSettings={profitTarget:2035,grossTarget:3435,renewalTarget:150,expenseLimit:0,unitCost:9.33,supplier:'Xavier Bruno Lima Gomes'};
 
   function normalizeCashSettings(raw={}){
+    const target=finiteOr(raw.profitTarget,finiteOr(raw.target,defaultCashSettings.profitTarget));
     return {
-      target:Math.max(0,finiteOr(raw.target,defaultCashSettings.target)),
-      salesTarget:Math.max(0,finiteOr(raw.salesTarget,finiteOr(raw.target,defaultCashSettings.salesTarget))),
+      profitTarget:Math.max(0,target),
+      grossTarget:Math.max(0,finiteOr(raw.grossTarget,defaultCashSettings.grossTarget)),
+      renewalTarget:Math.max(1,Math.floor(finiteOr(raw.renewalTarget,defaultCashSettings.renewalTarget))),
       expenseLimit:Math.max(0,finiteOr(raw.expenseLimit,defaultCashSettings.expenseLimit)),
       unitCost:Math.max(0.01,finiteOr(raw.unitCost,defaultCashSettings.unitCost)),
       supplier:String(raw.supplier||defaultCashSettings.supplier).slice(0,120)
@@ -1393,7 +1442,8 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     };
   }
   function makeCashMonth(seed={}, inheritedSettings=defaultCashSettings){
-    const settings=normalizeCashSettings({...inheritedSettings,...(seed.settings||{}),...((seed.settings&&seed.settings.salesTarget===undefined&&seed.settings.target!==undefined)?{salesTarget:seed.settings.target}:{})});
+    const oldSettings=seed.settings||{};
+    const settings=normalizeCashSettings({...inheritedSettings,...oldSettings,...(oldSettings.profitTarget===undefined&&oldSettings.target!==undefined?{profitTarget:oldSettings.target}:{})});
     const transactions=trimHistory((Array.isArray(seed.transactions)?seed.transactions:[]).map(normalizeCashTransaction));
     const baseStock=Math.max(0,Math.floor(finiteOr(seed.baseStock ?? seed.stock,0)));
     const baseUnitCost=Math.max(0.01,finiteOr(seed.baseUnitCost ?? seed.unitCost,settings.unitCost));
@@ -1441,6 +1491,51 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
   }else cashState=normalizeCashState(cashState);
   cashState.months ||= {};
   cashState.monthClosings ||= [];
+  const GOALS_V279_KEY='jamesuni.cash.goals.v279';
+  try {
+    if(localStorage.getItem(GOALS_V279_KEY)!=='applied'){
+      // Ativa as metas solicitadas no mês corrente, preservando meses fechados.
+      const activeMonth=cashState.months[monthISO()];
+      if(activeMonth&&!activeMonth.closed){
+        activeMonth.settings=normalizeCashSettings({...activeMonth.settings,
+          profitTarget:1900,grossTarget:3435,renewalTarget:150});
+      }
+      localStorage.setItem(CASH_KEY,JSON.stringify(cashState));
+      localStorage.setItem(GOALS_V279_KEY,'applied');
+    }
+  }catch(error){}
+
+  // v2.80: alteração pontual da meta líquida solicitada pelo usuário.
+  // Aplicada uma única vez aos meses ainda abertos, sem alterar operações,
+  // metas brutas, metas de vendas ou meses históricos finalizados.
+  const GOALS_V280_KEY='jamesuni.cash.goals.v280';
+  try {
+    if(localStorage.getItem(GOALS_V280_KEY)!=='applied'){
+      Object.values(cashState.months).forEach(month=>{
+        if(!month.closed){
+          month.settings=normalizeCashSettings({...month.settings,profitTarget:2035});
+        }
+      });
+      localStorage.setItem(CASH_KEY,JSON.stringify(cashState));
+      localStorage.setItem(GOALS_V280_KEY,'applied');
+    }
+  }catch(error){}
+
+  // v2.81: os R$ 400 eram uma referência de retirada pessoal, não um
+  // orçamento operacional obrigatório. Mudar apenas o padrão aparente no mês
+  // atual sem gastos operacionais, preservando orçamentos com atividade e históricos.
+  const CASH_EXPENSE_V281_KEY='jamesuni.cash.expense-limit.v281';
+  try{
+    if(localStorage.getItem(CASH_EXPENSE_V281_KEY)!=='applied'){
+      const active=cashState.months[monthISO()];
+      if(active&&!active.closed&&Number(active.settings.expenseLimit)===400&&
+         !active.transactions.some(item=>item.type==='expense')){
+        active.settings.expenseLimit=0;
+        localStorage.setItem(CASH_KEY,JSON.stringify(cashState));
+      }
+      localStorage.setItem(CASH_EXPENSE_V281_KEY,'applied');
+    }
+  }catch(error){}
 
   const cashMonthInput=$('#cashMonth');
   cashMonthInput.value=localStorage.getItem(CASH_MONTH_KEY)||localStorage.getItem('jamesuni.cash.month.v29')||monthISO();
@@ -1589,6 +1684,7 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     const creditsType=type=>list.filter(item=>item.type===type).reduce((sum,item)=>sum+finiteOr(item.credits,0),0);
     return {
       sales:sumType('sale'),
+      saleCount:list.filter(item=>item.type==='sale').length,
       creditsSold:creditsType('sale'),
       stockBuys:sumType('stock'),
       stockCredits:creditsType('stock'),
@@ -1646,40 +1742,65 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     month.stock=currentStock(month);
     const sums=cashSums(cashTransactions());
     const daily=cashSums(cashTransactionsToday());
-    const missing=Math.max(0,roundMoney(settings.salesTarget-sums.sales));
     const available=roundMoney(settings.expenseLimit-sums.expenses);
+    // Dois indicadores diferentes: lucro por créditos vendidos vs.
+    // resultado após compras (fluxo), adotado para a meta pessoal da UniTV.
     const gross=roundMoney(sums.sales-sums.recovery);
     const net=roundMoney(gross-sums.expenses);
+    const cashNet=roundMoney(sums.sales-sums.stockBuys-sums.expenses);
+    const missing=Math.max(0,roundMoney(settings.profitTarget-cashNet));
+    const grossMissing=Math.max(0,roundMoney(settings.grossTarget-sums.sales));
+    const renewalMissing=Math.max(0,settings.renewalTarget-sums.saleCount);
     const date=selectedCashDate();
     const closing=getDayClosing(month,date);
-    const stale=!!closing&&(closing.fingerprint!==dailyFingerprint(month,date));
+    const stale=!!closing&&(closing.fingerprint!==dailyFingerprint(month,date)||
+      Math.abs(finiteOr(closing.opening,0)-dayBalanceBefore(month,date))>0.009);
     setText('[data-cash="cash"]',fmt(month.cash));
     setText('[data-cash="stock"]',`${currentStock(month)} créditos`);
-    setText('[data-cash="target"]',fmt(settings.target));
-    setText('[data-cash="salesTarget"]',fmt(settings.salesTarget));
+    setText('[data-cash="target"]',fmt(settings.profitTarget));
+    setText('[data-cash="targetCard"]',fmt(settings.profitTarget));
+    setText('[data-cash="grossTarget"]',fmt(settings.grossTarget));
+    setText('[data-cash="salesMonthGoalNow"]',fmt(sums.sales));
+    setText('[data-cash="grossMissing"]',fmt(grossMissing));
+    setText('[data-cash="cashNetNow"]',fmt(cashNet));
+    setText('[data-cash="targetMissingCard"]',fmt(missing));
+    setText('[data-cash="renewalCount"]',sums.saleCount);
+    setText('[data-cash="renewalTarget"]',settings.renewalTarget);
+    setText('[data-cash="renewalMissing"]',renewalMissing?`Faltam ${renewalMissing}`:'Meta de vendas atingida!');
+    for(const [key,numerator,goal] of [
+      ['gross',sums.sales,settings.grossTarget],
+      ['net',cashNet,settings.profitTarget],
+      ['renewal',sums.saleCount,settings.renewalTarget]
+    ]){
+      const progress=$(`[data-goal-fill="${key}"]`);
+      if(progress)progress.style.width=`${goal<=0?100:Math.min(100,Math.max(0,100*numerator/goal))}%`;
+    }
+    setText('[data-cash="salesMonth"]',fmt(sums.sales));
     setText('[data-cash="targetMissing"]',fmt(missing));
     setText('[data-cash="salesToday"]',fmt(daily.sales));
     setText('[data-cash="creditsToday"]',daily.creditsSold);
-    setText('[data-cash="expensesLimit"]',`${fmt(sums.expenses)} / ${fmt(settings.expenseLimit)}`);
-    setText('[data-cash="expenseAvailable"]',fmt(Math.max(available,0)));
+    setText('[data-cash="expensesLimit"]',settings.expenseLimit>0
+      ?`${fmt(sums.expenses)} / ${fmt(settings.expenseLimit)}`
+      :`${fmt(sums.expenses)} · sem teto`);
+    setText('[data-cash="expenseAvailable"]',settings.expenseLimit>0
+      ?fmt(Math.max(available,0)):'Sem teto definido');
     setText('[data-cash="cashOpening"]',fmt(month.openingCash));
     setText('[data-cash="grossProfit"]',fmt(gross));
     setText('[data-cash="netResult"]',fmt(net));
-    setText('[data-cash="cashTargetMissing"]',fmt(Math.max(0,roundMoney(settings.target-month.cash))));
     setText('#cashSalesDayLabel',selectedCashMonth()===monthISO()?'Vendas hoje':`Vendas em ${date.slice(8,10)}/${date.slice(5,7)}`);
     setText('#cashCreditsDayLabel',selectedCashMonth()===monthISO()?'Créditos vendidos hoje':`Créditos vendidos em ${date.slice(8,10)}/${date.slice(5,7)}`);
     const targetMissing=$('[data-cash="targetMissing"]');
     if(targetMissing)targetMissing.className=missing<=0?'positive':'warn';
     const expenseAvailable=$('[data-cash="expenseAvailable"]');
-    if(expenseAvailable)expenseAvailable.className=available>=0?'positive':'danger';
+    if(expenseAvailable)expenseAvailable.className=settings.expenseLimit>0?(available>=0?'positive':'danger'):'';
     const ratio=settings.expenseLimit?sums.expenses/settings.expenseLimit:0;
     const alertBox=$('#cashAlert');
     if(alertBox){
       alertBox.className='alert-box ok';
       let message=`Mês ${selectedCashMonth()} aberto. Registre aqui apenas o caixa deste mês.`;
       if(month.closed)message=`Mês ${selectedCashMonth()} finalizado. Uma nova alteração pedirá confirmação para reabrir.`;
-      else if(ratio>=1){alertBox.className='alert-box danger';message='Atenção: gastos convencionais ultrapassaram o limite mensal.';}
-      else if(ratio>=0.75){alertBox.className='alert-box';message='Atenção: gastos convencionais passaram de 75% do limite.';}
+      else if(settings.expenseLimit>0&&ratio>=1){alertBox.className='alert-box danger';message='Atenção: gastos operacionais atingiram o teto mensal.';}
+      else if(settings.expenseLimit>0&&ratio>=0.75){alertBox.className='alert-box';message='Atenção: gastos operacionais passaram de 75% do teto.';}
       if(month.stock<=3&&(month.cash||month.transactions.length))message+=' Estoque baixo: avalie comprar créditos.';
       if(stale){alertBox.className='alert-box danger';message+=' Fechamento diário desatualizado: use Fechar dia para recalcular.';}
       if(month.openingFrom)message+=` Saldo e estoque herdados de ${month.openingFrom}.`;
@@ -1687,8 +1808,9 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     }
     $('#setCash').value=finiteOr(month.cash,0).toFixed(2);
     $('#setStock').value=Math.floor(finiteOr(month.baseStock,0));
-    $('#setTarget').value=finiteOr(settings.target,0).toFixed(2);
-    $('#setSalesTarget').value=finiteOr(settings.salesTarget,0).toFixed(2);
+    $('#setTarget').value=finiteOr(settings.profitTarget,0).toFixed(2);
+    $('#setGrossTarget').value=finiteOr(settings.grossTarget,0).toFixed(2);
+    $('#setRenewalTarget').value=settings.renewalTarget;
     $('#setExpenseLimit').value=finiteOr(settings.expenseLimit,0).toFixed(2);
     $('#setUnitCost').value=finiteOr(month.baseUnitCost,settings.unitCost).toFixed(2);
     $('#setSupplier').value=settings.supplier||'';
@@ -1696,23 +1818,28 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
       ['Mês selecionado',selectedCashMonth()],
       ['Saldo inicial do mês',fmt(month.openingCash)],
       ['Caixa atual',fmt(month.cash)],
-      ['Meta de vendas',fmt(settings.salesTarget)],
-      ['Meta de caixa',fmt(settings.target)],
+      ['Meta bruta de vendas',fmt(settings.grossTarget)],
+      ['Meta líquida após compras',fmt(settings.profitTarget)],
+      ['Meta de renovações (vendas registradas)',settings.renewalTarget],
       ['Estoque inicial',`${month.baseStock} créditos`],
       ['Estoque atual',`${month.stock} créditos`],
       ['Custo do próximo crédito',fmt(nextUnitCost(month))],
       ['Créditos vendidos no mês',sums.creditsSold],
       ['Faturamento de vendas',fmt(sums.sales)],
+      ['Vendas registradas (não clientes únicos)',sums.saleCount],
+      ['Falta para meta bruta',fmt(grossMissing)],
+      ['Faltam renovações de referência',renewalMissing],
       ['Compras de estoque (fluxo de caixa)',fmt(sums.stockBuys)],
       ['Custo dos créditos vendidos',fmt(sums.recovery)],
       ['Lucro bruto das vendas',fmt(gross)],
       ['Gastos operacionais',fmt(sums.expenses)],
-      ['Resultado líquido estimado',fmt(net)],
-      ['Retiradas pessoais (não são despesas operacionais)',fmt(sums.withdrawals)],
+      ['Lucro estimado dos créditos vendidos (após gastos)',fmt(net)],
+      ['Resultado após compras e gastos (meta líquida)',fmt(cashNet)],
+      ['Retiradas pessoais (não reduzem nenhuma meta)',fmt(sums.withdrawals)],
       ['Ajustes de saldo',fmt(sums.adjustments)],
-      ['Falta para meta de vendas',fmt(missing)],
-      ['Falta para meta de caixa',fmt(Math.max(0,roundMoney(settings.target-month.cash)))],
-      ['Meta de vendas batida?',sums.sales>=settings.salesTarget?'Sim':'Não']
+      ['Falta para meta líquida',fmt(missing)],
+      ['Meta bruta atingida?',sums.sales>=settings.grossTarget?'Sim':'Não'],
+      ['Meta líquida atingida?',cashNet>=settings.profitTarget?'Sim':'Não']
     ]);
     const history=$('#cashHistory');
     if(history){
@@ -1749,9 +1876,10 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     const amount=cashMoney(amountInput);
     const credits=cashWhole(creditsInput);
     if(!Number.isFinite(amount)||!Number.isFinite(credits)){appToast('Informe valor em centavos e uma quantidade inteira de créditos.');return;}
-    if(!reopenCashMonth(month))return;
-    if(currentStock(month)<credits){ appToast('Estoque insuficiente. Compre créditos antes de registrar a venda.'); return; }
+    if(currentStock(month)<credits){appToast('Estoque insuficiente. Compre créditos antes de registrar a venda.');return;}
     const costPreview=consumeCostPreview(month,credits);
+    if(costPreview.shortage){appToast('Não foi possível reservar os créditos desta venda.');return;}
+    if(!reopenCashMonth(month))return;
     const recoveredCost=roundMoney(costPreview.totalCost);
     const realProfit=roundMoney(amount-recoveredCost);
     month.cash=roundMoney(month.cash+amount);
@@ -1769,8 +1897,8 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     const quantity=cashWhole(quantityInput);
     const amount=cashMoney(amountInput);
     if(!Number.isFinite(quantity)||!Number.isFinite(amount)){appToast('Use quantidade inteira e valor em centavos.');return;}
+    if(amount>month.cash){appToast('Caixa insuficiente para esta compra.');return;}
     if(!reopenCashMonth(month))return;
-    if(amount>month.cash){ appToast('Caixa insuficiente para esta compra.'); return; }
     const unitCost=amount/quantity;
     month.cash=roundMoney(month.cash-amount);
     addCashTransaction({type:'stock',amount,credits:quantity,supplier:supplier||cashSettings(month).supplier,unitCost});
@@ -1787,8 +1915,8 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     const month=currentCashMonth();
     const amount=cashMoney($('#expenseAmount').value);
     if(!Number.isFinite(amount)){ appToast('Informe valor válido em centavos.'); return; }
+    if(amount>month.cash){appToast('Caixa insuficiente para este gasto.');return;}
     if(!reopenCashMonth(month))return;
-    if(amount>month.cash){ appToast('Caixa insuficiente para este gasto.'); return; }
     month.cash=roundMoney(month.cash-amount);
     addCashTransaction({type:'expense',amount,category:$('#expenseCategory').value,note:$('#expenseNote').value.trim()});
     $('#expenseAmount').value='';
@@ -1800,8 +1928,8 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     const month=currentCashMonth();
     const amount=cashMoney($('#withdrawAmount').value);
     if(!Number.isFinite(amount)){ appToast('Informe valor válido em centavos.'); return; }
+    if(amount>month.cash){appToast('Caixa insuficiente para esta retirada.');return;}
     if(!reopenCashMonth(month))return;
-    if(amount>month.cash){ appToast('Caixa insuficiente para esta retirada.'); return; }
     month.cash=roundMoney(month.cash-amount);
     addCashTransaction({type:'withdrawal',amount,reason:$('#withdrawReason').value,note:$('#withdrawNote').value.trim()});
     $('#withdrawAmount').value='';
@@ -1817,11 +1945,12 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
       const neg=cashMoney(signedCash.slice(1),true);return Number.isFinite(neg)?-neg:NaN;
     })():newCash;
     const baseStock=cashWhole($('#setStock').value,true);
-    const target=cashMoney($('#setTarget').value,true);
-    const salesTarget=cashMoney($('#setSalesTarget').value,true);
+    const profitTarget=cashMoney($('#setTarget').value,true);
+    const grossTarget=cashMoney($('#setGrossTarget').value,true);
+    const renewalTarget=cashWhole($('#setRenewalTarget').value);
     const expenseLimit=cashMoney($('#setExpenseLimit').value,true);
     const baseUnitCost=cashMoney($('#setUnitCost').value);
-    if([cash,baseStock,target,salesTarget,expenseLimit,baseUnitCost].some(value=>!Number.isFinite(value))){
+    if([cash,baseStock,profitTarget,grossTarget,renewalTarget,expenseLimit,baseUnitCost].some(value=>!Number.isFinite(value))){
       appToast('Use valores com até 2 casas decimais e estoque inicial inteiro.');return;
     }
     const hasInventoryActivity=month.transactions.some(item=>item.type==='sale'||item.type==='stock');
@@ -1829,6 +1958,17 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     const stockChanged=baseStock!==month.baseStock||Math.abs(baseUnitCost-roundMoney(month.baseUnitCost))>0.000001;
     if(hasInventoryActivity&&stockChanged){appToast('Não altere o estoque inicial após operações de estoque ou vendas.');return;}
     if(month.openingFrom&&stockChanged){appToast('Estoque herdado não pode ser alterado diretamente.');return;}
+    const oldSettings=cashSettings(month);
+    const supplier=$('#setSupplier').value.trim()||defaultCashSettings.supplier;
+    const settingsChanged=profitTarget!==roundMoney(oldSettings.profitTarget)||
+      grossTarget!==roundMoney(oldSettings.grossTarget)||
+      renewalTarget!==oldSettings.renewalTarget||
+      expenseLimit!==roundMoney(oldSettings.expenseLimit)||
+      supplier!==oldSettings.supplier;
+    if(cash===roundMoney(month.cash)&&!stockChanged&&!settingsChanged){
+      appToast('Nenhuma configuração foi alterada. O fechamento foi preservado.');
+      return;
+    }
     if(!reopenCashMonth(month))return;
     const delta=roundMoney(cash-month.cash);
     month.cash=cash;
@@ -1837,7 +1977,7 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     if(!hasInventoryActivity&&!month.openingFrom){
       month.baseLots=baseStock>0?[{id:`base-${selectedCashMonth()}`,label:'Estoque inicial',date:selectedCashDate(),qty:baseStock,unitCost:baseUnitCost,costOffset:0}]:[];
     }
-    month.settings=normalizeCashSettings({target,salesTarget,expenseLimit,unitCost:month.baseUnitCost,supplier:$('#setSupplier').value.trim()||defaultCashSettings.supplier});
+    month.settings=normalizeCashSettings({profitTarget,grossTarget,renewalTarget,expenseLimit,unitCost:month.baseUnitCost,supplier});
     if(delta!==0){
       month.transactions.unshift(normalizeCashTransaction({id:uid(),type:'adjustment',amount:Math.abs(delta),delta,
         date:selectedCashDate(),month:selectedCashMonth(),createdAt:new Date().toISOString(),note:'Ajuste manual de saldo nas configurações'}));
@@ -1880,15 +2020,24 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     const key=selectedCashMonth();
     const month=currentCashMonth();
     if(successorHasActivity(key)){appToast('Não é possível apagar: saldo herdado já foi usado no mês seguinte.');return;}
-    if(!confirm(`Limpar o caixa de ${key}? Isso apaga todos os lançamentos deste mês. A aba UniTV não será apagada.`)) return;
+    const inherited=!!month.openingFrom;
+    const details=inherited
+      ?` Os ${month.baseStock} créditos e ${fmt(month.openingCash)} herdados de ${month.openingFrom} serão preservados.`
+      :' Um saldo e estoque inicial informados manualmente neste mês também serão zerados.';
+    if(!confirm(`Limpar lançamentos de ${key}?${details} A UniTV e a Gestão Pessoal não serão apagadas.`))return;
     const successor=cashState.months[nextMonthKey(key)];
     if(successor?.openingFrom===key)delete cashState.months[nextMonthKey(key)];
-    cashState.months[key]=makeCashMonth({settings:deepClone(cashSettings(month))});
+    const settings=deepClone(cashSettings(month));
+    cashState.months[key]=inherited?makeCashMonth({
+      settings,cash:month.openingCash,openingCash:month.openingCash,
+      baseStock:month.baseStock,baseUnitCost:month.baseUnitCost,
+      baseLots:deepClone(month.baseLots),openingFrom:month.openingFrom,
+      transactions:[],closings:[],closed:false,closedAt:''
+    }):makeCashMonth({settings});
     cashState.monthClosings=cashState.monthClosings.filter(item=>item.month!==key);
     $('#closeDayBox').style.display='none';
-    saveCash();
-    renderCash();
-    appToast('Mês do caixa limpo.');
+    saveCash();renderCash();
+    appToast(inherited?'Lançamentos limpos; saldo e créditos herdados preservados.':'Mês do caixa limpo.');
   });
   $('#finishCashMonthBtn').addEventListener('click',()=>{
     const key=selectedCashMonth();
@@ -1934,22 +2083,20 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     const row=event.target.closest('[data-cash-tx-id]');
     if(!row) return;
     const month=currentCashMonth();
-    if(!reopenCashMonth(month)) return;
     const transaction=month.transactions.find(item=>item.id===row.dataset.cashTxId);
-    if(!transaction) return;
+    if(!transaction)return;
     if(transaction.type==='stock'&&!validStockTimeline(month,transaction.id)){
       appToast('Não é possível estornar: alguma venda ficaria sem créditos naquela data.');return;
     }
-    if(!confirm('Estornar este lançamento? O caixa e o estoque serão recalculados.')) return;
+    if(!confirm('Estornar este lançamento? O caixa e o estoque serão recalculados.'))return;
     const amount=finiteOr(transaction.amount,0);
-    if(transaction.type==='adjustment')month.cash=roundMoney(month.cash-finiteOr(transaction.delta,0));
-    if(transaction.type==='sale'){
-      const newCash=roundMoney(month.cash-amount);
-      if(newCash<0&&!confirm('O estorno deixará o caixa negativo. Continuar mesmo assim?')) return;
-      month.cash=newCash;
-    }else if(['stock','expense','withdrawal'].includes(transaction.type)){
-      month.cash=roundMoney(month.cash+amount);
-    }
+    const newCash=roundMoney(month.cash-cashDelta(transaction));
+    if(transaction.type==='sale'&&newCash<0&&
+       !confirm('O estorno deixará o caixa negativo. Continuar mesmo assim?'))return;
+    // A confirmação de reabertura é a última verificação antes do commit.
+    // Cancelar ou falhar aqui não remove a transferência do mês seguinte.
+    if(!reopenCashMonth(month))return;
+    month.cash=newCash;
     month.transactions=month.transactions.filter(item=>item.id!==transaction.id);
     if(transaction.type==='sale'||transaction.type==='stock') recalculateCashSaleCosts(month);
     saveCash();
