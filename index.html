@@ -406,12 +406,97 @@ h1,.app-brand h1{font-size:33px}
 .goal-v279-note{font-size:10.5px;color:var(--mut);line-height:1.4;font-weight:750;margin:9px 0 0}
 .goal-v279-note b{color:#bbf7d0}
 @media(max-width:350px){.goals-v279-grid{grid-template-columns:1fr}.goal-v279>strong{font-size:18px}.goals-v279-foot{flex-wrap:wrap}}
+/* v2.83 · ajustes de clareza e acessibilidade */
+.personal-shortcuts{grid-template-columns:1fr}
+.cash-entry-date{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin:0 0 9px;font-size:12px;color:var(--mut);font-weight:850}
+.cash-entry-date label{white-space:nowrap}.cash-entry-date input{min-height:36px;border:1px solid var(--line);color:var(--txt);color-scheme:dark;background:rgba(0,0,0,.22);border-radius:10px;padding:7px;font:inherit;font-size:13px}
+.cash-entry-date span{font-size:10.5px;font-weight:700}
+.personal-due-summary:empty{display:none}.personal-due-summary{padding:10px;border-radius:14px;margin:8px 0;background:rgba(34,211,238,.045);border:1px solid var(--line)}
+.personal-due-head{font-weight:950;font-size:13px;margin-bottom:6px}
+.personal-due-row{display:flex;justify-content:space-between;gap:7px;padding:5px 0;border-top:1px solid var(--line);font-size:12px;color:var(--mut)}
+.personal-due-row strong{text-align:right;color:var(--txt);font-size:11px}.personal-due-row.overdue strong{color:#fda4af}.personal-due-row.soon strong{color:#fdba74}
+.account-code-help{margin:5px 0 0;font-size:11.5px;color:var(--mut);line-height:1.35}
+.budget-update{margin-top:10px}.budget-update .btn{margin-top:5px;width:100%;font-size:12px;min-height:38px}
+.history-more{display:block;width:100%;margin-top:8px;min-height:42px}.history-more[hidden]{display:none}
+[hidden]{display:none!important}
+@media(min-width:900px){.wrap{width:min(920px,100%);padding:22px}.main-nav{max-width:650px;margin-left:auto;margin-right:auto}.main-panel[data-main-panel="unitv"]{max-width:600px;margin:auto}.main-panel[data-main-panel="pessoal"] .finance .cost-hub-v265{grid-template-columns:1fr 1fr}.main-panel[data-main-panel="pessoal"] .finance .cost-hub-v265>section{min-width:0}}
+@media(max-width:400px){.cash-entry-date span{width:100%}.personal-due-row{display:block}.personal-due-row strong{display:block;text-align:left;margin-top:3px}}
+
+/* JamesUni v2.85 | data automática de novos lotes */
+:root{--focus:#67e8f9}
+.wrap{width:min(570px,100%);padding:12px 12px 75px}
+.app-top{position:sticky;top:0;z-index:25;background:linear-gradient(155deg,rgba(15,20,51,.98),rgba(9,15,39,.98));backdrop-filter:blur(12px)}
+.main-tab:focus-visible,.btn:focus-visible,.tab:focus-visible,.mini-add-v265:focus-visible,summary:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.btn:disabled{opacity:.42}
+.main-nav{gap:7px}
+.finance .section-head{flex-wrap:wrap}
+.finance .month-filter{flex-wrap:wrap}
+.month-arrows-v283{display:inline-flex;gap:5px}
+.month-arrows-v283 button{min-width:29px;min-height:32px;border-radius:9px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.075);color:var(--txt);font-size:23px;line-height:1;cursor:pointer}
+.goals-details-v283 .goals-v279{margin:0;box-shadow:none}
+.goals-summary-hint{font-size:10px;color:var(--mut);font-weight:750}
+.smart-stock-v283{border:1px solid rgba(34,211,238,.18);background:rgba(34,211,238,.06);font-size:12px;font-weight:800;border-radius:11px;padding:8px;margin:7px 0}
+.smart-stock-v283.warning{border-color:rgba(251,146,60,.45);color:#fed7aa}
+.quick-actions-v264{margin:6px 0 9px}
+.quick-actions-v264 .btn{min-height:48px}
+.history-filters-v283{display:grid;gap:6px;margin-bottom:8px}
+.history-filters-v283 input,.history-filters-v283 select{width:100%;min-width:0;padding:10px 11px;background:rgba(0,0,0,.22);color:var(--txt);border:1px solid rgba(255,255,255,.15);border-radius:10px;font:inherit;font-size:13px}
+.history-filters-v283 select option{background:#0b1030}
+.minor-caption-v283{font-size:11px;color:var(--mut);line-height:1.4;font-weight:750;margin:5px 0}
+.history-tools-v283{display:flex;gap:7px;margin-top:7px}
+.history-tools-v283 .btn{font-size:12px!important;min-height:34px!important;flex:1;padding:8px!important}
+.edit-transaction-v283{margin-top:10px}
+.personal-date-v283{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 9px;margin-bottom:9px;border:1px solid var(--line);border-radius:12px;font-size:11px;font-weight:900;color:var(--mut)}
+.personal-date-v283 input{width:145px;min-width:0;background:rgba(0,0,0,.2);color:var(--txt);padding:7px;border-radius:9px;border:1px solid rgba(255,255,255,.13)}
+.personal-due-row.overdue{border-color:rgba(244,63,94,.35)}
+.renewal-preview-v283{display:grid;gap:6px;margin-top:10px}
+.renewal-preview-v283>div.renewal-row-v283{border:1px solid var(--line);border-radius:11px;padding:9px;background:rgba(0,0,0,.18);display:grid;gap:5px;font-size:12px}
+.renewal-preview-v283 strong{overflow-wrap:anywhere}
+.renewal-preview-v283 button{background:rgba(34,197,94,.12);color:#bbf7d0;border:1px solid rgba(34,197,94,.4);padding:7px;border-radius:9px;font-weight:900;cursor:pointer}
+.renewal-preview-v283 button.pending{background:rgba(251,146,60,.08);color:#fed7aa;border-color:rgba(251,146,60,.3)}
+@media(min-width:760px){.wrap{width:min(960px,calc(100% - 40px))}.main-panel[data-main-panel="unitv"]{max-width:680px;margin:0 auto}.finance .metric-grid-v264{grid-template-columns:repeat(4,minmax(0,1fr))}.finance .quick-actions-v264{grid-template-columns:repeat(4,minmax(0,1fr))}.finance .goals-v279-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.finance .history-filters-v283{grid-template-columns:2fr 1fr}}
+@media(max-width:390px){.main-tab{padding:11px 5px!important;font-size:12.8px!important}.month-arrows-v283 button{min-width:29px}.app-brand h1{font-size:24px!important}.finance .section-head h2{font-size:21px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:0.01ms!important;animation-duration:0.01ms!important}}
+
+.daily-bars-v283{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;height:170px;align-items:end;margin:10px 0 4px}
+.daily-bar-cell-v283{min-width:0;display:flex;flex-direction:column;align-items:center;gap:3px;height:100%;justify-content:flex-end}
+.daily-bar-value-v283{font-size:9px;font-weight:850;color:var(--mut);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:clip;max-width:100%}
+.daily-bar-track-v283{flex:1;display:flex;align-items:flex-end;width:100%;max-width:30px;background:rgba(255,255,255,.055);border-radius:7px 7px 3px 3px;overflow:hidden}
+.daily-bar-fill-v283{width:100%;background:linear-gradient(0deg,#22c55e,#22d3ee);border-radius:6px 6px 2px 2px}
+.daily-bar-label-v283{font-size:9px;color:var(--mut);font-weight:850}
+
+/* JamesUni v2.89 — visão de capital e lucro (sem alterar lançamentos) */
+.cash-key-metrics-v289{gap:7px}
+.cash-key-metrics-v289 .metric-v264{padding:10px;min-height:95px;display:flex;flex-direction:column;align-items:flex-start;gap:2px}
+.cash-key-metrics-v289 .metric-v264 span{font-size:11.5px;color:rgba(234,240,255,.75);line-height:1.3;margin:0}
+.cash-key-metrics-v289 .metric-v264 strong{font-size:19px;line-height:1.2;letter-spacing:-.03em;overflow-wrap:anywhere}
+.cash-key-metrics-v289 .metric-v264.primary strong{font-size:21px}
+.cash-key-metrics-v289 .metric-v264 small{font-size:10.5px;font-weight:750;line-height:1.32;color:var(--mut);margin-top:auto;padding-top:5px}
+.cash-key-metrics-v289 .cash-focus-v289{background:linear-gradient(155deg,rgba(34,211,238,.12),rgba(4,8,24,.30))}
+.cash-key-metrics-v289 .cash-profit-v289.good strong{color:#86efac}
+.cash-key-metrics-v289 .cash-profit-v289.bad strong{color:#fda4af}
+.cash-extra-metrics-v289{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:7px}
+.cash-extra-metrics-v289>div{min-width:0;border:1px solid rgba(255,255,255,.065);padding:8px 9px;border-radius:10px;background:rgba(0,0,0,.12)}
+.cash-extra-metrics-v289 span{display:block;font-size:10.5px;line-height:1.25;font-weight:850;color:var(--mut)}
+.cash-extra-metrics-v289 strong{display:block;margin-top:4px;font-size:13px;font-weight:950;overflow-wrap:anywhere}
+.cash-extra-metrics-v289 strong.positive{color:#86efac}
+.cash-extra-metrics-v289 strong.warn{color:#fdba74}
+.cash-context-v289{margin:8px 1px 0;color:var(--mut);font-weight:750;font-size:10.5px;line-height:1.4}
+.cash-explanation-v289 p{font-size:12px;color:var(--mut);font-weight:750;line-height:1.5;margin:0 0 8px}
+.cash-explanation-v289 p:last-child{margin:0}
+.cash-explanation-v289 b{color:var(--txt)}
+@media(max-width:360px){
+ .cash-key-metrics-v289 .metric-v264{padding:8px;min-height:101px}
+ .cash-key-metrics-v289 .metric-v264.primary strong{font-size:18px}
+ .cash-key-metrics-v289 .metric-v264 strong{font-size:17px}
+ .cash-key-metrics-v289 .metric-v264 small{font-size:10px}
+}
 </style>
 </head>
 <body>
 <div class="wrap">
 <div class="header app-top">
-<div class="app-brand"><div><h1>JamesUni</h1><div class="app-subtitle">Caixa, criação UniTV e gastos pessoais em um só lugar.</div></div><span class="pill"><strong>v2.81</strong></span></div>
+<div class="app-brand"><div><h1>JamesUni</h1><div class="app-subtitle">Caixa, criação UniTV e gastos pessoais em um só lugar.</div></div><span class="pill"><strong>v2.89</strong></span></div>
 <div class="main-nav" role="tablist">
 <button aria-pressed="true" class="main-tab active" data-main-tab="caixa" role="tab" type="button">Caixa</button>
 <button aria-pressed="false" class="main-tab" data-main-tab="unitv" role="tab" type="button">UniTV</button>
@@ -422,39 +507,45 @@ h1,.app-brand h1{font-size:33px}
 <section class="block finance">
 <div class="section-head">
 <div><h2>Caixa JamesUni</h2><p>Vendas, estoque, gastos e retiradas do mês.</p></div>
-<div class="month-filter"><label for="cashMonth">Mês</label><input id="cashMonth" type="month"/></div>
+<div class="month-filter"><label for="cashMonth">Mês</label><input id="cashMonth" type="month"/><div class="month-arrows-v283"><button type="button" id="cashPrevMonth" aria-label="Mês anterior">‹</button><button type="button" id="cashNextMonth" aria-label="Próximo mês">›</button></div></div>
 </div>
+<div class="cash-entry-date"><label for="cashEntryDate">Data dos próximos lançamentos</label><input id="cashEntryDate" type="date"/><span>Vendas, compras e gastos serão registrados nesta data.</span></div>
 <div class="dashboard-overview">
-<div class="dashboard-overview-head"><div class="dashboard-overview-title">Caixa agora</div><div class="dashboard-overview-note">visão rápida</div></div>
-<div class="metric-grid-v264">
-<div class="metric-v264 primary"><span>Caixa atual</span><strong data-cash="cash">R$ 0,00</strong></div>
-<div class="metric-v264 primary"><span>Estoque</span><strong data-cash="stock">0 créditos</strong></div>
-<div class="metric-v264 good"><span id="cashSalesDayLabel">Vendas hoje</span><strong data-cash="salesToday">R$ 0,00</strong></div>
-<div class="metric-v264 warn"><span>Falta para meta líquida</span><strong data-cash="targetMissing">R$ 0,00</strong></div>
+<div class="dashboard-overview-head"><div class="dashboard-overview-title">Dinheiro, estoque e lucro</div><div class="dashboard-overview-note" id="cashDashboardPeriod">Mês selecionado</div></div>
+<div class="metric-grid-v264 cash-key-metrics-v289">
+  <div class="metric-v264 primary cash-focus-v289"><span>Dinheiro no caixa</span><strong data-cash="cash">R$ 0,00</strong><small>Saldo em dinheiro; não é lucro.</small></div>
+  <div class="metric-v264 primary cash-focus-v289"><span>Capital em créditos</span><strong data-cash="stockValue">R$ 0,00</strong><small>Custo dos créditos que restam.</small></div>
+  <div class="metric-v264"><span>Créditos disponíveis</span><strong data-cash="stock">0 créditos</strong><small>Quantidade pronta para venda.</small></div>
+  <div class="metric-v264 cash-profit-v289" id="cashProfitMetric"><span>Lucro estimado do mês</span><strong data-cash="netProfitSummary">R$ 0,00</strong><small>Vendas − custo vendido − gastos.</small></div>
 </div>
+<div class="cash-extra-metrics-v289">
+  <div><span id="cashSalesDayLabel">Vendas hoje</span><strong data-cash="salesToday">R$ 0,00</strong></div>
+  <div><span>Falta para meta operacional</span><strong data-cash="targetMissing">R$ 0,00</strong></div>
 </div>
-<div class="goals-v279" aria-label="Metas da UniTV neste mês">
-  <div class="goals-v279-heading"><strong>Metas do mês</strong><span>150 renovações de referência</span></div>
+<p class="cash-context-v289">Comprar créditos diminui o caixa, mas aumenta o estoque. O lucro só é calculado sobre os créditos vendidos.</p>
+</div>
+<details class="compact-details goals-details-v283" id="goalsDisclosure"><summary>Metas do mês <span class="goals-summary-hint">Bruta, operacional e contas</span></summary><div class="compact-details-body"><div class="goals-v279" aria-label="Metas da UniTV neste mês">
+  <div class="goals-v279-heading"><strong>Progresso do mês</strong><span id="renewalTargetHint">Contas registradas</span></div>
   <div class="goals-v279-grid">
     <div class="goal-v279">
-      <span>Bruta · vendas</span>
+      <span>Faturamento · vendas</span>
       <strong data-cash="salesMonthGoalNow">R$ 0,00</strong>
       <small>Meta: <b data-cash="grossTarget">R$ 3.435,00</b></small>
       <div class="goal-v279-progress"><div data-goal-fill="gross"></div></div>
       <small>Faltam <b data-cash="grossMissing">R$ 3.435,00</b></small>
     </div>
     <div class="goal-v279">
-      <span>Líquida · após compras</span>
+      <span>Resultado operacional · após compras</span>
       <strong data-cash="cashNetNow">R$ 0,00</strong>
       <small>Meta: <b data-cash="targetCard">R$ 2.035,00</b></small>
       <div class="goal-v279-progress"><div data-goal-fill="net"></div></div>
       <small>Faltam <b data-cash="targetMissingCard">R$ 2.035,00</b></small>
     </div>
   </div>
-  <div class="goal-v279-foot"><span>Vendas lançadas: <b data-cash="renewalCount">0</b> / <b data-cash="renewalTarget">150</b></span><span data-cash="renewalMissing">Faltam 150</span></div>
+  <div class="goal-v279-foot"><span>Contas registradas: <b data-cash="renewalCount">0</b> / <b data-cash="renewalTarget">150</b></span><span data-cash="renewalMissing">Faltam 150 contas</span></div>
   <div class="goal-v279-progress"><div data-goal-fill="renewal"></div></div>
-  <p class="goal-v279-note">Meta líquida = vendas − compras de créditos − gastos operacionais. <b>Retiradas pessoais não entram na meta.</b> A referência de 150 acompanha os lançamentos de vendas, não clientes únicos; uma venda de vários meses conta uma vez.</p>
-</div>
+  <p class="goal-v279-note"><b>Meta operacional:</b> vendas − compras de créditos − gastos operacionais. Não equivale ao lucro dos créditos vendidos. Retiradas pessoais ficam fora da meta. Contas antigas sem quantidade explícita contam como uma conta por venda.</p>
+</div></div></details>
 <div class="alert-box ok" id="cashAlert">Tudo pronto. Registre vendas, gastos e compras de crédito por aqui.</div>
 <div class="quick-actions-v264">
 <button class="btn green" data-cash-open="sale" type="button">+ Venda</button>
@@ -463,16 +554,25 @@ h1,.app-brand h1{font-size:33px}
 <button class="btn purple" data-cash-open="withdrawal" type="button">+ Retirada</button>
 <div class="cash-sheet-host-v265" id="cashSheetHost"></div>
 </div>
+<div class="smart-stock-v283" id="cashStockForecast" aria-live="polite">Estoque: registre vendas para ver a previsão de reposição.</div>
 <details class="compact-details"><summary>Resumo do mês</summary><div class="compact-details-body"><div class="metric-grid-v264">
-<div class="metric-v264"><span>Meta líquida após compras</span><strong data-cash="target">R$ 2.035,00</strong></div>
+<div class="metric-v264"><span>Meta operacional após compras</span><strong data-cash="target">R$ 2.035,00</strong></div>
 <div class="metric-v264"><span id="cashCreditsDayLabel">Créditos vendidos hoje</span><strong data-cash="creditsToday">0</strong></div>
 <div class="metric-v264"><span>Gastos operacionais</span><strong data-cash="expensesLimit">R$ 0,00 · sem teto</strong></div>
 <div class="metric-v264"><span>Margem no teto operacional</span><strong data-cash="expenseAvailable">Sem teto definido</strong></div>
 <div class="metric-v264"><span>Saldo inicial do mês</span><strong data-cash="cashOpening">R$ 0,00</strong></div>
+<div class="metric-v264"><span>Estoque ao custo</span><strong data-cash="stockValueDetail">R$ 0,00</strong></div>
+<div class="metric-v264"><span>Caixa + estoque ao custo</span><strong data-cash="totalOperational">R$ 0,00</strong></div>
 <div class="metric-v264"><span>Faturamento do mês</span><strong data-cash="salesMonth">R$ 0,00</strong></div>
 <div class="metric-v264"><span>Lucro bruto das vendas</span><strong data-cash="grossProfit">R$ 0,00</strong></div>
-<div class="metric-v264"><span>Lucro estimado das vendas</span><strong data-cash="netResult">R$ 0,00</strong></div>
+<div class="metric-v264"><span>Lucro estimado dos créditos vendidos</span><strong data-cash="netResult">R$ 0,00</strong></div>
 </div></div></details>
+<details class="compact-details"><summary>Como ler os valores do Caixa?</summary><div class="compact-details-body cash-explanation-v289">
+<p><b>Dinheiro no caixa:</b> saldo registrado em dinheiro, após compras, vendas, gastos e retiradas. Não equivale ao lucro.</p>
+<p><b>Capital em créditos:</b> quanto custaram os créditos ainda disponíveis, calculado por lote. Estoque inicial sem compra registrada usa o custo informado na configuração.</p>
+<p><b>Lucro estimado do mês:</b> faturamento menos o custo dos créditos efetivamente vendidos e os gastos operacionais do mês. Retiradas pessoais não são despesas operacionais.</p>
+<p><b>Resultado após compras:</b> faturamento menos dinheiro gasto nas compras de estoque e despesas do mês; pode ficar negativo mesmo com créditos ainda disponíveis.</p>
+</div></details>
 <details class="compact-details">
 <summary>Mais opções do caixa</summary>
 <div class="compact-details-body"><div class="action-grid compact-actions">
@@ -482,6 +582,17 @@ h1,.app-brand h1{font-size:33px}
 <button class="btn dark" id="finishCashMonthBtn" type="button">Finalizar mês</button>
 </div></div>
 </details>
+<div class="action-sheet edit-transaction-v283" id="cashEditPanel">
+<div class="sheet-title" id="cashEditHeading">Editar lançamento</div>
+<div class="form-grid">
+<div class="field"><label for="cashEditDate">Data do movimento</label><input type="date" id="cashEditDate"/></div>
+<div class="field"><label for="cashEditAmount">Valor (R$)</label><input type="number" min="0.01" step="0.01" id="cashEditAmount"/></div>
+<div class="field full"><label for="cashEditNote">Descrição / observação</label><input id="cashEditNote" type="text" maxlength="250"/></div>
+<div class="field full"><label for="cashEditCredits">Créditos (vendas / compras)</label><input id="cashEditCredits" type="number" min="1" step="1"/></div>
+<div class="field full minor-caption-v283" id="cashEditHelp">Edite e confirme. O histórico e os custos serão recalculados.</div>
+<div class="field"><button id="cashEditSaveBtn" class="btn green" type="button">Salvar edição</button></div>
+<div class="field"><button id="cashEditCancelBtn" class="btn dark" type="button">Cancelar</button></div>
+</div></div>
 <div class="action-sheet" data-cash-sheet="sale">
 <div class="sheet-title">Registrar venda</div>
 <div class="quick-grid">
@@ -496,7 +607,7 @@ h1,.app-brand h1{font-size:33px}
 <div class="form-grid" style="margin-top:10px">
 <div class="field"><label for="saleManualAmount">Valor manual</label><input id="saleManualAmount" placeholder="Ex: 22,90" step="0.01" type="number"/></div>
 <div class="field"><label for="saleManualCredits">Créditos usados</label><input id="saleManualCredits" placeholder="Ex: 1" step="1" type="number"/></div>
-<div class="field full"><button class="btn green" id="manualSaleBtn" type="button">Registrar venda manual</button></div>
+<div class="field"><label for="saleManualAccounts">Contas atendidas</label><input type="number" id="saleManualAccounts" min="1" step="1" value="1"/></div><div class="field"><label for="saleManualPlan">Plano</label><select id="saleManualPlan"><option value="manual">Manual / avulso</option><option value="1 mês">1 mês</option><option value="2 meses">2 meses</option><option value="3 meses">3 meses</option><option value="6 meses">6 meses</option><option value="12 meses">12 meses</option></select></div><div class="field full"><button class="btn green" id="manualSaleBtn" type="button">Registrar venda manual</button></div>
 </div>
 </div>
 <div class="action-sheet" data-cash-sheet="stock">
@@ -536,9 +647,9 @@ h1,.app-brand h1{font-size:33px}
 <div class="field"><label for="setCash">Saldo atual (ajuste fica no histórico)</label><input id="setCash" step="0.01" type="number"/></div>
 <div class="field"><label for="setStock">Estoque inicial do mês</label><input id="setStock" step="1" type="number"/></div>
 <div class="field"><label for="setGrossTarget">Meta bruta (faturamento)</label><input id="setGrossTarget" step="0.01" min="0" type="number"/></div>
-<div class="field"><label for="setTarget">Meta líquida (após compras)</label><input id="setTarget" step="0.01" min="0" type="number"/></div>
-<div class="field full"><label for="setRenewalTarget">Meta de renovações (vendas registradas)</label><input id="setRenewalTarget" step="1" min="1" type="number"/></div>
-<div class="field full"><p class="muted-line" style="margin:0">A meta líquida acompanha o dinheiro gerado pelas vendas após <b>comprar créditos</b> e pagar despesas operacionais. Não desconta retiradas pessoais. O lucro estimado calculado pelo custo dos créditos efetivamente vendidos continua no relatório, separadamente.</p></div>
+<div class="field"><label for="setTarget">Meta operacional (após compras)</label><input id="setTarget" step="0.01" min="0" type="number"/></div>
+<div class="field full"><label for="setRenewalTarget">Meta de vendas registradas</label><input id="setRenewalTarget" step="1" min="1" type="number"/></div>
+<div class="field full"><p class="muted-line" style="margin:0">A meta operacional acompanha o dinheiro gerado pelas vendas após <b>comprar créditos</b> e pagar despesas operacionais. Não desconta retiradas pessoais. O lucro estimado calculado pelo custo dos créditos efetivamente vendidos continua no relatório, separadamente.</p></div>
 <div class="field"><label for="setExpenseLimit">Teto operacional (0 = sem limite)</label><input id="setExpenseLimit" step="0.01" type="number"/></div>
 <div class="field"><label for="setUnitCost">Custo do estoque inicial por crédito</label><input id="setUnitCost" step="0.01" type="number"/></div>
 <div class="field"><label for="setSupplier">Fornecedor padrão</label><input id="setSupplier" type="text"/></div>
@@ -546,8 +657,8 @@ h1,.app-brand h1{font-size:33px}
 </div>
 </div>
 <div class="finance-card" id="closeDayBox" style="display:none"><h3>Resumo do dia</h3><div class="report-grid" id="closeDayReport"></div></div>
-<details class="compact-details"><summary>Relatório mensal</summary><div class="compact-details-body"><div class="report-grid" id="cashMonthReport"></div></div></details>
-<details class="compact-details"><summary>Histórico do caixa</summary><div class="compact-details-body"><div class="history-list" id="cashHistory"></div></div></details>
+<details class="compact-details"><summary>Relatório mensal</summary><div class="compact-details-body"><div class="report-grid" id="cashMonthReport"></div><div class="minor-caption-v283" style="margin-top:12px">Faturamento dos últimos sete dias do mês selecionado</div><div class="daily-bars-v283" id="cashDailyBars"></div></div></details>
+<details class="compact-details"><summary>Histórico do caixa</summary><div class="compact-details-body"><div class="history-filters-v283"><input type="search" id="cashHistorySearch" placeholder="Buscar por plano, categoria ou observação" aria-label="Buscar movimentos"/><select id="cashHistoryType" aria-label="Filtrar tipo de movimento"><option value="all">Todos os movimentos</option><option value="sale">Vendas</option><option value="stock">Créditos comprados</option><option value="expense">Gastos</option><option value="withdrawal">Retiradas</option><option value="adjustment">Ajustes</option></select></div><div id="cashHistoryCount" class="minor-caption-v283"></div><div class="history-list" id="cashHistory"></div><button class="btn dark history-more" type="button" id="cashHistoryMoreBtn" hidden>Mostrar mais registros</button></div></details>
 </section>
 </section>
 <section class="main-panel unitv-shell" data-main-panel="unitv">
@@ -559,68 +670,77 @@ h1,.app-brand h1{font-size:33px}
 </div></div>
 <div class="panel active" data-panel="nova" role="tabpanel"><section class="block" data-key="nova" data-limit="3" data-seq="triple"><div class="counter-line"><div class="block-title">Conta Nova</div><div class="pill"><span>Registros:</span><strong class="counter">0</strong><span class="muted">• Próximo: <span class="det">Nº</span></span></div></div><div class="controls"><button class="btn paste" data-role="paste-number" type="button">Colar número</button><button class="btn paste" data-role="paste-code" type="button">Colar Código</button><button class="btn sms" data-role="paste-sms" type="button">Colar SMS</button><button class="btn copy copy" type="button">Copiar <span class="muted">(restantes: 0)</span></button><button class="btn reset reset" data-role="reset" type="button">Zerar</button></div><div class="secondary"><button class="btn sub undo" data-role="undo" type="button">⟲ Desfazer</button><button class="btn sub skip" data-role="skip" type="button">» Pular</button></div><div class="inline"><span>Código: <strong class="code-pill">—</strong></span><button class="toggle-sms" type="button">Ver SMS</button></div><div class="editor"></div><div class="status"><div class="left">Pronto.</div><div class="progress">0</div></div><div class="bar"><div class="fill"></div></div></section></div>
 <div class="panel" data-panel="renov" role="tabpanel"><section class="block" data-key="renov" data-limit="5" data-seq="triple"><div class="counter-line"><div class="block-title">Renovação</div><div class="pill"><span>Registros:</span><strong class="counter">0</strong><span class="muted">• Próximo: <span class="det">Nº</span></span></div></div><div class="controls"><button class="btn paste" data-role="paste-number" type="button">Colar número</button><button class="btn paste" data-role="paste-code" type="button">Colar Código</button><button class="btn sms" data-role="paste-sms" type="button">Colar SMS</button><button class="btn copy copy" type="button">Copiar <span class="muted">(restantes: 0)</span></button><button class="btn reset reset" data-role="reset" type="button">Zerar</button></div><div class="secondary"><button class="btn sub undo" data-role="undo" type="button">⟲ Desfazer</button><button class="btn sub skip" data-role="skip" type="button">» Pular</button></div><div class="inline"><span>Código: <strong class="code-pill">—</strong></span><button class="toggle-sms" type="button">Ver SMS</button></div><div class="editor"></div><div class="status"><div class="left">Pronto.</div><div class="progress">0</div></div><div class="bar"><div class="fill"></div></div></section></div>
-<div class="panel" data-panel="pers" role="tabpanel"><section class="block" data-key="pers" data-limit="4" data-seq="create-account"><div class="counter-line"><div class="block-title">Criar Conta</div><div class="pill"><span>Contas:</span><strong class="counter">0</strong><span class="muted">• Próximo: <span class="det">—</span></span></div></div><div class="controls"><button class="btn paste" data-role="gen-copy" type="button">Criar e copiar email</button><button class="btn sms" data-role="number-flow" type="button">Criar e copiar número</button><button class="btn reset reset" data-role="reset" type="button" style="grid-column:1/-1">Limpar</button></div><div class="inline"><span>Senha atual: <strong class="pass-pill">—</strong></span><button class="toggle-sms" type="button">Ver dados</button></div><div class="editor"></div><div class="status"><div class="left">Escolha o fluxo por e-mail ou por número.</div><div class="progress">0 contas</div></div><div class="bar"><div class="fill"></div></div></section></div>
+<div class="panel" data-panel="pers" role="tabpanel"><section class="block" data-key="pers" data-limit="4" data-seq="create-account"><div class="counter-line"><div class="block-title">Criar Conta</div><div class="pill"><span>Contas:</span><strong class="counter">0</strong><span class="muted">• Próximo: <span class="det">—</span></span></div></div><div class="controls"><button class="btn paste" data-role="gen-copy" type="button">Criar e copiar email</button><button class="btn sms" data-role="number-flow" type="button">Criar e copiar número</button><button class="btn reset reset" data-role="reset" type="button" style="grid-column:1/-1">Limpar</button></div><div id="numberExpiryHint" class="minor-caption-v283" aria-live="polite" style="margin:10px 0">O vencimento das contas criadas por número é calculado automaticamente: 7 dias após a criação.</div><div class="inline"><span>Senha atual: <strong class="pass-pill">—</strong></span><button class="toggle-sms" type="button">Ver dados</button></div><div class="editor"></div><div class="status"><div class="left">Escolha o fluxo por e-mail ou por número.</div><div class="progress">0 contas</div></div><div class="bar"><div class="fill"></div></div></section></div>
 <div class="panel" data-panel="emails" role="tabpanel"><section class="block" data-key="emails" data-limit="1" data-seq="emails"><div class="counter-line"><div class="block-title">E-mail</div><div class="pill"><span>Gerados:</span><strong class="counter">0</strong><span class="muted">• Guardados: <span class="det">0</span></span></div></div><div class="controls"><button class="btn paste" data-role="paste-email" type="button">Gerar aliás</button><button class="btn paste" data-role="gen-email" type="button">Gerar e-mail</button><button class="btn paste" data-role="paste-login" type="button">Colar e-mail</button><button class="btn paste" data-role="paste-code" type="button">Colar Código</button><button class="btn copy copy" type="button">Copiar <span class="muted">(restantes: 0)</span></button><button class="btn reset reset" data-role="reset" type="button">Zerar</button></div><div class="inline"><span>Código: <strong class="email-code-pill">—</strong> <span class="muted">• Cópias: <strong class="email-copies">0</strong></span></span><button class="toggle-sms" type="button">Ver e-mails</button></div><div class="editor"></div><div class="status"><div class="left">Fase 0 de 2 · Próximo: Gerar e-mails</div><div class="progress">0/0</div></div><div class="bar"><div class="fill"></div></div></section></div>
-<div class="panel" data-panel="account" role="tabpanel"><section class="block" data-key="account" data-limit="0" data-seq="account"><div class="counter-line"><div class="block-title">Renovação Código</div><div class="pill"><span>Contas:</span><strong class="counter">0</strong><span class="muted">• Próximo: <span class="det">Colar conta</span></span></div></div><div class="controls"><button class="btn paste" data-role="account-action" type="button">Colar conta</button><button class="btn sms" data-role="code-action" type="button">Colar códigos</button><button class="btn reset reset" data-role="reset" type="button" style="grid-column:1/-1">Limpar conta</button></div><div class="inline"><span>Atual: <strong class="code-pill">—</strong></span><button class="toggle-sms" type="button">Ver dados</button></div><div class="inline"><span>Códigos copiados nesta conta: <strong class="account-code-count">0</strong> · <strong class="account-months-count">1 mês (padrão)</strong></span></div><div class="field account-code-target" hidden style="margin-top:10px"><label for="accountCodeTarget">Aplicar próximo código copiado à conta</label><select id="accountCodeTarget" aria-label="Conta que receberá o próximo código copiado"></select></div><div class="editor"></div><div class="status"><div class="left">Cole uma ou várias contas do cliente.</div><div class="progress">0 contas · 0 códigos</div></div><div class="bar"><div class="fill"></div></div></section></div>
+<div class="panel" data-panel="account" role="tabpanel"><section class="block" data-key="account" data-limit="0" data-seq="account"><div class="counter-line"><div class="block-title">Renovação Código</div><div class="pill"><span>Contas:</span><strong class="counter">0</strong><span class="muted">• Próximo: <span class="det">Colar conta</span></span></div></div><div class="controls"><button class="btn paste" data-role="account-action" type="button">Colar conta</button><button class="btn sms" data-role="code-action" type="button">Colar códigos</button><button class="btn reset reset" data-role="reset" type="button" style="grid-column:1/-1">Limpar conta</button></div><div class="inline"><span>Atual: <strong class="code-pill">—</strong></span><button class="toggle-sms" type="button">Ver dados</button></div><div class="inline"><span>Códigos da conta selecionada: <strong class="account-code-count">0</strong> · <strong class="account-months-count">Aguardando código</strong></span></div><div class="field account-code-target" hidden style="margin-top:10px"><label for="accountCodeTarget">Distribuição dos códigos por conta</label><select id="accountCodeTarget" aria-label="Distribuição dos códigos copiados"></select><p class="account-code-help">Automático: distribui um código por conta antes de adicionar meses extras. Selecione uma conta específica somente se quiser dar mais meses a ela.</p><p class="account-code-help" id="accountCodeNextInfo"></p></div><div class="renewal-preview-v283" id="renewalPreview"><div class="minor-caption-v283">Cole as contas e os códigos para ver a conferência por conta.</div></div><button class="btn green" type="button" id="renewalCashBtn" hidden style="width:100%;margin-top:8px">Preparar registro de venda no Caixa</button><div class="editor"></div><div class="status"><div class="left">Cole uma ou várias contas do cliente.</div><div class="progress">0 contas · 0 códigos</div></div><div class="bar"><div class="fill"></div></div></section></div>
 <div class="panel" data-panel="site" role="tabpanel"><section class="block" data-key="site" data-limit="8" data-seq="site-create-account"><div class="counter-line"><div class="block-title">Site</div><div class="pill"><span>Etapas:</span><strong class="counter">0</strong><span class="muted">• Próximo: <span class="det">—</span></span></div></div><div class="controls"><button class="btn paste" data-role="gen-copy" type="button">Gerar e copiar</button><button class="btn reset reset" data-role="reset" type="button">Limpar</button></div><div class="inline"><span>Senha padrão: <strong class="pass-pill">554090q</strong></span><button class="toggle-sms" type="button">Ver dados</button></div><div class="editor"></div><div class="status"><div class="left">Clique em Gerar e copiar para criar tudo e copiar o Gmail temporário.</div><div class="progress">0/8</div></div><div class="bar"><div class="fill"></div></div></section></div>
-<div class="footer small"><div><b>Versão:</b> v2.81</div><div><b>Changelog:</b> Caixa: meta bruta de R$ 3.435, meta líquida de R$ 2.035 após compras de créditos e gastos, e referência de 150 vendas mensais. Retiradas pessoais não reduzem as metas. Mantidas as funções de UniTV e Gestão Pessoal.</div></div>
+
+<div class="footer small"><div><b>Versão:</b> v2.89</div><div><b>Changelog:</b> Caixa: dinheiro disponível, capital investido nos créditos restantes e lucro estimado do mês apresentados separadamente. Valorização do estoque com custo real por lote e transporte entre meses, resumo financeiro e explicações de cada cálculo. Demais operações da UniTV e do Pessoal preservadas.</div></div>
 </section>
 <section class="main-panel" data-main-panel="pessoal">
 <section class="block finance">
 <div class="section-head">
-<div><h2>Gastos Pessoais</h2><p>Salário, contas, gastos e reserva do mês.</p></div>
-<div class="month-filter"><label for="personalMonth">Mês</label><input id="personalMonth" type="month"/></div>
+<div><h2>Gastos Pessoais</h2><p>Salário para despesas; reserva de emergência separada.</p></div>
+<div class="month-filter"><label for="personalMonth">Mês</label><input id="personalMonth" type="month"/><div class="month-arrows-v283"><button type="button" id="personalPrevMonth" aria-label="Mês anterior">‹</button><button type="button" id="personalNextMonth" aria-label="Próximo mês">›</button></div></div><div class="minor-caption-v283" id="personalEntryHint">Use o calendário abaixo para lançar gastos em outra data.</div>
 </div>
+<div class="personal-date-v283"><label for="personalEntryDate">Data dos lançamentos pessoais</label><input type="date" id="personalEntryDate"/></div>
+<div id="personalBudgetAlert" class="alert-box" hidden></div>
 <div class="dashboard-overview">
 <div class="dashboard-overview-head"><div class="dashboard-overview-title">Seu mês</div><div class="dashboard-overview-note">o essencial primeiro</div></div>
 <div class="metric-grid-v264">
-<div class="metric-v264 primary"><span>Salário</span><strong data-personal="salary">R$ 0,00</strong></div>
-<div class="metric-v264"><span>Pago / guardado</span><strong data-personal="paid">R$ 0,00</strong></div>
-<div class="metric-v264 warn"><span>A comprometer</span><strong data-personal="pending">R$ 0,00</strong></div>
-<div class="metric-v264 good"><span>Livre estimado</span><strong data-personal="afterPending">R$ 0,00</strong></div>
+<div class="metric-v264 primary"><span>Salário do mês</span><strong data-personal="salary">R$ 0,00</strong></div>
+<div class="metric-v264"><span>Saídas do salário</span><strong data-personal="salaryOutflow">R$ 0,00</strong></div>
+<div class="metric-v264 warn"><span>Contas a pagar</span><strong data-personal="billsPending">R$ 0,00</strong></div>
+<div class="metric-v264"><span>Orçamento ainda previsto</span><strong data-personal="budgetRemaining">R$ 0,00</strong></div>
 </div>
-<div class="ledger-caption">Estimativa a partir do salário informado; não consulta seu saldo bancário. “A comprometer” inclui contas pendentes e orçamentos ainda disponíveis.</div>
+<div class="ledger-caption">Saídas do salário = contas e gastos pagos + valores transferidos do salário para a reserva. O dinheiro guardado não é uma despesa; depósitos de outra origem e resgates não alteram o salário.</div>
 </div>
 <div class="reserve-card-v276">
-  <div class="reserve-head-v276"><div><div class="reserve-kicker-v276">Sua reserva acumulada</div><strong class="reserve-big-v276" id="reserveTotalLabel">R$ 0,00</strong></div><button class="mini-add-v265" id="toggleReservePanelBtn" type="button">Ajustar / resgatar</button></div>
+  <div class="reserve-head-v276"><div><div class="reserve-kicker-v276">Reserva acumulada · dinheiro guardado</div><strong class="reserve-big-v276" id="reserveTotalLabel">R$ 0,00</strong><span class="minor-caption-v283" id="reservePeriodNote">Até o mês atual</span></div><button class="mini-add-v265" id="toggleReservePanelBtn" type="button">Movimentar reserva</button></div>
   <div class="reserve-goal-v276"><span id="reserveGoalLabel">Meta: R$ 5.000,00</span><strong id="reserveGoalPercent">0%</strong></div>
   <div class="reserve-track-v276"><div id="reserveProgressFill"></div></div>
   <div class="reserve-foot-v276" id="reserveRemainingLabel">Faltam R$ 5.000,00 para sua primeira meta.</div>
+  <div class="reserve-foot-v276">Reserva de emergência: saldo inicial + todos os depósitos − resgates. Só a transferência feita com o salário reduz o valor ainda disponível do salário.</div>
+  <div class="reserve-foot-v276">Neste mês: <strong id="reserveMonthDeposits">R$ 0,00</strong> depositados (<strong id="reserveSalaryDeposits">R$ 0,00</strong> vindos do salário) · <strong id="reserveMonthWithdrawals">R$ 0,00</strong> resgatados</div>
   <div class="collapse-panel compact-panel-v264" id="reservePanel">
     <div class="form-grid">
       <div class="field full"><label for="reserveBaseInput">Saldo inicial que já tinha guardado antes dos lançamentos deste site</label><input id="reserveBaseInput" type="number" step="0.01" min="0" placeholder="Ex: 4000,00"/></div>
       <div class="field full"><button class="btn blue" id="saveReserveBaseBtn" type="button">Salvar saldo inicial</button></div>
-      <div class="field full"><label for="reserveWithdrawInput">Retirar da reserva</label><input id="reserveWithdrawInput" type="number" step="0.01" min="0.01" placeholder="Ex: 100,00"/></div>
+      <div class="field full"><label for="personalSavedAmount">Adicionar à reserva de emergência</label><input id="personalSavedAmount" placeholder="Ex: 200,00" step="0.01" min="0.01" type="number"/></div>
+      <div class="field full"><label for="personalSavedSource">Origem do dinheiro</label><select id="personalSavedSource"><option value="salary">Do salário (registrar como saída)</option><option value="other">Outra origem (não altera o salário)</option></select></div>
+      <div class="field full"><button class="btn green" id="addSavedBtn" type="button" style="width:100%">Transferir para a reserva</button></div>
+      <div class="field full"><label for="reserveWithdrawInput">Resgatar da reserva de emergência</label><input id="reserveWithdrawInput" type="number" step="0.01" min="0.01" placeholder="Ex: 100,00"/></div>
       <div class="field full"><button class="btn orange" id="reserveWithdrawBtn" type="button" style="width:100%">Registrar resgate</button></div>
     </div>
-    <p class="muted-line">O saldo inicial é o que você já tinha antes de registrar depósitos neste site. Valores guardados e retirados nos meses são somados automaticamente. Resgates entram como dinheiro disponível no mês selecionado.</p>
+    <p class="muted-line">O saldo inicial representa dinheiro que já estava guardado. Ao escolher “Do salário”, a transferência aparece nas saídas do salário, mas não nas contas pagas. “Outra origem” e resgates não alteram o salário.</p>
   </div>
 </div>
 <details class="compact-details"><summary>Resumo detalhado</summary><div class="compact-details-body"><div class="metric-grid-v264">
-<div class="metric-v264"><span>Disponível antes dos compromissos</span><strong data-personal="available">R$ 0,00</strong></div>
+<div class="metric-v264"><span>Salário após saídas</span><strong data-personal="available">R$ 0,00</strong></div>
+<div class="metric-v264"><span>Contas e gastos pagos</span><strong data-personal="paid">R$ 0,00</strong></div>
+<div class="metric-v264"><span>Transferido do salário para reserva</span><strong data-personal="savedFromSalary">R$ 0,00</strong></div>
 <div class="metric-v264"><span>Contas pendentes</span><strong data-personal="billsPending">R$ 0,00</strong></div>
 <div class="metric-v264"><span>Gastos previstos</span><strong data-personal="planned">R$ 0,00</strong></div>
-<div class="metric-v264"><span>Guardado</span><strong data-personal="saved">R$ 0,00</strong></div>
+<div class="metric-v264"><span>Depositado na reserva no mês</span><strong data-personal="saved">R$ 0,00</strong></div>
 <div class="metric-v264"><span>Gastos variáveis</span><strong data-personal="variableTotal">R$ 0,00</strong></div>
 <div class="metric-v264"><span>Variáveis restantes</span><strong data-personal="variableLeft">R$ 0,00</strong></div>
-<div class="metric-v264"><span>Dívida mãe</span><strong data-personal="debtLeft">R$ 4.000,00</strong></div>
+<div class="metric-v264" hidden><span>Dívida mãe</span><strong data-personal="debtLeft">R$ 4.000,00</strong></div>
 <div class="metric-v264"><span>Retirado da reserva no mês</span><strong data-personal="reserveWithdrawn">R$ 0,00</strong></div>
 </div></div></details>
 <div class="alert-box" id="personalAlert">Digite o salário e registre apenas o que saiu neste mês.</div>
+<div id="personalDueSummary" class="personal-due-summary" aria-live="polite"></div>
 <div class="personal-shortcuts">
-<button class="btn blue" id="toggleSalaryPanelBtn" type="button">Salário / reserva</button>
-<button class="btn purple" id="toggleDebtPanelBtn" type="button">Dívida</button>
+<button class="btn blue" id="toggleSalaryPanelBtn" type="button">Salário</button>
+<button class="btn purple" id="toggleDebtPanelBtn" type="button" hidden aria-hidden="true" tabindex="-1">Dívida</button>
 </div>
 <div class="collapse-panel compact-panel-v264" id="salaryPanel">
-<h3>Salário e reserva</h3>
+<h3>Salário do mês</h3>
 <div class="form-grid">
 <div class="field full"><label for="personalSalary">Salário recebido</label><input id="personalSalary" placeholder="Ex: 2297,00" step="0.01" type="number"/></div>
 <div class="field full"><button class="btn blue" id="savePersonalBaseBtn" type="button">Salvar salário</button></div>
-<div class="field"><label for="personalSavedAmount">Guardar no Nubank</label><input id="personalSavedAmount" placeholder="Ex: 200,00" step="0.01" type="number"/></div>
-<div class="field"><button class="btn purple" id="addSavedBtn" type="button" style="margin-top:18px;width:100%">Guardar</button></div>
 </div>
 </div>
-<div class="collapse-panel compact-panel-v264" id="debtPanel">
+<div class="collapse-panel compact-panel-v264" id="debtPanel" hidden aria-hidden="true">
 <h3>Dívida com mãe</h3>
 <div class="report-grid">
 <div class="report-line"><span>Total</span><strong data-personal="debtTotal">R$ 4.500,00</strong></div>
@@ -699,16 +819,18 @@ h1,.app-brand h1{font-size:33px}
 <div class="budget-pair-v264">
 <div class="budget-box-v264"><h4>Fim de semana</h4>
 <div class="report-grid"><div class="report-line"><span>Limite</span><strong data-personal="entLimit">R$ 600,00</strong></div><div class="report-line"><span>Usado</span><strong data-personal="entUsed">R$ 0,00</strong></div><div class="report-line"><span>Restante</span><strong data-personal="entLeft">R$ 600,00</strong></div></div>
+<div class="field budget-update"><label for="entLimitInput">Editar limite do mês (R$)</label><input id="entLimitInput" type="number" min="0" step="0.01" placeholder="Ex: 600,00"/><button class="btn dark" id="saveEntLimitBtn" type="button">Salvar limite</button></div>
 <div class="field" style="margin-top:7px"><label for="entManual">Valor</label><input id="entManual" placeholder="150 ou 200" step="0.01" type="number"/></div>
 <div class="inline-actions" style="margin-top:6px"><button class="btn orange" data-ent="150" type="button">R$ 150</button><button class="btn orange" data-ent="200" type="button">R$ 200</button><button class="btn dark" id="addEntManualBtn" type="button">Manual</button></div>
 </div>
 <div class="budget-box-v264"><h4>Gasolina</h4>
-<div class="report-grid"><div class="report-line"><span>Previsão</span><strong>R$ 180,00</strong></div><div class="report-line"><span>Usado</span><strong data-personal="gasUsed">R$ 0,00</strong></div><div class="report-line"><span>Restante</span><strong data-personal="gasLeft">R$ 180,00</strong></div></div>
+<div class="report-grid"><div class="report-line"><span>Previsão</span><strong data-personal="gasLimit">R$ 180,00</strong></div><div class="report-line"><span>Usado</span><strong data-personal="gasUsed">R$ 0,00</strong></div><div class="report-line"><span>Restante</span><strong data-personal="gasLeft">R$ 180,00</strong></div></div>
+<div class="field budget-update"><label for="gasLimitInput">Editar previsão do mês (R$)</label><input id="gasLimitInput" type="number" min="0" step="0.01" placeholder="Ex: 180,00"/><button class="btn dark" id="saveGasLimitBtn" type="button">Salvar previsão</button></div>
 <div class="field" style="margin-top:7px"><label for="gasManual">Valor</label><input id="gasManual" placeholder="Ex: 45" step="0.01" type="number"/></div>
 <div class="inline-actions" style="margin-top:6px"><button class="btn orange" data-gas="45" type="button">R$ 45</button><button class="btn dark" id="addGasManualBtn" type="button">Manual</button></div>
 </div>
 </div></div></details>
-<details class="compact-details"><summary>Histórico pessoal</summary><div class="compact-details-body"><div class="history-list" id="personalHistory"></div></div></details>
+<details class="compact-details"><summary>Histórico pessoal</summary><div class="compact-details-body"><div class="history-filters-v283"><input type="search" id="personalHistorySearch" placeholder="Buscar gastos e movimentos" aria-label="Buscar histórico pessoal"/><select id="personalHistoryType"><option value="all">Todas as categorias</option><option value="gas">Gasolina</option><option value="entertainment">Lazer</option><option value="bill">Contas pagas</option><option value="variable-payment">Variáveis</option><option value="saved">Valores guardados</option><option value="reserve-withdrawal">Resgates</option></select></div><div id="personalHistoryCount" class="minor-caption-v283"></div><div class="history-list" id="personalHistory"></div><button class="btn dark history-more" type="button" id="personalHistoryMoreBtn" hidden>Mostrar mais registros</button></div></details>
 <details class="compact-details"><summary>Controle mensal</summary><div class="compact-details-body">
 <p class="muted-line">Cada mês agora fica separado. Ao trocar para junho, julho ou outro mês, o painel abre limpo para controlar só aquele mês.</p>
 <div class="form-grid">
@@ -775,6 +897,23 @@ const q=s=>block.querySelector(s),emailBtn=q('[data-role="gen-copy"]'),numberBtn
 const PASS='554090q';
 const WORDS=['mesa','copo','chave','porta','livro','fone','mouse','sofa','anel','bone','cafe','suco','pizza','caixa','prato','toalha','pilha','cabo','bolo','lata','tampa','papel','bola','gato','pato','leao','sol','lua','mar','rio','vento','fogo','neve','areia','nuvem','pedra','folha','casa','rua','ponte'];
 const saved=getStore('create_account_v12',getStore('create_account_v11',getStore('create_account_v10',getStore('create_account_v9',getStore('create_account_v8',getStore('create_account_v7',getStore('create_account_v6',getStore('create_account_v5',getStore('create_account_v4',{})))))))));
+function localTodayISO(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
+const numberExpiryHint=document.querySelector('#numberExpiryHint');
+// Sem seletor manual: o lote mantém a data do primeiro número ainda em andamento.
+// Se não houver lote ativo, usamos o dia atual no instante de criar o próximo.
+function selectedCreationDate(){
+  const ongoing=st.numItems.find(item=>!item.accountDone);
+  return ongoing?.createdOn||localTodayISO();
+}
+function refreshNewNumberBatchDate(){updateCreationDateHint();}
+function updateCreationDateHint(){
+  if(!numberExpiryHint)return;
+  const ongoing=st.numItems.some(item=>!item.accountDone);
+  const creation=selectedCreationDate();
+  const formatted=creation.split('-').reverse().join('/');
+  const expiry=vencimentoTelefone(creation);
+  numberExpiryHint.textContent=`${ongoing?'Lote em andamento':'Próximo lote'} · Criação: ${formatted} · Vencimento automático: ${expiry} (7 dias).`;
+}
 const st=Object.assign({alias:'',emails:[],clicks:0,numItems:[],completedAccounts:0,lastFlow:'email',nextSmsOrder:0},saved||{});
 if(!Array.isArray(st.emails))st.emails=[];
 if(!Array.isArray(st.numItems))st.numItems=[];
@@ -790,9 +929,11 @@ st.numItems=st.numItems.map((x,i)=>{
   if(code&&!tripletDone&&!(x&&Object.prototype.hasOwnProperty.call(x,'tripletStage')))tripletStage=0;
   let smsOrder=Math.max(0,Number(x&&x.smsOrder)||0);
   if(code&&!smsOrder){smsOrder=++st.nextSmsOrder}
-  return {phone,code,initialCopied,tripletStage,tripletDone,accountDone,smsOrder};
+  return {phone,code,initialCopied,tripletStage,tripletDone,accountDone,smsOrder,createdOn:String(x?.createdOn||localTodayISO())};
 }).filter(x=>x.phone.length>=10&&x.phone.length<=11);
 st.completedAccounts=st.numItems.filter(x=>x.accountDone).length;
+// Contas de lotes anteriores mantêm a data criada no registro de cada conta.
+// Nenhum campo de data é exibido ou solicitado ao usuário.
 
 function pick(a){return a[randInt(a.length)]}
 function makeEmail(){return `${pick(WORDS)}${String(randInt(1000000)).padStart(6,'0')}`}
@@ -865,12 +1006,15 @@ function startNewNumberCycleIfFinished(){
 function addInitialNumbers(text){
   const parsed=parseInitialNumberMessages(text);
   if(!parsed.length)return 0;
+  const newBatch=!st.numItems.length||st.numItems.every(item=>item.accountDone);
   startNewNumberCycleIfFinished();
+  if(newBatch)refreshNewNumberBatchDate();
+  const creationDate=selectedCreationDate();
   let added=0;
   parsed.forEach(row=>{
     if(!row.phone)return;
     if(st.numItems.some(x=>x.phone===row.phone&&!x.accountDone))return;
-    st.numItems.push({phone:row.phone,code:'',initialCopied:false,tripletStage:0,tripletDone:false,accountDone:false,smsOrder:0});
+    st.numItems.push({phone:row.phone,code:'',initialCopied:false,tripletStage:0,tripletDone:false,accountDone:false,smsOrder:0,createdOn:creationDate});
     added++;
   });
   return added;
@@ -900,7 +1044,7 @@ function addSmsMessages(text){
     // Se o SMS é válido mas, por qualquer motivo, o número não está mais na fila local,
     // não descarta o SMS: cria uma entrada avulsa usando o próprio "Número sem DDI" recebido.
     if(!item){
-      item={phone:cleanPhone(row.phone),code:'',initialCopied:true,tripletStage:0,tripletDone:false,accountDone:false,smsOrder:0};
+      item={phone:cleanPhone(row.phone),code:'',initialCopied:true,tripletStage:0,tripletDone:false,accountDone:false,smsOrder:0,createdOn:selectedCreationDate()};
       if(!item.phone){unknown++;return}
       st.numItems.push(item);autoAdded++;
     }
@@ -920,7 +1064,8 @@ function waitingSmsItems(){return st.numItems.filter(x=>!x.accountDone&&x.initia
 function tripletPendingItems(){return st.numItems.filter(x=>!x.accountDone&&x.initialCopied&&x.code&&!x.tripletDone).sort((a,b)=>(a.smsOrder||999999)-(b.smsOrder||999999))}
 function accountPendingItems(){return st.numItems.filter(x=>!x.accountDone&&x.tripletDone).sort((a,b)=>(a.smsOrder||999999)-(b.smsOrder||999999))}
 function formatCreatedPhone(value){const d=cleanPhone(value);if(d.length===11)return `${d.slice(0,2)} ${d.slice(2,7)} ${d.slice(7)}`;if(d.length===10)return `${d.slice(0,2)} ${d.slice(2,6)} ${d.slice(6)}`;return d||value||''}
-function completePhoneAccount(item){const password=`${item.code}q`;return ['UNITV','','📱 Conta UniTv','',`Número: ${formatCreatedPhone(item.phone)}`,`Senha: ${password}`,'',`Vencimento: ${vencimento()}`,'','','🔑 Vá em Perfil > Entrar com outras contas > Irá aparecer uma tela, abaixo clica em telefone e quando abrir outra tela de telefone, insira os dados acima somente número depois a senha para realizar o login','','🎁 Ganhe 7 dias grátis ao indicar um amigo!'].join('\n')}
+function vencimentoTelefone(createdOn){const d=/^\d{4}-\d{2}-\d{2}$/.test(String(createdOn||''))?new Date(`${createdOn}T12:00:00`):new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()+7);return `${pad2(d.getDate())}/${pad2(d.getMonth()+1)}/${d.getFullYear()}`}
+function completePhoneAccount(item){const password=`${item.code}q`;return ['UNITV','','📱 Conta UniTv','',`Número: ${formatCreatedPhone(item.phone)}`,`Senha: ${password}`,'',`Vencimento: ${vencimentoTelefone(item.createdOn)}`,'','','🔑 Vá em Perfil > Entrar com outras contas > Irá aparecer uma tela, abaixo clica em telefone e quando abrir outra tela de telefone, insira os dados acima somente número depois a senha para realizar o login','','🎁 Ganhe 7 dias grátis ao indicar um amigo!'].join('\n')}
 function completePhoneAccounts(items){return items.map(item=>completePhoneAccount(item)).join('\n\n━━━━━━━━━━━━━━━━━━━━\n\n')}
 function numberStep(){
   // Fase 1: depois de colar vários números, entrega TODOS os números um por um.
@@ -1021,6 +1166,7 @@ function update(){
     badge('pers',{count:emailDone,limit:emailTotal,isDone:emailDone>=emailTotal});
     if(editor.classList.contains('show'))editor.textContent=legacyEditorText();
   }
+  updateCreationDateHint();
   saveState();
 }
 async function copyEmailFlow(){
@@ -1041,7 +1187,7 @@ async function copyNumberStep(step){
   else if(step.kind==='password'){step.item.tripletStage=3;step.item.tripletDone=true}
   else if(step.kind==='accounts'){
     const total=step.items.length;
-    step.items.forEach(item=>item.accountDone=true);
+    step.items.forEach(item=>{item.accountDone=true;});
     st.completedAccounts=st.numItems.filter(x=>x.accountDone).length;
     st.numItems=[];
     st.completedAccounts=0;
@@ -1106,7 +1252,7 @@ function formatPhone(value){const d=normalizePhone(value);if(d.length===11)retur
 function parseExpiry(value){const m=String(value||'').match(/(\d{1,2})\s*\/\s*(\d{1,2})(?:\s*\/\s*(\d{2,4}))?/);if(!m)return null;let year=m[3]?Number(m[3]):new Date().getFullYear();if(year<100)year+=2000;const month=Number(m[2]),day=Number(m[1]);if(month<1||month>12||day<1||day>new Date(year,month,0).getDate())return null;return new Date(year,month-1,day)}
 function addMonths(base,months){const offset=Math.max(1,Math.trunc(Number(months)||1)),targetMonth=base.getMonth()+offset,lastDay=new Date(base.getFullYear(),targetMonth+1,0).getDate();return new Date(base.getFullYear(),targetMonth,Math.min(base.getDate(),lastDay))}
 function renewalDate(original,months=1){const now=new Date(),today=new Date(now.getFullYear(),now.getMonth(),now.getDate()),parsed=parseExpiry(original),base=parsed&&parsed>today?parsed:today,next=addMonths(base,months);return `${pad2(next.getDate())}/${pad2(next.getMonth()+1)}/${next.getFullYear()}`}
-function normalizeStoredRow(row){if(!row||typeof row!=='object')return null;const password=String(row.password||'').trim();if(!password)return null;const base={password,expiryText:String(row.expiryText||row.originalVenc||''),raw:String(row.raw||''),renewedVenc:String(row.renewedVenc||''),codeCopies:Math.max(0,Math.trunc(Number(row.codeCopies)||0))};if(row.type==='phone'||row.phone){const phone=normalizePhone(row.phone||row.value||'');return phone?Object.assign(base,{type:'phone',phone}):null}if(row.email)return Object.assign(base,{type:'email',email:String(row.email).trim()});return null}
+function normalizeStoredRow(row){if(!row||typeof row!=='object')return null;const password=String(row.password||'').trim();if(!password)return null;const base={password,expiryText:String(row.expiryText||row.originalVenc||''),raw:String(row.raw||''),renewedVenc:String(row.renewedVenc||''),confirmed:!!row.confirmed,codeCopies:Math.max(0,Math.trunc(Number(row.codeCopies)||0))};if(row.type==='phone'||row.phone){const phone=normalizePhone(row.phone||row.value||'');return phone?Object.assign(base,{type:'phone',phone}):null}if(row.email)return Object.assign(base,{type:'email',email:String(row.email).trim()});return null}
 function parseAccounts(text){
   const raw=String(text||'').trim();if(!raw)return[];
   const passwordMatches=[...raw.matchAll(/\bsenha\b\s*:?\s*([^\r\n]+)/gi)];
@@ -1156,17 +1302,28 @@ function parseActivationCodes(text){
   return{codes,ignoredUsed,total:matches.length}
 }
 const savedV5=getStore('account_state_v5',null),oldV4=getStore('account_state_v4',null),oldV3=getStore('account_state_v3',null),oldV2=getStore('account_state_v2',{});let seed=savedV5;if(!seed&&oldV4){const rows=oldV4.rows||[],legacyPos=Math.max(0,(Number(oldV4.index)||0)*2+Math.min(Number(oldV4.step)||0,2));seed={rows,position:Math.min(legacyPos,rows.length*2),codes:oldV4.codes||[],consumedCodes:oldV4.consumedCodes||[]}}if(!seed&&oldV3){const rows=oldV3.rows||[];seed={rows,position:Math.min(Math.max(0,(Number(oldV3.index)||0)*2+Math.min(Number(oldV3.step)||0,2)),rows.length*2),codes:oldV3.codes||[],consumedCodes:[]}}if(!seed){const oldRow=normalizeStoredRow(oldV2.row);seed={rows:oldRow?[oldRow]:[],position:oldRow?Math.min(Math.max(0,Number(oldV2.step)||0),2):0,codes:[],consumedCodes:[]}}
-const st=Object.assign({rows:[],position:0,codes:[],consumedCodes:[],codeTargetRow:0},seed||{});st.rows=(Array.isArray(st.rows)?st.rows:[]).map(normalizeStoredRow).filter(Boolean);st.codes=(Array.isArray(st.codes)?st.codes:[]).map(String).filter(x=>/^\d{16}$/.test(x));st.consumedCodes=(Array.isArray(st.consumedCodes)?st.consumedCodes:[]).map(String).filter(x=>/^\d{16}$/.test(x)).slice(-500);st.position=Math.max(0,Math.min(Number(st.position)||0,st.rows.length*2+1));st.codeTargetRow=Math.max(0,Math.min(Math.trunc(Number(st.codeTargetRow)||0),Math.max(0,st.rows.length-1)));
+const st=Object.assign({rows:[],position:0,codes:[],consumedCodes:[],codeTargetRow:0,codeAssignmentMode:'auto'},seed||{});st.rows=(Array.isArray(st.rows)?st.rows:[]).map(normalizeStoredRow).filter(Boolean);st.codes=(Array.isArray(st.codes)?st.codes:[]).map(String).filter(x=>/^\d{16}$/.test(x));st.consumedCodes=(Array.isArray(st.consumedCodes)?st.consumedCodes:[]).map(String).filter(x=>/^\d{16}$/.test(x)).slice(-500);st.position=Math.max(0,Math.min(Number(st.position)||0,st.rows.length*2+1));st.codeTargetRow=Math.max(0,Math.min(Math.trunc(Number(st.codeTargetRow)||0),Math.max(0,st.rows.length-1)));st.codeAssignmentMode=st.codeAssignmentMode==='manual'?'manual':'auto';
 function accountValue(r){return r.type==='phone'?r.phone:r.email}
 function accountDisplay(r){return r.type==='phone'?formatPhone(r.phone):r.email}
 function accountLabel(r){return r.type==='phone'?'Número':'E-mail'}
-function monthsForRow(r){return Math.max(1,Math.trunc(Number(r.codeCopies)||0))}
-function predictedRenewal(r){return st.position>=st.rows.length*2+1&&r.renewedVenc?r.renewedVenc:renewalDate(r.expiryText,monthsForRow(r))}
+function monthsForRow(r){return Math.max(0,Math.trunc(Number(r.codeCopies)||0))}
+function nextAutoCodeRow(){if(!st.rows.length)return -1;const minCopies=Math.min(...st.rows.map(row=>row.codeCopies));return st.rows.findIndex(row=>row.codeCopies===minCopies)}
+function selectedCodeRow(){return st.rows.length>1&&st.codeAssignmentMode==='auto'?nextAutoCodeRow():st.codeTargetRow}
+function predictedRenewal(r){if(monthsForRow(r)===0)return 'Aguardando código';return st.position>=st.rows.length*2+1&&r.renewedVenc?r.renewedVenc:renewalDate(r.expiryText,monthsForRow(r))}
 function accountBlock(r,index,total){const icon=r.type==='phone'?'📱':'📧',line=r.type==='phone'?`Conta: ${formatPhone(r.phone)}`:`E-mail: ${r.email}`,title=total>1?`${icon} Conta UniTv ${index+1}`:`${icon} Conta UniTv`,venc=predictedRenewal(r);return[title,'',line,`Senha: ${r.password}`,'',`Vencimento: ${venc}`].join('\n')}
 function combinedMessage(){const parts=['UNITV',''];st.rows.forEach((r,i)=>{parts.push(accountBlock(r,i,st.rows.length));if(i<st.rows.length-1)parts.push('','-----------------------','')});parts.push('','','💙 Obrigado pela renovação! Seu acesso foi renovado com sucesso. Agradeço pela confiança e preferência.','','🎁 Ganhe 7 dias grátis ao indicar um amigo!');return parts.join('\n')}
 function allSteps(){const steps=[];st.rows.forEach((r,i)=>{steps.push({kind:'account',row:i,label:accountLabel(r),text:accountValue(r)});steps.push({kind:'password',row:i,label:'Senha',text:r.password})});if(st.rows.length)steps.push({kind:'message',row:-1,label:st.rows.length>1?'Contas renovadas':'Conta renovada',text:combinedMessage()});return steps}
 function editorText(){const lines=[];if(st.rows.length){lines.push(`CONTAS (${st.rows.length})`);st.rows.forEach((r,i)=>{const loginStep=i*2,done=st.position>loginStep+1,status=done?'✓':st.position===loginStep||st.position===loginStep+1?'→':'•',original=r.expiryText||'não informado',novo=predictedRenewal(r),copied=r.codeCopies||0;lines.push(`${status} ${i+1}. ${accountDisplay(r)} · ${original} → ${novo} · ${copied} código(s) copiado(s)`)})}if(st.codes.length){if(lines.length)lines.push('');lines.push(`CÓDIGOS DISPONÍVEIS (${st.codes.length})`);st.codes.forEach((code,i)=>lines.push(`${i+1}. ${code}`))}return lines.join('\n')}
-function save(){setStore('account_state_v5',{rows:st.rows,position:st.position,codes:st.codes,consumedCodes:st.consumedCodes,codeTargetRow:st.codeTargetRow})}
+function allRenewed(){return st.rows.length>0&&st.rows.every(r=>r.confirmed&&r.codeCopies>0)}
+function renderRenewalPreview(){
+  const box=q('#renewalPreview');if(!box)return;
+  if(!st.rows.length){box.replaceChildren(document.createTextNode('Cole as contas e os códigos para ver a conferência por conta.'));return;}
+  const status=document.createElement('div');status.className='minor-caption-v283';status.textContent=`Conferência: ${st.rows.filter(r=>r.confirmed&&r.codeCopies>0).length}/${st.rows.length} contas confirmadas. Só confirme depois de aplicar os códigos no serviço.`;
+  const nodes=st.rows.map((r,i)=>{const row=document.createElement('div');row.className='renewal-row-v283';const heading=document.createElement('strong');heading.textContent=`${i+1}. ${accountDisplay(r)}`;const details=document.createElement('span');details.textContent=`${r.codeCopies} código(s) · ${predictedRenewal(r)}`;const button=document.createElement('button');button.type='button';button.dataset.confirmRenew=String(i);button.disabled=!r.codeCopies;button.className=r.confirmed?'':'pending';button.textContent=r.confirmed?'✓ Aplicação confirmada · desfazer':'Confirmar código(s) aplicados';row.append(heading,details,button);return row;});
+  box.replaceChildren(status,...nodes);
+}
+q('#renewalPreview').addEventListener('click',event=>{const button=event.target.closest('[data-confirm-renew]');if(!button)return;const row=st.rows[Number(button.dataset.confirmRenew)];if(!row||!row.codeCopies)return;row.confirmed=!row.confirmed;row.renewedVenc='';update();});
+function save(){setStore('account_state_v5',{rows:st.rows,position:st.position,codes:st.codes,consumedCodes:st.consumedCodes,codeTargetRow:st.codeTargetRow,codeAssignmentMode:st.codeAssignmentMode,lastOperationId:st.lastOperationId})}
 function codeCopyIsUnlocked(){
   if(!st.rows.length)return false;
   const next=allSteps()[st.position]||null;
@@ -1185,27 +1342,31 @@ function startCodeCooldown(){codeCooldownUntil=Date.now()+CODE_COPY_DELAY_MS;cle
 function update(){
   const steps=allSteps(),next=steps[st.position]||null,accountSteps=Math.min(st.position,st.rows.length*2),completed=Math.min(st.rows.length,Math.floor(accountSteps/2));
   st.codeTargetRow=Math.max(0,Math.min(st.codeTargetRow,Math.max(0,st.rows.length-1)));
-  const current=st.rows[st.codeTargetRow],copied=current?current.codeCopies:0,totalCopied=st.rows.reduce((sum,row)=>sum+row.codeCopies,0);
+  const current=st.rows[selectedCodeRow()],copied=current?current.codeCopies:0,totalCopied=st.rows.reduce((sum,row)=>sum+row.codeCopies,0);
   codeCount.textContent=String(copied);
-  monthsCount.textContent=`${monthsForRow(current||{})} ${monthsForRow(current||{})===1?'mês':'meses'}${copied?'':' (padrão)'}`;
+  monthsCount.textContent=copied?`${monthsForRow(current)} ${monthsForRow(current)===1?'mês':'meses'}`:'Aguardando código';
   targetWrap.hidden=st.rows.length<=1;
   const targetKey=st.rows.map(accountDisplay).join('\u0000');
-  if(targetSelect.dataset.accountKey!==targetKey){targetSelect.replaceChildren(...st.rows.map((row,i)=>{const option=document.createElement('option');option.value=String(i);option.textContent=`${i+1}. ${accountDisplay(row)} · ${row.codeCopies} código(s)`;return option}));targetSelect.dataset.accountKey=targetKey}
-  else [...targetSelect.options].forEach((option,i)=>{option.textContent=`${i+1}. ${accountDisplay(st.rows[i])} · ${st.rows[i].codeCopies} código(s)`});
-  targetSelect.value=String(st.codeTargetRow);
+  if(targetSelect.dataset.accountKey!==targetKey){targetSelect.replaceChildren(...[{value:'auto',label:'Automático · 1 código por conta, em ordem'},...st.rows.map((row,i)=>({value:String(i),label:`Conta ${i+1}: ${accountDisplay(row)} · ${row.codeCopies} código(s)`}))].map(item=>{const option=document.createElement('option');option.value=item.value;option.textContent=item.label;return option}));targetSelect.dataset.accountKey=targetKey}
+  else [...targetSelect.options].slice(1).forEach((option,i)=>{option.textContent=`Conta ${i+1}: ${accountDisplay(st.rows[i])} · ${st.rows[i].codeCopies} código(s)`});
+  targetSelect.value=st.codeAssignmentMode==='auto'?'auto':String(st.codeTargetRow);
+  const nextHint=q('#accountCodeNextInfo');if(nextHint)nextHint.textContent=`Próximo código: ${current?accountDisplay(current):'—'} (atribuição ${st.codeAssignmentMode==='auto'?'automática':'manual'}).`;
+  const renewalCashBtn=q('#renewalCashBtn');renewalCashBtn.hidden=!(st.rows.length&&st.position>=st.rows.length*2+1&&st.rows.every(r=>r.confirmed&&r.codeCopies>0));
+  renderRenewalPreview();
   counter.textContent=st.rows.length?`${completed}/${st.rows.length}`:'0';det.textContent=next?next.label:(st.rows.length?'Concluído':'Colar conta');const activeRow=next&&next.row>=0?st.rows[next.row]:null;
   codePill.textContent=activeRow?`${accountDisplay(activeRow)} (${next.row+1}/${st.rows.length})`:(st.rows.length?`${st.rows.length} conta(s)`:'—');
-  accountBtn.textContent=next?`Copiar ${next.label.toLowerCase()}`:(st.rows.length?'Colar novas contas':'Colar conta');renderCodeButton();toggle.textContent=editor.classList.contains('show')?'Ocultar dados':'Ver dados';
+  accountBtn.textContent=next?`Copiar ${next.label.toLowerCase()}`:(st.rows.length?'Colar novas contas':'Colar conta');accountBtn.disabled=!!next&&next.kind==='message'&&!allRenewed();renderCodeButton();toggle.textContent=editor.classList.contains('show')?'Ocultar dados':'Ver dados';
   const overall=steps.length?Math.min(100,(st.position/steps.length)*100):0;fill.style.width=`${overall}%`;bar.classList.toggle('complete',steps.length>0&&st.position>=steps.length);
-  if(!st.rows.length)statusLeft.textContent='Cole uma ou várias contas do cliente.';else if(!next)statusLeft.textContent=`${st.rows.length} conta(s) concluída(s).`;else if(next.kind==='message')statusLeft.textContent=`Próximo: copiar ${next.label.toLowerCase()} em uma única mensagem.`;else statusLeft.textContent=`Conta ${next.row+1}: copiar ${next.label.toLowerCase()}.`;
+  if(!st.rows.length)statusLeft.textContent='Cole uma ou várias contas do cliente.';else if(!next)statusLeft.textContent=`${st.rows.length} conta(s) concluída(s).`;else if(next.kind==='message')statusLeft.textContent=allRenewed()?`Pronto para copiar ${next.label.toLowerCase()}.`:'Atribua códigos e confirme a aplicação em cada conta para liberar a mensagem final.';else statusLeft.textContent=`Conta ${next.row+1}: copiar ${next.label.toLowerCase()}.`;
   statusProg.textContent=`${completed}/${st.rows.length||0} contas · ${st.codes.length} disponíveis · ${totalCopied} copiados`;
   reset.disabled=!st.rows.length;editor.textContent=editorText();badge('account',{count:st.rows.length,limit:0,isDone:!!next});save()
 }
-async function pasteAccounts(){const text=await getClipOrPrompt('Cole uma ou várias contas completas.');const rows=parseAccounts(text);if(!rows.length){toastOK('Não encontrei conta com e-mail/telefone e senha.');return}st.rows=rows;st.position=0;st.codeTargetRow=0;toastOK(`${rows.length} conta(s) adicionada(s).`);update()}
-accountBtn.addEventListener('click',async()=>{const steps=allSteps(),item=steps[st.position];if(!item){await pasteAccounts();return}const isMessage=item.kind==='message',payload=isMessage?combinedMessage():item.text;const ok=await copyClip(payload);if(!ok){toastOK('Falha ao copiar.');return}if(isMessage)st.rows.forEach(r=>{r.renewedVenc=renewalDate(r.expiryText,monthsForRow(r))});toastOK(`${item.label} copiado!`);buzz();st.position++;update()});
-codeBtn.addEventListener('click',async()=>{if(Date.now()<codeCooldownUntil)return;if(st.codes.length){if(!codeCopyIsUnlocked()){toastOK(st.rows.length?'Código ainda bloqueado.':'Cole a conta antes de copiar códigos.');renderCodeButton();return}codeBtn.disabled=true;const code=st.codes[0],ok=await copyClip(code);if(!ok){toastOK('Falha ao copiar.');renderCodeButton();return}st.codes.shift();st.consumedCodes.push(code);st.consumedCodes=st.consumedCodes.slice(-500);const row=st.rows[st.codeTargetRow];if(row)row.codeCopies++;toastOK(`Código copiado! ${row?row.codeCopies:0} mês(es) nesta conta. Restam ${st.codes.length}.`);buzz();startCodeCooldown();update();return}const text=await getClipOrPrompt('Cole a lista que contém os códigos de 16 dígitos.');const result=parseActivationCodes(text),known=new Set(st.codes),fresh=result.codes.filter(code=>!known.has(code));st.codes.push(...fresh);if(fresh.length)toastOK(`${fresh.length} código(s) adicionado(s).${result.ignoredUsed?` ${result.ignoredUsed} usado(s) ignorado(s).`:''}`);else if(result.ignoredUsed)toastOK('Os códigos encontrados estavam marcados como usados.');else toastOK('Nenhum código novo de 16 dígitos encontrado.');update()});
-reset.addEventListener('click',()=>{if(!confirmReset('Tem certeza que deseja limpar somente as contas? Os códigos serão mantidos.'))return;st.rows=[];st.position=0;st.codeTargetRow=0;editor.classList.remove('show');toastOK('Contas limpas. Os códigos foram mantidos.');update()});
-targetSelect.addEventListener('change',()=>{st.codeTargetRow=Math.max(0,Math.min(Number(targetSelect.value)||0,st.rows.length-1));update()});
+async function pasteAccounts(){const text=await getClipOrPrompt('Cole uma ou várias contas completas.');const rows=parseAccounts(text);if(!rows.length){toastOK('Não encontrei conta com e-mail/telefone e senha.');return}st.rows=rows;st.position=0;st.codeTargetRow=0;st.codeAssignmentMode='auto';st.lastOperationId='';toastOK(`${rows.length} conta(s) adicionada(s).`);update()}
+accountBtn.addEventListener('click',async()=>{const steps=allSteps(),item=steps[st.position];if(!item){await pasteAccounts();return}const isMessage=item.kind==='message';if(isMessage&&!allRenewed()){toastOK('Antes de copiar a renovação, atribua e confirme pelo menos um código aplicado para cada conta.');update();return;}const payload=isMessage?combinedMessage():item.text;const ok=await copyClip(payload);if(!ok){toastOK('Falha ao copiar.');return}if(isMessage){st.rows.forEach(r=>{r.renewedVenc=renewalDate(r.expiryText,monthsForRow(r))});st.lastOperationId=`renew-${Date.now()}-${st.rows.map(accountValue).join('').slice(0,30)}`;}toastOK(`${item.label} copiado!`);buzz();st.position++;update()});
+codeBtn.addEventListener('click',async()=>{if(Date.now()<codeCooldownUntil)return;if(st.codes.length){if(!codeCopyIsUnlocked()){toastOK(st.rows.length?'Código ainda bloqueado.':'Cole a conta antes de copiar códigos.');renderCodeButton();return}codeBtn.disabled=true;const code=st.codes[0],ok=await copyClip(code);if(!ok){toastOK('Falha ao copiar.');renderCodeButton();return}st.codes.shift();st.consumedCodes.push(code);st.consumedCodes=st.consumedCodes.slice(-5000);const row=st.rows[selectedCodeRow()];if(row){row.codeCopies++;row.confirmed=false;row.renewedVenc='';}if(st.position>st.rows.length*2)st.position=st.rows.length*2;toastOK(`Código copiado para ${row?accountDisplay(row):'conta'}! ${row?row.codeCopies:0} mês(es) nesta conta. Restam ${st.codes.length}.`);buzz();startCodeCooldown();update();return}const text=await getClipOrPrompt('Cole a lista que contém os códigos de 16 dígitos.');const result=parseActivationCodes(text),known=new Set([...st.codes,...st.consumedCodes]),fresh=result.codes.filter(code=>!known.has(code));st.codes.push(...fresh);const repeated=result.codes.length-fresh.length;if(fresh.length)toastOK(`${fresh.length} código(s) adicionado(s).${repeated?` ${repeated} repetido(s) ignorado(s).`:''}${result.ignoredUsed?` ${result.ignoredUsed} marcado(s) como usado(s) ignorado(s).`:''}`);else if(result.ignoredUsed||repeated)toastOK('Nenhum código novo: repetidos ou já utilizados foram ignorados.');else toastOK('Nenhum código novo de 16 dígitos encontrado.');update()});
+reset.addEventListener('click',()=>{if(!confirmReset('Tem certeza que deseja limpar somente as contas? Os códigos serão mantidos.'))return;st.rows=[];st.position=0;st.codeTargetRow=0;st.codeAssignmentMode='auto';editor.classList.remove('show');toastOK('Contas limpas. Os códigos foram mantidos.');update()});
+targetSelect.addEventListener('change',()=>{st.codeAssignmentMode=targetSelect.value==='auto'?'auto':'manual';if(st.codeAssignmentMode==='manual')st.codeTargetRow=Math.max(0,Math.min(Number(targetSelect.value)||0,st.rows.length-1));update()});
+q('#renewalCashBtn').addEventListener('click',()=>{if(!allRenewed()||st.position<st.rows.length*2+1){toastOK('Conclua e confira todas as renovações antes de abrir o Caixa.');return;}const credits=st.rows.reduce((sum,row)=>sum+monthsForRow(row),0);document.dispatchEvent(new CustomEvent('jamesuni:prepare-sale',{detail:{credits,accounts:st.rows.length,operationId:st.lastOperationId||''}}));});
 toggle.addEventListener('click',()=>{editor.classList.toggle('show');update()});
 update()}
 
@@ -1429,6 +1590,8 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
       amount:roundMoney(Math.max(0,finiteOr(transaction?.amount,0))),
       delta:roundMoney(finiteOr(transaction?.delta,0)),
       credits:Math.max(0,Math.floor(finiteOr(transaction?.credits,0))),
+      accounts:Math.max(1,Math.floor(finiteOr(transaction?.accounts,1))),
+      operationId:String(transaction?.operationId||'').slice(0,120),
       recoveredCost:Math.max(0,finiteOr(transaction?.recoveredCost,0)),
       realProfit:finiteOr(transaction?.realProfit,0),
       date:String(transaction?.date||todayISO()).slice(0,10),
@@ -1444,7 +1607,7 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
   function makeCashMonth(seed={}, inheritedSettings=defaultCashSettings){
     const oldSettings=seed.settings||{};
     const settings=normalizeCashSettings({...inheritedSettings,...oldSettings,...(oldSettings.profitTarget===undefined&&oldSettings.target!==undefined?{profitTarget:oldSettings.target}:{})});
-    const transactions=trimHistory((Array.isArray(seed.transactions)?seed.transactions:[]).map(normalizeCashTransaction));
+    const transactions=(Array.isArray(seed.transactions)?seed.transactions:[]).map(normalizeCashTransaction);
     const baseStock=Math.max(0,Math.floor(finiteOr(seed.baseStock ?? seed.stock,0)));
     const baseUnitCost=Math.max(0.01,finiteOr(seed.baseUnitCost ?? seed.unitCost,settings.unitCost));
     let baseLots=Array.isArray(seed.baseLots)?seed.baseLots.map((lot,index)=>({
@@ -1521,7 +1684,7 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     }
   }catch(error){}
 
-  // v2.81: os R$ 400 eram uma referência de retirada pessoal, não um
+  // v2.82: os R$ 400 eram uma referência de retirada pessoal, não um
   // orçamento operacional obrigatório. Mudar apenas o padrão aparente no mês
   // atual sem gastos operacionais, preservando orçamentos com atividade e históricos.
   const CASH_EXPENSE_V281_KEY='jamesuni.cash.expense-limit.v281';
@@ -1538,15 +1701,22 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
   }catch(error){}
 
   const cashMonthInput=$('#cashMonth');
+  const cashEntryDateInput=$('#cashEntryDate');
   cashMonthInput.value=localStorage.getItem(CASH_MONTH_KEY)||localStorage.getItem('jamesuni.cash.month.v29')||monthISO();
   const selectedCashMonth=()=>cashMonthInput.value||monthISO();
-  function selectedCashDate(){
+  function syncCashEntryDate(force=false){
     const key=selectedCashMonth();
     const [year,month]=key.split('-').map(Number);
     const today=new Date();
-    const maxDay=new Date(year,month,0).getDate();
-    const day=String(Math.min(today.getDate(),maxDay)).padStart(2,'0');
-    return `${key}-${day}`;
+    const day=String(Math.min(today.getDate(),new Date(year,month,0).getDate())).padStart(2,'0');
+    cashEntryDateInput.min=`${key}-01`;
+    cashEntryDateInput.max=`${key}-${String(new Date(year,month,0).getDate()).padStart(2,'0')}`;
+    if(force||!cashEntryDateInput.value.startsWith(`${key}-`)) cashEntryDateInput.value=`${key}-${day}`;
+  }
+  syncCashEntryDate(true);
+  function selectedCashDate(){
+    const date=cashEntryDateInput.value;
+    return /^\d{4}-\d{2}-\d{2}$/.test(date)&&date.startsWith(`${selectedCashMonth()}-`)?date:todayISO();
   }
   function currentCashMonth(){
     const key=selectedCashMonth();
@@ -1579,9 +1749,9 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     return true;
   }
   function chronologicalTransactions(month){
-    return month.transactions.slice().sort((a,b)=>String(a.createdAt||a.id).localeCompare(String(b.createdAt||b.id)));
+    return month.transactions.slice().sort((a,b)=>String(a.date||'').localeCompare(String(b.date||''))||String(a.createdAt||a.id).localeCompare(String(b.createdAt||b.id))||String(a.id).localeCompare(String(b.id)));
   }
-  function inventoryLots(month){
+  function inventoryLots(month,throughDate=null){
     const settings=cashSettings(month);
     const lots=month.baseLots.map((lot,index)=>({
       id:lot.id||`base-${index}`,
@@ -1592,7 +1762,7 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
       unitCost:finiteOr(lot.unitCost,month.baseUnitCost||settings.unitCost),
       costOffset:Math.max(0,finiteOr(lot.costOffset,0))
     })).filter(lot=>lot.remaining>0);
-    chronologicalTransactions(month).forEach(transaction=>{
+    chronologicalTransactions(month).filter(transaction=>!throughDate||transaction.date<=throughDate).forEach(transaction=>{
       if(transaction.type==='stock'){
         const quantity=Math.max(0,Math.floor(finiteOr(transaction.credits,0)));
         const unitCost=finiteOr(transaction.unitCost,quantity?finiteOr(transaction.amount,0)/quantity:settings.unitCost);
@@ -1610,11 +1780,38 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     return lots.filter(lot=>lot.remaining>0.000001);
   }
   function currentStock(month){ return Math.max(0,Math.floor(inventoryLots(month).reduce((sum,lot)=>sum+finiteOr(lot.remaining,0),0))); }
+  // Valor do estoque ao custo (não é receita futura). O costOffset garante
+  // continuidade dos centavos quando um lote passa de um mês ao seguinte.
+  function inventoryCostValue(month){
+    const remainingLots=inventoryLots(month);
+    const cents=remainingLots.reduce((sum,lot)=>{
+      const cost=finiteOr(lot.unitCost,0);
+      const offset=Math.max(0,finiteOr(lot.costOffset,0));
+      const original=Math.max(0,finiteOr(lot.qty,0));
+      const remaining=Math.min(original,Math.max(0,finiteOr(lot.remaining,0)));
+      const start=Math.round((offset+original-remaining)*cost*100);
+      const end=Math.round((offset+original)*cost*100);
+      return sum+Math.max(0,end-start);
+    },0);
+    return roundMoney(cents/100);
+  }
   function totalCreditsAvailable(month){
     const bought=month.transactions.filter(item=>item.type==='stock').reduce((sum,item)=>sum+finiteOr(item.credits,0),0);
     const sold=month.transactions.filter(item=>item.type==='sale').reduce((sum,item)=>sum+finiteOr(item.credits,0),0);
     return Math.floor(finiteOr(month.baseStock,0)+bought-sold);
   }
+  function stockAvailableAt(month,date){
+    const before=month.transactions.filter(tx=>String(tx.date||'')<=date);
+    return Math.floor(finiteOr(month.baseStock,0)+before.reduce((sum,tx)=>sum+(tx.type==='stock'?finiteOr(tx.credits,0):tx.type==='sale'?-finiteOr(tx.credits,0):0),0));
+  }
+  function stockTimelineWith(month,candidate,skipId=''){
+    const future=[...month.transactions.filter(tx=>tx.id!==skipId),candidate].filter(Boolean);
+    future.sort((a,b)=>String(a.date||'').localeCompare(String(b.date||''))||String(a.createdAt||a.id).localeCompare(String(b.createdAt||b.id)));
+    let stock=finiteOr(month.baseStock,0);
+    for(const tx of future){if(tx.type==='stock')stock+=finiteOr(tx.credits,0);if(tx.type==='sale')stock-=finiteOr(tx.credits,0);if(stock<0)return false;}
+    return true;
+  }
+
   function validStockTimeline(month,skipId=''){
     let available=month.baseLots.reduce((sum,lot)=>sum+finiteOr(lot.qty,0),0);
     for(const entry of chronologicalTransactions(month)){
@@ -1626,11 +1823,11 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     return true;
   }
   function nextUnitCost(month){ return finiteOr(inventoryLots(month)[0]?.unitCost,month.baseUnitCost||cashSettings(month).unitCost); }
-  function consumeCostPreview(month, credits){
+  function consumeCostPreview(month, credits,throughDate=null){
     let needed=Math.max(0,Math.floor(finiteOr(credits,0)));
     const usedLots=[];
     let totalCost=0;
-    for(const lot of inventoryLots(month)){
+    for(const lot of inventoryLots(month,throughDate)){
       if(needed<=0) break;
       const take=Math.min(finiteOr(lot.remaining,0),needed);
       if(take>0){
@@ -1685,6 +1882,7 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     return {
       sales:sumType('sale'),
       saleCount:list.filter(item=>item.type==='sale').length,
+      accountsCount:list.filter(item=>item.type==='sale').reduce((sum,item)=>sum+Math.max(1,Math.trunc(finiteOr(item.accounts,1))),0),
       creditsSold:creditsType('sale'),
       stockBuys:sumType('stock'),
       stockCredits:creditsType('stock'),
@@ -1708,18 +1906,19 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
   function addCashTransaction(transaction){
     const month=currentCashMonth();
     month.transactions.unshift(normalizeCashTransaction({id:uid(),date:selectedCashDate(),month:selectedCashMonth(),createdAt:new Date().toISOString(),...transaction}));
-    month.transactions=trimHistory(month.transactions);
+    if(transaction.type==='sale'||transaction.type==='stock')recalculateCashSaleCosts(month);
+    // Todas as transações são preservadas para manter cálculos e estornos corretos.
     month.closed=false;
     month.closedAt='';
     saveCash();
     renderCash();
   }
+  let cashHistoryVisible=60;
   function makeCashHistoryItem(transaction){
     const labels={sale:'Venda',stock:'Compra de estoque',expense:'Gasto',withdrawal:'Retirada',adjustment:'Ajuste de caixa'};
     const row=element('div','history-item');
     row.dataset.cashTxId=transaction.id;
-    row.title='Toque para estornar este lançamento';
-    row.style.cursor='pointer';
+    row.title='Movimentação do caixa';
     const top=element('div','history-top');
     const signed=cashDelta(transaction);
     top.append(element('span','',labels[transaction.type]||'Movimento'),element('strong','',`${signed>=0?'+':'−'}${fmt(Math.abs(signed))}`));
@@ -1734,6 +1933,10 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     }
     const metaParts=[transaction.date,transaction.credits?`${transaction.credits} crédito(s)`:null,transaction.plan,transaction.category,transaction.reason,transaction.supplier,transaction.note].filter(Boolean);
     row.append(element('div','history-meta',metaParts.join(' · ')));
+    const tools=element('div','history-tools-v283');
+    const edit=element('button','btn dark','Editar');edit.type='button';edit.dataset.cashEdit=transaction.id;
+    const undo=element('button','btn reset','Estornar');undo.type='button';undo.dataset.cashUndo=transaction.id;
+    tools.append(edit,undo);row.append(tools);
     return row;
   }
   function renderCash(){
@@ -1747,16 +1950,28 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     // resultado após compras (fluxo), adotado para a meta pessoal da UniTV.
     const gross=roundMoney(sums.sales-sums.recovery);
     const net=roundMoney(gross-sums.expenses);
+    const stockValue=inventoryCostValue(month);
+    const totalOperational=roundMoney(month.cash+stockValue);
     const cashNet=roundMoney(sums.sales-sums.stockBuys-sums.expenses);
     const missing=Math.max(0,roundMoney(settings.profitTarget-cashNet));
     const grossMissing=Math.max(0,roundMoney(settings.grossTarget-sums.sales));
-    const renewalMissing=Math.max(0,settings.renewalTarget-sums.saleCount);
+    const renewalMissing=Math.max(0,settings.renewalTarget-sums.accountsCount);
     const date=selectedCashDate();
     const closing=getDayClosing(month,date);
     const stale=!!closing&&(closing.fingerprint!==dailyFingerprint(month,date)||
       Math.abs(finiteOr(closing.opening,0)-dayBalanceBefore(month,date))>0.009);
     setText('[data-cash="cash"]',fmt(month.cash));
     setText('[data-cash="stock"]',`${currentStock(month)} créditos`);
+    setText('[data-cash="stockValue"]',fmt(stockValue));
+    setText('[data-cash="stockValueDetail"]',fmt(stockValue));
+    setText('[data-cash="totalOperational"]',fmt(totalOperational));
+    setText('[data-cash="netProfitSummary"]',fmt(net));
+    setText('#cashDashboardPeriod',selectedCashMonth()===monthISO()?'Mês atual':`Mês ${selectedCashMonth().slice(5,7)}/${selectedCashMonth().slice(0,4)}`);
+    const profitMetric=$('#cashProfitMetric');
+    if(profitMetric){
+      profitMetric.classList.toggle('good',net>0);
+      profitMetric.classList.toggle('bad',net<0);
+    }
     setText('[data-cash="target"]',fmt(settings.profitTarget));
     setText('[data-cash="targetCard"]',fmt(settings.profitTarget));
     setText('[data-cash="grossTarget"]',fmt(settings.grossTarget));
@@ -1764,13 +1979,14 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     setText('[data-cash="grossMissing"]',fmt(grossMissing));
     setText('[data-cash="cashNetNow"]',fmt(cashNet));
     setText('[data-cash="targetMissingCard"]',fmt(missing));
-    setText('[data-cash="renewalCount"]',sums.saleCount);
+    setText('[data-cash="renewalCount"]',sums.accountsCount);
     setText('[data-cash="renewalTarget"]',settings.renewalTarget);
-    setText('[data-cash="renewalMissing"]',renewalMissing?`Faltam ${renewalMissing}`:'Meta de vendas atingida!');
+    setText('#renewalTargetHint',`Meta: ${settings.renewalTarget} contas registradas`);
+    setText('[data-cash="renewalMissing"]',renewalMissing?`Faltam ${renewalMissing} contas`:'Meta de contas atingida!');
     for(const [key,numerator,goal] of [
       ['gross',sums.sales,settings.grossTarget],
       ['net',cashNet,settings.profitTarget],
-      ['renewal',sums.saleCount,settings.renewalTarget]
+      ['renewal',sums.accountsCount,settings.renewalTarget]
     ]){
       const progress=$(`[data-goal-fill="${key}"]`);
       if(progress)progress.style.width=`${goal<=0?100:Math.min(100,Math.max(0,100*numerator/goal))}%`;
@@ -1787,8 +2003,8 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     setText('[data-cash="cashOpening"]',fmt(month.openingCash));
     setText('[data-cash="grossProfit"]',fmt(gross));
     setText('[data-cash="netResult"]',fmt(net));
-    setText('#cashSalesDayLabel',selectedCashMonth()===monthISO()?'Vendas hoje':`Vendas em ${date.slice(8,10)}/${date.slice(5,7)}`);
-    setText('#cashCreditsDayLabel',selectedCashMonth()===monthISO()?'Créditos vendidos hoje':`Créditos vendidos em ${date.slice(8,10)}/${date.slice(5,7)}`);
+    setText('#cashSalesDayLabel',date===todayISO()?'Vendas hoje':`Vendas em ${date.slice(8,10)}/${date.slice(5,7)}`);
+    setText('#cashCreditsDayLabel',date===todayISO()?'Créditos vendidos hoje':`Créditos vendidos em ${date.slice(8,10)}/${date.slice(5,7)}`);
     const targetMissing=$('[data-cash="targetMissing"]');
     if(targetMissing)targetMissing.className=missing<=0?'positive':'warn';
     const expenseAvailable=$('[data-cash="expenseAvailable"]');
@@ -1806,6 +2022,15 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
       if(month.openingFrom)message+=` Saldo e estoque herdados de ${month.openingFrom}.`;
       alertBox.textContent=message;
     }
+    const currentDate=selectedCashDate();
+    const monthStart=`${selectedCashMonth()}-01`;
+    const firstDate=new Date(`${monthStart}T12:00:00`),lastDate=new Date(`${currentDate}T12:00:00`);
+    const elapsed=Math.max(1,Math.round((lastDate-firstDate)/86400000)+1);
+    const soldToDate=month.transactions.filter(tx=>tx.type==='sale'&&tx.date<=currentDate).reduce((sum,tx)=>sum+finiteOr(tx.credits,0),0);
+    const avg=soldToDate/elapsed,stockNow=currentStock(month);
+    const days=avg>0?Math.floor(stockNow/avg):null;
+    const forecast=$('#cashStockForecast');
+    if(forecast){forecast.className=`smart-stock-v283${(days!==null&&days<=5||stockNow<=3&&soldToDate>0)?' warning':''}`;forecast.textContent=avg?`Estoque: ${stockNow} crédito(s) · média ${avg.toFixed(1).replace('.',',')} crédito(s)/dia · cerca de ${days} dia(s) de cobertura.`:`Estoque: ${stockNow} crédito(s). A previsão de reposição aparece conforme registra vendas.`;}
     $('#setCash').value=finiteOr(month.cash,0).toFixed(2);
     $('#setStock').value=Math.floor(finiteOr(month.baseStock,0));
     $('#setTarget').value=finiteOr(settings.profitTarget,0).toFixed(2);
@@ -1817,44 +2042,68 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     renderReport($('#cashMonthReport'),[
       ['Mês selecionado',selectedCashMonth()],
       ['Saldo inicial do mês',fmt(month.openingCash)],
-      ['Caixa atual',fmt(month.cash)],
+      ['Dinheiro no caixa (não equivale ao lucro)',fmt(month.cash)],
+      ['Capital em créditos restantes (a custo)',fmt(stockValue)],
+      ['Dinheiro + estoque ao custo',fmt(totalOperational)],
+      ['Custo médio do crédito ainda em estoque',month.stock?fmt(stockValue/month.stock):'Sem créditos'],
       ['Meta bruta de vendas',fmt(settings.grossTarget)],
-      ['Meta líquida após compras',fmt(settings.profitTarget)],
-      ['Meta de renovações (vendas registradas)',settings.renewalTarget],
+      ['Meta operacional após compras',fmt(settings.profitTarget)],
+      ['Meta de contas registradas',settings.renewalTarget],
       ['Estoque inicial',`${month.baseStock} créditos`],
       ['Estoque atual',`${month.stock} créditos`],
       ['Custo do próximo crédito',fmt(nextUnitCost(month))],
       ['Créditos vendidos no mês',sums.creditsSold],
       ['Faturamento de vendas',fmt(sums.sales)],
-      ['Vendas registradas (não clientes únicos)',sums.saleCount],
+      ['Vendas registradas (lançamentos)',sums.saleCount],
+      ['Contas atendidas registradas',sums.accountsCount],
       ['Falta para meta bruta',fmt(grossMissing)],
-      ['Faltam renovações de referência',renewalMissing],
+      ['Contas restantes para a meta',renewalMissing],
       ['Compras de estoque (fluxo de caixa)',fmt(sums.stockBuys)],
       ['Custo dos créditos vendidos',fmt(sums.recovery)],
       ['Lucro bruto das vendas',fmt(gross)],
       ['Gastos operacionais',fmt(sums.expenses)],
-      ['Lucro estimado dos créditos vendidos (após gastos)',fmt(net)],
-      ['Resultado após compras e gastos (meta líquida)',fmt(cashNet)],
+      ['Lucro estimado do mês (após custo vendido e gastos)',fmt(net)],
+      ['Resultado operacional após compras e gastos',fmt(cashNet)],
       ['Retiradas pessoais (não reduzem nenhuma meta)',fmt(sums.withdrawals)],
       ['Ajustes de saldo',fmt(sums.adjustments)],
-      ['Falta para meta líquida',fmt(missing)],
+      ['Falta para meta operacional',fmt(missing)],
       ['Meta bruta atingida?',sums.sales>=settings.grossTarget?'Sim':'Não'],
-      ['Meta líquida atingida?',cashNet>=settings.profitTarget?'Sim':'Não']
+      ['Meta operacional atingida?',cashNet>=settings.profitTarget?'Sim':'Não']
     ]);
+    const chart=$('#cashDailyBars');
+    if(chart){
+      const selected=new Date(`${selectedCashDate()}T12:00:00`);
+      const entries=Array.from({length:7},(_,i)=>{const d=new Date(selected);d.setDate(d.getDate()-(6-i));const key=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;const sum=key.startsWith(selectedCashMonth())?month.transactions.filter(t=>t.date===key&&t.type==='sale').reduce((a,t)=>a+finiteOr(t.amount,0),0):0;return{key,sum};});
+      const max=Math.max(1,...entries.map(x=>x.sum));
+      chart.replaceChildren(...entries.map(({key,sum})=>{const cell=element('div','daily-bar-cell-v283');const value=element('div','daily-bar-value-v283',sum?fmt(sum):'—');const track=element('div','daily-bar-track-v283');const fill=element('div','daily-bar-fill-v283');fill.style.height=`${sum>0?Math.max(7,sum/max*100):0}%`;track.append(fill);cell.append(value,track,element('div','daily-bar-label-v283',key.slice(8,10)+'/'+key.slice(5,7)));return cell;}));
+    }
     const history=$('#cashHistory');
     if(history){
-      const list=cashTransactions().slice(0,60);
+      const search=($('#cashHistorySearch')?.value||'').trim().toLocaleLowerCase('pt-BR');
+      const filter=$('#cashHistoryType')?.value||'all';
+      const filtered=cashTransactions().filter(item=>(filter==='all'||item.type===filter)&&[item.date,item.plan,item.category,item.note,item.reason,item.supplier,item.type].join(' ').toLocaleLowerCase('pt-BR').includes(search));
+      const list=filtered.slice(0,cashHistoryVisible);
+      setText('#cashHistoryCount',`${filtered.length} movimento(s) encontrado(s)`);
       history.replaceChildren(...(list.length?list.map(makeCashHistoryItem):[element('div','muted-line','Nenhum movimento neste mês.') ]));
+      const more=$('#cashHistoryMoreBtn');more.hidden=filtered.length<=cashHistoryVisible;
+      more.textContent=`Mostrar mais (${filtered.length-cashHistoryVisible} restantes)`;
     }
     saveCash();
   }
 
-  cashMonthInput.addEventListener('change',()=>{
+  ['#cashHistorySearch','#cashHistoryType'].forEach(sel=>$(sel).addEventListener('input',()=>{cashHistoryVisible=60;renderCash();}));
+  $('#cashHistoryMoreBtn').addEventListener('click',()=>{cashHistoryVisible+=60;renderCash();});
+  function shiftMonth(input,delta){const [year,month]=String(input.value||monthISO()).split('-').map(Number);const d=new Date(year,month-1+delta,1);input.value=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;input.dispatchEvent(new Event('change',{bubbles:true}));}
+  $('#cashPrevMonth').addEventListener('click',()=>shiftMonth(cashMonthInput,-1));
+  $('#cashNextMonth').addEventListener('click',()=>shiftMonth(cashMonthInput,1));
+  cashMonthInput.addEventListener('change',()=>{cashHistoryVisible=60;
+    syncCashEntryDate(true);
     try{ localStorage.setItem(CASH_MONTH_KEY,selectedCashMonth()); }catch(error){}
     $('#closeDayBox').style.display='none';
     renderCash();
     appToast('Mês do caixa alterado.');
   });
+  cashEntryDateInput.addEventListener('change',()=>{syncCashEntryDate();renderCash();});
   const cashSheetHost=$('#cashSheetHost');
   const cashSheetParking=element('div','cash-sheet-parking-v265');
   cashSheetParking.id='cashSheetParking';
@@ -1870,27 +2119,32 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
   }
   $$('[data-cash-open]').forEach(button=>button.addEventListener('click',()=>openCashSheetNearButton(button.dataset.cashOpen)));
   const closeCashSheets=()=>$$('[data-cash-sheet]').forEach(sheet=>{ sheet.classList.remove('show'); if(cashSheetParking) cashSheetParking.append(sheet); });
+  document.addEventListener('jamesuni:prepare-sale',event=>{const credits=Math.max(1,Math.trunc(Number(event.detail?.credits)||1));const accounts=Math.max(1,Math.trunc(Number(event.detail?.accounts)||1));const op=String(event.detail?.operationId||'');if(op&&Object.values(cashState.months).some(m=>m.transactions?.some(t=>t.operationId===op))){appToast('Esta operação da UniTV já está registrada no Caixa.');return;}showMain('caixa');openCashSheetNearButton('sale');$('#saleManualCredits').value=String(credits);$('#saleManualAccounts').value=String(accounts);$('#saleManualAccounts').dataset.operationId=op;$('#saleManualPlan').value=credits===accounts?'1 mês':(credits===accounts*2?'2 meses':'manual');$('#saleManualAmount').value='';appToast(`Prévia: ${accounts} conta(s), ${credits} crédito(s). Confira o plano e informe o valor recebido.`);});
 
-  function registerSale(amountInput, creditsInput, plan){
+  function registerSale(amountInput, creditsInput, plan,accountCountInput=1,operationId=''){
     const month=currentCashMonth();
     const amount=cashMoney(amountInput);
     const credits=cashWhole(creditsInput);
+    const accounts=cashWhole(accountCountInput);
+    if(operationId&&month.transactions.some(item=>item.operationId===operationId)){appToast('Esta operação da UniTV já foi registrada no Caixa.');return;}
+    if(!Number.isFinite(accounts)){appToast('Informe quantidade válida de contas atendidas.');return;}
+    if(accounts>credits&&!confirm('Há mais contas atendidas do que créditos usados. Confirmar este lançamento?'))return;
     if(!Number.isFinite(amount)||!Number.isFinite(credits)){appToast('Informe valor em centavos e uma quantidade inteira de créditos.');return;}
-    if(currentStock(month)<credits){appToast('Estoque insuficiente. Compre créditos antes de registrar a venda.');return;}
-    const costPreview=consumeCostPreview(month,credits);
+    if(!stockTimelineWith(month,{id:'new',type:'sale',date:selectedCashDate(),createdAt:new Date().toISOString(),credits})){appToast('Estoque insuficiente na data escolhida ou em vendas posteriores. Confira as datas das compras.');return;}
+    const costPreview=consumeCostPreview(month,credits,selectedCashDate());
     if(costPreview.shortage){appToast('Não foi possível reservar os créditos desta venda.');return;}
     if(!reopenCashMonth(month))return;
     const recoveredCost=roundMoney(costPreview.totalCost);
     const realProfit=roundMoney(amount-recoveredCost);
     month.cash=roundMoney(month.cash+amount);
-    addCashTransaction({type:'sale',amount,credits,plan,recoveredCost,realProfit,usedLots:costPreview.usedLots});
+    addCashTransaction({type:'sale',amount,credits,accounts,operationId,plan,recoveredCost,realProfit,usedLots:costPreview.usedLots});
     $('#saleManualAmount').value='';
-    $('#saleManualCredits').value='';
+    $('#saleManualCredits').value='';$('#saleManualAccounts').value='1';delete $('#saleManualAccounts').dataset.operationId;
     closeCashSheets();
     appToast('Venda registrada.');
   }
   $$('[data-sale]').forEach(button=>button.addEventListener('click',()=>{ const [amount,credits,plan]=button.dataset.sale.split('|'); registerSale(amount,credits,plan); }));
-  $('#manualSaleBtn').addEventListener('click',()=>registerSale($('#saleManualAmount').value,$('#saleManualCredits').value,'Valor manual'));
+  $('#manualSaleBtn').addEventListener('click',()=>registerSale($('#saleManualAmount').value,$('#saleManualCredits').value,$('#saleManualPlan').value||'Manual',$('#saleManualAccounts').value,$('#saleManualAccounts').dataset.operationId||''));
 
   function registerStock(quantityInput, amountInput, supplier){
     const month=currentCashMonth();
@@ -1981,7 +2235,7 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     if(delta!==0){
       month.transactions.unshift(normalizeCashTransaction({id:uid(),type:'adjustment',amount:Math.abs(delta),delta,
         date:selectedCashDate(),month:selectedCashMonth(),createdAt:new Date().toISOString(),note:'Ajuste manual de saldo nas configurações'}));
-      month.transactions=trimHistory(month.transactions);
+      // Todas as transações são preservadas para manter cálculos e estornos corretos.
     }
     month.stock=currentStock(month);
     saveCash();renderCash();closeCashSheets();
@@ -2074,16 +2328,58 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
       openingFrom:key
     });
     cashMonthInput.value=next;
+    syncCashEntryDate(true);
     try{localStorage.setItem(CASH_MONTH_KEY,next);}catch(error){}
     $('#closeDayBox').style.display='none';
     saveCash();renderCash();
     appToast(`Mês finalizado: caixa e ${stock} crédito(s) transportados.`);
   });
+  let cashEditTxId='';
+  function closeCashEdit(){cashEditTxId='';$('#cashEditPanel').classList.remove('show');}
+  function openCashEdit(transaction){
+    if(!transaction)return;
+    cashEditTxId=transaction.id;
+    $('#cashEditDate').value=transaction.date;
+    $('#cashEditDate').min=`${selectedCashMonth()}-01`;$('#cashEditDate').max=`${selectedCashMonth()}-${String(new Date(Number(selectedCashMonth().slice(0,4)),Number(selectedCashMonth().slice(5,7)),0).getDate()).padStart(2,'0')}`;
+    $('#cashEditAmount').value=transaction.type==='adjustment'?transaction.delta.toFixed(2):transaction.amount.toFixed(2);
+    $('#cashEditAmount').min=transaction.type==='adjustment'?'-999999999':'0.01';
+    $('#cashEditCredits').disabled=!['stock','sale'].includes(transaction.type);
+    $('#cashEditCredits').value=transaction.credits||'';
+    $('#cashEditNote').value=transaction.note||transaction.plan||transaction.category||transaction.reason||'';
+    setText('#cashEditHeading',`Editar ${ {stock:'compra de créditos',sale:'venda',expense:'gasto',withdrawal:'retirada',adjustment:'ajuste de caixa'}[transaction.type]||'movimentação'}`);
+    $('#cashEditPanel').classList.add('show');
+    $('#cashEditPanel').scrollIntoView({block:'nearest',behavior:'smooth'});
+  }
+  $('#cashEditCancelBtn').addEventListener('click',closeCashEdit);
+  $('#cashEditSaveBtn').addEventListener('click',()=>{
+    const month=currentCashMonth();const old=month.transactions.find(tx=>tx.id===cashEditTxId);
+    if(!old){closeCashEdit();return;}
+    const date=$('#cashEditDate').value;
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!date.startsWith(`${selectedCashMonth()}-`)||date>$('#cashEditDate').max||date<$('#cashEditDate').min){appToast('A data deve pertencer ao mês selecionado.');return;}
+    const raw=$('#cashEditAmount').value;
+    const signed=old.type==='adjustment'&&raw.startsWith('-');
+    const amount=cashMoney(signed?raw.slice(1):raw,old.type==='adjustment');
+    const credits=['stock','sale'].includes(old.type)?cashWhole($('#cashEditCredits').value):old.credits;
+    if(!Number.isFinite(amount)||!Number.isFinite(credits)){appToast('Confira valor e créditos inteiros.');return;}
+    const delta=old.type==='adjustment'?(signed?-amount:amount):0;
+    const next={...old,date,credits,amount:old.type==='adjustment'?Math.abs(delta):amount,delta,note:$('#cashEditNote').value.trim().slice(0,250)};
+    if(old.type==='stock')next.unitCost=next.amount/next.credits;
+    if(!stockTimelineWith(month,next,old.id)){appToast('Edição inválida: faltariam créditos para uma venda na cronologia.');return;}
+    const oldCash=cashDelta(old),newCash=cashDelta(next);
+    if(month.cash+newCash-oldCash<0&&!confirm('Esta edição deixará o caixa negativo. Continuar?'))return;
+    if(!reopenCashMonth(month))return;
+    Object.assign(old,next);
+    month.cash=roundMoney(month.cash+newCash-oldCash);
+    if(old.type==='stock'||old.type==='sale')recalculateCashSaleCosts(month);
+    saveCash();closeCashEdit();renderCash();appToast('Lançamento editado. Datas e custos atualizados.');
+  });
   $('#cashHistory').addEventListener('click',event=>{
-    const row=event.target.closest('[data-cash-tx-id]');
-    if(!row) return;
+    const pressed=event.target.closest('[data-cash-undo], [data-cash-edit]');
+    if(!pressed)return;
     const month=currentCashMonth();
-    const transaction=month.transactions.find(item=>item.id===row.dataset.cashTxId);
+    const txId=pressed.dataset.cashUndo||pressed.dataset.cashEdit;
+    const transaction=month.transactions.find(item=>item.id===txId);
+    if(pressed.dataset.cashEdit){openCashEdit(transaction);return;}
     if(!transaction)return;
     if(transaction.type==='stock'&&!validStockTimeline(month,transaction.id)){
       appToast('Não é possível estornar: alguma venda ficaria sem créditos naquela data.');return;
@@ -2091,7 +2387,7 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     if(!confirm('Estornar este lançamento? O caixa e o estoque serão recalculados.'))return;
     const amount=finiteOr(transaction.amount,0);
     const newCash=roundMoney(month.cash-cashDelta(transaction));
-    if(transaction.type==='sale'&&newCash<0&&
+    if(newCash<0&&
        !confirm('O estorno deixará o caixa negativo. Continuar mesmo assim?'))return;
     // A confirmação de reabertura é a última verificação antes do commit.
     // Cancelar ou falhar aqui não remove a transferência do mês seguinte.
@@ -2124,6 +2420,7 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     return {
       salary:0,
       saved:0,
+      savedFromSalary:0,
       reserveWithdrawn:0,
       entertainment:{limit:600,used:0,account:'carteira'},
       gas:{limit:180,used:0,account:'nubank'},
@@ -2198,6 +2495,9 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     const month={...makePersonalMonth(),...raw};
     month.salary=Math.max(0,finiteOr(month.salary,0));
     month.saved=Math.max(0,roundMoney(finiteOr(month.saved,0)));
+    // Depósitos históricos anteriores à v2.88 continuam independentes do salário;
+    // não atribuímos automaticamente uma origem desconhecida.
+    month.savedFromSalary=Math.max(0,Math.min(month.saved,roundMoney(finiteOr(month.savedFromSalary,0))));
     month.reserveWithdrawn=Math.max(0,roundMoney(finiteOr(month.reserveWithdrawn,0)));
     month.entertainment={limit:Math.max(0,finiteOr(month.entertainment?.limit,600)),used:Math.max(0,finiteOr(month.entertainment?.used,0)),account:'carteira'};
     month.gas={limit:Math.max(0,finiteOr(month.gas?.limit,180)),used:Math.max(0,finiteOr(month.gas?.used,0)),account:'nubank'};
@@ -2284,7 +2584,7 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
 
     month.expenses=month.expenses.slice(0,300);
     month.variableExpenses=[];
-    month.history=trimHistory((Array.isArray(month.history)?month.history:[]).map(item=>({
+    month.history=(Array.isArray(month.history)?month.history:[]).map(item=>({
       ...item,
       id:String(item?.id||uid()),
       date:String(item?.date||todayISO()).slice(0,10),
@@ -2292,10 +2592,11 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
       text:String(item?.text||'Movimento').slice(0,300),
       amount:Math.max(0,finiteOr(item?.amount,0)),
       kind:String(item?.kind||'outflow').slice(0,50),
+      fromSalary:item?.fromSalary===true,
       reversed:!!item?.reversed,
       expenseId:String(item?.expenseId||''),
       undoneAt:String(item?.undoneAt||'')
-    })));
+    }));
     month.moneyPanelOpen=!!month.moneyPanelOpen;
     month.smartPanelOpen=!!month.smartPanelOpen;
     month.salaryPanelOpen=!!month.salaryPanelOpen;
@@ -2356,10 +2657,23 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     personal.monthClosings=personal.monthClosings.filter(item=>item.month!==selectedPersonalMonth());
     return true;
   }
+  const personalEntryDate=$('#personalEntryDate');
+  function syncPersonalEntryDate(force=false){
+    const key=selectedPersonalMonth(),[y,m]=key.split('-').map(Number),last=new Date(y,m,0).getDate();
+    const day=String(Math.min(new Date().getDate(),last)).padStart(2,'0');
+    personalEntryDate.min=`${key}-01`;personalEntryDate.max=`${key}-${String(last).padStart(2,'0')}`;
+    if(force||!personalEntryDate.value.startsWith(`${key}-`))personalEntryDate.value=`${key}-${day}`;
+  }
+  syncPersonalEntryDate(true);
+  personalEntryDate.addEventListener('change',()=>syncPersonalEntryDate());
+  $('#personalPrevMonth').addEventListener('click',()=>shiftMonth(personalMonthInput,-1));
+  $('#personalNextMonth').addEventListener('click',()=>shiftMonth(personalMonthInput,1));
   function addPersonalHistory(text, amount, kind='outflow', extra={}){
     const month=currentPersonalMonth();
-    month.history.unshift({id:uid(),date:todayISO(),month:selectedPersonalMonth(),text:String(text).slice(0,300),amount:Math.max(0,finiteOr(amount,0)),kind,reversed:false,...extra});
-    month.history=trimHistory(month.history);
+    const record={id:uid(),date:personalEntryDate.value||todayISO(),month:selectedPersonalMonth(),text:String(text).slice(0,300),amount:Math.max(0,finiteOr(amount,0)),kind,reversed:false,...extra};
+    month.history.unshift(record);
+    // Histórico pessoal preservado integralmente, sem descartar pagamentos antigos.
+    return record.id;
   }
   function syncDynamicExpense(expense){
     if(!expense?.dynamicPayment) return expense;
@@ -2440,8 +2754,8 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
   const money0to2=value=>{const parsed=nonNegative(value);return Number.isFinite(parsed)&&Math.abs(parsed*100-Math.round(parsed*100))<1e-6?roundMoney(parsed):NaN;};
   const validDueDay=value=>String(value??'').trim()===''?null:(Number.isInteger(Number(value))&&Number(value)>=1&&Number(value)<=31?Number(value):NaN);
   const validEndMonth=value=>String(value||'').trim()===''?'':(/^\d{4}-(0[1-9]|1[0-2])$/.test(String(value))?String(value):null);
-  function reserveAmount(){
-    return roundMoney(personal.reserveBase+Object.values(personal.months).reduce((sum,month)=>sum+finiteOr(month.saved,0)-finiteOr(month.reserveWithdrawn,0),0));
+  function reserveAmount(throughMonth=null){
+    return roundMoney(personal.reserveBase+Object.entries(personal.months).filter(([key])=>!throughMonth||key<=throughMonth).reduce((sum,[,month])=>sum+finiteOr(month.saved,0)-finiteOr(month.reserveWithdrawn,0),0));
   }
   function getDueDate(monthKey,day){
     if(!Number.isInteger(day)||day<1||day>31||!/^\d{4}-\d{2}$/.test(monthKey)) return null;
@@ -2457,30 +2771,38 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     const raw=`${String(date.getDate()).padStart(2,'0')}/${String(date.getMonth()+1).padStart(2,'0')}/${date.getFullYear()}`;
     if(days<0) return {text:`Vencida · ${raw}`,kind:'overdue'};
     if(days===0) return {text:`Vence hoje · ${raw}`,kind:'soon'};
-    if(days<=3) return {text:`Vence em ${days} dia${days===1?'':'s'} · ${raw}`,kind:'soon'};
+    if(days<=7) return {text:`Vence em ${days} dia${days===1?'':'s'} · ${raw}`,kind:'soon'};
     return {text:`Vence ${raw}`,kind:''};
   }
   function renderReserve(month){
-    const total=reserveAmount();
+    const total=reserveAmount(selectedPersonalMonth());
     const goal=total<5000?5000:10000;
     const percent=Math.max(0,Math.min(100,Math.round(total/goal*100)));
     setText('#reserveTotalLabel',fmt(total));
+    const note=$('#reservePeriodNote');if(note)note.textContent=selectedPersonalMonth()===monthISO()?'Até o mês atual':`Saldo guardado até ${selectedPersonalMonth()} · atual ${fmt(reserveAmount())}`;
     setText('#reserveGoalLabel',`Meta: ${fmt(goal)}`);
     setText('#reserveGoalPercent',`${percent}%`);
     $('#reserveProgressFill').style.width=`${percent}%`;
     setText('#reserveRemainingLabel',total>=10000?'Meta de R$ 10 mil alcançada!':`Faltam ${fmt(goal-total)} para ${goal===5000?'a primeira':'a segunda'} meta.`);
     $('#reservePanel').classList.toggle('show',!!month.reservePanelOpen);
-    $('#toggleReservePanelBtn').textContent=month.reservePanelOpen?'Fechar':'Ajustar / resgatar';
+    $('#toggleReservePanelBtn').textContent=month.reservePanelOpen?'Fechar':'Movimentar reserva';
+    setText('#reserveMonthDeposits',fmt(month.saved));
+    setText('#reserveSalaryDeposits',fmt(month.savedFromSalary));
+    setText('#reserveMonthWithdrawals',fmt(month.reserveWithdrawn));
     const field=$('#reserveBaseInput');
     if(document.activeElement!==field) field.value=personal.reserveBase.toFixed(2);
   }
   function undoDynamicPayment(item){
+    const current=currentPersonalMonth();
+    if(!reopenPersonalMonth(current))return;
+    item=current.expenses.find(entry=>entry.id===item.id)||item;
     syncDynamicExpense(item);
     if(item.paidQty<1){appToast('Este custo não tem pagamento para desfazer.');return;}
     const amount=item.payments.pop();
     syncDynamicExpense(item);
     const month=currentPersonalMonth();
-    const record=month.history.find(entry=>entry.kind==='variable-payment'&&!entry.reversed&&entry.expenseId===item.id);
+    const id=Array.isArray(item.paymentHistoryIds)?item.paymentHistoryIds.pop():null;
+    const record=(id&&month.history.find(entry=>entry.id===id&&!entry.reversed))||month.history.find(entry=>entry.kind==='variable-payment'&&!entry.reversed&&entry.expenseId===item.id);
     if(record){record.reversed=true;record.undoneAt=new Date().toISOString();}
     addPersonalHistory(`Desfez a última unidade: ${item.name} — ${item.paidQty}/${item.qty} pago(s)`,amount,'undo',{expenseId:item.id});
     savePersonal();renderPersonal();appToast('Último pagamento desfeito.');
@@ -2500,6 +2822,10 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
       if(month.saved+0.00001<amount){appToast('O valor guardado deste mês já foi ajustado.');return;}
       const availableReserve=reserveAmount();
       if(availableReserve+0.00001<amount){appToast('Não é possível estornar: parte desse depósito já foi resgatada.');return;}
+      if(item.fromSalary===true){
+        if(month.savedFromSalary+0.00001<amount){appToast('Este depósito do salário já foi ajustado.');return;}
+        month.savedFromSalary=roundMoney(month.savedFromSalary-amount);
+      }
       month.saved=roundMoney(month.saved-amount);
     }
     if(item.kind==='reserve-withdrawal'){
@@ -2520,15 +2846,15 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     button.textContent=month.smartPanelOpen?'Fechar diagnóstico':'Ver diagnóstico';
     const tips=[];
     const push=(title,text)=>tips.push({title,text});
-    if(!month.salary) push('1. Informe o salário','Sem salário salvo, o sistema não consegue dizer se sobra ou falta dinheiro.');
+    if(!month.salary) push('1. Informe o salário','Registre o salário para conferir a cobertura das contas do mês. A reserva não depende desse valor.');
     if(wallet.nubankBills>0) push('Nubank para contas e gastos',`Deixe ${fmt(wallet.nubankBills)} no Nubank para contas, gasolina e gastos variáveis pendentes.`);
     if(wallet.next>0) push('Next para o seguro',`Deixe ${fmt(wallet.next)} no Next para os gastos marcados nessa conta.`);
     if(wallet.carteira>0) push('Carteira eletrônica',`Separe ${fmt(wallet.carteira)} para entretenimento e fim de semana.`);
-    if(context.afterPending<0) push('Alerta: mês apertado',`Depois de separar tudo, faltam ${fmt(Math.abs(context.afterPending))}. Ajuste os gastos antes de guardar dinheiro.`);
-    else if(context.totalPending>0) push('Ordem recomendada','Primeiro pague ou separe as pendências. Depois registre o dinheiro guardado no Nubank.');
-    else push('Pode guardar dinheiro','As pendências previstas estão zeradas. O próximo passo é guardar ou investir o que sobrar.');
-    if(context.debtLeft>0) push('Dívida com mãe',`Restam ${fmt(context.debtLeft)}. Registre o pagamento somente quando ele for feito.`);
-    if(wallet.nubankFree>0) push('Nubank livre',`Sobra estimada: ${fmt(wallet.nubankFree)} após separar todos os destinos.`);
+    if(month.salary>0&&context.afterPending<0) push('Saídas e compromissos acima do salário',`Faltam ${fmt(Math.abs(context.afterPending))} para cobrir contas, orçamentos e transferências feitas do salário. Resgates da reserva não entram neste cálculo.`);
+    else if(context.totalPending>0) push('Pendências do mês','Confira as contas a pagar e os orçamentos restantes. A reserva de emergência continua independente.');
+    else push('Pendências concluídas','Não há compromissos previstos restantes neste mês. O saldo da reserva é acompanhado em um painel separado.');
+
+    // Não sugerir saldo livre como dinheiro disponível, nem misturar orçamento e reserva.
     box.replaceChildren(...tips.map(tip=>{
       const item=element('div','smart-item');
       item.append(element('div','smart-title',tip.title),element('div','smart-text',tip.text));
@@ -2610,11 +2936,35 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     variableBox.replaceChildren(...(variable.length?variable.map(makeExpenseRow):[element('div','empty-cost-v265','Nenhum custo variável neste mês.') ]));
     const fixedCount=$('#fixedCostCount'); if(fixedCount) fixedCount.textContent=`${fixed.length} ${fixed.length===1?'item':'itens'}`;
   }
+  let personalHistoryVisible=60;
+  function renderPersonalDueSummary(expenses){
+    const box=$('#personalDueSummary');
+    if(!box)return;
+    const key=selectedPersonalMonth();
+    const dues=expenses.map(expense=>({expense,info:dueInfo(expense,key),date:getDueDate(key,expense.dueDay)}))
+      .filter(item=>item.date&&expensePendingAmount(item.expense)>0)
+      .sort((a,b)=>a.date-b.date);
+    if(!dues.length){box.replaceChildren();return;}
+    const heading=element('div','personal-due-head','Próximos vencimentos e atrasos');
+    const soon=dues.filter(({date})=>{const now=new Date();now.setHours(0,0,0,0);return Math.round((date-now)/86400000)<=7;});
+    const rows=(soon.length?soon:dues).slice(0,6).map(({expense,info})=>{
+      const row=element('div','personal-due-row');
+      if(info?.kind)row.classList.add(info.kind);
+      row.append(element('span','',expense.name),element('strong','',`${info?.text||'—'} · ${fmt(expensePendingAmount(expense))}`));
+      return row;
+    });
+    const paid=expenses.filter(item=>item.status==='pago').length;
+    box.replaceChildren(heading,...rows,element('div','minor-caption-v283',`${paid} conta(s) pagas neste mês. Os outros vencimentos aparecem na lista de despesas.`));
+  }
   function renderPersonalHistory(){
     const box=$('#personalHistory');
     if(!box) return;
     const month=currentPersonalMonth();
-    const nodes=month.history.slice(0,60).map(item=>{
+    const term=($('#personalHistorySearch')?.value||'').trim().toLocaleLowerCase('pt-BR');
+    const kind=$('#personalHistoryType')?.value||'all';
+    const selected=month.history.filter(item=>(kind==='all'||item.kind===kind)&&[item.text,item.date,item.kind].join(' ').toLocaleLowerCase('pt-BR').includes(term));
+    setText('#personalHistoryCount',`${selected.length} registro(s) encontrado(s)`);
+    const nodes=selected.slice(0,personalHistoryVisible).map(item=>{
       const row=element('div','history-item');
       const top=element('div','history-top');
       top.append(element('span','',item.text),element('strong','',fmt(item.amount)));
@@ -2628,6 +2978,7 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
       return row;
     });
     box.replaceChildren(...(nodes.length?nodes:[element('div','muted-line','Nenhum movimento pessoal registrado neste mês.') ]));
+    const more=$('#personalHistoryMoreBtn');more.hidden=selected.length<=personalHistoryVisible;more.textContent=`Mostrar mais (${selected.length-personalHistoryVisible} restantes)`;
   }
   function renderPersonal(){
     const month=currentPersonalMonth();
@@ -2644,11 +2995,12 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     const entertainmentLeft=Math.max(month.entertainment.limit-month.entertainment.used,0);
     const gasLeft=Math.max(month.gas.limit-month.gas.used,0);
     const variableLeft=entertainmentLeft+gasLeft+variablePending;
-    const paidExpenses=paidBills+variablePaid+month.entertainment.used+month.gas.used+debtPaidThisMonth+month.saved;
+    const paidExpenses=paidBills+variablePaid+month.entertainment.used+month.gas.used+debtPaidThisMonth;
     const pendingBills=fixedExpenses.reduce((sum,item)=>sum+expensePendingAmount(item),0)+variablePending;
     const totalPending=pendingBills+entertainmentLeft+gasLeft;
     const debtLeft=Math.max(personal.debt.total-personal.debt.paid,0);
-    const available=roundMoney(month.salary+month.reserveWithdrawn-paidExpenses);
+    const salaryOutflow=roundMoney(paidExpenses+month.savedFromSalary); // Contas pagas e dinheiro retirado do salário para guardar.
+    const available=roundMoney(month.salary-salaryOutflow); // Resgates e depósitos externos não alteram salário.
     const afterPending=roundMoney(available-totalPending);
     const pendingByAccount={nubank:gasLeft,next:0,carteira:0};
     activeExpenses.forEach(expense=>{ pendingByAccount[validAccount(expense.account)]+=expensePendingAmount(expense); });
@@ -2665,18 +3017,24 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     setText('[data-personal="saved"]',fmt(month.saved));
     setText('[data-personal="planned"]',fmt(plannedExpenses));
     setText('[data-personal="paid"]',fmt(paidExpenses));
+    setText('[data-personal="salaryOutflow"]',fmt(salaryOutflow));
+    setText('[data-personal="savedFromSalary"]',fmt(month.savedFromSalary));
     setText('[data-personal="pending"]',fmt(totalPending));
+    setText('[data-personal="budgetRemaining"]',fmt(entertainmentLeft+gasLeft));
     setText('[data-personal="billsPending"]',fmt(pendingBills));
     setText('[data-personal="reserveWithdrawn"]',fmt(month.reserveWithdrawn));
     setText('[data-personal="variableTotal"]',fmt(variableTotal));
     setText('[data-personal="variableLeft"]',fmt(variableLeft));
     setText('[data-personal="debtLeft"]',fmt(debtLeft));
     setText('[data-personal="available"]',fmt(available));
-    setText('[data-personal="afterPending"]',fmt(afterPending));
+    // O cálculo interno só identifica insuficiência do salário, sem mostrar uma 'sobra prevista'.
     setText('[data-personal="debtTotal"]',fmt(personal.debt.total));
     setText('[data-personal="debtPaid"]',fmt(personal.debt.paid));
     setText('[data-personal="debtLeft2"]',fmt(debtLeft));
     setText('[data-personal="entLimit"]',fmt(month.entertainment.limit));
+    setText('[data-personal="gasLimit"]',fmt(month.gas.limit));
+    $('#entLimitInput').value=month.entertainment.limit.toFixed(2);
+    $('#gasLimitInput').value=month.gas.limit.toFixed(2);
     setText('[data-personal="entUsed"]',fmt(month.entertainment.used));
     setText('[data-personal="entLeft"]',fmt(entertainmentLeft));
     setText('[data-personal="gasUsed"]',fmt(month.gas.used));
@@ -2689,38 +3047,48 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     salaryPanel.classList.toggle('show',month.salaryPanelOpen);
     $('#toggleSalaryPanelBtn').textContent=month.salaryPanelOpen?'Fechar salário':'Salário';
     const debtPanel=$('#debtPanel');
-    debtPanel.classList.toggle('show',month.debtPanelOpen);
+    month.debtPanelOpen=false;
+    debtPanel.classList.remove('show');
     $('#toggleDebtPanelBtn').textContent=month.debtPanelOpen?'Fechar dívida':'Dívida';
     renderSmartPersonal(month,wallet,{afterPending,totalPending,debtLeft});
 
     const personalAlert=$('#personalAlert');
     personalAlert.className='alert-box';
-    personalAlert.textContent=`Mês ${selectedPersonalMonth()} ativo. Organize Nubank, Next e carteira eletrônica; o pagamento da mãe sai da conta salário.`;
+    personalAlert.textContent=`Mês ${selectedPersonalMonth()} ativo. Transferências do salário para a reserva são registradas como saída, não como conta paga.`;
     if(month.closed){
       personalAlert.className='alert-box ok';
       personalAlert.textContent=`Mês ${selectedPersonalMonth()} finalizado. Uma nova alteração pedirá confirmação para reabrir.`;
+    }else if(month.salary<=0){
+      personalAlert.textContent='Informe o salário para acompanhar suas contas. A reserva pode ser movimentada separadamente.';
     }else if(available<0){
       personalAlert.className='alert-box danger';
-      personalAlert.textContent='Alerta: os gastos pagos, reservados e guardados já passaram do salário informado.';
+      personalAlert.textContent='Alerta: contas, gastos e transferências para a reserva ultrapassaram o salário informado. Resgates não entram no salário.';
     }else if(afterPending<0){
-      personalAlert.textContent='Atenção: depois de separar contas e variáveis, não sobra dinheiro livre.';
+      personalAlert.textContent='Atenção: pagamentos, transferências do salário e compromissos previstos ultrapassam o salário informado.';
     }else if(available>0){
       personalAlert.className='alert-box ok';
-      personalAlert.textContent='Painel em ordem. Os valores consideram os gastos e pendências deste mês.';
+      personalAlert.textContent='Saídas do salário registradas. A reserva mantém saldo separado; somente depósitos vindos do salário reduzem o valor disponível.';
     }
+    const overEntertainment=month.entertainment.limit>0&&month.entertainment.used>month.entertainment.limit;
+    const overGas=month.gas.limit>0&&month.gas.used>month.gas.limit;
+    const warning=$('#personalBudgetAlert');
+    if(warning){warning.hidden=!(overEntertainment||overGas);warning.textContent=[overEntertainment?`Lazer passou ${fmt(month.entertainment.used-month.entertainment.limit)} do planejado.`:'',overGas?`Gasolina passou ${fmt(month.gas.used-month.gas.limit)} do planejado.`:''].filter(Boolean).join(' ');}
     const overdue=activeExpenses.filter(expense=>expensePendingAmount(expense)>0&&dueInfo(expense,selectedPersonalMonth())?.kind==='overdue');
     if(!month.closed&&overdue.length){personalAlert.className='alert-box danger';personalAlert.textContent=`${overdue.length} conta(s) vencida(s) neste mês. Confira os vencimentos antes de gastar o saldo estimado.`;}
     renderReserve(month);
+    renderPersonalDueSummary(activeExpenses);
     renderPersonalExpenses();
     renderPersonalHistory();
     savePersonal();
   }
 
-  personalMonthInput.addEventListener('change',()=>{ closeExpensePayPanel(); currentPersonalMonth(); savePersonal(); renderPersonal(); appToast('Mês carregado.'); });
+  ['#personalHistorySearch','#personalHistoryType'].forEach(sel=>$(sel).addEventListener('input',()=>{personalHistoryVisible=60;renderPersonalHistory();}));
+  $('#personalHistoryMoreBtn').addEventListener('click',()=>{personalHistoryVisible+=60;renderPersonalHistory();});
+  personalMonthInput.addEventListener('change',()=>{personalHistoryVisible=60; syncPersonalEntryDate(true); closeExpensePayPanel(); currentPersonalMonth(); savePersonal(); renderPersonal(); appToast('Mês carregado.'); });
   $('#resetPersonalMonthBtn').addEventListener('click',()=>{
     const key=selectedPersonalMonth();
     const month=currentPersonalMonth();
-    if(!confirm(`Limpar todos os dados de ${key}? Os pagamentos da dívida registrados neste mês também serão desfeitos.`)) return;
+    if(!confirm(`Limpar todos os dados de ${key}? Os lançamentos registrados neste mês serão desfeitos.`)) return;
     const debtPayments=month.history.filter(item=>item.kind==='debt'&&!item.reversed).reduce((sum,item)=>sum+finiteOr(item.amount,0),0);
     personal.debt.paid=Math.max(0,roundMoney(personal.debt.paid-debtPayments));
     personal.months[key]=makePersonalMonth();
@@ -2737,6 +3105,7 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     personal=normalizePersonalState({});
     cashMonthInput.value=monthISO();
     personalMonthInput.value=monthISO();
+    syncCashEntryDate(true);syncPersonalEntryDate(true);
     saveCash();
     savePersonal();
     renderCash();
@@ -2756,6 +3125,7 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     personal.monthClosings=trimHistory(personal.monthClosings,120);
     const next=nextMonthKey(key);
     personalMonthInput.value=next;
+    syncPersonalEntryDate(true);
     currentPersonalMonth();
     savePersonal();
     renderPersonal();
@@ -2793,10 +3163,13 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     if(!reopenPersonalMonth(month)) return;
     const amount=money2($('#personalSavedAmount').value);
     if(!Number.isFinite(amount)){ appToast('Informe um valor maior que zero.'); return; }
+    const fromSalary=$('#personalSavedSource').value==='salary';
     month.saved=roundMoney(month.saved+amount);
-    addPersonalHistory('Dinheiro guardado ou investido no Nubank',amount,'saved');
+    if(fromSalary)month.savedFromSalary=roundMoney(month.savedFromSalary+amount);
+    addPersonalHistory(fromSalary?'Transferência do salário para a reserva de emergência':'Depósito externo na reserva de emergência',amount,'saved',{fromSalary});
     $('#personalSavedAmount').value='';
-    savePersonal(); renderPersonal(); appToast('Valor guardado registrado.');
+    savePersonal(); renderPersonal();
+    appToast(fromSalary?'Transferência registrada nas saídas do salário e no saldo da reserva.':'Depósito registrado na reserva sem alterar as saídas do salário.');
   });
   $('#expensePayQty').addEventListener('input',updateExpensePayPreview);
   $('#expensePayAmount').addEventListener('input',updateExpensePayPreview);
@@ -2834,7 +3207,8 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
       item.unitAmount=roundMoney(unitAmount);
       item.payments.push(roundMoney(unitAmount));
       syncDynamicExpense(item);
-      addPersonalHistory(`Pagou ${item.paidQty} de ${item.qty}: ${item.name} (Nubank)`,unitAmount,'variable-payment',{expenseId:item.id});
+      const pid=addPersonalHistory(`Pagou ${item.paidQty} de ${item.qty}: ${item.name} (Nubank)`,unitAmount,'variable-payment',{expenseId:item.id});
+      const latest=currentPersonalMonth().expenses.find(entry=>entry.id===item.id);if(latest)(latest.paymentHistoryIds ||= []).push(pid);
       const remaining=Math.max(item.qty-item.paidQty,0);
       closeExpensePayPanel();
       savePersonal(); renderPersonal();
@@ -2846,7 +3220,8 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     item.unitAmount=roundMoney(unitAmount);
     item.payments=[roundMoney(unitAmount)];
     syncDynamicExpense(item);
-    addPersonalHistory(`Pagou 1 de ${item.qty}: ${item.name} (Nubank)`,unitAmount,'variable-payment');
+    const pid=addPersonalHistory(`Pagou 1 de ${item.qty}: ${item.name} (Nubank)`,unitAmount,'variable-payment',{expenseId:item.id});
+    const latest=currentPersonalMonth().expenses.find(entry=>entry.id===item.id);if(latest)latest.paymentHistoryIds=[pid];
     const remaining=Math.max(item.qty-item.paidQty,0);
     closeExpensePayPanel();
     savePersonal(); renderPersonal();
@@ -2867,15 +3242,7 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
           return;
         }
         if(item.paidQty<item.qty){
-          const unitAmount=roundMoney(Math.max(0,finiteOr(item.unitAmount,0)));
-          if(unitAmount<=0){ openExpensePayPanel(item,'edit',row); appToast('Defina o valor unitário antes de pagar.'); return; }
-          item.payments=Array.isArray(item.payments)?item.payments:[];
-          item.payments.push(unitAmount);
-          syncDynamicExpense(item);
-          addPersonalHistory(`Pagou ${item.paidQty} de ${item.qty}: ${item.name} (Nubank)`,unitAmount,'variable-payment',{expenseId:item.id});
-          const remaining=Math.max(item.qty-item.paidQty,0);
-          savePersonal(); renderPersonal();
-          appToast(remaining>0?`Unidade paga por ${fmt(unitAmount)}. Restam ${remaining}.`:'Todas as unidades foram pagas.');
+          openExpensePayPanel(item,'next',row);
           return;
         }
         undoDynamicPayment(item);
@@ -2994,6 +3361,16 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     const button=event.target.closest('[data-history-undo]');
     if(button)undoPersonalHistory(button.dataset.historyUndo);
   });
+  function savePersonalBudget(kind,inputId,label){
+    const month=currentPersonalMonth();
+    const value=money0to2($(inputId).value);
+    if(!Number.isFinite(value)){appToast('Informe um valor de orçamento não negativo.');return;}
+    if(!reopenPersonalMonth(month))return;
+    month[kind].limit=value;
+    savePersonal();renderPersonal();appToast(`${label} atualizado para ${fmt(value)}.`);
+  }
+  $('#saveEntLimitBtn').addEventListener('click',()=>savePersonalBudget('entertainment','#entLimitInput','Limite do fim de semana'));
+  $('#saveGasLimitBtn').addEventListener('click',()=>savePersonalBudget('gas','#gasLimitInput','Previsão da gasolina'));
   function registerEntertainment(value){
     const month=currentPersonalMonth();
     if(!reopenPersonalMonth(month)) return;
@@ -3035,8 +3412,8 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     if(amount>reserveAmount()+0.00001){appToast('O resgate não pode superar a reserva acumulada.');return;}
     const month=currentPersonalMonth();if(!reopenPersonalMonth(month))return;
     month.reserveWithdrawn=roundMoney(month.reserveWithdrawn+amount);
-    addPersonalHistory('Resgate da reserva para uso no mês',amount,'reserve-withdrawal');
-    $('#reserveWithdrawInput').value='';savePersonal();renderPersonal();appToast('Resgate registrado.');
+    addPersonalHistory('Resgate da reserva de emergência',amount,'reserve-withdrawal');
+    $('#reserveWithdrawInput').value='';savePersonal();renderPersonal();appToast('Resgate da reserva registrado. O salário não foi alterado.');
   });
   function closeFixedExpenseEdit(){
     const panel=$('#fixedExpenseEditPanel');panel.classList.remove('show');panel.dataset.expenseId='';
@@ -3084,6 +3461,9 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     }
     closeFixedExpenseEdit();savePersonal();renderPersonal();appToast('Conta e regras de vencimento salvas.');
   });
+  // Priorizar tarefas: botões de venda e crédito antes da seção recolhível de metas.
+  const goalsDisclosure=$('#goalsDisclosure'),quickActions=$('.quick-actions-v264');
+  if(goalsDisclosure&&quickActions)quickActions.after(goalsDisclosure);
   renderCash();
   renderPersonal();
 })();
