@@ -496,7 +496,7 @@ h1,.app-brand h1{font-size:33px}
 <body>
 <div class="wrap">
 <div class="header app-top">
-<div class="app-brand"><div><h1>JamesUni</h1><div class="app-subtitle">Caixa, criação UniTV e gastos pessoais em um só lugar.</div></div><span class="pill"><strong>v2.89</strong></span></div>
+<div class="app-brand"><div><h1>JamesUni</h1><div class="app-subtitle">Caixa, criação UniTV e gastos pessoais em um só lugar.</div></div><span class="pill"><strong>v2.90</strong></span></div>
 <div class="main-nav" role="tablist">
 <button aria-pressed="true" class="main-tab active" data-main-tab="caixa" role="tab" type="button">Caixa</button>
 <button aria-pressed="false" class="main-tab" data-main-tab="unitv" role="tab" type="button">UniTV</button>
@@ -675,7 +675,7 @@ h1,.app-brand h1{font-size:33px}
 <div class="panel" data-panel="account" role="tabpanel"><section class="block" data-key="account" data-limit="0" data-seq="account"><div class="counter-line"><div class="block-title">Renovação Código</div><div class="pill"><span>Contas:</span><strong class="counter">0</strong><span class="muted">• Próximo: <span class="det">Colar conta</span></span></div></div><div class="controls"><button class="btn paste" data-role="account-action" type="button">Colar conta</button><button class="btn sms" data-role="code-action" type="button">Colar códigos</button><button class="btn reset reset" data-role="reset" type="button" style="grid-column:1/-1">Limpar conta</button></div><div class="inline"><span>Atual: <strong class="code-pill">—</strong></span><button class="toggle-sms" type="button">Ver dados</button></div><div class="inline"><span>Códigos da conta selecionada: <strong class="account-code-count">0</strong> · <strong class="account-months-count">Aguardando código</strong></span></div><div class="field account-code-target" hidden style="margin-top:10px"><label for="accountCodeTarget">Distribuição dos códigos por conta</label><select id="accountCodeTarget" aria-label="Distribuição dos códigos copiados"></select><p class="account-code-help">Automático: distribui um código por conta antes de adicionar meses extras. Selecione uma conta específica somente se quiser dar mais meses a ela.</p><p class="account-code-help" id="accountCodeNextInfo"></p></div><div class="renewal-preview-v283" id="renewalPreview"><div class="minor-caption-v283">Cole as contas e os códigos para ver a conferência por conta.</div></div><button class="btn green" type="button" id="renewalCashBtn" hidden style="width:100%;margin-top:8px">Preparar registro de venda no Caixa</button><div class="editor"></div><div class="status"><div class="left">Cole uma ou várias contas do cliente.</div><div class="progress">0 contas · 0 códigos</div></div><div class="bar"><div class="fill"></div></div></section></div>
 <div class="panel" data-panel="site" role="tabpanel"><section class="block" data-key="site" data-limit="8" data-seq="site-create-account"><div class="counter-line"><div class="block-title">Site</div><div class="pill"><span>Etapas:</span><strong class="counter">0</strong><span class="muted">• Próximo: <span class="det">—</span></span></div></div><div class="controls"><button class="btn paste" data-role="gen-copy" type="button">Gerar e copiar</button><button class="btn reset reset" data-role="reset" type="button">Limpar</button></div><div class="inline"><span>Senha padrão: <strong class="pass-pill">554090q</strong></span><button class="toggle-sms" type="button">Ver dados</button></div><div class="editor"></div><div class="status"><div class="left">Clique em Gerar e copiar para criar tudo e copiar o Gmail temporário.</div><div class="progress">0/8</div></div><div class="bar"><div class="fill"></div></div></section></div>
 
-<div class="footer small"><div><b>Versão:</b> v2.89</div><div><b>Changelog:</b> Caixa: dinheiro disponível, capital investido nos créditos restantes e lucro estimado do mês apresentados separadamente. Valorização do estoque com custo real por lote e transporte entre meses, resumo financeiro e explicações de cada cálculo. Demais operações da UniTV e do Pessoal preservadas.</div></div>
+<div class="footer small"><div><b>Versão:</b> v2.90</div><div><b>Changelog:</b> Caixa: dinheiro disponível, capital investido nos créditos restantes e lucro estimado do mês apresentados separadamente. Valorização do estoque com custo real por lote e transporte entre meses, resumo financeiro e explicações de cada cálculo. UniTV: correção da finalização das renovações — o botão solicita confirmação no próprio clique e copia a conta renovada depois que o código é aplicado. Demais operações preservadas.</div></div>
 </section>
 <section class="main-panel" data-main-panel="pessoal">
 <section class="block finance">
@@ -1314,11 +1314,12 @@ function accountBlock(r,index,total){const icon=r.type==='phone'?'📱':'📧',l
 function combinedMessage(){const parts=['UNITV',''];st.rows.forEach((r,i)=>{parts.push(accountBlock(r,i,st.rows.length));if(i<st.rows.length-1)parts.push('','-----------------------','')});parts.push('','','💙 Obrigado pela renovação! Seu acesso foi renovado com sucesso. Agradeço pela confiança e preferência.','','🎁 Ganhe 7 dias grátis ao indicar um amigo!');return parts.join('\n')}
 function allSteps(){const steps=[];st.rows.forEach((r,i)=>{steps.push({kind:'account',row:i,label:accountLabel(r),text:accountValue(r)});steps.push({kind:'password',row:i,label:'Senha',text:r.password})});if(st.rows.length)steps.push({kind:'message',row:-1,label:st.rows.length>1?'Contas renovadas':'Conta renovada',text:combinedMessage()});return steps}
 function editorText(){const lines=[];if(st.rows.length){lines.push(`CONTAS (${st.rows.length})`);st.rows.forEach((r,i)=>{const loginStep=i*2,done=st.position>loginStep+1,status=done?'✓':st.position===loginStep||st.position===loginStep+1?'→':'•',original=r.expiryText||'não informado',novo=predictedRenewal(r),copied=r.codeCopies||0;lines.push(`${status} ${i+1}. ${accountDisplay(r)} · ${original} → ${novo} · ${copied} código(s) copiado(s)`)})}if(st.codes.length){if(lines.length)lines.push('');lines.push(`CÓDIGOS DISPONÍVEIS (${st.codes.length})`);st.codes.forEach((code,i)=>lines.push(`${i+1}. ${code}`))}return lines.join('\n')}
-function allRenewed(){return st.rows.length>0&&st.rows.every(r=>r.confirmed&&r.codeCopies>0)}
+function allHaveCodes(){return st.rows.length>0&&st.rows.every(r=>r.codeCopies>0)}
+function allRenewed(){return allHaveCodes()&&st.rows.every(r=>r.confirmed)}
 function renderRenewalPreview(){
   const box=q('#renewalPreview');if(!box)return;
   if(!st.rows.length){box.replaceChildren(document.createTextNode('Cole as contas e os códigos para ver a conferência por conta.'));return;}
-  const status=document.createElement('div');status.className='minor-caption-v283';status.textContent=`Conferência: ${st.rows.filter(r=>r.confirmed&&r.codeCopies>0).length}/${st.rows.length} contas confirmadas. Só confirme depois de aplicar os códigos no serviço.`;
+  const status=document.createElement('div');status.className='minor-caption-v283';status.textContent=`Conferência: ${st.rows.filter(r=>r.confirmed&&r.codeCopies>0).length}/${st.rows.length} contas confirmadas. Após aplicar os códigos no serviço, use o botão principal "Confirmar e copiar"; também é possível confirmar cada conta aqui.`;
   const nodes=st.rows.map((r,i)=>{const row=document.createElement('div');row.className='renewal-row-v283';const heading=document.createElement('strong');heading.textContent=`${i+1}. ${accountDisplay(r)}`;const details=document.createElement('span');details.textContent=`${r.codeCopies} código(s) · ${predictedRenewal(r)}`;const button=document.createElement('button');button.type='button';button.dataset.confirmRenew=String(i);button.disabled=!r.codeCopies;button.className=r.confirmed?'':'pending';button.textContent=r.confirmed?'✓ Aplicação confirmada · desfazer':'Confirmar código(s) aplicados';row.append(heading,details,button);return row;});
   box.replaceChildren(status,...nodes);
 }
@@ -1355,14 +1356,40 @@ function update(){
   renderRenewalPreview();
   counter.textContent=st.rows.length?`${completed}/${st.rows.length}`:'0';det.textContent=next?next.label:(st.rows.length?'Concluído':'Colar conta');const activeRow=next&&next.row>=0?st.rows[next.row]:null;
   codePill.textContent=activeRow?`${accountDisplay(activeRow)} (${next.row+1}/${st.rows.length})`:(st.rows.length?`${st.rows.length} conta(s)`:'—');
-  accountBtn.textContent=next?`Copiar ${next.label.toLowerCase()}`:(st.rows.length?'Colar novas contas':'Colar conta');accountBtn.disabled=!!next&&next.kind==='message'&&!allRenewed();renderCodeButton();toggle.textContent=editor.classList.contains('show')?'Ocultar dados':'Ver dados';
+  accountBtn.textContent=next?(next.kind==='message'&&!allRenewed()&&allHaveCodes()?`Confirmar e copiar ${next.label.toLowerCase()}`:`Copiar ${next.label.toLowerCase()}`):(st.rows.length?'Colar novas contas':'Colar conta');accountBtn.disabled=!!next&&next.kind==='message'&&!allHaveCodes();renderCodeButton();toggle.textContent=editor.classList.contains('show')?'Ocultar dados':'Ver dados';
   const overall=steps.length?Math.min(100,(st.position/steps.length)*100):0;fill.style.width=`${overall}%`;bar.classList.toggle('complete',steps.length>0&&st.position>=steps.length);
-  if(!st.rows.length)statusLeft.textContent='Cole uma ou várias contas do cliente.';else if(!next)statusLeft.textContent=`${st.rows.length} conta(s) concluída(s).`;else if(next.kind==='message')statusLeft.textContent=allRenewed()?`Pronto para copiar ${next.label.toLowerCase()}.`:'Atribua códigos e confirme a aplicação em cada conta para liberar a mensagem final.';else statusLeft.textContent=`Conta ${next.row+1}: copiar ${next.label.toLowerCase()}.`;
+  if(!st.rows.length)statusLeft.textContent='Cole uma ou várias contas do cliente.';else if(!next)statusLeft.textContent=`${st.rows.length} conta(s) concluída(s).`;else if(next.kind==='message')statusLeft.textContent=!allHaveCodes()?'Copie ao menos um código para cada conta.':allRenewed()?`Pronto para copiar ${next.label.toLowerCase()}.`:'Depois de aplicar os códigos, toque em Confirmar e copiar. A confirmação é feita no próprio botão.';else statusLeft.textContent=`Conta ${next.row+1}: copiar ${next.label.toLowerCase()}.`;
   statusProg.textContent=`${completed}/${st.rows.length||0} contas · ${st.codes.length} disponíveis · ${totalCopied} copiados`;
   reset.disabled=!st.rows.length;editor.textContent=editorText();badge('account',{count:st.rows.length,limit:0,isDone:!!next});save()
 }
 async function pasteAccounts(){const text=await getClipOrPrompt('Cole uma ou várias contas completas.');const rows=parseAccounts(text);if(!rows.length){toastOK('Não encontrei conta com e-mail/telefone e senha.');return}st.rows=rows;st.position=0;st.codeTargetRow=0;st.codeAssignmentMode='auto';st.lastOperationId='';toastOK(`${rows.length} conta(s) adicionada(s).`);update()}
-accountBtn.addEventListener('click',async()=>{const steps=allSteps(),item=steps[st.position];if(!item){await pasteAccounts();return}const isMessage=item.kind==='message';if(isMessage&&!allRenewed()){toastOK('Antes de copiar a renovação, atribua e confirme pelo menos um código aplicado para cada conta.');update();return;}const payload=isMessage?combinedMessage():item.text;const ok=await copyClip(payload);if(!ok){toastOK('Falha ao copiar.');return}if(isMessage){st.rows.forEach(r=>{r.renewedVenc=renewalDate(r.expiryText,monthsForRow(r))});st.lastOperationId=`renew-${Date.now()}-${st.rows.map(accountValue).join('').slice(0,30)}`;}toastOK(`${item.label} copiado!`);buzz();st.position++;update()});
+accountBtn.addEventListener('click',async()=>{
+  const steps=allSteps(),item=steps[st.position];
+  if(!item){await pasteAccounts();return}
+  const isMessage=item.kind==='message';
+  let confirmPending=false;
+  if(isMessage){
+    if(!allHaveCodes()){
+      toastOK('Falta copiar um código para cada conta antes de gerar a renovação.');
+      update();return;
+    }
+    if(!allRenewed()){
+      const pending=st.rows.filter(r=>!r.confirmed);
+      const lines=pending.map(r=>`• ${accountDisplay(r)} — ${monthsForRow(r)} mês(es)`).join('\n');
+      if(!confirm(`Você já aplicou o(s) código(s) com sucesso na UniTV para ${pending.length===1?'esta conta':'estas contas'}?\n\n${lines}\n\nToque em OK para confirmar e copiar a ${st.rows.length===1?'conta renovada':'mensagem de contas renovadas'}.`))return;
+      confirmPending=true;
+    }
+  }
+  const payload=isMessage?combinedMessage():item.text;
+  const ok=await copyClip(payload);
+  if(!ok){toastOK('Falha ao copiar.');return}
+  if(isMessage){
+    if(confirmPending)st.rows.forEach(r=>{if(r.codeCopies>0)r.confirmed=true});
+    st.rows.forEach(r=>{r.renewedVenc=renewalDate(r.expiryText,monthsForRow(r))});
+    st.lastOperationId=`renew-${Date.now()}-${st.rows.map(accountValue).join('').slice(0,30)}`;
+  }
+  toastOK(`${item.label} copiado!`);buzz();st.position++;update()
+});
 codeBtn.addEventListener('click',async()=>{if(Date.now()<codeCooldownUntil)return;if(st.codes.length){if(!codeCopyIsUnlocked()){toastOK(st.rows.length?'Código ainda bloqueado.':'Cole a conta antes de copiar códigos.');renderCodeButton();return}codeBtn.disabled=true;const code=st.codes[0],ok=await copyClip(code);if(!ok){toastOK('Falha ao copiar.');renderCodeButton();return}st.codes.shift();st.consumedCodes.push(code);st.consumedCodes=st.consumedCodes.slice(-5000);const row=st.rows[selectedCodeRow()];if(row){row.codeCopies++;row.confirmed=false;row.renewedVenc='';}if(st.position>st.rows.length*2)st.position=st.rows.length*2;toastOK(`Código copiado para ${row?accountDisplay(row):'conta'}! ${row?row.codeCopies:0} mês(es) nesta conta. Restam ${st.codes.length}.`);buzz();startCodeCooldown();update();return}const text=await getClipOrPrompt('Cole a lista que contém os códigos de 16 dígitos.');const result=parseActivationCodes(text),known=new Set([...st.codes,...st.consumedCodes]),fresh=result.codes.filter(code=>!known.has(code));st.codes.push(...fresh);const repeated=result.codes.length-fresh.length;if(fresh.length)toastOK(`${fresh.length} código(s) adicionado(s).${repeated?` ${repeated} repetido(s) ignorado(s).`:''}${result.ignoredUsed?` ${result.ignoredUsed} marcado(s) como usado(s) ignorado(s).`:''}`);else if(result.ignoredUsed||repeated)toastOK('Nenhum código novo: repetidos ou já utilizados foram ignorados.');else toastOK('Nenhum código novo de 16 dígitos encontrado.');update()});
 reset.addEventListener('click',()=>{if(!confirmReset('Tem certeza que deseja limpar somente as contas? Os códigos serão mantidos.'))return;st.rows=[];st.position=0;st.codeTargetRow=0;st.codeAssignmentMode='auto';editor.classList.remove('show');toastOK('Contas limpas. Os códigos foram mantidos.');update()});
 targetSelect.addEventListener('change',()=>{st.codeAssignmentMode=targetSelect.value==='auto'?'auto':'manual';if(st.codeAssignmentMode==='manual')st.codeTargetRow=Math.max(0,Math.min(Number(targetSelect.value)||0,st.rows.length-1));update()});
