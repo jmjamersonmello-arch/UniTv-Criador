@@ -528,13 +528,13 @@ h1,.app-brand h1{font-size:33px}
   .main-panel[data-main-panel="caixa"] .cash-entry-date input{max-width:150px;font-size:12px}
 }
 
-/* JamesUni v2.98 — somente o estado Colar numero em Criar Conta fica laranja */
+/* JamesUni v3.02 — somente o estado Colar numero em Criar Conta fica laranja */
 .main-panel[data-main-panel="unitv"] .panel[data-panel="pers"] .btn[data-role="number-flow"].is-paste-number{
   background:linear-gradient(135deg,#fbbf24 0%,#fb923c 55%,#f97316 100%);
   color:#231204;
 }
 
-/* ===== JamesUni v2.98 · UniTV mais compacta e reorganizada ===== */
+/* ===== JamesUni v3.02 · UniTV mais compacta e reorganizada ===== */
 .main-panel[data-main-panel="unitv"] .header{padding:12px 12px 6px;border-radius:18px;margin-bottom:9px}
 .main-panel[data-main-panel="unitv"] .header h1{font-size:21px;line-height:1.05}
 .main-panel[data-main-panel="unitv"] .tabs{margin-top:9px;gap:7px}
@@ -568,7 +568,7 @@ h1,.app-brand h1{font-size:33px}
 }
 
 
-/* v2.98 · grade 2×2 da UniTV em celular: evita o bloco vertical de três fileiras */
+/* v3.02 · grade 2×2 da UniTV em celular: evita o bloco vertical de três fileiras */
 .main-panel[data-main-panel="unitv"] .tabs{
  grid-template-columns:repeat(2,minmax(0,1fr));
  grid-template-rows:repeat(2,minmax(47px,auto));
@@ -585,7 +585,7 @@ h1,.app-brand h1{font-size:33px}
 }
 
 
-/* ===== JamesUni v2.98 · equilíbrio entre tamanho e acesso rápido ===== */
+/* ===== JamesUni v3.02 · equilíbrio entre tamanho e acesso rápido ===== */
 /* Cabeçalho proporcional ao celular, sem reduzir a legibilidade */
 .main-panel[data-main-panel="unitv"] .header{padding:14px 13px 9px;border-radius:19px;margin-bottom:10px}
 .main-panel[data-main-panel="unitv"] .header h1{font-size:23px;line-height:1.1}
@@ -671,12 +671,101 @@ h1,.app-brand h1{font-size:33px}
   .main-panel[data-main-panel="unitv"] .pill{font-size:12px}
 }
 
+
+/* JamesUni v3.02 — progresso visível nos três botões do Criar Conta */
+.compact-create-v297 .compact-create-grid-v297 .btn.flow-step-button-v299{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:4px;
+  min-height:64px;
+  padding:9px 8px;
+  line-height:1.13;
+  transition:box-shadow .16s ease, transform .08s ease;
+}
+.compact-create-v297 .compact-create-grid-v297 .btn.flow-step-button-v299 .flow-action-title-v299{
+  font-size:13.9px;
+  font-weight:950;
+  text-align:center;
+}
+.compact-create-v297 .compact-create-grid-v297 .btn.flow-step-button-v299 .flow-step-count-v299{
+  display:inline-block;
+  padding:3px 9px;
+  border-radius:999px;
+  background:rgba(2,14,30,.19);
+  color:#061521;
+  font-size:11.2px;
+  font-weight:950;
+  white-space:nowrap;
+  text-align:center;
+}
+.compact-create-v297 .compact-create-grid-v297 .btn.flow-step-button-v299.flow-selected-v299{
+  outline:2px solid rgba(234,240,255,.88);
+  outline-offset:1px;
+  box-shadow:0 0 0 5px rgba(124,58,237,.24),0 10px 20px rgba(0,0,0,.20);
+}
+.compact-create-v297 .compact-create-grid-v297 .btn.flow-step-button-v299.flow-finished-v299 .flow-step-count-v299{
+  background:rgba(20,75,49,.20);
+}
+@media(max-width:360px){
+  .compact-create-v297 .compact-create-grid-v297 .btn.flow-step-button-v299{min-height:65px;padding:9px 5px}
+  .compact-create-v297 .compact-create-grid-v297 .btn.flow-step-button-v299 .flow-action-title-v299{font-size:13px}
+  .compact-create-v297 .compact-create-grid-v297 .btn.flow-step-button-v299 .flow-step-count-v299{font-size:10.8px}
+}
+
+
+/* ===== JamesUni v3.02 · Estoque de Contas Prontas ===== */
+.main-panel[data-main-panel="unitv"] .ready-tab-v300{width:100%;margin-top:9px;min-height:48px;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 15px;font-size:14px;text-align:left;background:linear-gradient(125deg,rgba(34,211,238,.12),rgba(124,58,237,.14));border-color:rgba(34,211,238,.3)}
+.main-panel[data-main-panel="unitv"] .ready-tab-v300.active{border-color:rgba(34,211,238,.85);box-shadow:0 0 0 2px rgba(34,211,238,.17)}
+.ready-tab-count-v300{font-size:11px;font-weight:850;color:rgba(234,240,255,.75);white-space:nowrap}.ready-tab-count-v300 strong{color:#86efac;font-size:15px}
+.main-panel[data-main-panel="unitv"] .ready-panel-v300{padding:13px}
+.ready-head-v300{display:flex;justify-content:space-between;align-items:start;gap:8px}.ready-head-v300 .block-title{font-size:23px}.ready-head-v300 p{font-size:12px;color:var(--mut);margin:5px 0 10px;line-height:1.4}
+.ready-count-pill-v300{border-radius:12px;padding:8px;font-size:11px;color:#c4fbe0;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.2);white-space:nowrap}.ready-count-pill-v300 strong{font-size:16px}
+.ready-stats-v300{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:6px 0 10px}.ready-stats-v300>div{border:1px solid var(--line);background:rgba(0,0,0,.12);padding:9px;border-radius:12px}.ready-stats-v300 span{display:block;font-size:11px;color:var(--mut);font-weight:800}.ready-stats-v300 strong{display:block;font-size:19px;margin-top:3px}
+.ready-guide-v300{color:var(--mut);font-size:12px;line-height:1.4;margin:0 0 9px}
+.ready-featured-v300{border:1px solid rgba(34,211,238,.27);background:linear-gradient(160deg,rgba(34,211,238,.09),rgba(0,0,0,.14));border-radius:14px;padding:12px;min-height:92px}
+.ready-featured-v300 h3{font-size:15px;margin:0 0 7px;overflow-wrap:anywhere}.ready-featured-v300 p{font-size:12px;margin:5px 0;color:var(--mut)}.ready-featured-v300 strong{color:#eaf0ff}
+.ready-featured-v300 .ready-expiry-v300{font-weight:850;color:#86efac}.ready-featured-v300 .ready-expiry-v300.soon{color:#fdba74}
+.ready-deliver-v300{width:100%;margin:9px 0 0;min-height:48px}
+.ready-after-v300[hidden]{display:none!important}.ready-after-v300{margin-top:9px;border:1px solid rgba(34,197,94,.22);border-radius:12px;padding:10px;background:rgba(34,197,94,.06)}.ready-after-note-v300{font-size:12px;line-height:1.4;color:#bbf7d0;margin-bottom:9px}
+.ready-after-actions-v300{display:grid;grid-template-columns:1fr 1fr;gap:7px}.ready-after-actions-v300 .btn{min-height:43px}
+.ready-details-v300{margin-top:9px}.ready-details-v300>summary{font-size:13px}.ready-details-v300>summary span{color:var(--mut);font-size:12px;margin-left:auto}
+.ready-list-v300{padding:8px;display:grid;gap:7px}.ready-item-v300{border:1px solid rgba(255,255,255,.09);border-radius:12px;padding:9px;background:rgba(0,0,0,.13)}.ready-item-v300 strong{font-size:12.5px;overflow-wrap:anywhere}.ready-item-v300 p{font-size:11px;color:var(--mut);line-height:1.4;margin:5px 0}.ready-item-v300 .btn{margin-top:5px;width:100%;font-size:12px;min-height:38px}
+.ready-manual-v300{width:100%;background:rgba(0,0,0,.19);color:var(--txt);border:1px solid var(--line);border-radius:10px;padding:10px;font:inherit;font-size:12px;margin:5px 0 8px}.ready-details-v300 .btn{font-size:12px}
+@media(max-width:380px){.ready-after-actions-v300{grid-template-columns:1fr 1fr}.ready-after-actions-v300 .btn{font-size:12px;padding:9px 5px}.ready-head-v300 .block-title{font-size:20px}}
+
+/* ===== JamesUni v3.02: navegação limpa, sem seletor mensal duplicado ===== */
+.main-panel[data-main-panel="unitv"]>.header{padding:10px 12px 11px;margin-bottom:10px}
+.main-panel[data-main-panel="unitv"] .tabs{
+  grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);
+  grid-template-rows:repeat(2,minmax(68px,auto));
+  grid-template-areas:"renov account" "pers account";
+  margin-top:0;
+  gap:9px;
+}
+.main-panel[data-main-panel="unitv"] .tab[data-tab="renov"]{grid-area:renov}
+.main-panel[data-main-panel="unitv"] .tab[data-tab="pers"]{grid-area:pers}
+.main-panel[data-main-panel="unitv"] .tab[data-tab="account"]{grid-area:account}
+.main-panel[data-main-panel="unitv"] .ready-tab-v300{margin-top:9px}
+.finance .section-head{margin-bottom:8px}
+.finance .section-head p{max-width:none}
+@media(max-width:360px){
+  .main-panel[data-main-panel="unitv"] .tabs{grid-template-rows:repeat(2,minmax(65px,auto))}
+}
+
+/* ===== JamesUni v3.02: botão de mensagem de instalação ===== */
+.install-copy-v302{width:100%;margin:10px 0 2px;min-height:50px;display:flex;align-items:center;justify-content:center;gap:10px;font-size:15px;font-weight:900;border-radius:16px;background:linear-gradient(135deg,#4dddf4,#39c6f1 54%,#35d6ff);color:#062137;border:1px solid rgba(130,240,255,.35);box-shadow:0 10px 24px rgba(14,165,233,.15)}
+.install-copy-v302 .ico{font-size:19px;line-height:1}
+.install-copy-v302:active{transform:translateY(1px)}
+@media(max-width:360px){.install-copy-v302{font-size:14px;min-height:48px;padding:10px 12px}}
+
 </style>
 </head>
 <body>
 <div class="wrap">
 <div class="header app-top">
-<div class="app-brand"><div><h1>JamesUni</h1><div class="app-subtitle">Caixa, criação UniTV e gastos pessoais em um só lugar.</div></div><span class="pill"><strong>v2.98</strong></span></div>
+<div class="app-brand"><div><h1>JamesUni</h1><div class="app-subtitle">Caixa, criação UniTV e gastos pessoais em um só lugar.</div></div><span class="pill"><strong>v3.02</strong></span></div>
 <div class="main-nav" role="tablist">
 <button aria-pressed="true" class="main-tab active" data-main-tab="caixa" role="tab" type="button">Caixa</button>
 <button aria-pressed="false" class="main-tab" data-main-tab="unitv" role="tab" type="button">UniTV</button>
@@ -687,11 +776,11 @@ h1,.app-brand h1{font-size:33px}
 <section class="block finance">
 <div class="section-head">
 <div><h2>Caixa JamesUni</h2><p>Vendas, estoque, gastos e retiradas do mês.</p></div>
-<div class="month-filter"><label for="cashMonth">Mês</label><input id="cashMonth" type="month"/><div class="month-arrows-v283"><button type="button" id="cashPrevMonth" aria-label="Mês anterior">‹</button><button type="button" id="cashNextMonth" aria-label="Próximo mês">›</button></div></div>
+<input id="cashMonth" type="hidden" aria-hidden="true"/>
 </div>
 <div class="cash-fast-zone-v294" aria-label="Registrar movimentações do Caixa">
 <div class="cash-fast-zone-title-v294">Registrar movimentação</div>
-<div class="cash-entry-date"><label for="cashEntryDate">Data do lançamento</label><input id="cashEntryDate" type="date"/><span>Usada para vendas, compras, gastos e retiradas.</span></div>
+<div class="cash-entry-date"><label for="cashEntryDate">Data do lançamento · mês do caixa</label><input id="cashEntryDate" type="date"/><span>Usada para vendas, compras, gastos e retiradas.</span></div>
 <div class="quick-actions-v264">
 <button class="btn green" data-cash-open="sale" type="button">+ Venda</button>
 <button class="btn blue" data-cash-open="stock" type="button">+ Créditos</button>
@@ -846,28 +935,42 @@ h1,.app-brand h1{font-size:33px}
 </section>
 </section>
 <section class="main-panel unitv-shell" data-main-panel="unitv">
-<div class="header"><h1>UniTV Operacional</h1><div class="tabs" role="tablist">
-<button aria-selected="true" class="tab active" data-tab="nova" role="tab" type="button"><span>Conta Nova</span><span class="badge"><span class="big" data-badge="nova">0/3</span><span class="dot" data-dot="nova"></span></span></button>
-<button aria-selected="false" class="tab" data-tab="renov" role="tab" type="button"><span>Renovação</span><span class="badge"><span class="big" data-badge="renov">0/5</span><span class="dot" data-dot="renov"></span></span></button>
+<div class="header"><div class="tabs" role="tablist">
+
+<button aria-selected="true" class="tab active" data-tab="renov" role="tab" type="button"><span>Renovação</span><span class="badge"><span class="big" data-badge="renov">0/5</span><span class="dot" data-dot="renov"></span></span></button>
 <button aria-selected="false" class="tab" data-tab="pers" role="tab" type="button"><span>Criar Conta</span><span class="badge"><span class="big" data-badge="pers">0/9</span><span class="dot" data-dot="pers"></span></span></button>
 <button aria-selected="false" class="tab" data-tab="account" role="tab" type="button"><span class="account-tab-title">Renovação<br/>Código</span><span class="badge"><span class="big" data-badge="account">0</span><span class="dot" data-dot="account"></span></span></button>
-</div></div>
-<div class="panel active" data-panel="nova" role="tabpanel"><section class="block" data-key="nova" data-limit="3" data-seq="triple"><div class="counter-line"><div class="block-title">Conta Nova</div><div class="pill"><span>Registros:</span><strong class="counter">0</strong><span class="muted">• Próximo: <span class="det">Nº</span></span></div></div><div class="controls"><button class="btn paste" data-role="paste-number" type="button">Colar número</button><button class="btn paste" data-role="paste-code" type="button">Colar Código</button><button class="btn sms" data-role="paste-sms" type="button">Colar SMS</button><button class="btn copy copy" type="button">Copiar <span class="muted">(restantes: 0)</span></button><button class="btn reset reset" data-role="reset" type="button">Zerar</button></div><div class="secondary"><button class="btn sub undo" data-role="undo" type="button">⟲ Desfazer</button><button class="btn sub skip" data-role="skip" type="button">» Pular</button></div><div class="inline"><span>Código: <strong class="code-pill">—</strong></span><button class="toggle-sms" type="button">Ver SMS</button></div><div class="editor"></div><div class="status"><div class="left">Pronto.</div><div class="progress">0</div></div><div class="bar"><div class="fill"></div></div></section></div>
-<div class="panel" data-panel="renov" role="tabpanel"><section class="block" data-key="renov" data-limit="5" data-seq="triple"><div class="counter-line"><div class="block-title">Renovação</div><div class="pill"><span>Registros:</span><strong class="counter">0</strong><span class="muted">• Próximo: <span class="det">Nº</span></span></div></div><div class="controls"><button class="btn paste" data-role="paste-number" type="button">Colar número</button><button class="btn paste" data-role="paste-code" type="button">Colar Código</button><button class="btn sms" data-role="paste-sms" type="button">Colar SMS</button><button class="btn copy copy" type="button">Copiar <span class="muted">(restantes: 0)</span></button><button class="btn reset reset" data-role="reset" type="button">Zerar</button></div><div class="secondary"><button class="btn sub undo" data-role="undo" type="button">⟲ Desfazer</button><button class="btn sub skip" data-role="skip" type="button">» Pular</button></div><div class="inline"><span>Código: <strong class="code-pill">—</strong></span><button class="toggle-sms" type="button">Ver SMS</button></div><div class="editor"></div><div class="status"><div class="left">Pronto.</div><div class="progress">0</div></div><div class="bar"><div class="fill"></div></div></section></div>
+</div><button aria-selected="false" class="tab ready-tab-v300" data-tab="ready" role="tab" type="button"><span>📦 Contas Prontas</span><span class="ready-tab-count-v300"><strong data-ready-count="nav">0</strong> disponíveis</span></button></div>
+<button class="btn install-copy-v302" id="installMsgBtn" type="button"><span class="ico">📲</span><span>Copiar mensagem de instalação</span></button>
+<div class="panel active" data-panel="renov" role="tabpanel"><section class="block" data-key="renov" data-limit="5" data-seq="triple"><div class="counter-line"><div class="block-title">Renovação</div><div class="pill"><span>Registros:</span><strong class="counter">0</strong><span class="muted">• Próximo: <span class="det">Nº</span></span></div></div><div class="controls"><button class="btn paste" data-role="paste-number" type="button">Colar número</button><button class="btn paste" data-role="paste-code" type="button">Colar Código</button><button class="btn sms" data-role="paste-sms" type="button">Colar SMS</button><button class="btn copy copy" type="button">Copiar <span class="muted">(restantes: 0)</span></button><button class="btn reset reset" data-role="reset" type="button">Zerar</button></div><div class="secondary"><button class="btn sub undo" data-role="undo" type="button">⟲ Desfazer</button><button class="btn sub skip" data-role="skip" type="button">» Pular</button></div><div class="inline"><span>Código: <strong class="code-pill">—</strong></span><button class="toggle-sms" type="button">Ver SMS</button></div><div class="editor"></div><div class="status"><div class="left">Pronto.</div><div class="progress">0</div></div><div class="bar"><div class="fill"></div></div></section></div>
 <div class="panel" data-panel="pers" role="tabpanel"><section class="block compact-create-v297" data-key="pers" data-limit="4" data-seq="create-account"><div class="counter-line compact-create-head-v297"><div><div class="block-title">Criar Conta</div><div class="mini-flow-note-v297">Fluxos por Gmail, Outlook ou número</div></div><div class="pill"><span>Contas:</span><strong class="counter">0</strong><span class="muted">• Próximo: <span class="det">—</span></span></div></div><div class="controls compact-create-grid-v297"><button class="btn paste" data-role="gen-copy" type="button">Criar e copiar email</button><button class="btn sms" data-role="outlook-flow" type="button">Criar e copiar Outlook</button><button class="btn sms" data-role="number-flow" type="button">Criar e copiar número</button><button class="btn reset reset" data-role="reset" type="button">Limpar</button></div><div id="numberExpiryHint" class="minor-caption-v283 compact-create-hint-v297" aria-live="polite">Vencimento automático: 7 dias. Outlook gera endereço principal e dois aliases.</div><div class="inline compact-create-inline-v297"><span>Senha atual: <strong class="pass-pill">—</strong></span><button class="toggle-sms" type="button">Ver dados</button></div><div class="editor"></div><div class="status compact-create-status-v297"><div class="left">Escolha o fluxo para começar.</div><div class="progress">0 contas</div></div><div class="bar"><div class="fill"></div></div></section></div>
+<div class="panel" data-panel="ready" role="tabpanel">
+  <section class="block ready-panel-v300" aria-label="Estoque de contas prontas">
+    <div class="ready-head-v300"><div><div class="block-title">Contas Prontas</div><p>Contas criadas para entregar, com vencimento original.</p></div><span class="ready-count-pill-v300"><strong data-ready-count="total">0</strong> disponíveis</span></div>
+    <div class="ready-stats-v300"><div><span>Disponíveis</span><strong id="readyAvailableCount">0</strong></div><div><span>Vencidas</span><strong id="readyExpiredCount">0</strong></div><div><span>Enviadas</span><strong id="readySentCount">0</strong></div></div>
+    <div class="ready-guide-v300">Copie e retire <b>uma conta por vez</b>. A próxima só é liberada ao tocar em <b>Próxima conta</b>.</div>
+    <div class="ready-featured-v300" id="readyFeatured"><span class="muted">Nenhuma conta disponível ainda.</span></div>
+    <button class="btn green ready-deliver-v300" id="readyDeliverBtn" type="button">Copiar e retirar 1 conta</button>
+    <div id="readyAfterDelivery" class="ready-after-v300" hidden><div class="ready-after-note-v300" id="readyLastDelivered"></div><div class="ready-after-actions-v300"><button class="btn blue" id="readyNextBtn" type="button">Próxima conta</button><button class="btn dark" id="readyUndoBtn" type="button">Desfazer última entrega</button></div></div>
+    <details class="compact-details ready-details-v300"><summary>Outras contas disponíveis <span id="readyAvailableListCount"></span></summary><div id="readyAvailableList" class="ready-list-v300"></div></details>
+    <details class="compact-details ready-details-v300"><summary>Contas vencidas <span id="readyExpiredListCount"></span></summary><div id="readyExpiredList" class="ready-list-v300"></div></details>
+    <details class="compact-details ready-details-v300"><summary>Histórico de contas enviadas <span id="readySentListCount"></span></summary><div id="readySentList" class="ready-list-v300"></div></details>
+    <details class="compact-details ready-details-v300"><summary>Adicionar conta já criada</summary><div class="compact-details-body"><p class="muted-line">Cole uma mensagem de conta completa com usuário, senha e vencimento. Uma conta por vez.</p><textarea id="readyManualText" class="ready-manual-v300" rows="5" placeholder="Conta UniTV...&#10;E-mail ou Número: ...&#10;Senha: ...&#10;Vencimento: DD/MM/AAAA"></textarea><button class="btn blue" id="readyManualAddBtn" type="button">Salvar conta pronta</button></div></details>
+  </section>
+</div>
 <div class="panel" data-panel="emails" role="tabpanel"><section class="block" data-key="emails" data-limit="1" data-seq="emails"><div class="counter-line"><div class="block-title">E-mail</div><div class="pill"><span>Gerados:</span><strong class="counter">0</strong><span class="muted">• Guardados: <span class="det">0</span></span></div></div><div class="controls"><button class="btn paste" data-role="paste-email" type="button">Gerar aliás</button><button class="btn paste" data-role="gen-email" type="button">Gerar e-mail</button><button class="btn paste" data-role="paste-login" type="button">Colar e-mail</button><button class="btn paste" data-role="paste-code" type="button">Colar Código</button><button class="btn copy copy" type="button">Copiar <span class="muted">(restantes: 0)</span></button><button class="btn reset reset" data-role="reset" type="button">Zerar</button></div><div class="inline"><span>Código: <strong class="email-code-pill">—</strong> <span class="muted">• Cópias: <strong class="email-copies">0</strong></span></span><button class="toggle-sms" type="button">Ver e-mails</button></div><div class="editor"></div><div class="status"><div class="left">Fase 0 de 2 · Próximo: Gerar e-mails</div><div class="progress">0/0</div></div><div class="bar"><div class="fill"></div></div></section></div>
 <div class="panel" data-panel="account" role="tabpanel"><section class="block" data-key="account" data-limit="0" data-seq="account"><div class="counter-line"><div class="block-title">Renovação Código</div><div class="pill"><span>Contas:</span><strong class="counter">0</strong><span class="muted">• Próximo: <span class="det">Colar conta</span></span></div></div><div class="controls"><button class="btn paste" data-role="account-action" type="button">Colar conta</button><button class="btn sms" data-role="code-action" type="button">Colar códigos</button><button class="btn reset reset" data-role="reset" type="button" style="grid-column:1/-1">Limpar conta</button></div><div class="inline"><span>Atual: <strong class="code-pill">—</strong></span><button class="toggle-sms" type="button">Ver dados</button></div><div class="inline"><span>Códigos da conta selecionada: <strong class="account-code-count">0</strong> · <strong class="account-months-count">Aguardando código</strong></span></div><div class="field account-code-target" hidden style="margin-top:10px"><label for="accountCodeTarget">Distribuição dos códigos por conta</label><select id="accountCodeTarget" aria-label="Distribuição dos códigos copiados"></select><p class="account-code-help">Automático: distribui um código por conta antes de adicionar meses extras. Selecione uma conta específica somente se quiser dar mais meses a ela.</p><p class="account-code-help" id="accountCodeNextInfo"></p></div><div class="renewal-preview-v283" id="renewalPreview"><div class="minor-caption-v283">Cole as contas e os códigos para ver a conferência por conta.</div></div><button class="btn green" type="button" id="renewalCashBtn" hidden style="width:100%;margin-top:8px">Preparar registro de venda no Caixa</button><div class="editor"></div><div class="status"><div class="left">Cole uma ou várias contas do cliente.</div><div class="progress">0 contas · 0 códigos</div></div><div class="bar"><div class="fill"></div></div></section></div>
 <div class="panel" data-panel="site" role="tabpanel"><section class="block" data-key="site" data-limit="8" data-seq="site-create-account"><div class="counter-line"><div class="block-title">Site</div><div class="pill"><span>Etapas:</span><strong class="counter">0</strong><span class="muted">• Próximo: <span class="det">—</span></span></div></div><div class="controls"><button class="btn paste" data-role="gen-copy" type="button">Gerar e copiar</button><button class="btn reset reset" data-role="reset" type="button">Limpar</button></div><div class="inline"><span>Senha padrão: <strong class="pass-pill">554090q</strong></span><button class="toggle-sms" type="button">Ver dados</button></div><div class="editor"></div><div class="status"><div class="left">Clique em Gerar e copiar para criar tudo e copiar o Gmail temporário.</div><div class="progress">0/8</div></div><div class="bar"><div class="fill"></div></div></section></div>
 
-<div class="footer small"><div><b>Versão:</b> v2.98</div><div><b>Changelog:</b> UniTV Criar Conta: vencimento automático de 7 dias para contas geradas por e-mail; novo botão Outlook com endereço principal, dois aliases, seis cópias de login/senha e três contas formatadas. Fluxos antigos, Caixa e Pessoal preservados. UniTV equilibrada: Renovação Código voltou a ter botão grande; opções e botões internos maiores e mais legíveis; Criar Conta reorganizado em três linhas. Botão Colar número em laranja nas abas Conta Nova e Renovação e apenas no estado Colar número em Criar Conta; Criar e copiar número permanece verde.</div></div>
+<div class="footer small"><div><b>Versão:</b> v3.02</div><div><b>Changelog:</b> UniTV: removidos o título operacional e o atalho Conta Nova; Renovações, Criar Conta e Contas Prontas preservados. Caixa e Pessoal: mês agora acompanha a data do lançamento, sem seletor mensal duplicado ou setas. Mantidas as funcionalidades da v3.00.</div></div>
 </section>
 <section class="main-panel" data-main-panel="pessoal">
 <section class="block finance">
 <div class="section-head">
 <div><h2>Gastos Pessoais</h2><p>Salário para despesas; reserva de emergência separada.</p></div>
-<div class="month-filter"><label for="personalMonth">Mês</label><input id="personalMonth" type="month"/><div class="month-arrows-v283"><button type="button" id="personalPrevMonth" aria-label="Mês anterior">‹</button><button type="button" id="personalNextMonth" aria-label="Próximo mês">›</button></div></div><div class="minor-caption-v283" id="personalEntryHint">Use o calendário abaixo para lançar gastos em outra data.</div>
+<input id="personalMonth" type="hidden" aria-hidden="true"/>
 </div>
-<div class="personal-date-v283"><label for="personalEntryDate">Data dos lançamentos pessoais</label><input type="date" id="personalEntryDate"/></div>
+<div class="personal-date-v283"><label for="personalEntryDate">Data dos lançamentos · mês pessoal</label><input type="date" id="personalEntryDate"/></div>
 <div id="personalBudgetAlert" class="alert-box" hidden></div>
 <div class="dashboard-overview">
 <div class="dashboard-overview-head"><div class="dashboard-overview-title">Seu mês</div><div class="dashboard-overview-note">o essencial primeiro</div></div>
@@ -1037,12 +1140,175 @@ const _load=()=>{try{return JSON.parse(localStorage.getItem(STORE_KEY)||'{}')}ca
 const _store=_load();
 const getStore=(k,d)=>Object.prototype.hasOwnProperty.call(_store,k)?_store[k]:d;
 const setStore=(k,v)=>{_store[k]=v;try{localStorage.setItem(STORE_KEY,JSON.stringify(_store))}catch(e){}};
-function showTab(key){if(!tabs.some(t=>t.dataset.tab===key))key='nova';panels.forEach(p=>{const active=p.dataset.panel===key;p.classList.toggle('active',active);p.setAttribute('aria-hidden',active?'false':'true')});tabs.forEach(t=>{const active=t.dataset.tab===key;t.classList.toggle('active',active);t.setAttribute('aria-selected',active?'true':'false')});setStore('activeTab',key);try{location.hash='#'+key}catch(e){}}
-tabs.forEach(t=>t.addEventListener('click',()=>showTab(t.dataset.tab)));window.addEventListener('hashchange',()=>{const k=location.hash.substring(1);if(k)showTab(k)});showTab(location.hash?location.hash.substring(1):getStore('activeTab','nova'));
+const INSTALL_MESSAGE_V302=`📺 UniTv | GUIA DE INSTALAÇÃO
+
+Olá! 👋 Siga o passo a passo para instalar o UniTv no seu dispositivo.
+
+📺 1️⃣ SMART TV / TV BOX (ANDROID)
+
+1️⃣ Abra a Play Store e instale o Downloader by AFTV ou NTDown.
+
+2️⃣ Abra o aplicativo escolhido e digite o código na barra de pesquisa:
+
+🔹 Downloader by AFTV
+7467828
+
+🔹 NTDown
+93562
+
+3️⃣ Confirme o código. Você será direcionado para um site onde poderá baixar o UniTv.
+
+4️⃣ Faça o download, abra o arquivo e conclua a instalação.
+
+⚠️ PERMISSÃO DE INSTALAÇÃO
+
+Por ser um aplicativo de terceiros, o dispositivo poderá solicitar autorização.
+
+✅ Se necessário, acesse Configurações → Instalar apps desconhecidos e permita a instalação pelo Downloader ou NTDown.
+
+━━━━━━━━━━━━━━━━
+
+📱 2️⃣ CELULAR ANDROID
+
+🔗 https://www.unitvapp.club/#baixar
+
+Acesse o link, baixe o aplicativo e instale. Se necessário, autorize a instalação dessa fonte.
+
+━━━━━━━━━━━━━━━━
+
+💻🍎 3️⃣ COMPUTADOR OU IPHONE
+
+🌐 https://www.unitvwebs.net/
+
+Acesse o site e siga as instruções disponíveis.
+
+━━━━━━━━━━━━━━━━
+
+📢 IMPORTANTE
+
+O UniTv não está disponível diretamente na Play Store. Utilize os códigos ou links informados acima.
+
+✅ Pronto! Após a instalação, abra o UniTv e insira seus dados de acesso.`;
+
+// Contas Prontas: estoque independente do Caixa. A data da criação nunca muda ao entregar.
+const READY_KEY_V300='ready_accounts_v1';
+let readyBusyV300=false;
+const rawReadyV300=getStore(READY_KEY_V300,{items:[],needsNext:false,lastDeliveredId:'',selectedId:''});
+const readyStateV300={
+  items:Array.isArray(rawReadyV300?.items)?rawReadyV300.items.filter(x=>x&&typeof x==='object'):[],
+  needsNext:!!rawReadyV300?.needsNext,
+  lastDeliveredId:String(rawReadyV300?.lastDeliveredId||''),
+  selectedId:String(rawReadyV300?.selectedId||'')
+};
+function readyLocalISO(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
+function readyISOFromBR(value){const m=String(value||'').trim().match(/^(\d{2})\/(\d{2})\/(\d{4})$/);if(!m)return '';const iso=`${m[3]}-${m[2]}-${m[1]}`;const d=new Date(`${iso}T12:00:00`);return Number.isNaN(+d)||d.getFullYear()!==+m[3]||d.getMonth()+1!==+m[2]||d.getDate()!==+m[1]?'':iso}
+function readyBRFromISO(iso){const m=String(iso||'').match(/^(\d{4})-(\d{2})-(\d{2})$/);return m?`${m[3]}/${m[2]}/${m[1]}`:'—'}
+function readyAddDays(iso,days){const d=new Date(`${iso}T12:00:00`);if(Number.isNaN(+d))return '';d.setDate(d.getDate()+days);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
+function readyDaysRemaining(iso){return Math.round((new Date(`${iso}T12:00:00`)-new Date(`${readyLocalISO()}T12:00:00`))/86400000)}
+function readyKindName(kind){return kind==='number'?'Telefone':kind==='outlook'?'Outlook':'E-mail'}
+function readySort(a,b){return String(a.expiresOn||'').localeCompare(String(b.expiresOn||''))||String(a.createdAt||'').localeCompare(String(b.createdAt||''))}
+function readySaveV300(){setStore(READY_KEY_V300,{items:readyStateV300.items,needsNext:readyStateV300.needsNext,lastDeliveredId:readyStateV300.lastDeliveredId,selectedId:readyStateV300.selectedId})}
+function readyAvailableV300(){return readyStateV300.items.filter(x=>x.status==='available'&&readyDaysRemaining(x.expiresOn)>=0).sort(readySort)}
+function readyExpiredV300(){return readyStateV300.items.filter(x=>x.status==='available'&&readyDaysRemaining(x.expiresOn)<0).sort(readySort)}
+function readySentV300(){return readyStateV300.items.filter(x=>x.status==='sent').sort((a,b)=>String(b.sentAt||'').localeCompare(String(a.sentAt||'')))}
+function readyMakeEntryV300(kind,identity,password,createdOn,formatted,expiresOn){
+  identity=String(identity||'').trim();password=String(password||'').trim();
+  if(!identity||!password||!formatted)return null;
+  const created=String(createdOn||readyLocalISO());
+  const expiry=String(expiresOn||readyAddDays(created,7));
+  if(!readyISOFromBR(readyBRFromISO(expiry)))return null;
+  const norm=identity.toLowerCase().replace(/\s+/g,'');
+  return {id:`${kind}:${norm}:${created}`,kind,identity,password,createdOn:created,expiresOn:expiry,formatted:String(formatted),status:'available',createdAt:new Date().toISOString(),sentAt:''};
+}
+function readyAddBatchV300(list){
+  let count=0;
+  for(const candidate of list){
+    if(!candidate||readyStateV300.items.some(x=>x.id===candidate.id))continue;
+    readyStateV300.items.push(candidate);count++;
+  }
+  if(count){readySaveV300();readyRenderV300()}
+  return count;
+}
+function readyText(tag,cls,value){const el=document.createElement(tag);if(cls)el.className=cls;el.textContent=value;return el}
+function readyExpiryLabel(x){const d=readyDaysRemaining(x.expiresOn);return d<0?`Vencida há ${-d} dia(s)`:d===0?'Vence hoje':`${d} dia(s) restantes`}
+function readyCardV300(x,buttonLabel,handler){const card=readyText('div','ready-item-v300','');card.append(readyText('strong','',x.identity),readyText('p','',`${readyKindName(x.kind)} · Criada ${readyBRFromISO(x.createdOn)} · Vence ${readyBRFromISO(x.expiresOn)}`),readyText('p','',readyExpiryLabel(x)));if(buttonLabel){const btn=readyText('button','btn dark',buttonLabel);btn.type='button';btn.addEventListener('click',handler);card.append(btn)}return card}
+function readyRenderV300(){
+ const available=readyAvailableV300(),expired=readyExpiredV300(),sent=readySentV300();
+ document.querySelectorAll('[data-ready-count]').forEach(el=>el.textContent=available.length);
+ const ids={readyAvailableCount:available.length,readyExpiredCount:expired.length,readySentCount:sent.length,readyAvailableListCount:`(${available.length})`,readyExpiredListCount:`(${expired.length})`,readySentListCount:`(${sent.length})`};
+ Object.entries(ids).forEach(([id,value])=>{const el=document.getElementById(id);if(el)el.textContent=String(value)});
+ const selected=available.find(x=>x.id===readyStateV300.selectedId)||available[0];
+ if(selected&&readyStateV300.selectedId!==selected.id){readyStateV300.selectedId=selected.id;readySaveV300()}
+ const featured=document.getElementById('readyFeatured');if(!featured)return;
+ featured.replaceChildren();
+ if(selected){
+   featured.append(readyText('h3','',selected.identity),readyText('p','',`${readyKindName(selected.kind)} · Criada em ${readyBRFromISO(selected.createdOn)}`),readyText('p','',`Vencimento: ${readyBRFromISO(selected.expiresOn)}`));
+   const info=readyText('p','ready-expiry-v300',readyExpiryLabel(selected));if(readyDaysRemaining(selected.expiresOn)<=1)info.classList.add('soon');featured.append(info);
+ }else featured.append(readyText('p','',expired.length?'Não há contas válidas. Veja as vencidas abaixo.':'Nenhuma conta disponível. Finalize um lote em Criar Conta para adicionar.'));
+ const deliver=document.getElementById('readyDeliverBtn');deliver.disabled=!selected||readyStateV300.needsNext||readyBusyV300;
+ deliver.textContent=readyStateV300.needsNext?'Conta entregue · Toque em Próxima conta':'Copiar e retirar 1 conta';
+ const after=document.getElementById('readyAfterDelivery');after.hidden=!readyStateV300.needsNext;
+ const last=readyStateV300.items.find(x=>x.id===readyStateV300.lastDeliveredId&&x.status==='sent');
+ document.getElementById('readyLastDelivered').textContent=last?`✓ ${last.identity} copiada e retirada. ${available.length} conta(s) disponível(is).`:'Entrega concluída. Toque em Próxima conta para continuar.';
+ document.getElementById('readyUndoBtn').disabled=!last;
+ const list=document.getElementById('readyAvailableList');list.replaceChildren();
+ for(const item of available){if(item.id===selected?.id)continue;list.append(readyCardV300(item,'Selecionar esta conta',()=>{readyStateV300.selectedId=item.id;readySaveV300();readyRenderV300()}))}
+ if(!list.children.length)list.append(readyText('p','muted-line','Nenhuma outra conta disponível.'));
+ const expiredList=document.getElementById('readyExpiredList');expiredList.replaceChildren();
+ for(const item of expired){expiredList.append(readyCardV300(item,'Retirar conta vencida da lista',()=>{readyStateV300.items=readyStateV300.items.filter(x=>x.id!==item.id);readySaveV300();readyRenderV300();toastOK('Conta vencida retirada da lista.')}))}
+ if(!expiredList.children.length)expiredList.append(readyText('p','muted-line','Nenhuma conta vencida.'));
+ const sentList=document.getElementById('readySentList');sentList.replaceChildren();
+ for(const item of sent.slice(0,100)){sentList.append(readyCardV300(item,null,null))}
+ if(!sentList.children.length)sentList.append(readyText('p','muted-line','Nenhuma conta enviada ainda.'));
+}
+function readyInitV300(){
+  const deliver=document.getElementById('readyDeliverBtn');if(!deliver)return;
+  deliver.addEventListener('click',async()=>{
+    if(readyBusyV300||readyStateV300.needsNext)return;
+    const item=readyAvailableV300().find(x=>x.id===readyStateV300.selectedId)||readyAvailableV300()[0];if(!item){toastOK('Nenhuma conta válida para entregar.');return}
+    readyBusyV300=true;readyRenderV300();
+    const ok=await copyClip(item.formatted);
+    if(!ok){readyBusyV300=false;readyRenderV300();toastOK('Não foi possível copiar. Conta mantida como disponível.');return}
+    item.status='sent';item.sentAt=new Date().toISOString();readyStateV300.needsNext=true;readyStateV300.lastDeliveredId=item.id;readyStateV300.selectedId='';
+    readySaveV300();readyBusyV300=false;readyRenderV300();toastOK('1 conta copiada e retirada.');buzz();
+  });
+  document.getElementById('readyNextBtn').addEventListener('click',()=>{readyStateV300.needsNext=false;readyStateV300.lastDeliveredId='';readySaveV300();readyRenderV300();toastOK('Próxima conta liberada.');});
+  document.getElementById('readyUndoBtn').addEventListener('click',()=>{
+    if(!readyStateV300.needsNext)return;
+    const item=readyStateV300.items.find(x=>x.id===readyStateV300.lastDeliveredId&&x.status==='sent');
+    if(!item)return;
+    item.status='available';item.sentAt='';readyStateV300.needsNext=false;readyStateV300.selectedId=item.id;readyStateV300.lastDeliveredId='';readySaveV300();readyRenderV300();toastOK('Conta devolvida às disponíveis.');
+  });
+  document.getElementById('readyManualAddBtn').addEventListener('click',()=>{
+    const area=document.getElementById('readyManualText');const data=area.value.trim();
+    const identifier=data.match(/(?:E-?mail|Número)\s*:\s*([^\n\r]+)/i);
+    const pw=data.match(/Senha\s*:\s*([^\n\r]+)/i);
+    const due=data.match(/Vencimento\s*:\s*(\d{2}\/\d{2}\/\d{4})/i);
+    if(!identifier||!pw||!due){toastOK('Informe conta, senha e vencimento na mensagem.');return}
+    const expires=readyISOFromBR(due[1]);if(!expires){toastOK('Vencimento inválido.');return}
+    const kind=/Número\s*:/i.test(data)?'number':'email';const identity=identifier[1].trim();
+    const existing=readyStateV300.items.some(x=>x.identity.toLowerCase()===identity.toLowerCase()&&x.expiresOn===expires);
+    if(existing){toastOK('Essa conta já está armazenada.');return}
+    const created=readyAddDays(expires,-7);
+    const entry=readyMakeEntryV300(kind,identity,pw[1],created,data,expires);
+    if(!entry){toastOK('Dados inválidos.');return}
+    if(!readyAddBatchV300([entry])){toastOK('Essa conta já foi adicionada.');return}
+    area.value='';toastOK('Conta adicionada às disponíveis.');
+  });
+  readyRenderV300();
+}
+function showTab(key){if(!tabs.some(t=>t.dataset.tab===key))key='renov';panels.forEach(p=>{const active=p.dataset.panel===key;p.classList.toggle('active',active);p.setAttribute('aria-hidden',active?'false':'true')});tabs.forEach(t=>{const active=t.dataset.tab===key;t.classList.toggle('active',active);t.setAttribute('aria-selected',active?'true':'false')});setStore('activeTab',key);try{location.hash='#'+key}catch(e){}}
+tabs.forEach(t=>t.addEventListener('click',()=>showTab(t.dataset.tab)));window.addEventListener('hashchange',()=>{const k=location.hash.substring(1);if(k)showTab(k)});showTab(location.hash?location.hash.substring(1):getStore('activeTab','renov'));
 const toast=document.getElementById('toast');let toastTimer=null;function toastOK(msg){toast.textContent=msg;toast.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>toast.classList.remove('show'),1400)}
 function buzz(ms=20){try{navigator.vibrate&&navigator.vibrate(ms)}catch(e){}}
 function confirmReset(msg='Tem certeza que deseja limpar? Isso apaga os dados salvos desta aba.'){try{return confirm(msg)}catch(e){return true}}
 async function copyClip(text){try{await navigator.clipboard.writeText(text);return true}catch(e){let ta=null;try{ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();return !!document.execCommand('copy')}catch(_){return false}finally{if(ta&&ta.parentNode)ta.parentNode.removeChild(ta)}}}
+const installMsgBtn=document.getElementById('installMsgBtn');
+if(installMsgBtn)installMsgBtn.addEventListener('click',async()=>{
+  const ok=await copyClip(INSTALL_MESSAGE_V302);
+  if(!ok){toastOK('Não foi possível copiar a mensagem.');return}
+  toastOK('Mensagem de instalação copiada!');buzz();
+});
 const cleanDigits=s=>String(s||'').replace(/\D+/g,'');
 const cleanPhone=s=>{let d=cleanDigits(s);if(d.startsWith('55')&&d.length>11)d=d.slice(2);return d.slice(-11)};
 function sanitizeCode6(s){const t=String(s||'').trim();if(!t)return'';let m=t.match(/c[oó]digo[^A-Za-z0-9]*([A-Za-z0-9]{6})/i);if(m)return m[1];m=t.match(/[A-Za-z0-9]{6}/);return m?m[0]:''}
@@ -1098,7 +1364,7 @@ function updateCreationDateHint(){
   const expiry=vencimentoTelefone(creation);
   numberExpiryHint.textContent=`${ongoing?'Lote em andamento':'Próximo lote'} · Criação: ${formatted} · Vencimento automático: ${expiry} (7 dias).`;
 }
-const st=Object.assign({alias:'',emails:[],clicks:0,createdOn:'',outlook:{primary:'',aliases:[],clicks:0,createdOn:''},numItems:[],completedAccounts:0,lastFlow:'email',nextSmsOrder:0},saved||{});
+const st=Object.assign({alias:'',emails:[],clicks:0,createdOn:'',outlook:{primary:'',aliases:[],clicks:0,createdOn:''},numItems:[],completedAccounts:0,lastFlow:'email',nextSmsOrder:0,numActionCount:null,numFinished:false},saved||{});
 // O fluxo Google existente e o novo fluxo Outlook têm progresso independente.
 if(!/^\d{4}-\d{2}-\d{2}$/.test(st.createdOn||''))st.createdOn=localTodayISO();
 if(!st.outlook||typeof st.outlook!=='object')st.outlook={};
@@ -1123,6 +1389,16 @@ st.numItems=st.numItems.map((x,i)=>{
   return {phone,code,initialCopied,tripletStage,tripletDone,accountDone,smsOrder,createdOn:String(x?.createdOn||localTodayISO())};
 }).filter(x=>x.phone.length>=10&&x.phone.length<=11);
 st.completedAccounts=st.numItems.filter(x=>x.accountDone).length;
+// Recupera o número aproximado de ações de um lote antigo sem reiniciar seu andamento.
+if(!Number.isSafeInteger(st.numActionCount)||st.numActionCount<0){
+  st.numActionCount=st.numItems.length
+    ?1+st.numItems.filter(x=>x.initialCopied).length
+      +(st.numItems.some(x=>x.code)?1:0)
+      +st.numItems.reduce((sum,x)=>sum+(x.tripletDone?3:Math.max(0,Math.min(3,x.tripletStage||0))),0)
+    :0;
+}
+st.numFinished=!!st.numFinished;
+
 // Contas de lotes anteriores mantêm a data criada no registro de cada conta.
 // Nenhum campo de data é exibido ou solicitado ao usuário.
 
@@ -1377,7 +1653,21 @@ function numberEditorText(){
   });
   return lines.join('\n');
 }
-function saveState(){setStore('create_account_v12',{alias:st.alias,emails:st.emails,clicks:st.clicks,createdOn:st.createdOn,outlook:st.outlook,numItems:st.numItems,completedAccounts:st.completedAccounts,lastFlow:st.lastFlow,nextSmsOrder:st.nextSmsOrder,editorText:editor.textContent})}
+// Cada botão mantém o próprio contador. Os textos da ação continuam controlados pelo fluxo.
+function renderFlowButton(button,label,progress,active,finished=false){
+  const title=document.createElement('span');
+  title.className='flow-action-title-v299';
+  title.textContent=label;
+  const count=document.createElement('span');
+  count.className='flow-step-count-v299';
+  count.textContent=progress;
+  button.replaceChildren(title,count);
+  button.classList.add('flow-step-button-v299');
+  button.classList.toggle('flow-selected-v299',active);
+  button.classList.toggle('flow-finished-v299',finished);
+  button.setAttribute('aria-label',`${label}. ${progress}${active?', fluxo selecionado':''}`);
+}
+function saveState(){setStore('create_account_v12',{alias:st.alias,emails:st.emails,clicks:st.clicks,createdOn:st.createdOn,outlook:st.outlook,numItems:st.numItems,completedAccounts:st.completedAccounts,lastFlow:st.lastFlow,nextSmsOrder:st.nextSmsOrder,numActionCount:st.numActionCount,numFinished:st.numFinished,editorText:editor.textContent})}
 function update(){
   const isOutlook=st.lastFlow==='outlook';
   const emailSteps=isOutlook?outlookSteps():legacySteps();
@@ -1390,10 +1680,13 @@ function update(){
   det.textContent=st.lastFlow==='number'?(numStep?numStep.label:numberButtonLabel()):emailNext;
   const activeNum=(tripletPendingItems()[0]||accountPendingItems()[0]||initialPending()||waitingSmsItems()[0]);
   passPill.textContent=activeNum&&activeNum.code?`${activeNum.code}q`:PASS;
-  emailBtn.textContent='Criar e copiar email';
-  outlookBtn.textContent='Criar e copiar Outlook';
+  const googleDone=Math.min(8,Math.max(0,Number(st.clicks)||0));
+  const outlookDone=Math.min(10,Math.max(0,Number(st.outlook.clicks)||0));
+  renderFlowButton(emailBtn,'Criar e copiar email',googleDone>=8?'8/8 · Concluído':`Passo ${googleDone+1}/8`,st.lastFlow==='email',googleDone>=8);
+  renderFlowButton(outlookBtn,'Criar e copiar Outlook',outlookDone>=10?'10/10 · Concluído':`Passo ${outlookDone+1}/10`,st.lastFlow==='outlook',outlookDone>=10);
   const numberActionLabel=numberButtonLabel();
-  numberBtn.textContent=numberActionLabel;
+  const numProgress=st.numFinished?`${st.numActionCount} etapas · Concluído`:`Passo ${st.numActionCount+1}`;
+  renderFlowButton(numberBtn,numberActionLabel,numProgress,st.lastFlow==='number',st.numFinished);
   numberBtn.classList.toggle('is-paste-number',numberActionLabel==='Colar número');
   emailBtn.disabled=false;outlookBtn.disabled=false;numberBtn.disabled=false;
   resetBtn.disabled=!st.alias&&!st.emails.length&&!st.clicks&&!st.outlook.primary&&!st.outlook.clicks&&!st.numItems.length&&!editor.textContent;
@@ -1431,7 +1724,15 @@ async function copyEmailFlow(){
   const step=ss[st.clicks];
   if(!step){toastOK('Nada para copiar.');update();return}
   const ok=await copyClip(step.text);
-  if(ok){st.clicks++;toastOK(`${step.label} copiado!`);buzz()}else toastOK('Falha ao copiar.');
+  if(ok){
+    st.clicks++;
+    if(st.clicks===ss.length&&st.emails.length===2){
+      const batch=st.emails.map(local=>readyMakeEntryV300('email',fullEmail(local),PASS,st.createdOn,msg(local,st.createdOn)));
+      const added=readyAddBatchV300(batch);if(added)toastOK(`${added} conta(s) salva(s) em Contas Prontas.`);
+      else toastOK(`${step.label} copiado!`);
+    }else toastOK(`${step.label} copiado!`);
+    buzz();
+  }else toastOK('Falha ao copiar.');
   update();
 }
 async function copyOutlookFlow(){
@@ -1443,27 +1744,40 @@ async function copyOutlookFlow(){
   const step=ss[st.outlook.clicks];
   if(!step){toastOK('Nada para copiar.');update();return}
   const ok=await copyClip(step.text);
-  if(ok){st.outlook.clicks++;toastOK(`${step.label} copiado!`);buzz()}
+  if(ok){
+    st.outlook.clicks++;
+    if(st.outlook.clicks===ss.length){
+      const batch=outlookLocals().map(local=>readyMakeEntryV300('outlook',fullEmail(local),PASS,st.outlook.createdOn,msg(local,st.outlook.createdOn)));
+      const added=readyAddBatchV300(batch);if(added)toastOK(`${added} conta(s) salva(s) em Contas Prontas.`);
+      else toastOK(`${step.label} copiado!`);
+    }else toastOK(`${step.label} copiado!`);
+    buzz();
+  }
   else toastOK('Falha ao copiar.');
   update();
 }
 
 async function copyNumberStep(step){
   const ok=await copyClip(step.text);if(!ok){toastOK('Falha ao copiar.');return}
+  st.numActionCount++;
+  st.numFinished=false;
   if(step.kind==='initial-number')step.item.initialCopied=true;
   else if(step.kind==='sms-number')step.item.tripletStage=1;
   else if(step.kind==='code')step.item.tripletStage=2;
   else if(step.kind==='password'){step.item.tripletStage=3;step.item.tripletDone=true}
   else if(step.kind==='accounts'){
     const total=step.items.length;
+    const batch=step.items.map(item=>readyMakeEntryV300('number',formatCreatedPhone(item.phone),`${item.code}q`,item.createdOn,completePhoneAccount(item)));
+    const added=readyAddBatchV300(batch);
     step.items.forEach(item=>{item.accountDone=true;});
     st.completedAccounts=st.numItems.filter(x=>x.accountDone).length;
     st.numItems=[];
     st.completedAccounts=0;
     st.nextSmsOrder=0;
+    st.numFinished=true;
     editor.textContent='';
     editor.classList.remove('show');
-    toastOK(total>1?`${total} contas completas copiadas! Ciclo zerado.`:'Conta completa copiada! Ciclo zerado.');
+    toastOK(`${total} conta(s) formatada(s) copiada(s) · ${added} adicionada(s) a Contas Prontas.`);
     buzz();
     update();
     return;
@@ -1478,8 +1792,12 @@ async function numberFlow(){
   // Sem ciclo ativo (ou ciclo totalmente concluído): cola os números gerados.
   if(!st.numItems.length||st.numItems.every(x=>x.accountDone)){
     const text=await getClipOrPrompt('Cole uma ou várias mensagens de número gerado.');
+    const previousFinished=st.numFinished;
     const added=addInitialNumbers(text);
     if(!added){toastOK('Não encontrei “Número sem DDI”.');update();return}
+    if(previousFinished)st.numActionCount=0;
+    st.numFinished=false;
+    st.numActionCount++;
     editor.classList.add('show');
     toastOK(`${added} número(s) armazenado(s).`);
     update();return;
@@ -1495,6 +1813,8 @@ async function numberFlow(){
       else toastOK('Não encontrei “Número sem DDI” e código de 6 dígitos no SMS.');
       update();return;
     }
+    st.numActionCount++;
+    st.numFinished=false;
     editor.classList.add('show');
     toastOK(result.autoAdded?`${result.added} SMS recebido(s). Número reconhecido pelo próprio SMS.`:`${result.added} SMS recebido(s). Agora: número → código → senha.`);
     update();return;
@@ -1504,11 +1824,12 @@ async function numberFlow(){
 emailBtn.addEventListener('click',copyEmailFlow);
 outlookBtn.addEventListener('click',copyOutlookFlow);
 numberBtn.addEventListener('click',numberFlow);
-resetBtn.addEventListener('click',()=>{if(!confirmReset('Tem certeza que deseja limpar o Criar Conta?')){toastOK('Cancelado.');return}st.alias='';st.emails=[];st.clicks=0;st.createdOn='';st.outlook={primary:'',aliases:[],clicks:0,createdOn:''};st.numItems=[];st.completedAccounts=0;st.nextSmsOrder=0;st.lastFlow='email';editor.textContent='';editor.classList.remove('show');toastOK('Limpo.');update()});
+resetBtn.addEventListener('click',()=>{if(!confirmReset('Tem certeza que deseja limpar o Criar Conta?')){toastOK('Cancelado.');return}st.alias='';st.emails=[];st.clicks=0;st.createdOn='';st.outlook={primary:'',aliases:[],clicks:0,createdOn:''};st.numItems=[];st.completedAccounts=0;st.nextSmsOrder=0;st.numActionCount=0;st.numFinished=false;st.lastFlow='email';editor.textContent='';editor.classList.remove('show');toastOK('Limpo.');update()});
 toggle.addEventListener('click',()=>{editor.classList.toggle('show');editor.textContent=st.lastFlow==='number'?numberEditorText():(st.lastFlow==='outlook'?outlookEditorText():legacyEditorText());update()});
 if(st.editorText)editor.textContent=st.editorText;update();
 }
 document.querySelectorAll('.block[data-seq="create-account"]').forEach(initCreateAccount);
+readyInitV300();
 
 function initEmails(block){const q=s=>block.querySelector(s);const editor=q('.editor'),aliasBtn=q('[data-role="paste-email"]'),genBtn=q('[data-role="gen-email"]'),loginBtn=q('[data-role="paste-login"]'),codeBtn=q('[data-role="paste-code"]'),copyBtn=q('.copy'),resetBtn=q('.reset'),counter=q('.counter'),det=q('.det'),toggle=q('.toggle-sms'),fill=q('.fill'),bar=q('.bar'),statusLeft=q('.status .left'),statusProg=q('.status .progress'),codePill=q('.email-code-pill'),copiesEl=q('.email-copies');const st=Object.assign({alias:'',locals:[],loginQueue:[],code:'',clicks:0,codeCopies:0},getStore('emails_simple',{}));const WORDS=['mesa','copo','chave','porta','livro','fone','mouse','tv','sofa','anel','bone','oculos','carro','moto','caixa','prato','pano','toalha','pilha','cabo','bolo','cafe','suco','pizza','pote','saco','lata','tampa','papel','dado','bola','rede','vaso','vela','pino','rato','gato','pato','leao','sol','lua','ceu','mar','rio','lago','vento','fogo','neve','areia'];function next5(){let s=getStore('email_num_seq',null),step,last;if(!s||typeof s.step!=='number'||typeof s.last!=='number'){last=randInt(100000);do{step=randInt(99999)+1}while(gcd(step,100000)!==1)}else{step=s.step;last=s.last}last=(last+step)%100000;setStore('email_num_seq',{step,last});return String(last).padStart(5,'0')}function makeEmail(){return WORDS[randInt(WORDS.length)]+next5()}function steps(){const arr=[];if(st.loginQueue.length){arr.push({label:'Login Email',text:st.loginQueue[0].email});arr.push({label:'Login Senha',text:st.loginQueue[0].pass})}if(st.alias)arr.push({label:'Aliás Gmail',text:st.alias});for(let i=0;i<st.locals.length;i++)arr.push({label:`E-mail ${i+1}`,text:i===0&&!st.alias?st.locals[i]+'@outlook.com':st.locals[i]});if(st.loginQueue.length)arr.push({label:'Fase 2 Login',text:st.loginQueue[0].email});for(let i=0;i<st.locals.length;i++){arr.push({label:`Fase 2 Email ${i+1}`,text:st.locals[i]});arr.push({label:'Fase 2 Código',text:st.code})}return arr}function text(){return ['LOGIN:',st.loginQueue[0]?`${st.loginQueue[0].email}:${st.loginQueue[0].pass}`:'—','','ALIÁS:',st.alias||'—','','GERADOS:',st.locals.length?st.locals.map((x,i)=>`${i+1}) ${x}`).join('\n'):'—','','CÓDIGO:',st.code||'—'].join('\n')}function update(){const ss=steps(),remain=Math.max(ss.length-st.clicks,0);counter.textContent=st.locals.length;det.textContent=st.alias?1:0;codePill.textContent=st.code||'—';copiesEl.textContent=st.codeCopies;copyBtn.innerHTML=`Copiar <span class="muted">(restantes: ${remain})</span>`;copyBtn.disabled=!ss.length||st.clicks>=ss.length;resetBtn.disabled=!st.alias&&!st.locals.length&&!st.loginQueue.length&&!st.code&&!st.clicks;toggle.textContent=editor.classList.contains('show')?'Ocultar e-mails':`Ver e-mails (${st.locals.length})`;fill.style.width=ss.length?(Math.min(st.clicks/ss.length,1)*100)+'%':'0%';bar.classList.toggle('complete',ss.length&&st.clicks>=ss.length);statusLeft.textContent=ss[st.clicks]?`Próximo: ${ss[st.clicks].label}`:'Fase 0 de 2 · Próximo: Gerar e-mails';statusProg.textContent=`${Math.min(st.clicks,ss.length)}/${ss.length}`;badge('emails',{count:ss.length&&st.clicks>=ss.length?1:0,limit:1,isDone:ss.length&&st.clicks>=ss.length});setStore('emails_simple',{alias:st.alias,locals:st.locals,loginQueue:st.loginQueue,code:st.code,clicks:st.clicks,codeCopies:st.codeCopies,editorText:editor.textContent})}aliasBtn.addEventListener('click',()=>{st.alias=`${nextDotAliasLocal()}@gmail.com`;st.clicks=0;editor.textContent=text();toastOK('Aliás gerado.');update()});genBtn.addEventListener('click',()=>{st.locals=Array.from({length:st.alias?2:3},makeEmail);st.clicks=0;editor.textContent=text();toastOK(`${st.locals.length} e-mails gerados.`);update()});loginBtn.addEventListener('click',async()=>{const t=await getClipOrPrompt('Cole email:senha');const arr=String(t||'').split(/\n+/).map(x=>x.trim()).filter(Boolean).map(line=>{const p=line.split(':');return p.length>=2?{email:p[0].trim(),pass:p.slice(1).join(':').trim()}:null}).filter(Boolean);if(!arr.length){toastOK('Nada válido.');return}st.loginQueue.push(...arr);editor.textContent=text();toastOK('Login adicionado.');update()});codeBtn.addEventListener('click',async()=>{const val=sanitizeCode6(await getClipOrPrompt('Cole o código.'));if(val.length!==6){toastOK('Código inválido.');return}st.code=val;editor.textContent=text();toastOK('Código salvo.');update()});copyBtn.addEventListener('click',async()=>{const ss=steps();const step=ss[st.clicks];if(!step){toastOK('Nada para copiar.');return}if(/Código/.test(step.label)&&(!st.code||st.code.length!==6)){toastOK('Faltou código.');return}const ok=await copyClip(step.text);if(ok){if(/Fase 2 Código/.test(step.label))st.codeCopies++;st.clicks++;toastOK(`${step.label} copiado!`);buzz();if(st.clicks>=ss.length){st.clicks=0;st.alias='';if(st.loginQueue.length)st.loginQueue.shift()}}editor.textContent=text();update()});resetBtn.addEventListener('click',()=>{if(!confirmReset('Tem certeza que deseja zerar?'))return;st.alias='';st.locals=[];st.loginQueue=[];st.code='';st.clicks=0;st.codeCopies=0;editor.textContent='';editor.classList.remove('show');toastOK('Zerado.');update()});toggle.addEventListener('click',()=>{editor.classList.toggle('show');if(!editor.textContent)editor.textContent=text();update()});if(st.editorText)editor.textContent=st.editorText;update()}
 document.querySelectorAll('.block[data-seq="emails"]').forEach(initEmails);
@@ -1998,9 +2319,10 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     const [year,month]=key.split('-').map(Number);
     const today=new Date();
     const day=String(Math.min(today.getDate(),new Date(year,month,0).getDate())).padStart(2,'0');
-    cashEntryDateInput.min=`${key}-01`;
-    cashEntryDateInput.max=`${key}-${String(new Date(year,month,0).getDate()).padStart(2,'0')}`;
-    if(force||!cashEntryDateInput.value.startsWith(`${key}-`)) cashEntryDateInput.value=`${key}-${day}`;
+    // A data visível controla o mês: permitir navegar pelo calendário sem as setas antigas.
+    cashEntryDateInput.removeAttribute('min');
+    cashEntryDateInput.removeAttribute('max');
+    if(force||!/^\d{4}-\d{2}-\d{2}$/.test(cashEntryDateInput.value)) cashEntryDateInput.value=`${key}-${day}`;
   }
   syncCashEntryDate(true);
   function selectedCashDate(){
@@ -2383,8 +2705,6 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
   ['#cashHistorySearch','#cashHistoryType'].forEach(sel=>$(sel).addEventListener('input',()=>{cashHistoryVisible=60;renderCash();}));
   $('#cashHistoryMoreBtn').addEventListener('click',()=>{cashHistoryVisible+=60;renderCash();});
   function shiftMonth(input,delta){const [year,month]=String(input.value||monthISO()).split('-').map(Number);const d=new Date(year,month-1+delta,1);input.value=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;input.dispatchEvent(new Event('change',{bubbles:true}));}
-  $('#cashPrevMonth').addEventListener('click',()=>shiftMonth(cashMonthInput,-1));
-  $('#cashNextMonth').addEventListener('click',()=>shiftMonth(cashMonthInput,1));
   cashMonthInput.addEventListener('change',()=>{cashHistoryVisible=60;
     syncCashEntryDate(true);
     try{ localStorage.setItem(CASH_MONTH_KEY,selectedCashMonth()); }catch(error){}
@@ -2392,7 +2712,18 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     renderCash();
     appToast('Mês do caixa alterado.');
   });
-  cashEntryDateInput.addEventListener('change',()=>{syncCashEntryDate();renderCash();});
+  cashEntryDateInput.addEventListener('change',()=>{
+    const date=cashEntryDateInput.value;
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(date)){syncCashEntryDate(true);renderCash();return;}
+    const chosenMonth=date.slice(0,7);
+    if(chosenMonth!==selectedCashMonth()){
+      cashMonthInput.value=chosenMonth;
+      cashHistoryVisible=60;
+      $('#closeDayBox').style.display='none';
+      try{localStorage.setItem(CASH_MONTH_KEY,chosenMonth);}catch(error){}
+    }
+    renderCash();
+  });
   const cashSheetHost=$('#cashSheetHost');
   const cashSheetParking=element('div','cash-sheet-parking-v265');
   cashSheetParking.id='cashSheetParking';
@@ -2950,13 +3281,22 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
   function syncPersonalEntryDate(force=false){
     const key=selectedPersonalMonth(),[y,m]=key.split('-').map(Number),last=new Date(y,m,0).getDate();
     const day=String(Math.min(new Date().getDate(),last)).padStart(2,'0');
-    personalEntryDate.min=`${key}-01`;personalEntryDate.max=`${key}-${String(last).padStart(2,'0')}`;
-    if(force||!personalEntryDate.value.startsWith(`${key}-`))personalEntryDate.value=`${key}-${day}`;
+    personalEntryDate.removeAttribute('min');personalEntryDate.removeAttribute('max');
+    if(force||!/^\d{4}-\d{2}-\d{2}$/.test(personalEntryDate.value))personalEntryDate.value=`${key}-${day}`;
   }
   syncPersonalEntryDate(true);
-  personalEntryDate.addEventListener('change',()=>syncPersonalEntryDate());
-  $('#personalPrevMonth').addEventListener('click',()=>shiftMonth(personalMonthInput,-1));
-  $('#personalNextMonth').addEventListener('click',()=>shiftMonth(personalMonthInput,1));
+  personalEntryDate.addEventListener('change',()=>{
+    const date=personalEntryDate.value;
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(date)){syncPersonalEntryDate(true);return;}
+    const chosenMonth=date.slice(0,7);
+    if(chosenMonth!==selectedPersonalMonth()){
+      personalMonthInput.value=chosenMonth;
+      personalHistoryVisible=60;
+      closeExpensePayPanel();
+      currentPersonalMonth();
+    }
+    savePersonal();renderPersonal();
+  });
   function addPersonalHistory(text, amount, kind='outflow', extra={}){
     const month=currentPersonalMonth();
     const record={id:uid(),date:personalEntryDate.value||todayISO(),month:selectedPersonalMonth(),text:String(text).slice(0,300),amount:Math.max(0,finiteOr(amount,0)),kind,reversed:false,...extra};
