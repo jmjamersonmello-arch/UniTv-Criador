@@ -491,12 +491,192 @@ h1,.app-brand h1{font-size:33px}
  .cash-key-metrics-v289 .metric-v264 strong{font-size:17px}
  .cash-key-metrics-v289 .metric-v264 small{font-size:10px}
 }
+
+/* JamesUni v2.93: Colar numero com destaque laranja */
+.main-panel[data-main-panel="unitv"] .panel[data-panel="nova"] .btn[data-role="paste-number"],
+.main-panel[data-main-panel="unitv"] .panel[data-panel="renov"] .btn[data-role="paste-number"]{
+  background:linear-gradient(135deg,#fbbf24 0%,#fb923c 55%,#f97316 100%);
+  color:#231204;
+}
+
+/* JamesUni v2.94 — lancamentos no topo do Caixa */
+.main-panel[data-main-panel="caixa"] .cash-fast-zone-v294{
+  border:1px solid rgba(34,211,238,.18);
+  background:linear-gradient(150deg,rgba(34,211,238,.055),rgba(124,58,237,.055));
+  border-radius:15px;padding:10px;margin:8px 0 10px;
+}
+.cash-fast-zone-title-v294{font-size:12px;text-transform:uppercase;letter-spacing:.055em;font-weight:950;color:#d8f8ff;margin:0 0 7px}
+.main-panel[data-main-panel="caixa"] .cash-entry-date{margin:0 0 8px;gap:7px;justify-content:flex-start}
+.main-panel[data-main-panel="caixa"] .cash-entry-date label{font-size:12px;color:var(--txt)}
+.main-panel[data-main-panel="caixa"] .cash-entry-date input{min-height:36px;max-width:175px}
+.main-panel[data-main-panel="caixa"] .cash-entry-date span{font-size:10px;width:auto;flex:1;min-width:145px;line-height:1.3}
+.main-panel[data-main-panel="caixa"] .quick-actions-v264{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:0}
+.main-panel[data-main-panel="caixa"] .quick-actions-v264 .btn{min-width:0;min-height:46px;padding:8px 3px;font-size:12px;line-height:1.15;border-radius:11px;white-space:normal}
+.main-panel[data-main-panel="caixa"] .dashboard-overview{margin-top:0}
+@media(max-width:600px){
+  .main-panel[data-main-panel="caixa"] .section-head p{display:none}
+  .main-panel[data-main-panel="caixa"] .section-head{margin-bottom:6px}
+  .main-panel[data-main-panel="caixa"] .cash-entry-date span{display:none}
+  .main-panel[data-main-panel="caixa"] .cash-key-metrics-v289 .metric-v264{min-height:0;padding:9px;gap:3px}
+  .main-panel[data-main-panel="caixa"] .cash-key-metrics-v289 .metric-v264 small{display:none}
+  .main-panel[data-main-panel="caixa"] .cash-context-v289{display:none}
+  .main-panel[data-main-panel="caixa"] .cash-fast-zone-v294{padding:9px 8px}
+}
+@media(max-width:360px){
+  .main-panel[data-main-panel="caixa"] .quick-actions-v264{grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}
+  .main-panel[data-main-panel="caixa"] .quick-actions-v264 .btn{font-size:11px;padding:8px 1px}
+  .main-panel[data-main-panel="caixa"] .cash-entry-date input{max-width:150px;font-size:12px}
+}
+
+/* JamesUni v2.98 — somente o estado Colar numero em Criar Conta fica laranja */
+.main-panel[data-main-panel="unitv"] .panel[data-panel="pers"] .btn[data-role="number-flow"].is-paste-number{
+  background:linear-gradient(135deg,#fbbf24 0%,#fb923c 55%,#f97316 100%);
+  color:#231204;
+}
+
+/* ===== JamesUni v2.98 · UniTV mais compacta e reorganizada ===== */
+.main-panel[data-main-panel="unitv"] .header{padding:12px 12px 6px;border-radius:18px;margin-bottom:9px}
+.main-panel[data-main-panel="unitv"] .header h1{font-size:21px;line-height:1.05}
+.main-panel[data-main-panel="unitv"] .tabs{margin-top:9px;gap:7px}
+.main-panel[data-main-panel="unitv"] .tab{padding:8px 9px;border-radius:12px;font-size:12px}
+.main-panel[data-main-panel="unitv"] .tab[data-tab="account"]{padding:10px 8px;gap:10px}
+.main-panel[data-main-panel="unitv"] .account-tab-title{font-size:17px;line-height:1.15}
+.main-panel[data-main-panel="unitv"] .badge{font-size:10px}
+.main-panel[data-main-panel="unitv"] .panel{margin-top:9px}
+.main-panel[data-main-panel="unitv"] .block{padding:10px 10px 11px;border-radius:18px}
+.main-panel[data-main-panel="unitv"] .block-title{font-size:18px;margin-bottom:3px;line-height:1.05}
+.main-panel[data-main-panel="unitv"] .counter-line{margin-bottom:7px;font-size:12.6px;gap:8px}
+.main-panel[data-main-panel="unitv"] .pill{font-size:12px;padding:4px 7px;line-height:1.2}
+.main-panel[data-main-panel="unitv"] .btn{font-size:12.8px;padding:9px 8px;border-radius:11px}
+.main-panel[data-main-panel="unitv"] .inline{margin-top:7px;font-size:12.6px}
+.main-panel[data-main-panel="unitv"] .editor{margin-top:7px;padding:9px;border-radius:12px;max-height:190px;font-size:12px}
+.main-panel[data-main-panel="unitv"] .status{margin-top:7px;font-size:12.3px;gap:7px}
+.main-panel[data-main-panel="unitv"] .progress{font-size:12.6px}
+.main-panel[data-main-panel="unitv"] .bar{margin-top:7px;height:8px}
+.main-panel[data-main-panel="unitv"] .footer{margin-top:10px;padding-top:7px;line-height:1.38;font-size:11.5px}
+.compact-create-v297 .compact-create-head-v297{align-items:flex-start}
+.mini-flow-note-v297{color:rgba(234,240,255,.58);font-weight:850;font-size:10.8px;line-height:1.25;margin-top:3px}
+.compact-create-v297 .compact-create-grid-v297{grid-template-columns:1fr 1fr;gap:7px}
+.compact-create-v297 .compact-create-grid-v297 .btn{min-height:42px;line-height:1.15}
+.compact-create-v297 .compact-create-hint-v297{margin:7px 0 0;font-size:10.6px;line-height:1.32}
+.compact-create-v297 .compact-create-inline-v297{align-items:center}
+.compact-create-v297 .compact-create-status-v297 .left{line-height:1.3}
+@media(max-width:360px){
+  .main-panel[data-main-panel="unitv"] .tab[data-tab="account"]{padding:9px 7px}
+  .main-panel[data-main-panel="unitv"] .account-tab-title{font-size:15px}
+  .compact-create-v297 .compact-create-grid-v297{grid-template-columns:1fr}
+}
+
+
+/* v2.98 · grade 2×2 da UniTV em celular: evita o bloco vertical de três fileiras */
+.main-panel[data-main-panel="unitv"] .tabs{
+ grid-template-columns:repeat(2,minmax(0,1fr));
+ grid-template-rows:repeat(2,minmax(47px,auto));
+ grid-template-areas:"nova renov" "pers account";
+}
+.main-panel[data-main-panel="unitv"] .tab[data-tab="account"]{flex-direction:row;justify-content:space-between;align-items:center;text-align:left;gap:6px;min-height:47px;padding:8px 9px}
+.main-panel[data-main-panel="unitv"] .tab[data-tab="account"] .badge{flex:0 0 auto}
+.main-panel[data-main-panel="unitv"] .account-tab-title{font-size:14px;line-height:1.12}
+@media(max-width:360px){
+ .compact-create-v297 .compact-create-grid-v297{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+ .main-panel[data-main-panel="unitv"] .account-tab-title{font-size:13px}
+ .main-panel[data-main-panel="unitv"] .tab{padding:7px 7px;font-size:11.5px}
+ .compact-create-v297 .compact-create-grid-v297 .btn{font-size:11.8px;padding:8px 5px}
+}
+
+
+/* ===== JamesUni v2.98 · equilíbrio entre tamanho e acesso rápido ===== */
+/* Cabeçalho proporcional ao celular, sem reduzir a legibilidade */
+.main-panel[data-main-panel="unitv"] .header{padding:14px 13px 9px;border-radius:19px;margin-bottom:10px}
+.main-panel[data-main-panel="unitv"] .header h1{font-size:23px;line-height:1.1}
+.main-panel[data-main-panel="unitv"] .tabs{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);
+  grid-template-rows:repeat(3,minmax(48px,auto));
+  grid-template-areas:"nova account" "renov account" "pers account";
+  gap:8px;
+  margin-top:11px;
+  align-items:stretch;
+}
+.main-panel[data-main-panel="unitv"] .tab{
+  padding:11px 10px;
+  min-height:48px;
+  font-size:14px;
+  border-radius:13px;
+  line-height:1.22;
+  gap:6px;
+}
+.main-panel[data-main-panel="unitv"] .tab[data-tab="account"]{
+  grid-area:account;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:14px 9px;
+  gap:12px;
+}
+.main-panel[data-main-panel="unitv"] .account-tab-title{font-size:20px;line-height:1.18}
+.main-panel[data-main-panel="unitv"] .tab[data-tab="account"] .badge{font-size:13px;justify-content:center}
+.main-panel[data-main-panel="unitv"] .badge{font-size:11px;gap:6px}
+.main-panel[data-main-panel="unitv"] .dot{width:8px;height:8px}
+/* Panels and actions: comfortable touch targets */
+.main-panel[data-main-panel="unitv"] .panel{margin-top:10px}
+.main-panel[data-main-panel="unitv"] .block{padding:13px 12px 14px;border-radius:19px}
+.main-panel[data-main-panel="unitv"] .block-title{font-size:22px;line-height:1.13;margin-bottom:3px}
+.main-panel[data-main-panel="unitv"] .counter-line{margin-bottom:10px;gap:9px;font-size:14px;align-items:center}
+.main-panel[data-main-panel="unitv"] .pill{font-size:13px;padding:6px 9px;line-height:1.22}
+.main-panel[data-main-panel="unitv"] .controls,.main-panel[data-main-panel="unitv"] .secondary{gap:9px}
+.main-panel[data-main-panel="unitv"] .secondary{margin-top:9px}
+.main-panel[data-main-panel="unitv"] .btn{
+  font-size:15px;
+  line-height:1.25;
+  padding:12px 10px;
+  min-height:47px;
+  border-radius:12px;
+}
+.main-panel[data-main-panel="unitv"] .btn.reset{min-height:43px}
+.main-panel[data-main-panel="unitv"] .inline{font-size:14px;margin-top:10px}
+.main-panel[data-main-panel="unitv"] .editor{margin-top:9px;padding:11px;max-height:220px;font-size:13px}
+.main-panel[data-main-panel="unitv"] .status{font-size:13.5px;margin-top:10px;gap:9px}
+.main-panel[data-main-panel="unitv"] .progress{font-size:13px}
+.main-panel[data-main-panel="unitv"] .bar{margin-top:9px;height:9px}
+.main-panel[data-main-panel="unitv"] .footer{font-size:12px;line-height:1.45;margin-top:11px;padding-top:8px}
+/* Criar Conta: Gmail e Outlook lado a lado; número e limpar em linhas próprias */
+.compact-create-v297 .compact-create-head-v297{align-items:center;gap:9px}
+.compact-create-v297 .mini-flow-note-v297{font-size:11.5px;margin-top:4px}
+.compact-create-v297 .compact-create-grid-v297{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  grid-template-areas:"gmail outlook" "number number" "reset reset";
+  gap:9px;
+}
+.compact-create-v297 .compact-create-grid-v297 [data-role="gen-copy"]{grid-area:gmail}
+.compact-create-v297 .compact-create-grid-v297 [data-role="outlook-flow"]{grid-area:outlook}
+.compact-create-v297 .compact-create-grid-v297 [data-role="number-flow"]{grid-area:number}
+.compact-create-v297 .compact-create-grid-v297 [data-role="reset"]{grid-area:reset}
+.compact-create-v297 .compact-create-grid-v297 .btn{font-size:14.5px;min-height:49px;padding:11px 10px}
+.compact-create-v297 .compact-create-grid-v297 .btn[data-role="reset"]{min-height:41px;padding:9px 10px}
+.compact-create-v297 .compact-create-hint-v297{font-size:11.8px;margin:9px 0 0;line-height:1.3}
+.compact-create-v297 .compact-create-inline-v297{margin-top:10px}
+.compact-create-v297 .compact-create-status-v297 .left{line-height:1.35}
+@media(max-width:360px){
+  .main-panel[data-main-panel="unitv"] .tabs{gap:7px;grid-template-columns:minmax(0,1fr) minmax(0,1.04fr)}
+  .main-panel[data-main-panel="unitv"] .tab{font-size:13px;padding:9px 8px;min-height:48px}
+  .main-panel[data-main-panel="unitv"] .account-tab-title{font-size:18px}
+  .main-panel[data-main-panel="unitv"] .block-title{font-size:21px}
+  .main-panel[data-main-panel="unitv"] .btn{font-size:14px;padding:11px 8px;min-height:46px}
+  .compact-create-v297 .compact-create-grid-v297{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .compact-create-v297 .compact-create-grid-v297 .btn{font-size:13.7px;min-height:49px;padding:10px 6px}
+  .main-panel[data-main-panel="unitv"] .pill{font-size:12px}
+}
+
 </style>
 </head>
 <body>
 <div class="wrap">
 <div class="header app-top">
-<div class="app-brand"><div><h1>JamesUni</h1><div class="app-subtitle">Caixa, criação UniTV e gastos pessoais em um só lugar.</div></div><span class="pill"><strong>v2.91</strong></span></div>
+<div class="app-brand"><div><h1>JamesUni</h1><div class="app-subtitle">Caixa, criação UniTV e gastos pessoais em um só lugar.</div></div><span class="pill"><strong>v2.98</strong></span></div>
 <div class="main-nav" role="tablist">
 <button aria-pressed="true" class="main-tab active" data-main-tab="caixa" role="tab" type="button">Caixa</button>
 <button aria-pressed="false" class="main-tab" data-main-tab="unitv" role="tab" type="button">UniTV</button>
@@ -509,7 +689,17 @@ h1,.app-brand h1{font-size:33px}
 <div><h2>Caixa JamesUni</h2><p>Vendas, estoque, gastos e retiradas do mês.</p></div>
 <div class="month-filter"><label for="cashMonth">Mês</label><input id="cashMonth" type="month"/><div class="month-arrows-v283"><button type="button" id="cashPrevMonth" aria-label="Mês anterior">‹</button><button type="button" id="cashNextMonth" aria-label="Próximo mês">›</button></div></div>
 </div>
-<div class="cash-entry-date"><label for="cashEntryDate">Data dos próximos lançamentos</label><input id="cashEntryDate" type="date"/><span>Vendas, compras e gastos serão registrados nesta data.</span></div>
+<div class="cash-fast-zone-v294" aria-label="Registrar movimentações do Caixa">
+<div class="cash-fast-zone-title-v294">Registrar movimentação</div>
+<div class="cash-entry-date"><label for="cashEntryDate">Data do lançamento</label><input id="cashEntryDate" type="date"/><span>Usada para vendas, compras, gastos e retiradas.</span></div>
+<div class="quick-actions-v264">
+<button class="btn green" data-cash-open="sale" type="button">+ Venda</button>
+<button class="btn blue" data-cash-open="stock" type="button">+ Créditos</button>
+<button class="btn orange" data-cash-open="expense" type="button">+ Gasto</button>
+<button class="btn purple" data-cash-open="withdrawal" type="button">+ Retirada</button>
+<div class="cash-sheet-host-v265" id="cashSheetHost"></div>
+</div>
+</div>
 <div class="dashboard-overview">
 <div class="dashboard-overview-head"><div class="dashboard-overview-title">Dinheiro, estoque e lucro</div><div class="dashboard-overview-note" id="cashDashboardPeriod">Mês selecionado</div></div>
 <div class="metric-grid-v264 cash-key-metrics-v289">
@@ -547,13 +737,7 @@ h1,.app-brand h1{font-size:33px}
   <p class="goal-v279-note"><b>Meta operacional:</b> vendas − compras de créditos − gastos operacionais. Não equivale ao lucro dos créditos vendidos. Retiradas pessoais ficam fora da meta. Contas antigas sem quantidade explícita contam como uma conta por venda.</p>
 </div></div></details>
 <div class="alert-box ok" id="cashAlert">Tudo pronto. Registre vendas, gastos e compras de crédito por aqui.</div>
-<div class="quick-actions-v264">
-<button class="btn green" data-cash-open="sale" type="button">+ Venda</button>
-<button class="btn blue" data-cash-open="stock" type="button">+ Créditos</button>
-<button class="btn orange" data-cash-open="expense" type="button">+ Gasto</button>
-<button class="btn purple" data-cash-open="withdrawal" type="button">+ Retirada</button>
-<div class="cash-sheet-host-v265" id="cashSheetHost"></div>
-</div>
+
 <div class="smart-stock-v283" id="cashStockForecast" aria-live="polite">Estoque: registre vendas para ver a previsão de reposição.</div>
 <details class="compact-details"><summary>Resumo do mês</summary><div class="compact-details-body"><div class="metric-grid-v264">
 <div class="metric-v264"><span>Meta operacional após compras</span><strong data-cash="target">R$ 2.035,00</strong></div>
@@ -670,12 +854,12 @@ h1,.app-brand h1{font-size:33px}
 </div></div>
 <div class="panel active" data-panel="nova" role="tabpanel"><section class="block" data-key="nova" data-limit="3" data-seq="triple"><div class="counter-line"><div class="block-title">Conta Nova</div><div class="pill"><span>Registros:</span><strong class="counter">0</strong><span class="muted">• Próximo: <span class="det">Nº</span></span></div></div><div class="controls"><button class="btn paste" data-role="paste-number" type="button">Colar número</button><button class="btn paste" data-role="paste-code" type="button">Colar Código</button><button class="btn sms" data-role="paste-sms" type="button">Colar SMS</button><button class="btn copy copy" type="button">Copiar <span class="muted">(restantes: 0)</span></button><button class="btn reset reset" data-role="reset" type="button">Zerar</button></div><div class="secondary"><button class="btn sub undo" data-role="undo" type="button">⟲ Desfazer</button><button class="btn sub skip" data-role="skip" type="button">» Pular</button></div><div class="inline"><span>Código: <strong class="code-pill">—</strong></span><button class="toggle-sms" type="button">Ver SMS</button></div><div class="editor"></div><div class="status"><div class="left">Pronto.</div><div class="progress">0</div></div><div class="bar"><div class="fill"></div></div></section></div>
 <div class="panel" data-panel="renov" role="tabpanel"><section class="block" data-key="renov" data-limit="5" data-seq="triple"><div class="counter-line"><div class="block-title">Renovação</div><div class="pill"><span>Registros:</span><strong class="counter">0</strong><span class="muted">• Próximo: <span class="det">Nº</span></span></div></div><div class="controls"><button class="btn paste" data-role="paste-number" type="button">Colar número</button><button class="btn paste" data-role="paste-code" type="button">Colar Código</button><button class="btn sms" data-role="paste-sms" type="button">Colar SMS</button><button class="btn copy copy" type="button">Copiar <span class="muted">(restantes: 0)</span></button><button class="btn reset reset" data-role="reset" type="button">Zerar</button></div><div class="secondary"><button class="btn sub undo" data-role="undo" type="button">⟲ Desfazer</button><button class="btn sub skip" data-role="skip" type="button">» Pular</button></div><div class="inline"><span>Código: <strong class="code-pill">—</strong></span><button class="toggle-sms" type="button">Ver SMS</button></div><div class="editor"></div><div class="status"><div class="left">Pronto.</div><div class="progress">0</div></div><div class="bar"><div class="fill"></div></div></section></div>
-<div class="panel" data-panel="pers" role="tabpanel"><section class="block" data-key="pers" data-limit="4" data-seq="create-account"><div class="counter-line"><div class="block-title">Criar Conta</div><div class="pill"><span>Contas:</span><strong class="counter">0</strong><span class="muted">• Próximo: <span class="det">—</span></span></div></div><div class="controls"><button class="btn paste" data-role="gen-copy" type="button">Criar e copiar email</button><button class="btn sms" data-role="number-flow" type="button">Criar e copiar número</button><button class="btn reset reset" data-role="reset" type="button" style="grid-column:1/-1">Limpar</button></div><div id="numberExpiryHint" class="minor-caption-v283" aria-live="polite" style="margin:10px 0">O vencimento das contas criadas por número é calculado automaticamente: 7 dias após a criação.</div><div class="inline"><span>Senha atual: <strong class="pass-pill">—</strong></span><button class="toggle-sms" type="button">Ver dados</button></div><div class="editor"></div><div class="status"><div class="left">Escolha o fluxo por e-mail ou por número.</div><div class="progress">0 contas</div></div><div class="bar"><div class="fill"></div></div></section></div>
+<div class="panel" data-panel="pers" role="tabpanel"><section class="block compact-create-v297" data-key="pers" data-limit="4" data-seq="create-account"><div class="counter-line compact-create-head-v297"><div><div class="block-title">Criar Conta</div><div class="mini-flow-note-v297">Fluxos por Gmail, Outlook ou número</div></div><div class="pill"><span>Contas:</span><strong class="counter">0</strong><span class="muted">• Próximo: <span class="det">—</span></span></div></div><div class="controls compact-create-grid-v297"><button class="btn paste" data-role="gen-copy" type="button">Criar e copiar email</button><button class="btn sms" data-role="outlook-flow" type="button">Criar e copiar Outlook</button><button class="btn sms" data-role="number-flow" type="button">Criar e copiar número</button><button class="btn reset reset" data-role="reset" type="button">Limpar</button></div><div id="numberExpiryHint" class="minor-caption-v283 compact-create-hint-v297" aria-live="polite">Vencimento automático: 7 dias. Outlook gera endereço principal e dois aliases.</div><div class="inline compact-create-inline-v297"><span>Senha atual: <strong class="pass-pill">—</strong></span><button class="toggle-sms" type="button">Ver dados</button></div><div class="editor"></div><div class="status compact-create-status-v297"><div class="left">Escolha o fluxo para começar.</div><div class="progress">0 contas</div></div><div class="bar"><div class="fill"></div></div></section></div>
 <div class="panel" data-panel="emails" role="tabpanel"><section class="block" data-key="emails" data-limit="1" data-seq="emails"><div class="counter-line"><div class="block-title">E-mail</div><div class="pill"><span>Gerados:</span><strong class="counter">0</strong><span class="muted">• Guardados: <span class="det">0</span></span></div></div><div class="controls"><button class="btn paste" data-role="paste-email" type="button">Gerar aliás</button><button class="btn paste" data-role="gen-email" type="button">Gerar e-mail</button><button class="btn paste" data-role="paste-login" type="button">Colar e-mail</button><button class="btn paste" data-role="paste-code" type="button">Colar Código</button><button class="btn copy copy" type="button">Copiar <span class="muted">(restantes: 0)</span></button><button class="btn reset reset" data-role="reset" type="button">Zerar</button></div><div class="inline"><span>Código: <strong class="email-code-pill">—</strong> <span class="muted">• Cópias: <strong class="email-copies">0</strong></span></span><button class="toggle-sms" type="button">Ver e-mails</button></div><div class="editor"></div><div class="status"><div class="left">Fase 0 de 2 · Próximo: Gerar e-mails</div><div class="progress">0/0</div></div><div class="bar"><div class="fill"></div></div></section></div>
 <div class="panel" data-panel="account" role="tabpanel"><section class="block" data-key="account" data-limit="0" data-seq="account"><div class="counter-line"><div class="block-title">Renovação Código</div><div class="pill"><span>Contas:</span><strong class="counter">0</strong><span class="muted">• Próximo: <span class="det">Colar conta</span></span></div></div><div class="controls"><button class="btn paste" data-role="account-action" type="button">Colar conta</button><button class="btn sms" data-role="code-action" type="button">Colar códigos</button><button class="btn reset reset" data-role="reset" type="button" style="grid-column:1/-1">Limpar conta</button></div><div class="inline"><span>Atual: <strong class="code-pill">—</strong></span><button class="toggle-sms" type="button">Ver dados</button></div><div class="inline"><span>Códigos da conta selecionada: <strong class="account-code-count">0</strong> · <strong class="account-months-count">Aguardando código</strong></span></div><div class="field account-code-target" hidden style="margin-top:10px"><label for="accountCodeTarget">Distribuição dos códigos por conta</label><select id="accountCodeTarget" aria-label="Distribuição dos códigos copiados"></select><p class="account-code-help">Automático: distribui um código por conta antes de adicionar meses extras. Selecione uma conta específica somente se quiser dar mais meses a ela.</p><p class="account-code-help" id="accountCodeNextInfo"></p></div><div class="renewal-preview-v283" id="renewalPreview"><div class="minor-caption-v283">Cole as contas e os códigos para ver a conferência por conta.</div></div><button class="btn green" type="button" id="renewalCashBtn" hidden style="width:100%;margin-top:8px">Preparar registro de venda no Caixa</button><div class="editor"></div><div class="status"><div class="left">Cole uma ou várias contas do cliente.</div><div class="progress">0 contas · 0 códigos</div></div><div class="bar"><div class="fill"></div></div></section></div>
 <div class="panel" data-panel="site" role="tabpanel"><section class="block" data-key="site" data-limit="8" data-seq="site-create-account"><div class="counter-line"><div class="block-title">Site</div><div class="pill"><span>Etapas:</span><strong class="counter">0</strong><span class="muted">• Próximo: <span class="det">—</span></span></div></div><div class="controls"><button class="btn paste" data-role="gen-copy" type="button">Gerar e copiar</button><button class="btn reset reset" data-role="reset" type="button">Limpar</button></div><div class="inline"><span>Senha padrão: <strong class="pass-pill">554090q</strong></span><button class="toggle-sms" type="button">Ver dados</button></div><div class="editor"></div><div class="status"><div class="left">Clique em Gerar e copiar para criar tudo e copiar o Gmail temporário.</div><div class="progress">0/8</div></div><div class="bar"><div class="fill"></div></div></section></div>
 
-<div class="footer small"><div><b>Versão:</b> v2.91</div><div><b>Changelog:</b> Caixa: dinheiro disponível, capital investido nos créditos restantes e lucro estimado do mês apresentados separadamente. Valorização do estoque com custo real por lote e transporte entre meses, resumo financeiro e explicações de cada cálculo. UniTV: a conta renovada é copiada diretamente, sem janela de confirmação, após a cópia dos códigos necessários. Demais operações preservadas.</div></div>
+<div class="footer small"><div><b>Versão:</b> v2.98</div><div><b>Changelog:</b> UniTV Criar Conta: vencimento automático de 7 dias para contas geradas por e-mail; novo botão Outlook com endereço principal, dois aliases, seis cópias de login/senha e três contas formatadas. Fluxos antigos, Caixa e Pessoal preservados. UniTV equilibrada: Renovação Código voltou a ter botão grande; opções e botões internos maiores e mais legíveis; Criar Conta reorganizado em três linhas. Botão Colar número em laranja nas abas Conta Nova e Renovação e apenas no estado Colar número em Criar Conta; Criar e copiar número permanece verde.</div></div>
 </section>
 <section class="main-panel" data-main-panel="pessoal">
 <section class="block finance">
@@ -893,7 +1077,7 @@ toggle.addEventListener('click',()=>{editor.classList.toggle('show');update()});
 document.querySelectorAll('.block[data-seq="triple"]').forEach(initTriple);
 
 function initCreateAccount(block){
-const q=s=>block.querySelector(s),emailBtn=q('[data-role="gen-copy"]'),numberBtn=q('[data-role="number-flow"]'),resetBtn=q('.reset'),counter=q('.counter'),det=q('.det'),toggle=q('.toggle-sms'),editor=q('.editor'),fill=q('.fill'),bar=q('.bar'),statusLeft=q('.status .left'),statusProg=q('.status .progress'),passPill=q('.pass-pill');
+const q=s=>block.querySelector(s),emailBtn=q('[data-role="gen-copy"]'),outlookBtn=q('[data-role="outlook-flow"]'),numberBtn=q('[data-role="number-flow"]'),resetBtn=q('.reset'),counter=q('.counter'),det=q('.det'),toggle=q('.toggle-sms'),editor=q('.editor'),fill=q('.fill'),bar=q('.bar'),statusLeft=q('.status .left'),statusProg=q('.status .progress'),passPill=q('.pass-pill');
 const PASS='554090q';
 const WORDS=['mesa','copo','chave','porta','livro','fone','mouse','sofa','anel','bone','cafe','suco','pizza','caixa','prato','toalha','pilha','cabo','bolo','lata','tampa','papel','bola','gato','pato','leao','sol','lua','mar','rio','vento','fogo','neve','areia','nuvem','pedra','folha','casa','rua','ponte'];
 const saved=getStore('create_account_v12',getStore('create_account_v11',getStore('create_account_v10',getStore('create_account_v9',getStore('create_account_v8',getStore('create_account_v7',getStore('create_account_v6',getStore('create_account_v5',getStore('create_account_v4',{})))))))));
@@ -914,7 +1098,14 @@ function updateCreationDateHint(){
   const expiry=vencimentoTelefone(creation);
   numberExpiryHint.textContent=`${ongoing?'Lote em andamento':'Próximo lote'} · Criação: ${formatted} · Vencimento automático: ${expiry} (7 dias).`;
 }
-const st=Object.assign({alias:'',emails:[],clicks:0,numItems:[],completedAccounts:0,lastFlow:'email',nextSmsOrder:0},saved||{});
+const st=Object.assign({alias:'',emails:[],clicks:0,createdOn:'',outlook:{primary:'',aliases:[],clicks:0,createdOn:''},numItems:[],completedAccounts:0,lastFlow:'email',nextSmsOrder:0},saved||{});
+// O fluxo Google existente e o novo fluxo Outlook têm progresso independente.
+if(!/^\d{4}-\d{2}-\d{2}$/.test(st.createdOn||''))st.createdOn=localTodayISO();
+if(!st.outlook||typeof st.outlook!=='object')st.outlook={};
+st.outlook=Object.assign({primary:'',aliases:[],clicks:0,createdOn:''},st.outlook);
+if(!Array.isArray(st.outlook.aliases))st.outlook.aliases=[];
+if(!/^\d{4}-\d{2}-\d{2}$/.test(st.outlook.createdOn||''))st.outlook.createdOn=localTodayISO();
+st.outlook.clicks=Math.max(0,Number(st.outlook.clicks)||0);
 if(!Array.isArray(st.emails))st.emails=[];
 if(!Array.isArray(st.numItems))st.numItems=[];
 st.nextSmsOrder=Math.max(0,Number(st.nextSmsOrder)||0);
@@ -940,13 +1131,68 @@ function makeEmail(){return `${pick(WORDS)}${String(randInt(1000000)).padStart(6
 function makeTwo(){const a=makeEmail();let b=makeEmail();while(b===a)b=makeEmail();return[a,b]}
 function fullEmail(local){return `${local}@outlook.com`}
 function pad2(n){return String(n).padStart(2,'0')}
-function addOneMonthFromToday(){const d=new Date();const dd=d.getDate();let mm=d.getMonth()+2;let yyyy=d.getFullYear();if(mm===13){mm=1;yyyy++}const dim=new Date(yyyy,mm,0).getDate();return{dd:Math.min(dd,dim),mm,yyyy}}
-function vencimento(){const v=addOneMonthFromToday();return `${pad2(v.dd)}/${pad2(v.mm)}/${v.yyyy}`}
-function msg(local){return ['UNITV','','📧 Conta UniTv','',`E-mail: ${fullEmail(local)}`,`Senha: ${PASS}`,'',`Vencimento: ${vencimento()}`,'','','🔑 Vá em Perfil > Entrar com outras contas > Irá aparecer para insira os dados acima.','','🎁 Ganhe 7 dias grátis ao indicar um amigo!'].join('\n')}
+// As contas criadas por e-mail também vencem 7 dias depois de iniciar o lote.
+// Guardar a data impede que o vencimento mude se a operação passar da meia-noite.
+function vencimento(createdOn=st.createdOn){return vencimentoTelefone(createdOn||localTodayISO())}
+function msg(local,createdOn=st.createdOn){return ['UNITV','','📧 Conta UniTv','',`E-mail: ${fullEmail(local)}`,`Senha: ${PASS}`,'',`Vencimento: ${vencimento(createdOn)}`,'','','🔑 Vá em Perfil > Entrar com outras contas > Irá aparecer para insira os dados acima.','','🎁 Ganhe 7 dias grátis ao indicar um amigo!'].join('\n')}
 function contasJuntas(){return [msg(st.emails[0]),'','━━━━━━━━━━━━━━━━━━━━','','',msg(st.emails[1])].join('\n')}
-function legacySteps(){const a=[];if(st.alias)a.push({label:'Gmail temporário',text:st.alias});if(st.emails[0]&&st.emails[1]){a.push({label:'E-mail 1',text:st.emails[0]});a.push({label:'E-mail 2',text:st.emails[1]});a.push({label:'E-mail 1',text:st.emails[0]});a.push({label:'Senha',text:PASS});a.push({label:'E-mail 2',text:st.emails[1]});a.push({label:'Senha',text:PASS});a.push({label:'Contas UniTv 1 e 2',text:contasJuntas()})}return a}
-function legacyEditorText(){const lines=['FLUXO POR E-MAIL:','', 'GMAIL TEMPORÁRIO:',st.alias?`- ${st.alias}`:'- —','','E-MAILS GERADOS:'];if(st.emails.length){lines.push(`1) ${st.emails[0]}`);lines.push(`2) ${st.emails[1]}`)}else lines.push('- —');lines.push('','SENHA PADRÃO:',PASS,'','VENCIMENTO AUTOMÁTICO:',vencimento(),'');if(st.emails[0]&&st.emails[1])lines.push('CONTAS UNITV:',contasJuntas());return lines.join('\n')}
-function generateAll(){st.alias=`${nextDotAliasLocal()}@gmail.com`;st.emails=makeTwo();st.clicks=0}
+function legacySteps(){
+  const a=[];
+  if(st.alias)a.push({label:'Gmail temporário',text:st.alias});
+  if(st.emails[0]&&st.emails[1]){
+    a.push({label:'Criar alias Outlook 1',text:st.emails[0]});
+    a.push({label:'Criar alias Outlook 2',text:st.emails[1]});
+    a.push({label:'E-mail UniTV 1',text:st.emails[0]});
+    a.push({label:'Senha',text:PASS});
+    a.push({label:'E-mail UniTV 2',text:st.emails[1]});
+    a.push({label:'Senha',text:PASS});
+    a.push({label:'Duas contas UniTV formatadas',text:contasJuntas()});
+  }
+  return a;
+}
+function legacyEditorText(){
+  const lines=['FLUXO GOOGLE + ALIASES OUTLOOK:','', 'GMAIL TEMPORÁRIO:',st.alias?`- ${st.alias}`:'- —','','ALIASES PARA CRIAÇÃO:'];
+  if(st.emails.length){lines.push(`1) ${st.emails[0]}`);lines.push(`2) ${st.emails[1]}`)}else lines.push('- —');
+  lines.push('','SENHA PADRÃO:',PASS,'','VENCIMENTO AUTOMÁTICO:',vencimento(st.createdOn),'');
+  if(st.emails[0]&&st.emails[1])lines.push('CONTAS UNITV:',contasJuntas());
+  return lines.join('\n');
+}
+function generateAll(){st.alias=`${nextDotAliasLocal()}@gmail.com`;st.emails=makeTwo();st.clicks=0;st.createdOn=localTodayISO()}
+
+// Outlook: 1 endereço principal e 2 aliases. As sugestões devem ser cadastradas
+// pelo usuário no serviço Outlook; gerar/copiar não registra o endereço na Microsoft.
+function outlookLocals(){return [st.outlook.primary,...st.outlook.aliases].filter(Boolean)}
+function outlookSteps(){
+  const o=st.outlook,steps=[];
+  if(o.primary)steps.push({label:'Criar endereço Outlook principal',text:fullEmail(o.primary)});
+  if(o.primary&&o.aliases.length===2){
+    steps.push({label:'Criar alias Outlook 1',text:o.aliases[0]});
+    steps.push({label:'Criar alias Outlook 2',text:o.aliases[1]});
+    outlookLocals().forEach((local,i)=>{
+      steps.push({label:`E-mail UniTV ${i+1} sem @`,text:local});
+      steps.push({label:`Senha UniTV ${i+1}`,text:PASS});
+    });
+    steps.push({label:'Três contas UniTV formatadas',text:outlookAccountsMessage()});
+  }
+  return steps;
+}
+function outlookAccountsMessage(){
+  return outlookLocals().map(local=>msg(local,st.outlook.createdOn)).join('\n\n━━━━━━━━━━━━━━━━━━━━\n\n');
+}
+function outlookEditorText(){
+  const o=st.outlook;
+  const lines=['FLUXO OUTLOOK + 2 ALIASES:','','ENDEREÇO PRINCIPAL PARA CRIAR:',o.primary?fullEmail(o.primary):'—',
+    '','ALIASES PARA CRIAR:',o.aliases.length?o.aliases.map((local,i)=>`${i+1}) ${local}`).join('\n'):'—',
+    '','SENHA PADRÃO:',PASS,'','VENCIMENTO AUTOMÁTICO:',vencimento(o.createdOn),
+    '','Atenção: é necessário criar o endereço e os aliases no Outlook; o site apenas gera e copia sugestões.'];
+  if(o.primary&&o.aliases.length===2)lines.push('','CONTAS UNITV:',outlookAccountsMessage());
+  return lines.join('\n');
+}
+function generateOutlookAll(){
+  const locals=[];
+  while(locals.length<3){const candidate=makeEmail();if(!locals.includes(candidate))locals.push(candidate)}
+  st.outlook={primary:locals[0],aliases:locals.slice(1),clicks:0,createdOn:localTodayISO()};
+}
 
 function cleanPhone(value){let d=String(value||'').replace(/\D/g,'');if(d.startsWith('55')&&d.length>11)d=d.slice(2);return d.length>=10&&d.length<=11?d:''}
 function normalizeSmsText(text){
@@ -1131,19 +1377,26 @@ function numberEditorText(){
   });
   return lines.join('\n');
 }
-function saveState(){setStore('create_account_v12',{alias:st.alias,emails:st.emails,clicks:st.clicks,numItems:st.numItems,completedAccounts:st.completedAccounts,lastFlow:st.lastFlow,nextSmsOrder:st.nextSmsOrder,editorText:editor.textContent})}
+function saveState(){setStore('create_account_v12',{alias:st.alias,emails:st.emails,clicks:st.clicks,createdOn:st.createdOn,outlook:st.outlook,numItems:st.numItems,completedAccounts:st.completedAccounts,lastFlow:st.lastFlow,nextSmsOrder:st.nextSmsOrder,editorText:editor.textContent})}
 function update(){
-  const emailSteps=legacySteps(),emailTotal=8,emailDone=Math.min(st.clicks,emailTotal),emailNext=emailSteps[st.clicks]?emailSteps[st.clicks].label:'Novo e-mail';
+  const isOutlook=st.lastFlow==='outlook';
+  const emailSteps=isOutlook?outlookSteps():legacySteps();
+  const emailTotal=isOutlook?10:8;
+  const emailClicks=isOutlook?st.outlook.clicks:st.clicks;
+  const emailDone=Math.min(emailClicks,emailTotal);
+  const emailNext=emailSteps[emailClicks]?emailSteps[emailClicks].label:'Novo lote';
   const numStep=numberStep(),numDone=st.numItems.filter(x=>x.accountDone).length,numTotal=st.numItems.length;
-  const overallTotal=Math.max(numTotal,1);
-  counter.textContent=numTotal?`${numDone}/${numTotal}`:emailDone;
+  counter.textContent=st.lastFlow==='number'?`${numDone}/${numTotal}`:emailDone;
   det.textContent=st.lastFlow==='number'?(numStep?numStep.label:numberButtonLabel()):emailNext;
   const activeNum=(tripletPendingItems()[0]||accountPendingItems()[0]||initialPending()||waitingSmsItems()[0]);
   passPill.textContent=activeNum&&activeNum.code?`${activeNum.code}q`:PASS;
   emailBtn.textContent='Criar e copiar email';
-  numberBtn.textContent=numberButtonLabel();
-  emailBtn.disabled=false;numberBtn.disabled=false;
-  resetBtn.disabled=!st.alias&&!st.emails.length&&!st.clicks&&!st.numItems.length&&!editor.textContent;
+  outlookBtn.textContent='Criar e copiar Outlook';
+  const numberActionLabel=numberButtonLabel();
+  numberBtn.textContent=numberActionLabel;
+  numberBtn.classList.toggle('is-paste-number',numberActionLabel==='Colar número');
+  emailBtn.disabled=false;outlookBtn.disabled=false;numberBtn.disabled=false;
+  resetBtn.disabled=!st.alias&&!st.emails.length&&!st.clicks&&!st.outlook.primary&&!st.outlook.clicks&&!st.numItems.length&&!editor.textContent;
   toggle.textContent=editor.classList.contains('show')?'Ocultar dados':'Ver dados';
   if(st.lastFlow==='number'){
     const np=numberProgressState();
@@ -1161,10 +1414,12 @@ function update(){
     if(editor.classList.contains('show'))editor.textContent=numberEditorText();
   }else{
     fill.style.width=(emailDone/emailTotal*100)+'%';bar.classList.toggle('complete',emailDone>=emailTotal);
-    statusLeft.textContent=!st.alias&&!st.emails.length?'E-mail: toque em Criar e copiar email para começar.':`E-mail: próximo é ${emailNext}.`;
-    statusProg.textContent=`${emailDone}/${emailTotal}`;
+    statusLeft.textContent=isOutlook
+      ?(!st.outlook.primary?'Outlook: primeiro endereço completo, depois dois aliases e três logins UniTV.':`Outlook: próximo é ${emailNext}.`)
+      :(!st.alias&&!st.emails.length?'Google: primeiro Gmail, depois dois aliases e dois logins UniTV.':`Google: próximo é ${emailNext}.`);
+    statusProg.textContent=`${emailDone}/${emailTotal} · ${isOutlook?'3 contas Outlook':'2 contas'}`;
     badge('pers',{count:emailDone,limit:emailTotal,isDone:emailDone>=emailTotal});
-    if(editor.classList.contains('show'))editor.textContent=legacyEditorText();
+    if(editor.classList.contains('show'))editor.textContent=isOutlook?outlookEditorText():legacyEditorText();
   }
   updateCreationDateHint();
   saveState();
@@ -1179,6 +1434,20 @@ async function copyEmailFlow(){
   if(ok){st.clicks++;toastOK(`${step.label} copiado!`);buzz()}else toastOK('Falha ao copiar.');
   update();
 }
+async function copyOutlookFlow(){
+  st.lastFlow='outlook';
+  let ss=outlookSteps();
+  if(!st.outlook.primary||st.outlook.aliases.length!==2||st.outlook.clicks>=ss.length){
+    generateOutlookAll();ss=outlookSteps();
+  }
+  const step=ss[st.outlook.clicks];
+  if(!step){toastOK('Nada para copiar.');update();return}
+  const ok=await copyClip(step.text);
+  if(ok){st.outlook.clicks++;toastOK(`${step.label} copiado!`);buzz()}
+  else toastOK('Falha ao copiar.');
+  update();
+}
+
 async function copyNumberStep(step){
   const ok=await copyClip(step.text);if(!ok){toastOK('Falha ao copiar.');return}
   if(step.kind==='initial-number')step.item.initialCopied=true;
@@ -1233,9 +1502,10 @@ async function numberFlow(){
   update();
 }
 emailBtn.addEventListener('click',copyEmailFlow);
+outlookBtn.addEventListener('click',copyOutlookFlow);
 numberBtn.addEventListener('click',numberFlow);
-resetBtn.addEventListener('click',()=>{if(!confirmReset('Tem certeza que deseja limpar o Criar Conta?')){toastOK('Cancelado.');return}st.alias='';st.emails=[];st.clicks=0;st.numItems=[];st.completedAccounts=0;st.nextSmsOrder=0;st.lastFlow='email';editor.textContent='';editor.classList.remove('show');toastOK('Limpo.');update()});
-toggle.addEventListener('click',()=>{editor.classList.toggle('show');editor.textContent=st.lastFlow==='number'?numberEditorText():legacyEditorText();update()});
+resetBtn.addEventListener('click',()=>{if(!confirmReset('Tem certeza que deseja limpar o Criar Conta?')){toastOK('Cancelado.');return}st.alias='';st.emails=[];st.clicks=0;st.createdOn='';st.outlook={primary:'',aliases:[],clicks:0,createdOn:''};st.numItems=[];st.completedAccounts=0;st.nextSmsOrder=0;st.lastFlow='email';editor.textContent='';editor.classList.remove('show');toastOK('Limpo.');update()});
+toggle.addEventListener('click',()=>{editor.classList.toggle('show');editor.textContent=st.lastFlow==='number'?numberEditorText():(st.lastFlow==='outlook'?outlookEditorText():legacyEditorText());update()});
 if(st.editorText)editor.textContent=st.editorText;update();
 }
 document.querySelectorAll('.block[data-seq="create-account"]').forEach(initCreateAccount);
@@ -3481,8 +3751,8 @@ document.querySelectorAll('.block[data-seq="site-create-account"]').forEach(init
     closeFixedExpenseEdit();savePersonal();renderPersonal();appToast('Conta e regras de vencimento salvas.');
   });
   // Priorizar tarefas: botões de venda e crédito antes da seção recolhível de metas.
-  const goalsDisclosure=$('#goalsDisclosure'),quickActions=$('.quick-actions-v264');
-  if(goalsDisclosure&&quickActions)quickActions.after(goalsDisclosure);
+  const goalsDisclosure=$('#goalsDisclosure'),cashDashboard=$('.main-panel[data-main-panel="caixa"] .dashboard-overview');
+  if(goalsDisclosure&&cashDashboard)cashDashboard.after(goalsDisclosure);
   renderCash();
   renderPersonal();
 })();
